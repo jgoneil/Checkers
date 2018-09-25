@@ -6,10 +6,11 @@ a web micro-framework.
 
 ## Team
 
-- MEMBER1
-- MEMBER2
-- MEMBER3
-- MEMBER4
+- Cole Melfi
+- Jake O'Neil
+- Scott Frauenknecht
+- Patrick Swink
+- Pedro Breton
 
 
 ## Prerequisites
