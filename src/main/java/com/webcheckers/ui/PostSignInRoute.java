@@ -29,6 +29,11 @@ public class PostSignInRoute implements Route {
   private final TemplateEngine templateEngine;
   private final Users users;
 
+  /*
+   * Constructor for class. Ensures both parameters are included in the declaration for use
+   * @param templateEngine the formatting definition for spark to java messaging
+   * @param users the class holding all of the currently connected users
+   */
   public PostSignInRoute(final TemplateEngine templateEngine, final Users users) {
 
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
@@ -37,7 +42,13 @@ public class PostSignInRoute implements Route {
     this.templateEngine = templateEngine;
     this.users = users;
   }
-
+  
+  /*
+   * Main connection for users attempting to sign in
+   * Handles error checking on input to ensure validity and that the input follows guidelines
+   * @param request the messages coming from the from the frontend
+   * @param response the messages the backend (this class) are responding with
+   */
   @Override
   public String handle(Request request, Response response) {
     final Session httpSession = request.session();
