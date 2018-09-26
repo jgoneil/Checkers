@@ -12,6 +12,7 @@
     
     <div class="navigation">
       <a href="/">my home</a>
+      <a href="/signin">Sign in</a>
     </div>
     
     <div class="body">

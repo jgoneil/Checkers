@@ -10,6 +10,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
+import com.webcheckers.appl.Users;
 
 /**
  * The UI Controller to GET the Home page.
@@ -19,7 +20,10 @@ import spark.TemplateEngine;
 public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
+  static final String USERS = "users";
+
   private final TemplateEngine templateEngine;
+  private final Users users;
 
   /**
    * Create the Spark Route (UI controller) for the
@@ -28,11 +32,15 @@ public class GetHomeRoute implements Route {
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine) {
+  public GetHomeRoute(final TemplateEngine templateEngine, Users users) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
+
+    Objects.requireNonNull(users, "users must not be null");
     //
     this.templateEngine = templateEngine;
+    
+    this.users = users;
     //
     LOG.config("GetHomeRoute is initialized.");
   }

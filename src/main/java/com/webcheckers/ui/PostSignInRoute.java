@@ -23,6 +23,8 @@ public class PostSignInRoute implements Route {
   static final String VIEW_NAME = "home.ftl";
   static final String REVERT_VIEW = "sigin.ftl";
   static final String USER_PARAM = "username";
+  static final String USERNAME_ERROR = "invalid username";
+  static final String RETRY = "Please try again";
 
   private final TemplateEngine templateEngine;
   private final Users users;
@@ -45,11 +47,11 @@ public class PostSignInRoute implements Route {
     ModelAndView mv;
 
     if(users.addPlayer(username)){
-      vm.put();
+      vm.put(GetHomeRoute.USERS, users);
       mv = new ModelAndView(vm, VIEW_NAME);
       return templateEngine.render(mv);
     } else {
-      vm.put();
+      vm.put(USERNAME_ERROR, RETRY);
       mv = new ModelAndView(vm, REVERT_VIEW);  
       return templateEngine.render(mv);
     }
