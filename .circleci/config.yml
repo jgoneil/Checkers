@@ -32,10 +32,10 @@ jobs: # a collection of steps
     # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
 
     - test:
-      post:
-      - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-      - find . -type f -regex ".*/target/surefire-reports/.*txt" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-      - mvn clean verify
-      - mkdir -p $CIRCLE_TEST_REPORTS/jacoco/
-      - cp -a /home/ubuntu/section-03-project-2-railroadtycoons/target/site/jacoco $CIRCLE_TEST_REPORTS/jacoco/
+        post:
+        - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+        - find . -type f -regex ".*/target/surefire-reports/.*txt" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+        - mvn clean verify
+        - mkdir -p $CIRCLE_TEST_REPORTS/jacoco/
+        - cp -a /home/ubuntu/section-03-project-2-railroadtycoons/target/site/jacoco $CIRCLE_TEST_REPORTS/jacoco/
 
