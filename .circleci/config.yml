@@ -3,7 +3,7 @@ jobs: # a collection of steps
 
   build: # runs not using Workflows must have a `build` job as entry point
 
-    working_directory: ~/swen261c # directory where steps will run
+    working_directory: ~/team-project-teamc # directory where steps will run
 
     docker: # run the steps with Docker
     - image: circleci/openjdk:8-jdk-browsers # ...with this image as the primary container; this is where all `steps` will run
@@ -20,7 +20,7 @@ jobs: # a collection of steps
     - save_cache: # saves the project dependencies
         paths:
         - ~/.m2
-        key: swen261c-{{ checksum "pom.xml" }}
+        key: team-project-teamc-{{ checksum "pom.xml" }}
 
     - run: mvn package # run the actual tests
 
