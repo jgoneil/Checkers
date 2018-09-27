@@ -56,9 +56,9 @@ public class WebServer {
    */
   public static final String HOME_URL = "/";
 
-  public static final String SIGNIN_URL = "/Signin";
+  public static final String SIGNIN_URL = "/signin";
 
-  public static final String POST_SIGNIN_URL = "/PostSignin";
+  public static final String POST_SIGNIN_URL = "/postSignin";
 
   //
   // Attributes

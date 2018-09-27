@@ -11,6 +11,7 @@ public class Users {
 
   private CheckSignin checkSignin;
   private List<Player> users;
+  private List<String> usernames;
 
   /*
    * Constructor for the class that establishes sign in checks 
@@ -19,6 +20,7 @@ public class Users {
   public Users(){
     this.checkSignin = new CheckSignin();
     this.users = new ArrayList<>();
+    this.usernames = new ArrayList<String>();
   }
 
   /*
@@ -30,6 +32,7 @@ public class Users {
     if(this.checkSignin.validateUser(username, this.users)){
       Player player = new Player(username);
       this.users.add(player);
+      this.usernames.add(username);
       return true;
     }
     return false;
@@ -38,7 +41,9 @@ public class Users {
   /*
    * Getter for the list of all players currently signed into the game
    */
-  public List<Player> getAllPlayers(){
-    return this.users;
+  public String[] getAllPlayers(){
+    String[] tempArray = new String[usernames.size()];
+    tempArray = usernames.toArray(tempArray);
+    return tempArray;
   }
 }

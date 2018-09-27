@@ -21,7 +21,7 @@ import com.webcheckers.appl.Users;
 public class PostSignInRoute implements Route {
   
   static final String VIEW_NAME = "home.ftl";
-  static final String REVERT_VIEW = "sigin.ftl";
+  static final String REVERT_VIEW = "signin.ftl";
   static final String USER_PARAM = "username";
   static final String USERNAME_ERROR = "invalid username";
   static final String RETRY = "Please try again";
@@ -58,11 +58,15 @@ public class PostSignInRoute implements Route {
     ModelAndView mv;
 
     if(users.addPlayer(username)){
-      vm.put(GetHomeRoute.USERS, users);
+      vm.put(GetHomeRoute.USERS, users.getAllPlayers());
+      vm.put(GetHomeRoute.USER_EXIST, true);
+      vm.put("title", "title");
       mv = new ModelAndView(vm, VIEW_NAME);
       return templateEngine.render(mv);
     } else {
       vm.put(USERNAME_ERROR, RETRY);
+      vm.put("title", GetSigninRoute.TITLE);
+      vm.put("header", GetSigninRoute.HEADER);
       mv = new ModelAndView(vm, REVERT_VIEW);  
       return templateEngine.render(mv);
     }

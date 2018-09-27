@@ -21,6 +21,7 @@ public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   static final String USERS = "users";
+  static final String USER_EXIST = "users_exist";
 
   private final TemplateEngine templateEngine;
   private final Users users;
@@ -62,6 +63,14 @@ public class GetHomeRoute implements Route {
     //
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
+
+    if(users.getAllPlayers().length != 0){
+      vm.put(USER_EXIST, true);
+      vm.put(USERS, users.getAllPlayers());
+    }
+    else{
+      vm.put(USER_EXIST, false);
+    }
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }
 

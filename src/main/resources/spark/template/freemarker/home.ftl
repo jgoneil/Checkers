@@ -17,6 +17,14 @@
     
     <div class="body">
       <p>Welcome to the world of online Checkers.</p>
+
+      <#if users_exist>
+        <#list users as player>
+          <p>
+            ${player}
+          </p>
+        </#list>
+      </#if>
     </div>
     
   </div>

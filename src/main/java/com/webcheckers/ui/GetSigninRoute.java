@@ -3,14 +3,13 @@ package com.webcheckers.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.Session;
 import spark.TemplateEngine;
-import static spark.Spark.halt;
 
 /*
  * {@code get /signin} Class that controls main connection to signin page.
@@ -18,8 +17,10 @@ import static spark.Spark.halt;
  */
 public class GetSigninRoute implements Route {
 
-  static final String TITLE = "Welcome! Please Sign In Below";
-  static final String VIEW_NAME = "signin_form.ftl";
+  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+  static final String TITLE = "Welcome!";
+  static final String HEADER = "Please Sign In Below.";
+  static final String VIEW_NAME = "signin.ftl";
   
   private TemplateEngine templateEngine;
   
@@ -42,10 +43,11 @@ public class GetSigninRoute implements Route {
    */
   @Override
   public String handle(Request request, Response response) {
-    final Session httpSession = request.session();
+    LOG.finer("GetSigninRoute is invoked.");
 
     final Map<String, Object> vm = new HashMap<>();
-    vm.put(TITLE, TITLE);
+    vm.put("title", TITLE);
+    vm.put("header", HEADER);
     return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
   }
 }
