@@ -14,3 +14,9 @@
 # Maven
 log/
 target/
+
+#Submission files for proof of work
+github.txt
+
+#Command line files 
+*.swp
