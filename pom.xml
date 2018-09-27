@@ -8,6 +8,17 @@
   <name>Web Checkers a'la Spark/Java8</name>
   <description>Checkers game with a Spark and Java 8 architecture.</description>
 
+  <distributionManagement>
+    <repository>
+      <id>swen261c-id</id>
+      <url>packagecloud+https://packagecloud.io/pab3507/swen261c</url>
+    </repository>
+    <snapshotRepository>
+      <id>swen261c-id</id>
+      <url>packagecloud+https://packagecloud.io/pab3507/swen261c</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <properties>
 
     <!-- General build properties -->
@@ -99,6 +110,14 @@
   </dependencies>
 
   <build>
+    <extensions>
+      <extension>
+        <groupId>io.packagecloud.maven.wagon</groupId>
+        <artifactId>maven-packagecloud-wagon</artifactId>
+        <version>0.0.4</version>
+      </extension>
+
+    </extensions>
     <plugins>
 
       <!-- START: Application build plugins -->
