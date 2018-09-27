@@ -9,8 +9,10 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import spark.Session;
 import spark.TemplateEngine;
 import com.webcheckers.appl.Users;
+import com.webcheckers.appl.Player;
 
 /**
  * The UI Controller to GET the Home page.
@@ -21,10 +23,13 @@ public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   static final String USERS = "users";
-  static final String USER_EXIST = "users_exist";
+  static final String SIGNEDIN = "signedin";
+  static final String ONLY_ONE = "onlyOne";
+  static final String PLAYERSERVICES_KEY = "playerServices";
 
   private final TemplateEngine templateEngine;
   private final Users users;
+  private Player player;
 
   /**
    * Create the Spark Route (UI controller) for the
@@ -59,19 +64,29 @@ public class GetHomeRoute implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
+    final Session httpSession = request.session();
     LOG.finer("GetHomeRoute is invoked.");
     //
+    this.player = httpSession.attribute(PLAYERSERVICES_KEY);
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
-    if(users.getAllPlayers().length != 0){
-      vm.put(USER_EXIST, true);
-      vm.put(USERS, users.getAllPlayers());
+    if(this.player == null){
+      vm.put(SIGNEDIN, false);
+      vm.put(USERS, users.getAllPlayers().length);
+      return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+    }
+    else if(users.getAllPlayers().length == 1){
+      vm.put(SIGNEDIN, true);
+      vm.put(ONLY_ONE, true);
+      return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
     else{
-      vm.put(USER_EXIST, false);
+      vm.put(SIGNEDIN, true);
+      vm.put(ONLY_ONE, false);
+      vm.put(USERS, users.getAllPlayersExceptUser(player.getUsername()));
+      return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
-    return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }
 
 }

@@ -12,11 +12,18 @@
     <div class="navigation">
       <a href="/">my home</a>
     </div>
+    
+    <#if attemptFailed>
+      <div class="error">
+        <p>Username already in use or was entered improperly. Please try again</p>
+        <p>Note: Usernames can only include alpha numeric characters and spaces</p>
+      </div>
+    </#if>
 
     <div class="body">
       <form action="./postSignin" method="POST">
         <p>Please input your username below</p>
-        <input name="username" />
+        <input name="username" type="text" />
         <button type="submit">Ok</button>
       </form>
     </div>

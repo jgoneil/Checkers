@@ -21,6 +21,7 @@ public class GetSigninRoute implements Route {
   static final String TITLE = "Welcome!";
   static final String HEADER = "Please Sign In Below.";
   static final String VIEW_NAME = "signin.ftl";
+  static final String ATTEMPT_FAILED = "attemptFailed";
   
   private TemplateEngine templateEngine;
   
@@ -48,6 +49,7 @@ public class GetSigninRoute implements Route {
     final Map<String, Object> vm = new HashMap<>();
     vm.put("title", TITLE);
     vm.put("header", HEADER);
+    vm.put(ATTEMPT_FAILED, false);
     return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
   }
 }

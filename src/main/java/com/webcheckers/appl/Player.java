@@ -18,6 +18,7 @@ public class Player{
 
   /*
    * Getter for the player's username
+   * @Return String the username of the player
    */
   public String getUsername(){
     return this.username;
