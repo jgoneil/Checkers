@@ -73,10 +73,10 @@ public class GetHomeRoute implements Route {
 
     if(this.player == null){
       vm.put(SIGNEDIN, false);
-      vm.put(USERS, users.getAllPlayers().length);
+      vm.put(USERS, users.getAllPlayers().size());
       return templateEngine.render(new ModelAndView(vm , "home.ftl"));
     }
-    else if(users.getAllPlayers().length == 1){
+    else if(users.getAllPlayers().size() == 1){
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, true);
       return templateEngine.render(new ModelAndView(vm , "home.ftl"));
