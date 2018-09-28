@@ -10,7 +10,7 @@ public class Player{
 
   /*
    * Constructor for player class
-   * @param username the String value entered by the user upon signin for recogition in the game
+   * @param username the String value entered by the user upon signin for recognition in the game
    */
   public Player(String username){
     this.username = username;
