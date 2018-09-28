@@ -12,10 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CheckSigninTest {
 
-  List<Player> users;
-  CheckSignin checkSignin;
-
-  final private String validPlayerString1 = "abc";
   final String validPlayerString2 = "DEF";
   final String validPlayerString3 = "123";
   final String validPlayerString4 = "a b";
@@ -26,8 +22,9 @@ public class CheckSigninTest {
   final String whiteSpace = " ";
   final String tab = "\t";
   final String newLine = "\n";
-
-
+  final private String validPlayerString1 = "abc";
+  List<Player> users;
+  CheckSignin checkSignin;
 
   @BeforeEach
   public void setUp() throws Exception {
@@ -44,25 +41,26 @@ public class CheckSigninTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {validPlayerString1, validPlayerString2, validPlayerString3, validPlayerString4, validPlayerString5})
-  public void ValidateUserTest_ValidUser(String user){
+  @ValueSource(strings = {validPlayerString1, validPlayerString2, validPlayerString3,
+      validPlayerString4, validPlayerString5})
+  public void ValidateUserTest_ValidUser(String user) {
     assertTrue(checkSignin.validateUser(user, users));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {nonAlphabeticalString1, nonAlphabeticalString2})
-  public void ValidateUserTest_InvalidUser(String user){
+  public void ValidateUserTest_InvalidUser(String user) {
     assertFalse(checkSignin.validateUser(user, users));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {emptyString, whiteSpace, tab, newLine})
-  public void ValidateUserTest_InvalidWhitespace(String user){
+  public void ValidateUserTest_InvalidWhitespace(String user) {
     assertFalse(checkSignin.validateUser(user, users));
   }
 
   @Test
-  public void ValidateUserTest_AlreadyTaken(){
+  public void ValidateUserTest_AlreadyTaken() {
     users.add(new Player(validPlayerString1));
     assertFalse(checkSignin.validateUser(validPlayerString1, users));
   }

@@ -3,7 +3,6 @@ package com.webcheckers.appl;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ public class PlayerTest {
   }
 
   @Test
-  public void getUsernameTest(){
+  public void getUsernameTest() {
     assertEquals(player1.getUsername(), usernamePlayer1);
   }
 }

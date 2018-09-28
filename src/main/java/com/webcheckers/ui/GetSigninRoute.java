@@ -17,20 +17,19 @@ import spark.TemplateEngine;
  */
 public class GetSigninRoute implements Route {
 
-  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   static final String TITLE = "Welcome!";
   static final String HEADER = "Please Sign In Below.";
   static final String VIEW_NAME = "signin.ftl";
   static final String ATTEMPT_FAILED = "attemptFailed";
-  
+  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private TemplateEngine templateEngine;
-  
+
   /*
-   * Contructor for class 
-   * @param templateEngine the template in which all messages for the system are handled 
+   * Contructor for class
+   * @param templateEngine the template in which all messages for the system are handled
    * between spark and the java backend
    */
-  public GetSigninRoute(final TemplateEngine templateEngine){
+  public GetSigninRoute(final TemplateEngine templateEngine) {
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
 
     this.templateEngine = templateEngine;

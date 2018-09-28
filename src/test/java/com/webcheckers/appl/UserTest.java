@@ -11,7 +11,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 public class UserTest {
 
-  final private String validPlayerString1 = "abc";
   final String validPlayerString2 = "DEF";
   final String validPlayerString3 = "123";
   final String validPlayerString4 = "a b";
@@ -22,8 +21,8 @@ public class UserTest {
   final String whiteSpace = " ";
   final String tab = "\t";
   final String newLine = "\n";
+  final private String validPlayerString1 = "abc";
   private Users users;
-
 
 
   @BeforeEach
@@ -39,32 +38,33 @@ public class UserTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {validPlayerString1, validPlayerString2, validPlayerString3, validPlayerString4, validPlayerString5})
-  public void AddPlayerTest_ValidName(String username){
+  @ValueSource(strings = {validPlayerString1, validPlayerString2, validPlayerString3,
+      validPlayerString4, validPlayerString5})
+  public void AddPlayerTest_ValidName(String username) {
     assertTrue(users.addPlayer(username));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {nonAlphabeticalString1, nonAlphabeticalString2})
-  public void AddPlayerTest_InvalidName_InvalidCharacters(String username){
+  public void AddPlayerTest_InvalidName_InvalidCharacters(String username) {
     assertFalse(users.addPlayer(username));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {emptyString, whiteSpace, tab, newLine})
-  public void AddPlayerTest_InvalidName_InvalidWhiteSpace(String username){
+  public void AddPlayerTest_InvalidName_InvalidWhiteSpace(String username) {
     assertFalse(users.addPlayer(username));
   }
 
   @Test
-  public void GetSpecificPlayerTest(){
+  public void GetSpecificPlayerTest() {
     users.addPlayer(validPlayerString1);
     assertEquals(users.getSpecificPlayer(validPlayerString1).getUsername(), validPlayerString1);
     assertNull(users.getSpecificPlayer("Not a user"));
   }
 
   @Test
-  public void getAllPlayersTest(){
+  public void getAllPlayersTest() {
     users.addPlayer(validPlayerString1);
     users.addPlayer(validPlayerString2);
     assertEquals(users.getAllPlayers().get(0), validPlayerString1);
@@ -72,7 +72,7 @@ public class UserTest {
   }
 
   @Test
-  public void getAllPlayersExceptUserTest(){
+  public void getAllPlayersExceptUserTest() {
     users.addPlayer(validPlayerString1);
     users.addPlayer(validPlayerString2);
     users.addPlayer(validPlayerString3);

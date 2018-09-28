@@ -10,6 +10,7 @@ import spark.Response;
 import spark.Route;
 import spark.TemplateEngine;
 import spark.Session;
+
 import static spark.Spark.halt;
 
 import com.webcheckers.appl.Users;
@@ -20,7 +21,7 @@ import com.webcheckers.appl.Player;
  * Checks user input to ensure the username is not already in use
  */
 public class PostSignInRoute implements Route {
-  
+
   static final String VIEW_NAME = "home.ftl";
   static final String REVERT_VIEW = "signin.ftl";
   static final String USER_PARAM = "username";
@@ -45,7 +46,7 @@ public class PostSignInRoute implements Route {
     this.templateEngine = templateEngine;
     this.users = users;
   }
-  
+
   /*
    * Main connection for users attempting to sign in
    * Handles error checking on input to ensure validity and that the input follows guidelines
@@ -58,11 +59,11 @@ public class PostSignInRoute implements Route {
     final Map<String, Object> vm = new HashMap<>();
     final String username = request.queryParams(USER_PARAM);
     final Session httpSession = request.session();
-  
-    if(username != null){
+
+    if (username != null) {
       ModelAndView mv;
 
-      if(users.addPlayer(username)){
+      if (users.addPlayer(username)) {
         this.player = users.getSpecificPlayer(username);
         httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY, player);
         response.redirect(WebServer.HOME_URL);
@@ -71,11 +72,10 @@ public class PostSignInRoute implements Route {
         vm.put("title", GetSigninRoute.TITLE);
         vm.put("header", GetSigninRoute.HEADER);
         vm.put(GetSigninRoute.ATTEMPT_FAILED, true);
-        mv = new ModelAndView(vm, REVERT_VIEW);  
+        mv = new ModelAndView(vm, REVERT_VIEW);
         return templateEngine.render(mv);
       }
-    }
-    else{
+    } else {
       response.redirect(WebServer.HOME_URL);
       halt();
       return null;

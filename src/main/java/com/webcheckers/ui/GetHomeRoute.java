@@ -20,23 +20,20 @@ import com.webcheckers.appl.Player;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
 public class GetHomeRoute implements Route {
-  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   static final String USERS = "users";
   static final String SIGNEDIN = "signedin";
   static final String ONLY_ONE = "onlyOne";
   static final String PLAYERSERVICES_KEY = "playerServices";
-
+  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
   private final TemplateEngine templateEngine;
   private final Users users;
   private Player player;
 
   /**
-   * Create the Spark Route (UI controller) for the
-   * {@code GET /} HTTP request.
+   * Create the Spark Route (UI controller) for the {@code GET /} HTTP request.
    *
-   * @param templateEngine
-   *   the HTML template rendering engine
+   * @param templateEngine the HTML template rendering engine
    */
   public GetHomeRoute(final TemplateEngine templateEngine, Users users) {
     // validation
@@ -45,7 +42,7 @@ public class GetHomeRoute implements Route {
     Objects.requireNonNull(users, "users must not be null");
     //
     this.templateEngine = templateEngine;
-    
+
     this.users = users;
     //
     LOG.config("GetHomeRoute is initialized.");
@@ -54,13 +51,9 @@ public class GetHomeRoute implements Route {
   /**
    * Render the WebCheckers Home page.
    *
-   * @param request
-   *   the HTTP request
-   * @param response
-   *   the HTTP response
-   *
-   * @return
-   *   the rendered HTML for the Home page
+   * @param request the HTTP request
+   * @param response the HTTP response
+   * @return the rendered HTML for the Home page
    */
   @Override
   public Object handle(Request request, Response response) {
@@ -71,21 +64,19 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
-    if(this.player == null){
+    if (this.player == null) {
       vm.put(SIGNEDIN, false);
       vm.put(USERS, users.getAllPlayers().size());
-      return templateEngine.render(new ModelAndView(vm , "home.ftl"));
-    }
-    else if(users.getAllPlayers().size() == 1){
+      return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+    } else if (users.getAllPlayers().size() == 1) {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, true);
-      return templateEngine.render(new ModelAndView(vm , "home.ftl"));
-    }
-    else{
+      return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+    } else {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, false);
       vm.put(USERS, users.getAllPlayersExceptUser(player.getUsername()));
-      return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+      return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
   }
 
