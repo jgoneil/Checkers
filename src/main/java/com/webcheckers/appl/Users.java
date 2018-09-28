@@ -45,13 +45,16 @@ public class Users {
    * @return Player Either null or the player requested
    */
   public Player getSpecificPlayer(String username) {
-    if (usernames.contains(username)) {
+    if (!usernames.contains(username)){
+      return null;
+    } else {
       for (Player p : users) {
         if (p.getUsername().equals(username)) {
           return p;
         }
       }
     }
+
     return null;
   }
 
