@@ -59,10 +59,8 @@ public class Users {
    * Getter for the list of all players currently signed into the game
    * @return String[] the array of all usernames associated to players currently signed into the game
    */
-  public String[] getAllPlayers(){
-    String[] tempArray = new String[usernames.size()];
-    tempArray = usernames.toArray(tempArray);
-    return tempArray;
+  public List<String> getAllPlayers(){
+    return this.usernames;
   }
 
   /*
@@ -70,15 +68,17 @@ public class Users {
    * @param String the username that is excluded from the list
    * @return String[] the array of usernames currently signed into the game without the specified player
    */ 
-  public String[] getAllPlayersExceptUser(String username){
-    String[] playerNames = new String[usernames.size() - 1];
-    int counter = 0;
+  public List<String> getAllPlayersExceptUser(String username){
+    if(!this.usernames.contains(username)){
+      return this.usernames;
+    }
+    List<String> playerNames = new ArrayList<String>();
     for(String u: this.usernames){
       if(u.equals(username)){
         continue;
       }
       else{
-        playerNames[counter] = u;
+        playerNames.add(u);
       }
     }
     return playerNames;
