@@ -9,19 +9,28 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+/**
+ * Test class for User
+ */
 public class UserTest {
 
+  // Valid usernames
+  final String validPlayerString1 = "abc";
   final String validPlayerString2 = "DEF";
   final String validPlayerString3 = "123";
   final String validPlayerString4 = "a b";
   final String validPlayerString5 = " a ";
+
+  // Invalid usernames
   final String nonAlphabeticalString1 = "$$$";
   final String nonAlphabeticalString2 = "\"System.out.println(\"Sanitize your input\");";
+
+  // Invalid whitespace
   final String emptyString = "";
   final String whiteSpace = " ";
   final String tab = "\t";
   final String newLine = "\n";
-  final private String validPlayerString1 = "abc";
+
   private Users users;
 
 

@@ -12,17 +12,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CheckSigninTest {
 
+  // Valid usernames
+  final String validPlayerString1 = "abc";
   final String validPlayerString2 = "DEF";
   final String validPlayerString3 = "123";
   final String validPlayerString4 = "a b";
   final String validPlayerString5 = " a ";
+
+  // Invalid usernames
   final String nonAlphabeticalString1 = "$$$";
   final String nonAlphabeticalString2 = "\"System.out.println(\"Sanitize your input\");";
+
+  // Invalid whitespace
   final String emptyString = "";
   final String whiteSpace = " ";
   final String tab = "\t";
   final String newLine = "\n";
-  final private String validPlayerString1 = "abc";
+
   List<Player> users;
   CheckSignin checkSignin;
 
