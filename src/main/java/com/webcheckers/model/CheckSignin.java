@@ -28,7 +28,8 @@ public class CheckSignin{
       int spaces = 0;
       for(int i = 0; i < username.length(); i++) {
         int c = username.charAt(i);
-        if (!((65 <= c && c <= 90) || (97 <= c && c <= 122) || c == 32)) {
+        if (!((65 <= c && c <= 90) || (97 <= c && c <= 122) || c == 32 || 
+              (48 <= c && c <= 57))) {
           return false;
         }
         if(c == 32){
