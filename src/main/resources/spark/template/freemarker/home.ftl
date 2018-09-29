@@ -12,10 +12,28 @@
     
     <div class="navigation">
       <a href="/">my home</a>
+      <#if !signedin>
+        <a href="/signin" class="tab">Sign in</a>
+      </#if>
     </div>
     
     <div class="body">
       <p>Welcome to the world of online Checkers.</p>
+
+      <#if signedin>
+        <p>Other users currently signed in: </p>
+        <#if onlyOne>
+          <p>You're the only one currently logged in</p>
+        <#else>
+          <#list users as player>
+            <p>
+              ${player}
+            </p>
+          </#list>
+        </#if>
+      <#else>
+        <p>Number of players in the game: ${users}</p>
+      </#if>
     </div>
     
   </div>

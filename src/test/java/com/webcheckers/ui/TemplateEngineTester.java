@@ -10,23 +10,27 @@ import org.mockito.stubbing.Answer;
 import spark.ModelAndView;
 
 /**
- * Helper class to extract data from Spark's {@link ModelAndView} objects
- * that are passed to the {@code TemplateEngine.render} method.
+ * Helper class to extract data from Spark's {@link ModelAndView} objects that are passed to the
+ * {@code TemplateEngine.render} method.
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
 public class TemplateEngineTester {
 
-  /** Holds the View-Model map from the Spark ModelAndView object. */
+  /**
+   * Holds the View-Model map from the Spark ModelAndView object.
+   */
   private Object model;
-  /** Holds the View name from the Spark ModelAndView object. */
+  /**
+   * Holds the View name from the Spark ModelAndView object.
+   */
   private String viewName;
 
   /**
-   * Make a Mockito {@link Answer} object to capture the {@link ModelAndView}
-   * parameter to the template engine render method.
+   * Make a Mockito {@link Answer} object to capture the {@link ModelAndView} parameter to the
+   * template engine render method.
    *
-   * @return  a Mockito {@link Answer} object
+   * @return a Mockito {@link Answer} object
    */
   public Answer<Object> makeAnswer() {
     return new Answer<Object>() {
@@ -59,8 +63,7 @@ public class TemplateEngineTester {
    * Assert that the View-Model attributes matches the expected value.
    */
   public void assertViewModelAttribute(final String attrName, final Object expectedValue) {
-    @SuppressWarnings("unchecked")
-    final Map<String, Object> vm = (Map<String, Object>) model;
+    @SuppressWarnings("unchecked") final Map<String, Object> vm = (Map<String, Object>) model;
     assertEquals(expectedValue, vm.get(attrName));
   }
 
@@ -68,8 +71,7 @@ public class TemplateEngineTester {
    * Assert that the View-Model attribute is absent.
    */
   public void assertViewModelAttributeIsAbsent(final String attrName) {
-    @SuppressWarnings("unchecked")
-    final Map<String, Object> vm = (Map<String, Object>) model;
+    @SuppressWarnings("unchecked") final Map<String, Object> vm = (Map<String, Object>) model;
     assertFalse(vm.containsKey(attrName));
   }
 
@@ -78,8 +80,12 @@ public class TemplateEngineTester {
    */
   public void assertViewName(final String expectedName) {
     assertAll("View assertions",
-        () -> { assertNotNull(viewName, "the View name exists"); },
-        () -> { assertEquals(expectedName, viewName, "the View name matches"); }
-        );
+        () -> {
+          assertNotNull(viewName, "the View name exists");
+        },
+        () -> {
+          assertEquals(expectedName, viewName, "the View name matches");
+        }
+    );
   }
 }
