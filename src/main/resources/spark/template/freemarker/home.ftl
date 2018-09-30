@@ -26,9 +26,9 @@
           <p>You're the only one currently logged in</p>
         <#else>
           <#list users as player>
-            <p>
+            <p><a href="/game" name="otherPlayer">
               ${player}
-            </p>
+            </a></p>
           </#list>
         </#if>
       <#else>
