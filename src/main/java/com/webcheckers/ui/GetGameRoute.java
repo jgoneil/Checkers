@@ -24,7 +24,7 @@ public class GetGameRoute implements Route {
   private Player whitePlayer;
 
   private String VIEW = "game.ftl";
-  private String OTHER_PLAYER = "otherPlayer";
+  public static final String OTHER_PLAYER = "otherPlayer";
 
   /**
    * Creates a spark route that handles all {@code Get /game} HTTP requests

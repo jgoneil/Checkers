@@ -19,6 +19,8 @@ import com.webcheckers.appl.Player;
 public class PostGameRoute implements Route {
 
   private TemplateEngine templateEngine;
+  private Player redPlayer;
+  private Player whitePlayer;
 
   /**
    * Creates spark route for all {@code POST /postGame} HTTP requests
@@ -39,6 +41,10 @@ public class PostGameRoute implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
+    Session httpSession = request.session(); 
+    httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    System.out.print("Other player: " + request.attribute(GetGameRoute.OTHER_PLAYER));
+    response.redirect("/game");
     return null;
   }
 }
