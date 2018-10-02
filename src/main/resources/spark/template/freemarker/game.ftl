@@ -7,11 +7,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script>
   window.gameState = {
-    "currentPlayer" : "${currentPlayer.name}",
+    "currentPlayer" : "${currentPlayer.getUsername()}",
     "viewMode" : "${viewMode}",
     "modeOptions" : ${modeOptionsAsJSON!'{}'},
-    "redPlayer" : "${redPlayer.name}",
-    "whitePlayer" : "${whitePlayer.name}",
+    "redPlayer" : "${redPlayer.getUsername()}",
+    "whitePlayer" : "${whitePlayer.getUsername()}",
     "activeColor" : "${activeColor}"
   };
   </script>
@@ -23,7 +23,7 @@
     <div class="navigation">
     <#if currentPlayer??>
       <a href="/">my home</a> |
-      <a href="/signout">sign out [${currentPlayer.name}]</a>
+      <a href="/signout">sign out [${currentPlayer.getUsername()}]</a>
     <#else>
       <a href="/signin">sign in</a>
     </#if>

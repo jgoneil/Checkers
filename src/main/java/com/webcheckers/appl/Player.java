@@ -7,6 +7,7 @@ public class Player {
 
   //Username for each user
   private String username;
+  private String color;
 
   /*
    * Constructor for player class
@@ -22,5 +23,16 @@ public class Player {
    */
   public String getUsername() {
     return this.username;
+  }
+
+  public boolean inGame(){
+    if(color == null){
+      return false;
+    }
+    return true;
+  }
+
+  public void setColor(String color){
+    this.color = color;
   }
 }
