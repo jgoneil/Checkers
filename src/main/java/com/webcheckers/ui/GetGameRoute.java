@@ -13,6 +13,8 @@ import spark.Session;
 import spark.TemplateEngine;
 import com.webcheckers.appl.Users;
 import com.webcheckers.appl.Player;
+import com.webcheckers.appl.Board;
+import static spark.Spark.halt;
 
 /**
  * UI class that handles all HTTP requests for the /game page
@@ -20,15 +22,13 @@ import com.webcheckers.appl.Player;
 public class GetGameRoute implements Route {
 
   private TemplateEngine templateEngine;
-  private Player redPlayer;
-  private Player whitePlayer;
   private Player currentPlayer;
+  private Board board;
   private Users users;
 
   private String VIEW = "game.ftl";
-  public static final String OTHER_PLAYER = "otherPlayer";
-  public static final String RED_PLAYER = "redPlayer";
-  public static final String WHITE_PLAYER = "whitePlayer";
+  private String BOARD = "board";
+  private final int LENGTH = 8;
 
   /**
    * Creates a spark route that handles all {@code Get /game} HTTP requests
@@ -54,26 +54,60 @@ public class GetGameRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     Session httpSession = request.session();
-    
-    if(httpSession.attribute(RED_PLAYER) == null){
-      if(request.queryParams().size() > 0){
-        Object[] playerTwo = request.queryParams().toArray();
-        this.whitePlayer = users.getSpecificPlayer((String) playerTwo[0].toString());
-        this.currentPlayer = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
-        this.redPlayer = currentPlayer;
-        httpSession.attribute(RED_PLAYER, redPlayer);
-        httpSession.attribute(WHITE_PLAYER, whitePlayer);
+    this.currentPlayer = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    Map<String, Object> vm = new HashMap<>(); 
+    Object[] playerTwo = request.queryParams().toArray();
+    Player player2 = users.getSpecificPlayer((String) playerTwo[0].toString());
+    vm.put("title", "Welcome!");
 
-        Map<String, Object> vm = new HashMap<>(); 
-        vm.put("title", "Welcome!");
-        vm.put("currentPlayer", currentPlayer);
-        vm.put("viewMode", "standard");
-        vm.put("redPlayer", this.redPlayer);
-        vm.put("whitePlayer", this.whitePlayer);
-        vm.put("activeColor", "red");
-        return templateEngine.render(new ModelAndView(vm, VIEW));
-      }
+    //Checks to make sure a user a person clicks on is not already in the game
+    if(player2.inGame()) {
+      response.redirect(PostSignInRoute.VIEW_NAME);
+      halt();
+      return null;
     }
-    return null; //temp hold. fix with error reponses
+
+    if(httpSession.attribute(BOARD) == null && !currentPlayer.inGame()) {
+      this.board = new Board(currentPlayer, player2, LENGTH);
+      System.out.println("Board: " + this.board.getBoard().size());
+      httpSession.attribute(BOARD, this.board);
+      currentPlayer.setColor("Red", this.board);
+      player2.setColor("White", this.board);
+
+      vm.put("currentPlayer", currentPlayer);
+      vm.put("viewMode", "standard");
+      vm.put("redPlayer", currentPlayer);
+      vm.put("whitePlayer", player2);
+      vm.put("activeColor", "Red");
+      vm.put("board.iterator()", this.board.getBoard());
+      return templateEngine.render(new ModelAndView(vm, VIEW));
+    } else if (httpSession.attribute(BOARD) == null && currentPlayer.inGame()) {
+      httpSession.attribute(BOARD, currentPlayer.getBoard());
+      this.board = currentPlayer.getBoard();
+
+      vm.put("currentPlayer", currentPlayer);
+      vm.put("viewMode", "standard");
+      vm.put("redPlayer", this.board.getRedPlayer());
+      vm.put("whitePlayer", this.board.getWhitePlayer());
+      if(board.redTurn()) {
+        vm.put("activeColor", "Red");
+      } else {
+        vm.put("activeColor", "White");
+      }
+      vm.put("board.iterator()", this.board.getBoard());
+      return templateEngine.render(new ModelAndView(vm, VIEW));
+    } else {
+      vm.put("currentPlayer", currentPlayer);
+      vm.put("viewMode", "standard");
+      vm.put("redPlayer", this.board.getRedPlayer());
+      vm.put("whitePlayer", this.board.getWhitePlayer());
+      if(board.redTurn()) {
+        vm.put("activeColor", "Red");
+      } else {
+        vm.put("activeColor", "White");
+      }
+      vm.put("board.iterator()", this.board.getBoard());
+      return templateEngine.render(new ModelAndView(vm, VIEW));
+    }
   }
 }
