@@ -27,7 +27,12 @@ public class Board {
     for(int i = 0; i < length; i++) {
       Set<Space> temp = new HashSet<Space>();
       for(int j = 0; j < length; j++) {
-        temp.add(new Space(i, j));
+        if((i+j)%2 == 0) {
+          temp.add(new Space(i, j, Space.Color.BLACK));
+        }
+        else{
+          temp.add(new Space(i, j, Space.Color.WHITE));
+        }
       }
       board.add(temp);
     }
