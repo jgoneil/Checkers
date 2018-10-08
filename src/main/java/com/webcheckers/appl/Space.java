@@ -26,7 +26,6 @@ public class Space {
     public Location(int x, int y) {
       this.xCoordinate = x;
       this.yCoordinate = y;
-
     }
     
     /** 
@@ -43,6 +42,19 @@ public class Space {
      */
     public int getYCoordinate() {
       return this.yCoordinate;
+    }
+
+    /**
+     * Equals method for Location
+     * @param o object to compare to
+     * @return boolean corresponding to equality between objects
+     */
+    public boolean equals(Object o) {
+      if (o instanceof Location){
+        Location obj = (Location) o;
+        return (obj.xCoordinate == this.xCoordinate && obj.yCoordinate == this.yCoordinate);
+      }
+      return false;
     }
   }
 
