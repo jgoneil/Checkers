@@ -1,5 +1,6 @@
 package com.webcheckers.appl;
 
+
 /**
  * Class that controls specific information connected to each player logged into the game.
  */
@@ -60,5 +61,19 @@ public class Player {
    */
   public Board getBoard() {
     return this.board;
+  }
+
+  /**
+   * Equals method for Player
+   * @param obj Player to compare to
+   * @return Boolean corresponding to equality
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Player){
+      Player o = (Player) obj;
+      return o.username == this.username;
+    }
+    return false;
   }
 }
