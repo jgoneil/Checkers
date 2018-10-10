@@ -1,7 +1,9 @@
 package com.webcheckers.appl;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
 
 /**
  * Class that creates and handles the board for gameplay
@@ -10,7 +12,7 @@ public class Board {
 
   private Player redPlayer;
   private Player whitePlayer;
-  private Set<Set<Space>> board;
+  private HashMap<Row, Integer> board;
   private boolean redTurn;
 
   /**
@@ -23,18 +25,11 @@ public class Board {
   public Board(Player redPlayer, Player whitePlayer, int length) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
-    this.board = new HashSet<Set<Space>>();
+    this.board = new HashMap<>();
     this.redTurn = true;
     for (int i = 0; i < length; i++) {
-      Set<Space> temp = new HashSet<Space>();
-      for (int j = 0; j < length; j++) {
-        if ((i + j) % 2 == 0) {
-          temp.add(new Space(i, j, Space.Color.BLACK));
-        } else {
-          temp.add(new Space(i, j, Space.Color.WHITE));
-        }
-      }
-      board.add(temp);
+      Row row = new Row(i, length);
+      board.put(row, i);
     }
   }
 
@@ -61,7 +56,7 @@ public class Board {
    *
    * @return the set of a set of spaces for each board position
    */
-  public Set<Set<Space>> getBoard() {
+  public HashMap<Row, Integer> getBoard() {
     return this.board;
   }
 
@@ -79,5 +74,18 @@ public class Board {
    */
   public void turnEnded() {
     this.redTurn = !this.redTurn;
+  }
+
+  /**
+   * Iterator declaration used for getting all of the spaces on the board
+   *
+   * @return the iterator for the board
+   */
+  public ArrayList<Row> iterator() {
+    ArrayList<Row> rows = new ArrayList<>();
+    for (Row row: board.keySet()){
+      rows.add(row);
+    }
+    return rows;
   }
 }

@@ -69,7 +69,6 @@ public class GetGameRoute implements Route {
 
     if(httpSession.attribute(BOARD) == null && !currentPlayer.inGame()) {
       this.board = new Board(currentPlayer, player2, LENGTH);
-      System.out.println("Board: " + this.board.getBoard().size());
       httpSession.attribute(BOARD, this.board);
       currentPlayer.setColor("Red", this.board);
       player2.setColor("White", this.board);
@@ -79,7 +78,7 @@ public class GetGameRoute implements Route {
       vm.put("redPlayer", currentPlayer);
       vm.put("whitePlayer", player2);
       vm.put("activeColor", "Red");
-      vm.put("board.iterator()", this.board.getBoard());
+      vm.put("board", this.board);
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else if (httpSession.attribute(BOARD) == null && currentPlayer.inGame()) {
       httpSession.attribute(BOARD, currentPlayer.getBoard());
@@ -94,7 +93,7 @@ public class GetGameRoute implements Route {
       } else {
         vm.put("activeColor", "White");
       }
-      vm.put("board.iterator()", this.board.getBoard());
+      vm.put("board", this.board);
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else {
       vm.put("currentPlayer", currentPlayer);
@@ -106,7 +105,7 @@ public class GetGameRoute implements Route {
       } else {
         vm.put("activeColor", "White");
       }
-      vm.put("board.iterator()", this.board.getBoard());
+      vm.put("board", this.board);
       return templateEngine.render(new ModelAndView(vm, VIEW));
     }
   }

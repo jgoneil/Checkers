@@ -59,6 +59,17 @@ public class Space {
   }
 
   /**
+   * Constructor for the space on the game board
+   * @param x the x-coordinate of the space
+   * @param y the y-coordinate of the space
+   */
+  public Space(int x, int y, Color c) {
+    this.location = new Location(x, y);
+    this.color = c;
+    this.occupied = false;
+  }
+
+  /**
    * Getter for the color of the given space
    * @return - the color of the space
    */
@@ -89,21 +100,14 @@ public class Space {
   }
 
   /**
-   * Constructor for the space on the game board
-   * @param x the x-coordinate of the space
-   * @param y the y-coordinate of the space
-   */
-  public Space(int x, int y, Color c) {
-    this.location = new Location(x, y);
-    this.color = c;
-    this.occupied = false;
-  }
-
-  /**
    * Getter for the location of the space on the game board
    * @return the location of the space
    */
   public Location cellIdx() {
     return this.location;
+  }
+
+  public boolean isValid(){
+    return true;
   }
 }
