@@ -74,9 +74,7 @@ public class Users {
     }
     List<String> playerNames = new ArrayList<>();
     for (String u : this.usernames) {
-      if (u.equals(username)) {
-        continue;
-      } else {
+      if (!u.equals(username)) {
         playerNames.add(u);
       }
     }
