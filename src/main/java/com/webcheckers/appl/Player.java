@@ -71,8 +71,8 @@ public class Player {
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Player){
-      Player o = (Player) obj;
-      return o.username == this.username;
+      Player p = (Player) obj;
+      return this.username.equals(p.username);
     }
     return false;
   }
