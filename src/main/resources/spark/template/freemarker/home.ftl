@@ -19,7 +19,7 @@
     
     <div class="body">
       <#if message??>
-        <p class="warning">Player currently in game. Please select a different player.</p>
+        <p class="error">Player currently in game. Please select a different player.</p>
       </#if>
       <p>Welcome to the world of online Checkers.</p>
 
