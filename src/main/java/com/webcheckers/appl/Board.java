@@ -1,7 +1,6 @@
 package com.webcheckers.appl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Class that creates and handles the board for gameplay
@@ -10,7 +9,7 @@ public class Board {
 
   private Player redPlayer;
   private Player whitePlayer;
-  private HashMap<Row, Integer> board;
+  private ArrayList<Row> board;
   private boolean redTurn;
 
   /**
@@ -23,11 +22,11 @@ public class Board {
   public Board(Player redPlayer, Player whitePlayer, int length) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
-    this.board = new HashMap<>();
+    this.board = new ArrayList<>();
     this.redTurn = true;
     for (int i = 0; i < length; i++) {
       Row row = new Row(i, length);
-      board.put(row, i);
+      board.add(row);
     }
   }
 
@@ -54,7 +53,7 @@ public class Board {
    *
    * @return the set of a set of spaces for each board position
    */
-  public HashMap<Row, Integer> getBoard() {
+  public ArrayList<Row> getBoard() {
     return this.board;
   }
 
@@ -80,10 +79,6 @@ public class Board {
    * @return an arraylist containing all of the rows on the board
    */
   public ArrayList<Row> iterator() {
-    ArrayList<Row> rows = new ArrayList<>();
-    for (Row row: board.keySet()){
-      rows.add(row);
-    }
-    return rows;
+    return this.board;
   }
 }

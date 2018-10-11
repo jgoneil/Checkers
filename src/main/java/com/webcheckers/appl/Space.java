@@ -10,6 +10,7 @@ public class Space {
   private Location location;
   private Color color;
   private boolean occupied;
+  private Piece piece;
 
   /**
    * Class that establishes the location of a space
@@ -62,10 +63,11 @@ public class Space {
    * Constructor for the space on the game board
    * @param x the x-coordinate of the space
    * @param y the y-coordinate of the space
+   * @param color the color the space is
    */
-  public Space(int x, int y, Color c) {
+  public Space(int x, int y, Color color) {
     this.location = new Location(x, y);
-    this.color = c;
+    this.color = color;
     this.occupied = false;
   }
 
@@ -97,6 +99,23 @@ public class Space {
    */
   public boolean isOccupied(){
     return this.occupied;
+  }
+
+  /**
+   * Setter for a piece that occupies this space on the board
+   * @param piece the piece being added to the space
+   */
+  public void setPiece(Piece piece) {
+    this.piece = piece;
+    this.occupied = true;
+  }
+
+  /**
+   * Getter for the piece on the space
+   * @return the piece on the space (null if no piece exists)
+   */
+  public Piece piece() {
+    return this.piece;
   }
 
   /**

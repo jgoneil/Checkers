@@ -86,7 +86,7 @@ public class GetGameRoute implements Route {
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", currentPlayer);
       vm.put("whitePlayer", player2);
-      vm.put("activeColor", "Red");
+      vm.put("activeColor", "RED");
       vm.put("board", this.board);
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else if (httpSession.attribute(BOARD) == null && currentPlayer.inGame()) {
@@ -98,9 +98,9 @@ public class GetGameRoute implements Route {
       vm.put("redPlayer", this.board.getRedPlayer());
       vm.put("whitePlayer", this.board.getWhitePlayer());
       if(board.redTurn()) {
-        vm.put("activeColor", "Red");
+        vm.put("activeColor", "RED");
       } else {
-        vm.put("activeColor", "White");
+        vm.put("activeColor", "WHITE");
       }
       vm.put("board", this.board);
       return templateEngine.render(new ModelAndView(vm, VIEW));
@@ -110,9 +110,9 @@ public class GetGameRoute implements Route {
       vm.put("redPlayer", this.board.getRedPlayer());
       vm.put("whitePlayer", this.board.getWhitePlayer());
       if(board.redTurn()) {
-        vm.put("activeColor", "Red");
+        vm.put("activeColor", "RED");
       } else {
-        vm.put("activeColor", "White");
+        vm.put("activeColor", "WHITE");
       }
       vm.put("board", this.board);
       return templateEngine.render(new ModelAndView(vm, VIEW));

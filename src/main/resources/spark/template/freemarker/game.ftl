@@ -81,11 +81,11 @@
                     class="Space"
                     </#if>
                     >
-                <#if space.piece??>
+                <#if space.piece()??>
                   <div class="Piece"
                        id="piece-${row.index()}-${space.cellIdx()}"
-                       data-type="${space.piece.type}"
-                       data-color="${space.piece.color}">
+                       data-type="${space.piece().type()}"
+                       data-color="${space.piece().color()}">
                   </div>
                 </#if>
                 </td>
