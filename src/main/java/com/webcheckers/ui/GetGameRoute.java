@@ -61,7 +61,7 @@ public class GetGameRoute implements Route {
     if(httpSession.attribute(BOARD) == null && !currentPlayer.inGame()) {
       
       Object[] playerTwo = request.queryParams().toArray();
-      Player player2 = users.getSpecificPlayer((String) playerTwo[0].toString());
+      Player player2 = users.getSpecificPlayer(playerTwo[0].toString());
 
 
       if(player2.inGame()) {
