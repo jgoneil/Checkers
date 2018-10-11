@@ -19,13 +19,13 @@ public class Board {
    * @param whitePlayer the player associated to the white checkers for the checkers game
    * @param length      the size of the width and length of the board (assuming the board has to be a square)
    */
-  public Board(Player redPlayer, Player whitePlayer, int length) {
+  public Board(Player redPlayer, Player whitePlayer, int length, String player) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();
     this.redTurn = true;
     for (int i = 0; i < length; i++) {
-      Row row = new Row(i, length);
+      Row row = new Row(i, length, player);
       board.add(row);
     }
   }
@@ -51,7 +51,7 @@ public class Board {
   /**
    * Getter for the board (A set of a set of spaces)
    *
-   * @return the set of a set of spaces for each board position
+   * @return an arraylist containing rows of spaces for each board position
    */
   public ArrayList<Row> getBoard() {
     return this.board;

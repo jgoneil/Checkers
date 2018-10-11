@@ -18,7 +18,7 @@ public class BoardTest {
   public void setUp() throws Exception {
     this.whitePlayer = new Player("White");
     this.redPLayer = new Player("Red");
-    this.board1 = new Board(redPLayer, whitePlayer, 7);
+    this.board1 = new Board(redPLayer, whitePlayer, 7, "red");
   }
 
   @Test

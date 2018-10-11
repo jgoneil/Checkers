@@ -16,19 +16,33 @@ public class Row {
    * @param rowNumber the number of the row 
    * @param length the length of the side of the board
    */
-  public Row(int rowNumber, int length) {
+  public Row(int rowNumber, int length, String color) {
     this.row = new ArrayList<>();
     this.index = rowNumber;
     for(int i = 0; i < length; i++) {
-      if ((rowNumber + i) % 2 == 0) {
-        row.add(new Space(rowNumber, i, Space.Color.BLACK));
+      if(color.equals("red")) {
+        if ((rowNumber + i) % 2 == 0) {
+          row.add(new Space(rowNumber, i, Space.Color.BLACK));
+        } else {
+          Space space = new Space(rowNumber, i, Space.Color.WHITE);
+          row.add(space);
+          if (rowNumber >= 5 && rowNumber <= 7) {
+            space.setPiece(new Piece("red", space));
+          } else if (rowNumber >= 0 && rowNumber <= 2) {
+            space.setPiece(new Piece("white", space));
+          }
+        }
       } else {
-        Space space = new Space(rowNumber, i, Space.Color.WHITE);
-        row.add(space);
-        if (rowNumber >= 5 && rowNumber <= 7) {
-          space.setPiece(new Piece("red", space));
-        } else if (rowNumber >= 0 && rowNumber <= 2) {
-          space.setPiece(new Piece("white", space));
+        if ((rowNumber + i) % 2 == 0) {
+          row.add(new Space(rowNumber, i, Space.Color.BLACK));
+        } else {
+          Space space = new Space(rowNumber, i, Space.Color.WHITE);
+          row.add(space);
+          if (rowNumber >= 5 && rowNumber <= 7) {
+            space.setPiece(new Piece("white", space));
+          } else if (rowNumber >= 0 && rowNumber <= 2) {
+            space.setPiece(new Piece("red", space));
+          }
         }
       }
     }

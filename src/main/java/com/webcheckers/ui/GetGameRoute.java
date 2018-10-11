@@ -70,17 +70,11 @@ public class GetGameRoute implements Route {
         return null;
       }
 
-      this.board = new Board(currentPlayer, player2, LENGTH);
+      this.board = new Board(currentPlayer, player2, LENGTH, "red");
       httpSession.attribute(BOARD, this.board);
       currentPlayer.setColor("Red", this.board);
 
-      if(player2.inGame()) {
-        response.redirect(PostSignInRoute.VIEW_NAME);
-        halt();
-        return null;
-      }
-
-      player2.setColor("White", this.board);
+      player2.setColor("White", new Board(currentPlayer, player2, LENGTH, "white"));
 
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
