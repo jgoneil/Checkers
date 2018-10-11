@@ -16,25 +16,25 @@ class SpaceTest {
   }
 
   @Test
-  void getColor() {
+  void getColorTest() {
     space2 = new Space(3,2, Space.Color.WHITE);
     assert (space1.getColor() == Space.Color.BLACK);
     assert (space2.getColor() == Space.Color.WHITE);
   }
 
   @Test
-  void occupy() {
+  void occupyTest() {
     space1.occupy();
     assert (space1.isOccupied());
   }
 
   @Test
-  void isOccupied() {
+  void isOccupiedTest() {
 
   }
 
   @Test
-  void unoccupy() {
+  void unoccupyTest() {
     space1.occupy();
     assert (space1.isOccupied());
     space1.unopccupy();
@@ -42,7 +42,7 @@ class SpaceTest {
   }
 
   @Test
-  void cellIdx() {
+  void cellIdxTest() {
     space2 = new Space(1,2, Space.Color.WHITE);
     assert (space1.cellIdx().equals(space2.cellIdx()));
   }
