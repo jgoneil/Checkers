@@ -65,7 +65,8 @@ public class GetGameRoute implements Route {
 
 
       if(player2.inGame()) {
-        response.redirect(PostSignInRoute.VIEW_NAME);
+        httpSession.attribute("message", true);
+        response.redirect("/");
         halt();
         return null;
       }

@@ -35,6 +35,7 @@ public class GetHomeRoute implements Route {
    * Create the Spark Route (UI controller) for the {@code GET /} HTTP request.
    *
    * @param templateEngine the HTML template rendering engine
+   * @param users the users currently in the game
    */
   public GetHomeRoute(final TemplateEngine templateEngine, Users users) {
     // validation
@@ -64,6 +65,11 @@ public class GetHomeRoute implements Route {
     this.player = httpSession.attribute(PLAYERSERVICES_KEY);
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
+
+    if(httpSession.attribute("message") != null){
+      vm.put("message", true);
+      httpSession.removeAttribute("message");
+    }
 
     if (this.player == null) {
       vm.put(SIGNEDIN, false);

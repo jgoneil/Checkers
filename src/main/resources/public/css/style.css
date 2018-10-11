@@ -128,3 +128,8 @@ div.info {
 .tab {
   padding-left: 10px;
 }
+
+.warning {
+  font-size: 25px;
+  color: red;
+}
