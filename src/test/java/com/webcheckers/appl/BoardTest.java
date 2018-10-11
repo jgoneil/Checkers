@@ -22,29 +22,29 @@ public class BoardTest {
   }
 
   @Test
-  public void getWhitePlayer() {
+  void getWhitePlayer() {
     assertEquals(whitePlayer, board1.getWhitePlayer());
   }
 
   @Test
-  public void getRedPlayer() {
+  void getRedPlayer() {
     assertEquals(redPLayer, board1.getRedPlayer());
   }
 
   @Test
-  public void getBoard() {
+  void getBoard() {
     assertNotNull(board1.getBoard());
   }
 
   @Test
-  public void redTurn() {
+  void redTurn() {
     assertTrue(board1.redTurn());
     board1.turnEnded();
     assertFalse(board1.redTurn());
   }
 
   @Test
-  public void turnEnded() {
+  void turnEnded() {
     assertTrue(board1.redTurn());
     board1.turnEnded();
     assertFalse(board1.redTurn());
