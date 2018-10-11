@@ -10,40 +10,43 @@ import static org.junit.Assert.*;
 
 public class BoardTest {
 
-  Player whitePlayer;
-  Player redPLayer;
-  Board board1;
+  private Player whitePlayer;
+  private Player redPLayer;
+  private Board board1;
 
   @Before
   public void setUp() throws Exception {
     this.whitePlayer = new Player("White");
     this.redPLayer = new Player("Red");
-    this.board1 = new Board(redPLayer, whitePlayer, 7, "red");
+    this.board1 = new Board(redPLayer, whitePlayer, 8, "red");
   }
 
   @Test
   public void getWhitePlayer() {
-    assert (board1.getWhitePlayer() == whitePlayer);
+    assertEquals(whitePlayer, board1.getWhitePlayer());
   }
 
   @Test
   public void getRedPlayer() {
-    assert (board1.getRedPlayer() == redPLayer);
+    assertEquals(redPLayer, board1.getRedPlayer());
   }
 
   @Test
   public void getBoard() {
-    board1.getBoard();
+    assertNotNull(board1.getBoard());
   }
 
   @Test
   public void redTurn() {
-    assert (board1.redTurn());
+    assertTrue(board1.redTurn());
+    board1.turnEnded();
+    assertFalse(board1.redTurn());
   }
 
   @Test
   public void turnEnded() {
+    assertTrue(board1.redTurn());
     board1.turnEnded();
-    assert (!board1.redTurn());
+    assertFalse(board1.redTurn());
   }
 }
