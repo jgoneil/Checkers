@@ -13,25 +13,57 @@ import org.junit.jupiter.api.Test;
 public class PlayerTest {
 
   private Player player1;
+  private Player player2;
+  private Player player3;
   private String usernamePlayer1;
+  private String usernamePlayer2;
 
 
   @BeforeEach
-  public void setUp() throws Exception {
+  void setUp() throws Exception {
     usernamePlayer1 = "player1";
     player1 = new Player(usernamePlayer1);
+
+    usernamePlayer2 = "player2";
+    player2 = new Player(usernamePlayer2);
+
+    player3 = new Player(usernamePlayer1);
 
   }
 
   @AfterEach
-  public void tearDown() throws Exception {
+  void tearDown() throws Exception {
     player1 = null;
+    player2 = null;
     usernamePlayer1 = null;
+    usernamePlayer2 = null;
 
   }
 
   @Test
-  public void getUsernameTest() {
+  void getUsernameTest() {
     assertEquals(player1.getUsername(), usernamePlayer1);
+  }
+
+  @Test
+  void equalsTest(){
+    assertEquals(player1, player3);
+    assertNotEquals(player1, player2);
+  }
+
+  @Test
+  void inGameTest() {
+  }
+
+  @Test
+  void setColorTest() {
+  }
+
+  @Test
+  void getColorTest() {
+  }
+
+  @Test
+  void getBoardTest() {
   }
 }

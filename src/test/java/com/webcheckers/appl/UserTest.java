@@ -35,13 +35,13 @@ public class UserTest {
 
 
   @BeforeEach
-  public void setUp() throws Exception {
+  void setUp() throws Exception {
     users = new Users();
 
   }
 
   @AfterEach
-  public void tearDown() throws Exception {
+  void tearDown() throws Exception {
     users = null;
 
   }
@@ -49,31 +49,31 @@ public class UserTest {
   @ParameterizedTest
   @ValueSource(strings = {validPlayerString1, validPlayerString2, validPlayerString3,
       validPlayerString4, validPlayerString5})
-  public void AddPlayerTest_ValidName(String username) {
+  void AddPlayerTest_ValidName(String username) {
     assertTrue(users.addPlayer(username));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {nonAlphabeticalString1, nonAlphabeticalString2})
-  public void AddPlayerTest_InvalidName_InvalidCharacters(String username) {
+  void AddPlayerTest_InvalidName_InvalidCharacters(String username) {
     assertFalse(users.addPlayer(username));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {emptyString, whiteSpace, tab, newLine})
-  public void AddPlayerTest_InvalidName_InvalidWhiteSpace(String username) {
+  void AddPlayerTest_InvalidName_InvalidWhiteSpace(String username) {
     assertFalse(users.addPlayer(username));
   }
 
   @Test
-  public void GetSpecificPlayerTest() {
+  void GetSpecificPlayerTest() {
     users.addPlayer(validPlayerString1);
     assertEquals(users.getSpecificPlayer(validPlayerString1).getUsername(), validPlayerString1);
     assertNull(users.getSpecificPlayer("Not a user"));
   }
 
   @Test
-  public void getAllPlayersTest() {
+  void getAllPlayersTest() {
     users.addPlayer(validPlayerString1);
     users.addPlayer(validPlayerString2);
     assertEquals(users.getAllPlayers().get(0), validPlayerString1);
@@ -81,7 +81,7 @@ public class UserTest {
   }
 
   @Test
-  public void getAllPlayersExceptUserTest() {
+  void getAllPlayersExceptUserTest() {
     users.addPlayer(validPlayerString1);
     users.addPlayer(validPlayerString2);
     users.addPlayer(validPlayerString3);
