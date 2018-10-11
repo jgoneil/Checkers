@@ -13,6 +13,7 @@ import spark.Session;
 import spark.TemplateEngine;
 import com.webcheckers.appl.Users;
 import com.webcheckers.appl.Player;
+import static spark.Spark.halt;
 
 /**
  * The UI Controller to GET the Home page.
@@ -72,6 +73,10 @@ public class GetHomeRoute implements Route {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, true);
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
+    } else if (player.getBoard() != null) {
+      response.redirect("/game");
+      halt();
+      return null;
     } else {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, false);

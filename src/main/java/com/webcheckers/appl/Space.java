@@ -107,7 +107,12 @@ public class Space {
     return this.location;
   }
 
-  public boolean isValid(){
+  /**
+   * Checks to see if a space is a valid location to move a piece to 
+   *
+   * @return a boolean expression based on if a piece can or can not be moved to the given space
+   */
+  public boolean isValid() {
     return true;
   }
 }

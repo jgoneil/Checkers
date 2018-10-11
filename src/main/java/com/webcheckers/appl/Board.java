@@ -2,8 +2,6 @@ package com.webcheckers.appl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Iterator;
 
 /**
  * Class that creates and handles the board for gameplay
@@ -79,7 +77,7 @@ public class Board {
   /**
    * Iterator declaration used for getting all of the spaces on the board
    *
-   * @return the iterator for the board
+   * @return an arraylist containing all of the rows on the board
    */
   public ArrayList<Row> iterator() {
     ArrayList<Row> rows = new ArrayList<>();
