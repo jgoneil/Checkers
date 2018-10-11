@@ -63,19 +63,4 @@ public class Piece {
   public Color color() {
     return this.color;
   }
-
-    /**
-     * Sees if a space is a valid location or not for a piece to move to.
-     * @param space - space that is being checked
-     * @return if space is valid or not
-     */
-  public boolean isValidMove(Space space){
-    if(space.getColor() == Space.Color.WHITE){
-      return false;
-    }
-    else if(space.isOccupied()){
-      return false;
-    }
-    return true;
-  }
 }
