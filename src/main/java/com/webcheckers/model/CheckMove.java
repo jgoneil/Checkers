@@ -10,7 +10,7 @@ public class CheckMove {
      * @param target - target space to move to
      * @return - validity of move to target space
      */
-    public boolean validateMove(Piece piece, Space target){
+    public boolean validateMove(Space start, Space target){
         if(target.getColor().equals(Space.Color.WHITE)){
             return false;
         }

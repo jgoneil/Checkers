@@ -122,8 +122,8 @@ public class Space {
    * Getter for the location of the space on the game board
    * @return the location of the space
    */
-  public Location cellIdx() {
-    return this.location;
+  public int cellIdx() {
+    return this.location.getYCoordinate();
   }
 
   /**

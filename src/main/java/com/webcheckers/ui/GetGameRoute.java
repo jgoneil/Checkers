@@ -63,7 +63,6 @@ public class GetGameRoute implements Route {
       Object[] playerTwo = request.queryParams().toArray();
       Player player2 = users.getSpecificPlayer(playerTwo[0].toString());
 
-
       if(player2.inGame()) {
         httpSession.attribute("message", true);
         response.redirect("/");
