@@ -6,7 +6,7 @@ package com.webcheckers.model;
 public class Message {
 
   public enum Type {
-    error, normal
+    error, info
   }
 
   public String message;
@@ -20,11 +20,11 @@ public class Message {
     this.message = message;
   }
 
-  public Type type() {
+  public Type getType() {
     return this.type;
   }
 
-  public String text() {
+  public String getText() {
     return this.message;
   }
 }

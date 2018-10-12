@@ -3,17 +3,13 @@ package com.webcheckers.ui;
 import com.webcheckers.model.RecieveJson;
 import spark.*;
 
-import java.io.BufferedReader;
 import java.util.Map;
 import java.util.Objects;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Board;
-import com.webcheckers.appl.Space;
-import com.webcheckers.appl.Row;
-import com.webcheckers.model.Message;
+import com.webcheckers.appl.BoardView;
 import com.webcheckers.model.CheckMove;
 import static spark.Spark.halt;
 
@@ -61,18 +57,18 @@ public class PostMoveCheck implements Route {
     Map<String, Object> vm  = new HashMap<>();
     vm.put("title", "Welcome!");
 
-    Board board = player.getBoard();
+    BoardView boardView = player.getBoardView();
 
     vm.put("currentPlayer", player);
     vm.put("viewMode", "PLAY");
-    vm.put("redPlayer", board.getRedPlayer());
-    vm.put("whitePlayer", board.getWhitePlayer());
-    if(board.redTurn()) {
+    vm.put("redPlayer", boardView.getRedPlayer());
+    vm.put("whitePlayer", boardView.getWhitePlayer());
+    if(boardView.redTurn()) {
       vm.put("activeColor", "RED");
     } else {
       vm.put("activeColor", "WHITE");
     }
-    vm.put("board", board);
+    vm.put("boardView", boardView);
 
 //    if(this.checkMove.validateMove(spaceStart, spaceEnd)) {
 //      vm.put("message", new Message(Message.Type.normal, "Piece moved successfully."));
@@ -89,9 +85,9 @@ public class PostMoveCheck implements Route {
 //      this.checkMove = HTTPSession.attribute(MOVE);
 //    }
 //
-//    Board board = this.player.getBoard();
-//    Row rowBeginning = board.getRow(rowStart);
-//    Row rowEnding = board.getRow(rowEnd);
+//    BoardView boardView = this.player.getBoardView();
+//    Row rowBeginning = boardView.getRow(rowStart);
+//    Row rowEnding = boardView.getRow(rowEnd);
 //    Space spaceStart = rowBeginning.getSpace(colStart);
 //    Space spaceEnd = rowEnding.getSpace(colEnd);
 //

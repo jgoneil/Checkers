@@ -17,7 +17,7 @@ public class CheckSignin {
    */
   public boolean validateUser(String username, List<Player> users) {
     for (Player user : users) {
-      if (user.getUsername().equals(username)) {
+      if (user.getName().equals(username)) {
         return false;
       }
     }

@@ -56,7 +56,7 @@ public class ModelBoard {
    * @param space the space from the appl that the piece is moving to
    */ 
   public void addPieceToSpace(Piece piece, Space space) {
-    Space goalSpace = board[space.getXCoordinate()][space.cellIdx()];
+    Space goalSpace = board[space.getxCoordinate()][space.getCellIdx()];
     goalSpace.setPiece(piece);
   }
 }

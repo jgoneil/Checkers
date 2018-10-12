@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 
+import com.webcheckers.appl.BoardView;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -13,7 +14,6 @@ import spark.Session;
 import spark.TemplateEngine;
 import com.webcheckers.appl.Users;
 import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Board;
 import com.webcheckers.model.ModelBoard;
 import static spark.Spark.halt;
 
@@ -24,11 +24,11 @@ public class GetGameRoute implements Route {
 
   private TemplateEngine templateEngine;
   private Player currentPlayer;
-  private Board board;
+  private BoardView boardView;
   private Users users;
 
   public static final String VIEW = "game.ftl";
-  private String BOARD = "board";
+  private String BOARD = "boardView";
   private final int LENGTH = 8;
   private String MODEL_BOARD = "modelBoard";
 
@@ -72,51 +72,51 @@ public class GetGameRoute implements Route {
         return null;
       }
 
-      this.board = new Board(currentPlayer, player2, LENGTH, "red");
-      httpSession.attribute(BOARD, this.board);
-      currentPlayer.setColor("Red", this.board);
+      this.boardView = new BoardView(currentPlayer, player2, LENGTH, "red");
+      httpSession.attribute(BOARD, this.boardView);
+      currentPlayer.setColor("Red", this.boardView);
 
       ModelBoard modelBoard = new ModelBoard(currentPlayer, player2, LENGTH);
       httpSession.attribute(MODEL_BOARD, modelBoard);
       currentPlayer.addModelBoard(modelBoard);
       player2.addModelBoard(modelBoard);
 
-      player2.setColor("White", new Board(currentPlayer, player2, LENGTH, "white"));
+      player2.setColor("White", new BoardView(currentPlayer, player2, LENGTH, "white"));
 
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", currentPlayer);
       vm.put("whitePlayer", player2);
       vm.put("activeColor", "RED");
-      vm.put("board", this.board);
+      vm.put("board", this.boardView);
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else if (httpSession.attribute(BOARD) == null && currentPlayer.inGame()) {
-      httpSession.attribute(BOARD, currentPlayer.getBoard());
+      httpSession.attribute(BOARD, currentPlayer.getBoardView());
       httpSession.attribute(MODEL_BOARD, currentPlayer.getModelBoard());
-      this.board = currentPlayer.getBoard();
+      this.boardView = currentPlayer.getBoardView();
 
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
-      vm.put("redPlayer", this.board.getRedPlayer());
-      vm.put("whitePlayer", this.board.getWhitePlayer());
-      if(board.redTurn()) {
+      vm.put("redPlayer", this.boardView.getRedPlayer());
+      vm.put("whitePlayer", this.boardView.getWhitePlayer());
+      if(boardView.redTurn()) {
         vm.put("activeColor", "RED");
       } else {
         vm.put("activeColor", "WHITE");
       }
-      vm.put("board", this.board);
+      vm.put("board", this.boardView);
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else {
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
-      vm.put("redPlayer", this.board.getRedPlayer());
-      vm.put("whitePlayer", this.board.getWhitePlayer());
-      if(board.redTurn()) {
+      vm.put("redPlayer", this.boardView.getRedPlayer());
+      vm.put("whitePlayer", this.boardView.getWhitePlayer());
+      if(boardView.redTurn()) {
         vm.put("activeColor", "RED");
       } else {
         vm.put("activeColor", "WHITE");
       }
-      vm.put("board", this.board);
+      vm.put("board", this.boardView);
       return templateEngine.render(new ModelAndView(vm, VIEW));
     }
   }

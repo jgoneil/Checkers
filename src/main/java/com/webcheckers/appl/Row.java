@@ -1,11 +1,12 @@
 package com.webcheckers.appl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Class for each row on the game board
  */
-public class Row {
+public class Row implements Iterable{
 
   private ArrayList<Space> row;
   private int index;
@@ -62,7 +63,7 @@ public class Row {
    * 
    * @return the integer for the row number
    */
-  public int index() {
+  public int getIndex() {
     return this.index;
   }
 
@@ -79,9 +80,9 @@ public class Row {
   /**
    * The iterator for the rows for the frontend to loop over
    *
-   * @return an arraylist containing all of the spaces in the row
+   * @return an iterator for the rows
    */
-  public ArrayList<Space> iterator() {
-    return this.row;
+  public Iterator iterator() {
+    return this.row.iterator();
   }
 }

@@ -6,7 +6,7 @@ import spark.Route;
 import spark.Session;
 import com.google.gson.Gson;
 import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Board;
+import com.webcheckers.appl.BoardView;
 
 import java.util.Objects;
 
@@ -38,19 +38,25 @@ public class PostTurnCheck implements Route {
   public Object handle(Request request, Response response) {
     Session session = request.session();
     Player player = session.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
-    Board board = player.getBoard();
-    if(player.getColor().equals("red")) {
-      if(board.redTurn()) {
-        return gson.toJson(true);
+
+    BoardView boardView;
+
+    if(player.getBoardView() != null) {
+      boardView = player.getBoardView();
+      if (player.getColor().equals("red")) {
+        if (boardView.redTurn()) {
+          return gson.toJson(true);
+        } else {
+          return gson.toJson(false);
+        }
       } else {
-        return gson.toJson(false);
-      }
-    } else {
-        if(board.redTurn()) {
+        if (boardView.redTurn()) {
           return gson.toJson(false);
         } else {
           return gson.toJson(true);
         }
+      }
     }
+    return "";
   }
 }

@@ -9,7 +9,7 @@ public class Player {
 
   private String username;
   private String color;
-  private Board board;
+  private BoardView boardView;
   private ModelBoard modelBoard;
 
   /**
@@ -24,7 +24,7 @@ public class Player {
    * Getter for the player's username
    * @Return String the username of the player
    */
-  public String getUsername() {
+  public String getName() {
     return this.username;
   }
 
@@ -42,11 +42,11 @@ public class Player {
   /**
    * Sets the color for the player for the game they are in
    * @param color the color the player is associated to in the game
-   * @param board the board the player is playing on
+   * @param boardView the boardView the player is playing on
    */
-  public void setColor(String color, Board board) {
+  public void setColor(String color, BoardView boardView) {
     this.color = color;
-    this.board = board;
+    this.boardView = boardView;
   }
 
   /**
@@ -58,24 +58,24 @@ public class Player {
   }
 
   /**
-   * The getter for the board the player is using for the game they are in
-   * @return the board the player is using for the game
+   * The getter for the boardView the player is using for the game they are in
+   * @return the boardView the player is using for the game
    */
-  public Board getBoard() {
-    return this.board;
+  public BoardView getBoardView() {
+    return this.boardView;
   }
 
   /**
-   * Setter for the model board for the player
-   * @param modelBoard the model board for the game
+   * Setter for the model boardView for the player
+   * @param modelBoard the model boardView for the game
    */
   public void addModelBoard(ModelBoard modelBoard) {
     this.modelBoard = modelBoard;
   }
 
   /**
-   * Getter for the model board
-   * @return the board for the model class 
+   * Getter for the model boardView
+   * @return the boardView for the model class
    */
   public ModelBoard getModelBoard() {
     return this.modelBoard;

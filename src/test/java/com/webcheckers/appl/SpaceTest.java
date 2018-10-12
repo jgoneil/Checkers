@@ -44,7 +44,7 @@ class SpaceTest {
   @Test
   void cellIdxTest() {
     space2 = new Space(1,2, Space.Color.WHITE);
-    assert (space1.cellIdx() == space2.cellIdx());
+    assert (space1.getCellIdx() == space2.getCellIdx());
   }
 
 

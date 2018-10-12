@@ -52,7 +52,7 @@ public class Piece {
    * Getter for the type of piece
    * @return the enum for the type of the piece
    */
-  public Type type() {
+  public Type getType() {
     return this.type;
   }
 
@@ -60,7 +60,7 @@ public class Piece {
    * Getter for the color of the piece
    * @return the enum for the color of the piece
    */
-  public Color color() {
+  public Color getColor() {
     return this.color;
   }
 }

@@ -7,66 +7,20 @@ public class Space {
   public enum Color{
     BLACK, WHITE
   }
-  private Location location;
+  private int cellIdx;
+  private int xCoordinate;
   private Color color;
   private boolean occupied;
   private Piece piece;
 
   /**
-   * Class that establishes the location of a space
-   */
-  public class Location {
-    
-    private int xCoordinate;
-    private int yCoordinate;
-
-    /**
-     * Constructor that establishes a location on the gameboard
-     * @param x the x-coordinate of the 
-     */
-    public Location(int x, int y) {
-      this.xCoordinate = x;
-      this.yCoordinate = y;
-    }
-    
-    /** 
-     * Getter for the x-coordinate of the location
-     * @return the integer for the x-coordinate of the space
-     */
-    public int getXCoordinate() {
-      return this.xCoordinate;
-    }
-
-    /**
-     * Getter for the y-coordinate of the location
-     * @return the integer for the y-coordinate of the space
-     */
-    public int getYCoordinate() {
-      return this.yCoordinate;
-    }
-
-    /**
-     * Equals method for Location
-     * @param o object to compare to
-     * @return boolean corresponding to equality between objects
-     */
-    public boolean equals(Object o) {
-      if (o instanceof Location){
-        Location obj = (Location) o;
-        return (obj.xCoordinate == this.xCoordinate && obj.yCoordinate == this.yCoordinate);
-      }
-      return false;
-    }
-  }
-
-  /**
    * Constructor for the space on the game board
-   * @param x the x-coordinate of the space
-   * @param y the y-coordinate of the space
+   * @param cellIdx the idex of the space on the board (y-coordinate of the space)
    * @param color the color the space is
    */
-  public Space(int x, int y, Color color) {
-    this.location = new Location(x, y);
+  public Space(int xCoordinate, int cellIdx, Color color) {
+    this.cellIdx = cellIdx;
+    this.xCoordinate = xCoordinate;
     this.color = color;
     this.occupied = false;
   }
@@ -115,7 +69,7 @@ public class Space {
    * Getter for the piece on the space
    * @return the piece on the space (null if no piece exists)
    */
-  public Piece piece() {
+  public Piece getPiece() {
     return this.piece;
   }
 
@@ -123,16 +77,16 @@ public class Space {
    * Getter for the location of the space on the game board
    * @return the location of the space
    */
-  public int cellIdx() {
-    return this.location.getYCoordinate();
+  public int getCellIdx() {
+    return this.cellIdx;
   }
 
   /**
-   * Getter for the x-coordinate of the space
-   * @return the location of the x-coordinate of the space
+   * Getter for the x-coordinate for the space on the game board
+   * @return the xCoordinate of the space on the board
    */
-  public int getXCoordinate() {
-    return this.location.getXCoordinate();
+  public int getxCoordinate() {
+    return this.xCoordinate;
   }
 
   /**
@@ -141,6 +95,10 @@ public class Space {
    * @return a boolean expression based on if a piece can or can not be moved to the given space
    */
   public boolean isValid() {
+//    if(this.piece == null && this.color == Color.BLACK){
+//      return true;
+//    }
+//    return false;
     return true;
   }
 }

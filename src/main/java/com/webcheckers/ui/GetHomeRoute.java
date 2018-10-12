@@ -79,14 +79,14 @@ public class GetHomeRoute implements Route {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, true);
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
-    } else if (player.getBoard() != null) {
+    } else if (player.getBoardView() != null) {
       response.redirect("/game");
       halt();
       return null;
     } else {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, false);
-      vm.put(USERS, users.getAllPlayersExceptUser(player.getUsername()));
+      vm.put(USERS, users.getAllPlayersExceptUser(player.getName()));
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
   }

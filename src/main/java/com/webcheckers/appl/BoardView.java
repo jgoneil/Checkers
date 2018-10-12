@@ -1,11 +1,12 @@
 package com.webcheckers.appl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Class that creates and handles the board for gameplay
  */
-public class Board {
+public class BoardView implements Iterable{
 
   private Player redPlayer;
   private Player whitePlayer;
@@ -19,7 +20,7 @@ public class Board {
    * @param whitePlayer the player associated to the white checkers for the checkers game
    * @param length      the size of the width and length of the board (assuming the board has to be a square)
    */
-  public Board(Player redPlayer, Player whitePlayer, int length, String player) {
+  public BoardView(Player redPlayer, Player whitePlayer, int length, String player) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();
@@ -78,7 +79,7 @@ public class Board {
    *
    * @param row the row of the board being retrieved
    * @return the row associated to the row of the board (or null if non-existent)
-   */ 
+   */
   public Row getRow(int row) {
     return this.board.get(row);
   }
@@ -86,9 +87,10 @@ public class Board {
   /**
    * Iterator declaration used for getting all of the spaces on the board
    *
-   * @return an arraylist containing all of the rows on the board
+   * @return the iterator for the board
    */
-  public ArrayList<Row> iterator() {
-    return this.board;
+  @Override
+  public Iterator iterator() {
+    return this.board.iterator();
   }
 }

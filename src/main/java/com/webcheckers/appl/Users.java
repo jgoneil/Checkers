@@ -47,7 +47,7 @@ public class Users {
   public Player getSpecificPlayer(String username) {
     if (usernames.contains(username)) {
       for (Player p : users) {
-        if (p.getUsername().equals(username)) {
+        if (p.getName().equals(username)) {
           return p;
         }
       }
