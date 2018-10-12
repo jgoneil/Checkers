@@ -5,18 +5,26 @@ package com.webcheckers.model;
  */
 public class Message {
 
-  public enum type {
+  public enum Type {
     error, normal
   }
 
-  private String message;
-  private type messageType;
+  public String message;
+  public Type type;
 
   /**
    * Constructor to create a new message for the game
    */
-  public Message (type messageType, String message) {
-    this.messageType = messageType;
+  public Message (Type messageType, String message) {
+    this.type = messageType;
     this.message = message;
+  }
+
+  public Type type() {
+    return this.type;
+  }
+
+  public String text() {
+    return this.message;
   }
 }

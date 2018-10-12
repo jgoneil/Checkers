@@ -40,7 +40,7 @@
             <legend>Info</legend>
             
             <#if message??>
-            <div id="message" class="${message.type}">${message.text}</div>
+            <div id="message" class="${message.type()}">${message.text()}</div>
             <#else>
             <div id="message" class="info" style="display:none">
               <!-- keep here for client-side messages -->

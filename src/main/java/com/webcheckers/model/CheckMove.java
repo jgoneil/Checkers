@@ -18,6 +18,10 @@ public class CheckMove {
     this.board = board; 
   }
 
+  public void recieveInfo() {
+
+  }
+
   /**
   * Sees if a space is valid for a piece to move onto
   * @param start - space currently at
@@ -30,7 +34,7 @@ public class CheckMove {
     } else if(target.isOccupied()){
       return false;
     }
-    /**
+    /*
      * Moves piece on board
      * Commented out for now
     board.addPieceToSpace(start.piece(), target);
