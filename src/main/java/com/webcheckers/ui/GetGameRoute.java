@@ -14,6 +14,7 @@ import spark.TemplateEngine;
 import com.webcheckers.appl.Users;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Board;
+import com.webcheckers.model.ModelBoard;
 import static spark.Spark.halt;
 
 /**
@@ -29,6 +30,7 @@ public class GetGameRoute implements Route {
   public static final String VIEW = "game.ftl";
   private String BOARD = "board";
   private final int LENGTH = 8;
+  private String MODEL_BOARD = "modelBoard";
 
   /**
    * Creates a spark route that handles all {@code Get /game} HTTP requests
@@ -74,6 +76,11 @@ public class GetGameRoute implements Route {
       httpSession.attribute(BOARD, this.board);
       currentPlayer.setColor("Red", this.board);
 
+      ModelBoard modelBoard = new ModelBoard(currentPlayer, player2, LENGTH);
+      httpSession.attribute(MODEL_BOARD, modelBoard);
+      currentPlayer.addModelBoard(modelBoard);
+      player2.addModelBoard(modelBoard);
+
       player2.setColor("White", new Board(currentPlayer, player2, LENGTH, "white"));
 
       vm.put("currentPlayer", currentPlayer);
@@ -85,6 +92,7 @@ public class GetGameRoute implements Route {
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else if (httpSession.attribute(BOARD) == null && currentPlayer.inGame()) {
       httpSession.attribute(BOARD, currentPlayer.getBoard());
+      httpSession.attribute(MODEL_BOARD, currentPlayer.getModelBoard());
       this.board = currentPlayer.getBoard();
 
       vm.put("currentPlayer", currentPlayer);

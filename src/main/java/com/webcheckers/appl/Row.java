@@ -22,9 +22,9 @@ public class Row {
     for(int i = 0; i < length; i++) {
       if(color.equals("red")) {
         if ((rowNumber + i) % 2 == 0) {
-          row.add(new Space(rowNumber, i, Space.Color.BLACK));
+          row.add(new Space(rowNumber, i, Space.Color.WHITE));
         } else {
-          Space space = new Space(rowNumber, i, Space.Color.WHITE);
+          Space space = new Space(rowNumber, i, Space.Color.BLACK);
           row.add(space);
           if (rowNumber >= 5 && rowNumber <= 7) {
             space.setPiece(new Piece("red", space));
@@ -34,9 +34,9 @@ public class Row {
         }
       } else {
         if ((rowNumber + i) % 2 == 0) {
-          row.add(new Space(rowNumber, i, Space.Color.BLACK));
+          row.add(new Space(rowNumber, i, Space.Color.WHITE));
         } else {
-          Space space = new Space(rowNumber, i, Space.Color.WHITE);
+          Space space = new Space(rowNumber, i, Space.Color.BLACK);
           row.add(space);
           if (rowNumber >= 5 && rowNumber <= 7) {
             space.setPiece(new Piece("white", space));
@@ -64,6 +64,16 @@ public class Row {
    */
   public int index() {
     return this.index;
+  }
+
+  /**
+   * Getter for a specified space in the row
+   *
+   * @param spaceIDX the index of the space 
+   * @return the space for the given index (or null if non-existent)
+   */ 
+  public Space getSpace(int spaceIDX) {
+    return this.row.get(spaceIDX);
   }
 
   /**

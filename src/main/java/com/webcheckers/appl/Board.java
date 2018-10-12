@@ -74,6 +74,16 @@ public class Board {
   }
 
   /**
+   * Getter for a specific row in the board
+   *
+   * @param row the row of the board being retrieved
+   * @return the row associated to the row of the board (or null if non-existent)
+   */ 
+  public Row getRow(int row) {
+    return this.board.get(row);
+  }
+
+  /**
    * Iterator declaration used for getting all of the spaces on the board
    *
    * @return an arraylist containing all of the rows on the board

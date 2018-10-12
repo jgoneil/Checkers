@@ -91,6 +91,7 @@ public class Space {
    */
   public void unopccupy(){
     this.occupied = false;
+    this.piece = null;
   }
 
   /**
@@ -124,6 +125,14 @@ public class Space {
    */
   public int cellIdx() {
     return this.location.getYCoordinate();
+  }
+
+  /**
+   * Getter for the x-coordinate of the space
+   * @return the location of the x-coordinate of the space
+   */
+  public int getXCoordinate() {
+    return this.location.getXCoordinate();
   }
 
   /**

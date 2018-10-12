@@ -12,6 +12,9 @@ import java.util.Objects;
 import com.google.gson.Gson;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Board;
+import com.webcheckers.appl.Space;
+import com.webcheckers.appl.Row;
+import com.webcheckers.model.Message;
 import com.webcheckers.model.CheckMove;
 
 
@@ -62,20 +65,29 @@ public class PostMoveCheck implements Route {
 
     String temp = gson.toJson(stringBuffer);
 
-    int rowStart = temp.charAt(21);
-    int colStart = temp.charAt(32);
-    int rowEnd = temp.charAt(52);
-    int colEnd = temp.charAt(63);
+    int rowStart = Integer.parseInt(Character.toString(temp.charAt(21)));
+    int colStart = Integer.parseInt(Character.toString(temp.charAt(32)));
+    int rowEnd = Integer.parseInt(Character.toString(temp.charAt(52)));
+    int colEnd = Integer.parseInt(Character.toString(temp.charAt(63)));
 
     if (HTTPSession.attribute(MOVE) == null) {
-      this.checkMove = new CheckMove();
+      this.checkMove = new CheckMove(player.getModelBoard());
       HTTPSession.attribute(MOVE, checkMove);
     } else {
       this.checkMove = HTTPSession.attribute(MOVE);
     }
 
     Board board = this.player.getBoard();
+    Row rowBeginning = board.getRow(rowStart);
+    Row rowEnding = board.getRow(rowEnd);
+    Space spaceStart = rowBeginning.getSpace(colStart);
+    Space spaceEnd = rowEnding.getSpace(colEnd);
 
-    return gson.toJson(this.checkMove());
+    if(this.checkMove.validateMove(spaceStart, spaceEnd)) {
+      return gson.toJson(new Message(Message.type.normal, "Piece moved successfully"));
+    } else {
+      return gson.toJson(new Message
+          (Message.type.error, "Piece cannot be moved to that space"));
+    }
   }
 }

@@ -1,5 +1,6 @@
 package com.webcheckers.appl;
 
+import com.webcheckers.model.ModelBoard;
 
 /**
  * Class that controls specific information connected to each player logged into the game.
@@ -9,6 +10,7 @@ public class Player {
   private String username;
   private String color;
   private Board board;
+  private ModelBoard modelBoard;
 
   /**
    * Constructor for player class
@@ -61,6 +63,22 @@ public class Player {
    */
   public Board getBoard() {
     return this.board;
+  }
+
+  /**
+   * Setter for the model board for the player
+   * @param modelBoard the model board for the game
+   */
+  public void addModelBoard(ModelBoard modelBoard) {
+    this.modelBoard = modelBoard;
+  }
+
+  /**
+   * Getter for the model board
+   * @return the board for the model class 
+   */
+  public ModelBoard getModelBoard() {
+    return this.modelBoard;
   }
 
   /**
