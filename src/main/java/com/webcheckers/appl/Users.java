@@ -30,10 +30,10 @@ public class Users {
    * @return boolean true/false based on if the player was added to the system or not
    */
   public boolean addPlayer(String username) {
-    if (this.checkSignin.validateUser(username, this.users)) {
-      Player player = new Player(username.trim().toLowerCase());
+    if (this.checkSignin.validateUser(username, this.usernames)) {
+      Player player = new Player(username.trim());
       this.users.add(player);
-      this.usernames.add(username.trim().toLowerCase());
+      this.usernames.add(username.trim());
       return true;
     }
     return false;
