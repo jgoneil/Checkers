@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.model.Message;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -45,15 +46,15 @@ public class PostTurnCheck implements Route {
       boardView = player.getBoardView();
       if (player.getColor().equals("red")) {
         if (boardView.redTurn()) {
-          return gson.toJson(true);
+          return gson.toJson(new Message(Message.Type.info, "true"));
         } else {
-          return gson.toJson(false);
+          return gson.toJson(new Message(Message.Type.info, "false"));
         }
       } else {
         if (boardView.redTurn()) {
-          return gson.toJson(false);
+          return gson.toJson(new Message(Message.Type.info, "false"));
         } else {
-          return gson.toJson(true);
+          return gson.toJson(new Message(Message.Type.info, "true"));
         }
       }
     }

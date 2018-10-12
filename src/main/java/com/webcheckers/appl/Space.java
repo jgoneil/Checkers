@@ -95,10 +95,9 @@ public class Space {
    * @return a boolean expression based on if a piece can or can not be moved to the given space
    */
   public boolean isValid() {
-//    if(this.piece == null && this.color == Color.BLACK){
-//      return true;
-//    }
-//    return false;
-    return true;
+    if(this.piece == null && this.color == Color.BLACK){
+      return true;
+    }
+    return false;
   }
 }

@@ -9,7 +9,7 @@ public class Message {
     error, info
   }
 
-  public String message;
+  public String text;
   public Type type;
 
   /**
@@ -17,14 +17,22 @@ public class Message {
    */
   public Message (Type messageType, String message) {
     this.type = messageType;
-    this.message = message;
+    this.text = message;
   }
 
+  /**
+   * Getter for the message type
+   * @return the type of message being sent back (ENUM type error or info)
+   */
   public Type getType() {
     return this.type;
   }
 
+  /**
+   * Getter for the text contained for the message
+   * @return the message string
+   */
   public String getText() {
-    return this.message;
+    return this.text;
   }
 }

@@ -1,7 +1,8 @@
 package com.webcheckers.model;
 
 import com.webcheckers.appl.Space;
-import com.webcheckers.model.ModelBoard;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Model class to handle checking moves for validation
@@ -18,29 +19,30 @@ public class CheckMove {
     this.board = board; 
   }
 
-  public void recieveInfo() {
-
-  }
-
   /**
   * Sees if a space is valid for a piece to move onto
   * @param start - space currently at
   * @param target - target space to move to
   * @return - validity of move to target space
   */
-  public boolean validateMove(Space start, Space target){
-    if(target.getColor().equals(Space.Color.WHITE)){
-      return false;
-    } else if(target.isOccupied()){
-      return false;
-    }
-    /*
+  public Map<Boolean, String> validateMove(Position start, Position target) {
+    Map<Boolean, String> response = new HashMap<>();
+    Space current = board.getSpace(start.getRow(), start.getCell());
+    Space goal = board.getSpace(target.getRow(), target.getCell());
+    if(goal.getColor().equals(Space.Color.WHITE)) {
+      response.put(false, "Attempted to move a piece to a white space.");
+    } else if(goal.isOccupied()) {
+      response.put(false, "Attempted to move a piece to an already occupied space");
+    } else {
+      /*
      * Moves piece on board
      * Commented out for now
-    board.addPieceToSpace(start.piece(), target);
-    target.setPiece(start.piece());
-    start.unopccupy();
+    board.addPieceToSpace(current.piece(), goal);
+    target.setPiece(current.piece());
+    current.unopccupy();
     */
-    return true;
+      response.put(false, "This move is valid, but cannot be seen on the board yet.");
+    }
+    return response;
   }
 }

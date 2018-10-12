@@ -150,7 +150,7 @@ public class WebServer {
 
     post(CHECK_TURN, new PostTurnCheck(gson));
 
-    post(VALIDATE_MOVE, new PostMoveCheck(gson, templateEngine));
+    post(VALIDATE_MOVE, new PostMoveCheck(gson));
 
     //
     LOG.config("WebServer is initialized.");

@@ -226,7 +226,6 @@ define(function(require){
     // is this the first move?  if so then store the $activePiece
     if (this.$activePiece === null) {
       this.$activePiece = this._boardController.getPiece$(this._pendingMove.end);
-      console.info('$activePiece', this.$activePiece);
     }
     // change the 'pending' to 'valid'
     this._boardController.setSpaceValidated(this._pendingMove.start);

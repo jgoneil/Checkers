@@ -31,9 +31,9 @@ public class Users {
    */
   public boolean addPlayer(String username) {
     if (this.checkSignin.validateUser(username, this.users)) {
-      Player player = new Player(username.trim());
+      Player player = new Player(username.trim().toLowerCase());
       this.users.add(player);
-      this.usernames.add(username.trim());
+      this.usernames.add(username.trim().toLowerCase());
       return true;
     }
     return false;

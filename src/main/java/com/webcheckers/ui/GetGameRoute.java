@@ -30,7 +30,7 @@ public class GetGameRoute implements Route {
   public static final String VIEW = "game.ftl";
   private String BOARD = "boardView";
   private final int LENGTH = 8;
-  private String MODEL_BOARD = "modelBoard";
+  public static final String MODEL_BOARD = "modelBoard";
 
   /**
    * Creates a spark route that handles all {@code Get /game} HTTP requests
@@ -116,7 +116,7 @@ public class GetGameRoute implements Route {
       } else {
         vm.put("activeColor", "WHITE");
       }
-      vm.put("board", this.boardView);
+      vm.put("board", currentPlayer.getBoardView());
       return templateEngine.render(new ModelAndView(vm, VIEW));
     }
   }
