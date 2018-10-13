@@ -6,7 +6,7 @@ import java.util.Iterator;
 /**
  * Class for each row on the game board
  */
-public class Row implements Iterable{
+public class Row implements Iterable {
 
   private ArrayList<Space> row;
   private int index;
@@ -52,7 +52,7 @@ public class Row implements Iterable{
   /**
    * Retrieves the row of the game board in the form of a map
    *
-   * @return the hashmap of spaces and the column of the space 
+   * @return the array list of spaces and the column of the space
    */
   public ArrayList<Space> getRow() {
     return this.row;

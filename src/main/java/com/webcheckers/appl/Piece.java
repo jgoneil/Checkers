@@ -42,7 +42,7 @@ public class Piece {
   }
 
   /**
-   * Getter for the space the piece is currenly on
+   * Getter for the space the piece is currently on
    */
   public Space getSpace() {
     return this.loc;

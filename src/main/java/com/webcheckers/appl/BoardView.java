@@ -19,14 +19,15 @@ public class BoardView implements Iterable{
    * @param redPlayer   the player associated to the red checkers for the checkers game
    * @param whitePlayer the player associated to the white checkers for the checkers game
    * @param length      the size of the width and length of the board (assuming the board has to be a square)
+   * @param color       the color of the player
    */
-  public BoardView(Player redPlayer, Player whitePlayer, int length, String player) {
+  public BoardView(Player redPlayer, Player whitePlayer, int length, String color) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();
     this.redTurn = true;
     for (int i = 0; i < length; i++) {
-      Row row = new Row(i, length, player);
+      Row row = new Row(i, length, color);
       board.add(row);
     }
   }
@@ -52,7 +53,7 @@ public class BoardView implements Iterable{
   /**
    * Getter for the board (A set of a set of spaces)
    *
-   * @return an arraylist containing rows of spaces for each board position
+   * @return an array list containing rows of spaces for each board position
    */
   public ArrayList<Row> getBoard() {
     return this.board;
