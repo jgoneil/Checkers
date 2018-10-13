@@ -55,6 +55,8 @@ public class WebServer {
   public static final String SIGNIN_URL = "/signin";
   public static final String POST_SIGNIN_URL = "/postSignin";
   public static final String GAME_URL = "/game";
+  public static final String CHECK_TURN = "/checkTurn";
+  public static final String VALIDATE_MOVE = "/validateMove";
   private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
 
   //
@@ -145,6 +147,10 @@ public class WebServer {
     post(POST_SIGNIN_URL, new PostSignInRoute(templateEngine, users));
 
     get(GAME_URL, new GetGameRoute(templateEngine, users));
+
+    post(CHECK_TURN, new PostTurnCheck(gson));
+
+    post(VALIDATE_MOVE, new PostMoveCheck(gson));
 
     //
     LOG.config("WebServer is initialized.");

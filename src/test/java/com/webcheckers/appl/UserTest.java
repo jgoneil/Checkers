@@ -68,7 +68,7 @@ public class UserTest {
   @Test
   void GetSpecificPlayerTest() {
     users.addPlayer(validPlayerString1);
-    assertEquals(users.getSpecificPlayer(validPlayerString1).getUsername(), validPlayerString1);
+    assertEquals(users.getSpecificPlayer(validPlayerString1).getName(), validPlayerString1);
     assertNull(users.getSpecificPlayer("Not a user"));
   }
 

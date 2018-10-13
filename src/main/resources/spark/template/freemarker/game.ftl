@@ -7,11 +7,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script>
   window.gameState = {
-    "currentPlayer" : "${currentPlayer.getUsername()}",
+    "currentPlayer" : "${currentPlayer.name}",
     "viewMode" : "${viewMode}",
     "modeOptions" : ${modeOptionsAsJSON!'{}'},
-    "redPlayer" : "${redPlayer.getUsername()}",
-    "whitePlayer" : "${whitePlayer.getUsername()}",
+    "redPlayer" : "${redPlayer.name}",
+    "whitePlayer" : "${whitePlayer.name}",
     "activeColor" : "${activeColor}"
   };
   </script>
@@ -23,7 +23,7 @@
     <div class="navigation">
     <#if currentPlayer??>
       <a href="/">my home</a> |
-      <a href="/signout">sign out [${currentPlayer.getUsername()}]</a>
+      <a href="/signout">sign out [${currentPlayer.name}]</a>
     <#else>
       <a href="/signin">sign in</a>
     </#if>
@@ -74,18 +74,18 @@
           <table id="game-board">
             <tbody>
             <#list board.iterator() as row>
-              <tr data-row="${row.index()}">
+              <tr data-row="${row.index}">
               <#list row.iterator() as space>
-                <td data-cell="${space.cellIdx()}"
+                <td data-cell="${space.cellIdx}"
                     <#if space.isValid() >
                     class="Space"
                     </#if>
                     >
-                <#if space.piece()??>
+                <#if space.piece??>
                   <div class="Piece"
-                       id="piece-${row.index()}-${space.cellIdx()}"
-                       data-type="${space.piece().type()}"
-                       data-color="${space.piece().color()}">
+                       id="piece-${row.index}-${space.cellIdx}"
+                       data-type="${space.piece.type}"
+                       data-color="${space.piece.color}">
                   </div>
                 </#if>
                 </td>
@@ -96,11 +96,9 @@
           </table>
         </div>
       </div>
-
-    </div>
+     </div>
   </div>
-
-  <audio id="audio" src="http://www.soundjay.com/button/beep-07.mp3" autostart="false" ></audio>
+   <audio id="audio" src="http://www.soundjay.com/button/beep-07.mp3" autostart="false" ></audio>
   
   <script data-main="/js/game/index" src="/js/require.js"></script>
   

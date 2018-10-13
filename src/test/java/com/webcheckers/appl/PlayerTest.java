@@ -18,7 +18,7 @@ public class PlayerTest {
   private Player player3;
   private String usernamePlayer1;
   private String usernamePlayer2;
-  private Board boardMock;
+  private BoardView boardViewMock;
 
 
   @BeforeEach
@@ -31,7 +31,7 @@ public class PlayerTest {
 
     player3 = new Player(usernamePlayer1);
 
-    boardMock = mock(Board.class);
+    boardViewMock = mock(BoardView.class);
 
   }
 
@@ -41,13 +41,13 @@ public class PlayerTest {
     player2 = null;
     usernamePlayer1 = null;
     usernamePlayer2 = null;
-    boardMock = null;
+    boardViewMock = null;
 
   }
 
   @Test
   void getUsernameTest() {
-    assertEquals(player1.getUsername(), usernamePlayer1);
+    assertEquals(player1.getName(), usernamePlayer1);
   }
 
   @Test
@@ -59,26 +59,26 @@ public class PlayerTest {
   @Test
   void inGameTest() {
     assertFalse(player1.inGame());
-    player1.setColor("White", boardMock);
+    player1.setColor("White", boardViewMock);
     assertTrue(player1.inGame());
   }
 
   @Test
   void setColorTest() {
-    player1.setColor("White", boardMock);
+    player1.setColor("White", boardViewMock);
     assertEquals("White", player1.getColor());
-    assertEquals(boardMock, player1.getBoard());
+    assertEquals(boardViewMock, player1.getBoardView());
   }
 
   @Test
   void getColorTest() {
-    player1.setColor("White", boardMock);
+    player1.setColor("White", boardViewMock);
     assertEquals("White", player1.getColor());
   }
 
   @Test
   void getBoardTest() {
-    player1.setColor("White", boardMock);
-    assertEquals(boardMock, player1.getBoard());
+    player1.setColor("White", boardViewMock);
+    assertEquals(boardViewMock, player1.getBoardView());
   }
 }

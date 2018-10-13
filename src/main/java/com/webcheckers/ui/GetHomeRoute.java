@@ -35,6 +35,7 @@ public class GetHomeRoute implements Route {
    * Create the Spark Route (UI controller) for the {@code GET /} HTTP request.
    *
    * @param templateEngine the HTML template rendering engine
+   * @param users the users currently in the game
    */
   public GetHomeRoute(final TemplateEngine templateEngine, Users users) {
     // validation
@@ -65,6 +66,11 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
+    if(httpSession.attribute("message") != null){
+      vm.put("message", true);
+      httpSession.removeAttribute("message");
+    }
+
     if (this.player == null) {
       vm.put(SIGNEDIN, false);
       vm.put(USERS, users.getAllPlayers().size());
@@ -73,14 +79,14 @@ public class GetHomeRoute implements Route {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, true);
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
-    } else if (player.getBoard() != null) {
+    } else if (player.getBoardView() != null) {
       response.redirect("/game");
       halt();
       return null;
     } else {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, false);
-      vm.put(USERS, users.getAllPlayersExceptUser(player.getUsername()));
+      vm.put(USERS, users.getAllPlayersExceptUser(player.getName()));
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
   }

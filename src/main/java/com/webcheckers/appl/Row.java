@@ -1,11 +1,12 @@
 package com.webcheckers.appl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Class for each row on the game board
  */
-public class Row {
+public class Row implements Iterable {
 
   private ArrayList<Space> row;
   private int index;
@@ -22,9 +23,9 @@ public class Row {
     for(int i = 0; i < length; i++) {
       if(color.equals("red")) {
         if ((rowNumber + i) % 2 == 0) {
-          row.add(new Space(rowNumber, i, Space.Color.BLACK));
+          row.add(new Space(rowNumber, i, Space.Color.WHITE));
         } else {
-          Space space = new Space(rowNumber, i, Space.Color.WHITE);
+          Space space = new Space(rowNumber, i, Space.Color.BLACK);
           row.add(space);
           if (rowNumber >= 5 && rowNumber <= 7) {
             space.setPiece(new Piece("red", space));
@@ -34,9 +35,9 @@ public class Row {
         }
       } else {
         if ((rowNumber + i) % 2 == 0) {
-          row.add(new Space(rowNumber, i, Space.Color.BLACK));
+          row.add(new Space(rowNumber, i, Space.Color.WHITE));
         } else {
-          Space space = new Space(rowNumber, i, Space.Color.WHITE);
+          Space space = new Space(rowNumber, i, Space.Color.BLACK);
           row.add(space);
           if (rowNumber >= 5 && rowNumber <= 7) {
             space.setPiece(new Piece("white", space));
@@ -51,7 +52,7 @@ public class Row {
   /**
    * Retrieves the row of the game board in the form of a map
    *
-   * @return the hashmap of spaces and the column of the space 
+   * @return the array list of spaces and the column of the space
    */
   public ArrayList<Space> getRow() {
     return this.row;
@@ -62,16 +63,26 @@ public class Row {
    * 
    * @return the integer for the row number
    */
-  public int index() {
+  public int getIndex() {
     return this.index;
+  }
+
+  /**
+   * Getter for a specified space in the row
+   *
+   * @param spaceIDX the index of the space 
+   * @return the space for the given index (or null if non-existent)
+   */ 
+  public Space getSpace(int spaceIDX) {
+    return this.row.get(spaceIDX);
   }
 
   /**
    * The iterator for the rows for the frontend to loop over
    *
-   * @return an arraylist containing all of the spaces in the row
+   * @return an iterator for the rows
    */
-  public ArrayList<Space> iterator() {
-    return this.row;
+  public Iterator iterator() {
+    return this.row.iterator();
   }
 }
