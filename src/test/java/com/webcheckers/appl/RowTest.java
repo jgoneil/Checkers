@@ -7,30 +7,40 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RowTest {
-  Row row;
+  private Row row1;
+  private Row row2;
 
   @BeforeEach
-  public void setUp() throws Exception {
-    row = new Row(1, 4, "red");
+  void setUp() throws Exception {
+    row1 = new Row(1, 4, "red");
+    row2 = new Row(2, 2, "white");
   }
 
   @AfterEach
   void tearDown() throws Exception {
-    row = null;
+    row1 = null;
   }
 
   @Test
-  void getRow() {
-    assertNotNull(row.getRow());
+  void getRowTest() {
+    assertNotNull(row1.getRow());
   }
 
   @Test
-  void getIndex() {
-    assertEquals(1, row.getIndex());
+  void getIndexTest() {
+
+    assertEquals(1, row1.getIndex());
+    assertEquals(2, row2.getIndex());
   }
 
   @Test
-  void iterator() {
-    assertNotNull(row.iterator());
+  void getSpaceTest(){
+    assertNotNull(row1.getSpace(0));
+
+  }
+
+  @Test
+  void iteratorTest() {
+    assertNotNull(row1.iterator());
   }
 }
