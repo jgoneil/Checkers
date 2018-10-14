@@ -6,7 +6,7 @@ import java.util.Iterator;
 /**
  * Class that creates and handles the board for gameplay
  */
-public class BoardView implements Iterable{
+public class BoardView implements Iterable {
 
   private Player redPlayer;
   private Player whitePlayer;
@@ -16,10 +16,11 @@ public class BoardView implements Iterable{
   /**
    * Main constructor for class that establishes the two players and size of the board
    *
-   * @param redPlayer   the player associated to the red checkers for the checkers game
+   * @param redPlayer the player associated to the red checkers for the checkers game
    * @param whitePlayer the player associated to the white checkers for the checkers game
-   * @param length      the size of the width and length of the board (assuming the board has to be a square)
-   * @param color       the color of the player
+   * @param length the size of the width and length of the board (assuming the board has to be a
+   * square)
+   * @param color the color of the player
    */
   public BoardView(Player redPlayer, Player whitePlayer, int length, String color) {
     this.redPlayer = redPlayer;

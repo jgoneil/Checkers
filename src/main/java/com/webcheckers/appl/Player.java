@@ -14,6 +14,7 @@ public class Player {
 
   /**
    * Constructor for player class
+   *
    * @param username the String value entered by the user upon signin for recognition in the game
    */
   public Player(String username) {
@@ -22,6 +23,7 @@ public class Player {
 
   /**
    * Getter for the player's username
+   *
    * @Return String the username of the player
    */
   public String getName() {
@@ -30,10 +32,11 @@ public class Player {
 
   /**
    * Boolean condition based on if the player is in a game or not
+   *
    * @return True/False based on if the player is in a game or not
    */
   public boolean inGame() {
-    if(color == null) {
+    if (color == null) {
       return false;
     }
     return true;
@@ -41,6 +44,7 @@ public class Player {
 
   /**
    * Sets the color for the player for the game they are in
+   *
    * @param color the color the player is associated to in the game
    * @param boardView the boardView the player is playing on
    */
@@ -51,6 +55,7 @@ public class Player {
 
   /**
    * The getter for the color the player is associated to
+   *
    * @return the color the player is associated to or null if the player is not in the game
    */
   public String getColor() {
@@ -59,6 +64,7 @@ public class Player {
 
   /**
    * The getter for the boardView the player is using for the game they are in
+   *
    * @return the boardView the player is using for the game
    */
   public BoardView getBoardView() {
@@ -67,6 +73,7 @@ public class Player {
 
   /**
    * Setter for the model boardView for the player
+   *
    * @param modelBoard the model boardView for the game
    */
   public void addModelBoard(ModelBoard modelBoard) {
@@ -75,6 +82,7 @@ public class Player {
 
   /**
    * Getter for the model boardView
+   *
    * @return the boardView for the model class
    */
   public ModelBoard getModelBoard() {
@@ -83,12 +91,13 @@ public class Player {
 
   /**
    * Equals method for Player
+   *
    * @param obj Player to compare to
    * @return Boolean corresponding to equality
    */
   @Override
   public boolean equals(Object obj) {
-    if (obj instanceof Player){
+    if (obj instanceof Player) {
       Player p = (Player) obj;
       return this.username.equals(p.username);
     }

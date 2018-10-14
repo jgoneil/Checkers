@@ -14,14 +14,14 @@ public class Row implements Iterable {
   /**
    * Constructor for the row class
    *
-   * @param rowNumber the number of the row 
+   * @param rowNumber the number of the row
    * @param length the length of the side of the board
    */
   public Row(int rowNumber, int length, String color) {
     this.row = new ArrayList<>();
     this.index = rowNumber;
-    for(int i = 0; i < length; i++) {
-      if(color.equals("red")) {
+    for (int i = 0; i < length; i++) {
+      if (color.equals("red")) {
         if ((rowNumber + i) % 2 == 0) {
           row.add(new Space(rowNumber, i, Space.Color.WHITE));
         } else {
@@ -59,8 +59,8 @@ public class Row implements Iterable {
   }
 
   /**
-   * Getter for the index of the row 
-   * 
+   * Getter for the index of the row
+   *
    * @return the integer for the row number
    */
   public int getIndex() {
@@ -70,9 +70,9 @@ public class Row implements Iterable {
   /**
    * Getter for a specified space in the row
    *
-   * @param spaceIDX the index of the space 
+   * @param spaceIDX the index of the space
    * @return the space for the given index (or null if non-existent)
-   */ 
+   */
   public Space getSpace(int spaceIDX) {
     return this.row.get(spaceIDX);
   }

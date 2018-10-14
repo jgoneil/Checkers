@@ -18,11 +18,10 @@ import com.webcheckers.model.CheckMove;
  */
 public class PostMoveCheck implements Route {
 
+  private static final String MOVE = "move";
   private final Gson gson;
   private Player player;
   private CheckMove checkMove;
-
-  private static final String MOVE = "move";
 
   /**
    * Main method for POST check of a valid move
@@ -40,14 +39,14 @@ public class PostMoveCheck implements Route {
    * @param request the HTTP request
    * @param request the HTTP response
    * @return the AJAX response for the player's ability to move the piece (true/false)
-   */ 
+   */
   @Override
   public Object handle(Request request, Response response) {
     Session HTTPSession = request.session();
 
     this.player = HTTPSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
 
-    if(this.checkMove == null) {
+    if (this.checkMove == null) {
       ModelBoard board = HTTPSession.attribute(GetGameRoute.MODEL_BOARD);
       this.checkMove = new CheckMove(board);
     }
@@ -55,9 +54,10 @@ public class PostMoveCheck implements Route {
     String customJson = request.body();
     Move move = gson.fromJson(customJson, Move.class);
 
-    Map<Boolean, String> resultFromCheck = this.checkMove.validateMove(move.getStart(), move.getEnd());
+    Map<Boolean, String> resultFromCheck = this.checkMove
+        .validateMove(move.getStart(), move.getEnd());
 
-    if(resultFromCheck.containsKey(true)) {
+    if (resultFromCheck.containsKey(true)) {
       Message message = new Message(Message.Type.info, resultFromCheck.get(true));
       return gson.toJson(message);
     } else {

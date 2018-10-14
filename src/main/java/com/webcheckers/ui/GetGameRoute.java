@@ -15,6 +15,7 @@ import spark.TemplateEngine;
 import com.webcheckers.appl.Users;
 import com.webcheckers.appl.Player;
 import com.webcheckers.model.ModelBoard;
+
 import static spark.Spark.halt;
 
 /**
@@ -22,15 +23,14 @@ import static spark.Spark.halt;
  */
 public class GetGameRoute implements Route {
 
+  public static final String VIEW = "game.ftl";
+  public static final String MODEL_BOARD = "modelBoard";
+  private final int LENGTH = 8;
   private TemplateEngine templateEngine;
   private Player currentPlayer;
   private BoardView boardView;
   private Users users;
-
-  public static final String VIEW = "game.ftl";
   private String BOARD = "boardView";
-  private final int LENGTH = 8;
-  public static final String MODEL_BOARD = "modelBoard";
 
   /**
    * Creates a spark route that handles all {@code Get /game} HTTP requests
@@ -38,7 +38,7 @@ public class GetGameRoute implements Route {
    * @param templateEngine the html template engine
    */
   public GetGameRoute(TemplateEngine templateEngine, Users users) {
-    
+
     Objects.requireNonNull(templateEngine, "templateEngine cannot be null");
     Objects.requireNonNull(users, "users cannot be null");
 
@@ -57,15 +57,15 @@ public class GetGameRoute implements Route {
   public Object handle(Request request, Response response) {
     Session httpSession = request.session();
     this.currentPlayer = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
-    Map<String, Object> vm = new HashMap<>(); 
+    Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
-    if(httpSession.attribute(BOARD) == null && !currentPlayer.inGame()) {
-      
+    if (httpSession.attribute(BOARD) == null && !currentPlayer.inGame()) {
+
       Object[] playerTwo = request.queryParams().toArray();
       Player player2 = users.getSpecificPlayer(playerTwo[0].toString());
 
-      if(player2.inGame()) {
+      if (player2.inGame()) {
         httpSession.attribute("message", true);
         response.redirect("/");
         halt();
@@ -99,7 +99,7 @@ public class GetGameRoute implements Route {
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", this.boardView.getRedPlayer());
       vm.put("whitePlayer", this.boardView.getWhitePlayer());
-      if(boardView.redTurn()) {
+      if (boardView.redTurn()) {
         vm.put("activeColor", "RED");
       } else {
         vm.put("activeColor", "WHITE");
@@ -111,7 +111,7 @@ public class GetGameRoute implements Route {
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", this.boardView.getRedPlayer());
       vm.put("whitePlayer", this.boardView.getWhitePlayer());
-      if(boardView.redTurn()) {
+      if (boardView.redTurn()) {
         vm.put("activeColor", "RED");
       } else {
         vm.put("activeColor", "WHITE");

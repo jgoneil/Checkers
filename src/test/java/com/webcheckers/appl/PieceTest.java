@@ -16,7 +16,7 @@ class PieceTest {
 
   @BeforeEach
   void setUp() {
-    originalSpace = new Space(0,0, Space.Color.WHITE);
+    originalSpace = new Space(0, 0, Space.Color.WHITE);
     finalSapce = new Space(1, 1, Space.Color.WHITE);
     piece1 = new Piece("red", originalSpace);
 

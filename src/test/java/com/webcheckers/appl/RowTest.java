@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RowTest {
+
   private Row row1;
   private Row row2;
 
@@ -34,7 +35,7 @@ class RowTest {
   }
 
   @Test
-  void getSpaceTest(){
+  void getSpaceTest() {
     assertNotNull(row1.getSpace(0));
 
   }

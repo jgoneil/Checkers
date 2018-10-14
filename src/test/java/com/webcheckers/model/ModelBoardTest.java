@@ -16,9 +16,9 @@ class ModelBoardTest {
 
   @BeforeEach
   void setUp() {
-    player1Mock =  mock(Player.class);
+    player1Mock = mock(Player.class);
     player2Mock = mock(Player.class);
-    modelBoard = new ModelBoard(player1Mock,player2Mock, 8);
+    modelBoard = new ModelBoard(player1Mock, player2Mock, 8);
 
   }
 

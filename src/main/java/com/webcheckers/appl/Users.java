@@ -14,8 +14,8 @@ public class Users {
   private List<String> usernames;
 
   /**
-   * Constructor for the class that establishes sign in checks
-   * and the list of currently signed in users
+   * Constructor for the class that establishes sign in checks and the list of currently signed in
+   * users
    */
   public Users() {
     this.checkSignin = new CheckSignin();
@@ -24,8 +24,9 @@ public class Users {
   }
 
   /**
-   * Class that facilitates the creation of new players
-   * and ensures usernames are created properly before player creation
+   * Class that facilitates the creation of new players and ensures usernames are created properly
+   * before player creation
+   *
    * @param username the username input from the signin page
    * @return boolean true/false based on if the player was added to the system or not
    */
@@ -41,6 +42,7 @@ public class Users {
 
   /**
    * Getter for a specified player in the list of currently signed in users
+   *
    * @param username the username of the player the system wants to obtain
    * @return Player Either null or the player requested
    */
@@ -57,6 +59,7 @@ public class Users {
 
   /**
    * Getter for the list of all players currently signed into the game
+   *
    * @return the list of all usernames associated to players currently signed into the game
    */
   public List<String> getAllPlayers() {
@@ -64,7 +67,9 @@ public class Users {
   }
 
   /**
-   * Getter for the list of all usernames of players except a specified player (used for display of potential opponents)
+   * Getter for the list of all usernames of players except a specified player (used for display of
+   * potential opponents)
+   *
    * @param username the username that is excluded from the list
    * @return the lsit of usernames currently signed into the game without the specified player
    */

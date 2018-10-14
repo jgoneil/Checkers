@@ -13,6 +13,7 @@ import spark.Session;
 import spark.TemplateEngine;
 import com.webcheckers.appl.Users;
 import com.webcheckers.appl.Player;
+
 import static spark.Spark.halt;
 
 /**
@@ -66,7 +67,7 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
-    if(httpSession.attribute("message") != null){
+    if (httpSession.attribute("message") != null) {
       vm.put("message", true);
       httpSession.removeAttribute("message");
     }

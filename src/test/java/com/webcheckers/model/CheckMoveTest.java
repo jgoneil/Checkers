@@ -15,6 +15,7 @@ class CheckMoveTest {
   private Player redPlayerMock;
   private Player whitePlayerMock;
   private Position whiteGoal;
+
   @BeforeEach
   void setUp() {
     redPlayerMock = mock(Player.class);
@@ -23,7 +24,7 @@ class CheckMoveTest {
     modelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8);
     checkMove = new CheckMove(modelBoard);
 
-    whiteGoal = new Position(0,0);
+    whiteGoal = new Position(0, 0);
   }
 
   @AfterEach
@@ -34,7 +35,7 @@ class CheckMoveTest {
 
   @Test
   void validateMove() {
-    assertTrue(checkMove.validateMove(new Position(1,0), whiteGoal).containsKey(false));
-    assertTrue(checkMove.validateMove(new Position(0,0), new Position(0,1)).containsKey(false));
+    assertTrue(checkMove.validateMove(new Position(1, 0), whiteGoal).containsKey(false));
+    assertTrue(checkMove.validateMove(new Position(0, 0), new Position(0, 1)).containsKey(false));
   }
 }

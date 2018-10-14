@@ -17,13 +17,13 @@ class SpaceTest {
   @BeforeEach
   void setUp() {
 
-    space1 = new Space(1,2, Space.Color.BLACK);
-    space2 = new Space(3,2, Space.Color.WHITE);
+    space1 = new Space(1, 2, Space.Color.BLACK);
+    space2 = new Space(3, 2, Space.Color.WHITE);
     pieceMock = mock(Piece.class);
   }
 
   @AfterEach
-  void tearUp(){
+  void tearUp() {
     space1 = null;
     space2 = null;
     pieceMock = null;
@@ -61,20 +61,19 @@ class SpaceTest {
 
   @Test
   void getCellIdxTest() {
-    assertEquals(space1.getCellIdx(),2);
+    assertEquals(space1.getCellIdx(), 2);
   }
 
   @Test
-  void getxCoordinate(){
-    assertEquals(space1.getxCoordinate(),1);
+  void getxCoordinate() {
+    assertEquals(space1.getxCoordinate(), 1);
   }
 
   @Test
-  void isValid(){
+  void isValid() {
     assertTrue(space1.isValid());
     assertFalse(space2.isValid());
   }
-
 
 
 }

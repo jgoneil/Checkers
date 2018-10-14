@@ -22,12 +22,12 @@ public class PostTurnCheck implements Route {
    * Main method for POST check of turn
    */
   public PostTurnCheck(final Gson gson) {
-    
+
     Objects.requireNonNull(gson, "gson cannot be null");
 
     this.gson = gson;
   }
-  
+
   /**
    * Method to render AJAX response via gson for {@code POST /checkturn}
    *
@@ -42,7 +42,7 @@ public class PostTurnCheck implements Route {
 
     BoardView boardView;
 
-    if(player.getBoardView() != null) {
+    if (player.getBoardView() != null) {
       boardView = player.getBoardView();
       if (player.getColor().equals("red")) {
         if (boardView.redTurn()) {

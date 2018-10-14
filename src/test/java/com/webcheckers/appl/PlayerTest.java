@@ -54,7 +54,7 @@ public class PlayerTest {
   }
 
   @Test
-  void equalsTest(){
+  void equalsTest() {
     assertEquals(player1, player3);
     assertNotEquals(player1, player2);
   }
@@ -86,13 +86,13 @@ public class PlayerTest {
   }
 
   @Test
-  void addModelBoardTest(){
+  void addModelBoardTest() {
     player1.addModelBoard(modelBoardMock);
     assertEquals(player1.getModelBoard(), modelBoardMock);
   }
 
   @Test
-  void getModelBoardTest(){
+  void getModelBoardTest() {
     player1.addModelBoard(modelBoardMock);
     assertEquals(player1.getModelBoard(), modelBoardMock);
   }

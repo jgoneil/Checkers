@@ -19,22 +19,38 @@ import spark.template.freemarker.FreeMarkerEngine;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
 public final class Application {
+
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
 
   //
   // Application Launch method
+  //
+  private final WebServer webServer;
+
+  //
+  // Attributes
+  //
+
+  private Application(final WebServer webServer) {
+    // validation
+    Objects.requireNonNull(webServer, "webServer must not be null");
+    //
+    this.webServer = webServer;
+  }
+
+  //
+  // Constructor
   //
 
   /**
    * Entry point for the WebCheckers web application.
    *
    * <p>
-   * It wires the application components together.  This is an example
-   * of <a href='https://en.wikipedia.org/wiki/Dependency_injection'>Dependency Injection</a>
+   * It wires the application components together.  This is an example of <a
+   * href='https://en.wikipedia.org/wiki/Dependency_injection'>Dependency Injection</a>
    * </p>
    *
-   * @param args
-   *    Command line arguments; none expected.
+   * @param args Command line arguments; none expected.
    */
   public static void main(String[] args) {
     // initialize Logging
@@ -67,23 +83,6 @@ public final class Application {
 
     // start the application up
     app.initialize();
-  }
-
-  //
-  // Attributes
-  //
-
-  private final WebServer webServer;
-
-  //
-  // Constructor
-  //
-
-  private Application(final WebServer webServer) {
-    // validation
-    Objects.requireNonNull(webServer, "webServer must not be null");
-    //
-    this.webServer = webServer;
   }
 
   //
