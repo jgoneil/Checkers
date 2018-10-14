@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 
+import com.webcheckers.model.ModelBoard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ public class PlayerTest {
   private String usernamePlayer1;
   private String usernamePlayer2;
   private BoardView boardViewMock;
+  private ModelBoard modelBoardMock;
 
 
   @BeforeEach
@@ -32,6 +34,7 @@ public class PlayerTest {
     player3 = new Player(usernamePlayer1);
 
     boardViewMock = mock(BoardView.class);
+    modelBoardMock = mock(ModelBoard.class);
 
   }
 
@@ -77,8 +80,21 @@ public class PlayerTest {
   }
 
   @Test
-  void getBoardTest() {
+  void getBoardViewTest() {
     player1.setColor("White", boardViewMock);
     assertEquals(boardViewMock, player1.getBoardView());
   }
+
+  @Test
+  void addModelBoardTest(){
+    player1.addModelBoard(modelBoardMock);
+    assertEquals(player1.getModelBoard(), modelBoardMock);
+  }
+
+  @Test
+  void getModelBoardTest(){
+    player1.addModelBoard(modelBoardMock);
+    assertEquals(player1.getModelBoard(), modelBoardMock);
+  }
+
 }
