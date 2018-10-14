@@ -25,8 +25,8 @@ class RowTest {
   }
 
   @Test
-  void index() {
-    assertEquals(1, row.index());
+  void getIndex() {
+    assertEquals(1, row.getIndex());
   }
 
   @Test

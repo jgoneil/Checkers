@@ -1,17 +1,16 @@
 package com.webcheckers.appl;
 
-import org.junit.Before;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 public class BoardViewTest {
 
   private Player whitePlayer;
   private Player redPLayer;
   private BoardView boardView1;
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     this.whitePlayer = new Player("White");
     this.redPLayer = new Player("Red");
