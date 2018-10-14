@@ -5,11 +5,11 @@ package com.webcheckers.appl;
  */
 public class Piece {
 
-  private enum Color {
+  public enum Color {
     RED, WHITE
   }
 
-  private enum Type {
+  public enum Type {
     SINGLE, KING
   }
 
