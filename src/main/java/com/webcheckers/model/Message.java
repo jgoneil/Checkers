@@ -9,8 +9,8 @@ public class Message {
     error, info
   }
 
-  public String text;
-  public Type type;
+  private String text;
+  private Type type;
 
   /**
    * Constructor to create a new message for the game
