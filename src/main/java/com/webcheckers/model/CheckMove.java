@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.Piece;
 import com.webcheckers.appl.Space;
 import java.util.Map;
 import java.util.HashMap;
@@ -36,13 +37,12 @@ public class CheckMove {
     } else if (goal.isOccupied()) {
       response.put(false, "Attempted to move a piece to an already occupied space");
     } else {
-      /*
-     * Moves piece on board
-     * Commented out for now
-    board.addPieceToSpace(current.piece(), goal);
-    target.setPiece(current.piece());
-    current.unoccupy();
-    */
+//    Moves piece on board
+//    Commented out for now
+//
+//      board.addPieceToSpace(current.getPiece(), goal);
+//      current.occupy(current.getPiece());
+//      current.unoccupy();
       response.put(false, "This move is valid, but cannot be seen on the board yet.");
     }
     return response;

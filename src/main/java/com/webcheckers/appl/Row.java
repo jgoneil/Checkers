@@ -14,34 +14,44 @@ public class Row implements Iterable {
   /**
    * Constructor for the row class
    *
-   * @param rowNumber the number of the row
+   * @param xCoordinate the xCoordinate of each space for row of the board
    * @param length the length of the side of the board
+   * @param color the color of the player for the row being generated
    */
-  public Row(int rowNumber, int length, String color) {
+  public Row(int xCoordinate, int length, String color) {
     this.row = new ArrayList<>();
-    this.index = rowNumber;
+    this.index = xCoordinate;
+    fillRow(length, color);
+  }
+
+  /**
+   * Fills the arrayList of rows for the row being created
+   * @param length the length of the side of the board
+   * @param color the color of the Player the row is being created for
+   */
+  private void fillRow(int length, String color) {
     for (int i = 0; i < length; i++) {
       if (color.equals("red")) {
-        if ((rowNumber + i) % 2 == 0) {
-          row.add(new Space(rowNumber, i, Space.Color.WHITE));
+        if ((this.index + i) % 2 == 0) {
+          row.add(new Space(this.index, i, Space.Color.WHITE));
         } else {
-          Space space = new Space(rowNumber, i, Space.Color.BLACK);
+          Space space = new Space(this.index, i, Space.Color.BLACK);
           row.add(space);
-          if (rowNumber >= 5 && rowNumber <= 7) {
+          if (this.index >= 5 && this.index <= 7) {
             space.occupy(new Piece("red", space));
-          } else if (rowNumber >= 0 && rowNumber <= 2) {
+          } else if (this.index >= 0 && this.index <= 2) {
             space.occupy(new Piece("white", space));
           }
         }
       } else {
-        if ((rowNumber + i) % 2 == 0) {
-          row.add(new Space(rowNumber, i, Space.Color.WHITE));
+        if ((this.index + i) % 2 == 0) {
+          row.add(new Space(this.index, i, Space.Color.WHITE));
         } else {
-          Space space = new Space(rowNumber, i, Space.Color.BLACK);
+          Space space = new Space(this.index, i, Space.Color.BLACK);
           row.add(space);
-          if (rowNumber >= 5 && rowNumber <= 7) {
+          if (this.index >= 5 && this.index <= 7) {
             space.occupy(new Piece("white", space));
-          } else if (rowNumber >= 0 && rowNumber <= 2) {
+          } else if (this.index >= 0 && this.index <= 2) {
             space.occupy(new Piece("red", space));
           }
         }

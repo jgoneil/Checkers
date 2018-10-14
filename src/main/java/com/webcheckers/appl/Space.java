@@ -34,9 +34,9 @@ public class Space {
 
   /**
    * Sets occupied value to true for space with a piece
+   * @param piece the piece now occupying the space
    */
   public void occupy(Piece piece) {
-
     this.occupied = true;
     this.piece = piece;
   }
