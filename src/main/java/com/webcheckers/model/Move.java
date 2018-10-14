@@ -8,6 +8,10 @@ public class Move {
   private Position start;
   private Position end;
 
+  public Move(Position start, Position end){
+    this.start = start;
+    this.end = end;
+  }
   /**
    * Getter for the starting position
    * @return the position the piece is currently on
