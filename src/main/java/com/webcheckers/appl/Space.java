@@ -36,14 +36,16 @@ public class Space {
   /**
    * Sets occupied value to true for space with a piece
    */
-  public void occupy(){
+  public void occupy(Piece piece){
+
     this.occupied = true;
+    this.piece = piece;
   }
 
   /**
    * Sets occupied value to false when a piece has moved off of it
    */
-  public void unopccupy(){
+  public void unoccupy(){
     this.occupied = false;
     this.piece = null;
   }
@@ -54,15 +56,6 @@ public class Space {
    */
   public boolean isOccupied(){
     return this.occupied;
-  }
-
-  /**
-   * Setter for a piece that occupies this space on the board
-   * @param piece the piece being added to the space
-   */
-  public void setPiece(Piece piece) {
-    this.piece = piece;
-    this.occupied = true;
   }
 
   /**
@@ -95,9 +88,6 @@ public class Space {
    * @return a boolean expression based on if a piece can or can not be moved to the given space
    */
   public boolean isValid() {
-    if(this.piece == null && this.color == Color.BLACK){
-      return true;
-    }
-    return false;
+    return this.piece == null && this.color == Color.BLACK;
   }
 }

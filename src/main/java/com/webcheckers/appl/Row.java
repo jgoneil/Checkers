@@ -28,9 +28,9 @@ public class Row implements Iterable {
           Space space = new Space(rowNumber, i, Space.Color.BLACK);
           row.add(space);
           if (rowNumber >= 5 && rowNumber <= 7) {
-            space.setPiece(new Piece("red", space));
+            space.occupy(new Piece("red", space));
           } else if (rowNumber >= 0 && rowNumber <= 2) {
-            space.setPiece(new Piece("white", space));
+            space.occupy(new Piece("white", space));
           }
         }
       } else {
@@ -40,9 +40,9 @@ public class Row implements Iterable {
           Space space = new Space(rowNumber, i, Space.Color.BLACK);
           row.add(space);
           if (rowNumber >= 5 && rowNumber <= 7) {
-            space.setPiece(new Piece("white", space));
+            space.occupy(new Piece("white", space));
           } else if (rowNumber >= 0 && rowNumber <= 2) {
-            space.setPiece(new Piece("red", space));
+            space.occupy(new Piece("red", space));
           }
         }
       }

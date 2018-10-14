@@ -31,9 +31,9 @@ public class ModelBoard {
           Space space = new Space(i, j, Space.Color.BLACK);
           board[i][j] = space;
           if (i >= 0 && i <= 2) {
-            space.setPiece(new Piece("white", space));
+            space.occupy(new Piece("white", space));
           } else if (i >= 5 && i <= 7) {
-            space.setPiece(new Piece("red", space));
+            space.occupy(new Piece("red", space));
           }
         } 
       }
@@ -57,6 +57,6 @@ public class ModelBoard {
    */ 
   public void addPieceToSpace(Piece piece, Space space) {
     Space goalSpace = board[space.getxCoordinate()][space.getCellIdx()];
-    goalSpace.setPiece(piece);
+    goalSpace.occupy(piece);
   }
 }

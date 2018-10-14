@@ -39,7 +39,7 @@ public class CheckMove {
      * Commented out for now
     board.addPieceToSpace(current.piece(), goal);
     target.setPiece(current.piece());
-    current.unopccupy();
+    current.unoccupy();
     */
       response.put(false, "This move is valid, but cannot be seen on the board yet.");
     }
