@@ -22,6 +22,7 @@ public class CheckSigninTest {
   // Invalid usernames
   final String nonAlphabeticalString1 = "$$$";
   final String nonAlphabeticalString2 = "\"System.out.println(\"Sanitize your input\");";
+  final String invalidPlayerString6 = "     a ";
 
   // Invalid whitespace
   final String emptyString = "";
