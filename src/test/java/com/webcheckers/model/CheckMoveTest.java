@@ -37,5 +37,7 @@ class CheckMoveTest {
   void validateMove() {
     assertTrue(checkMove.validateMove(new Position(1, 0), whiteGoal).containsKey(false));
     assertTrue(checkMove.validateMove(new Position(0, 0), new Position(0, 1)).containsKey(false));
+    assertTrue(checkMove.validateMove(new Position(5, 2), new Position(4, 3)).containsKey(false));
+    assertTrue(checkMove.validateMove(new Position(5, 2), new Position(3, 0)).containsKey(false));
   }
 }
