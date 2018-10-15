@@ -22,6 +22,21 @@ public class CheckMove {
   }
 
   /**
+   * Checks to see if the distance for the column or row is too large
+   * @param start the starting position of the checker
+   * @param end the ending position of the checker
+   * @return true/false based on if the distance is too large or not
+   */
+  private boolean checkDistance(Position start, Position end) {
+    if((start.getCell() - end.getCell() == start.getRow() - end.getRow()) &&
+        start.getCell() - end.getCell() == 1 || start.getCell() - end.getCell() == -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Sees if a space is valid for a piece to move onto
    *
    * @param start - space currently at
@@ -36,6 +51,8 @@ public class CheckMove {
       response.put(false, "Attempted to move a piece to a white space.");
     } else if (goal.isOccupied()) {
       response.put(false, "Attempted to move a piece to an already occupied space");
+    } else if (!checkDistance(start, target)) {
+        response.put(false, "Attempted to move piece too far.");
     } else {
 //    Moves piece on board
 //    Commented out for now
