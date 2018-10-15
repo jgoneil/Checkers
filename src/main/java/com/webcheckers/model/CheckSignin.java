@@ -17,7 +17,7 @@ public class CheckSignin {
    * @return boolean true/false based on if the player entered information is valid or not
    */
   public boolean validateUser(String input, List<Player> users) {
-    String username = input.toLowerCase();
+    String username = input.toLowerCase().trim();
     for (Player user : users) {
       if (username.equals(user.getName().toLowerCase())) {
         return false;
