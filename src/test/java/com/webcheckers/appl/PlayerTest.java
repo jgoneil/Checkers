@@ -7,11 +7,13 @@ import static org.mockito.Mockito.mock;
 import com.webcheckers.model.ModelBoard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 /**
  * Test Class for Player
  */
+@Tag("Application-tier")
 public class PlayerTest {
 
   private Player player1;
