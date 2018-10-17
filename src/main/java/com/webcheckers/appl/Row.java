@@ -26,17 +26,20 @@ public class Row implements Iterable {
 
   /**
    * Fills the arrayList of rows for the row being created
+   *
    * @param length the length of the side of the board
    * @param color the color of the Player the row is being created for
    */
   private void fillRow(int length, String color) {
     for (int i = 0; i < length; i++) {
       if (color.equals("red")) {
+        //Checking to see if a space should be white or not
         if ((this.index + i) % 2 == 0) {
           row.add(new Space(this.index, i, Space.Color.WHITE));
         } else {
           Space space = new Space(this.index, i, Space.Color.BLACK);
           row.add(space);
+          //Checking to see if a space should be occupied or not
           if (this.index >= 5 && this.index <= 7) {
             space.occupy(new Piece("red", space));
           } else if (this.index >= 0 && this.index <= 2) {
@@ -44,11 +47,13 @@ public class Row implements Iterable {
           }
         }
       } else {
+        //Checking to see if a space should be white or not
         if ((this.index + i) % 2 == 0) {
           row.add(new Space(this.index, i, Space.Color.WHITE));
         } else {
           Space space = new Space(this.index, i, Space.Color.BLACK);
           row.add(space);
+          //Checks to see if a space should be occupied or not
           if (this.index >= 5 && this.index <= 7) {
             space.occupy(new Piece("white", space));
           } else if (this.index >= 0 && this.index <= 2) {

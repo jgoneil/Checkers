@@ -25,6 +25,7 @@ public class PostMoveCheck implements Route {
 
   /**
    * Main method for POST check of a valid move
+   * @param gson the gson parser for JQuery Requests/Responses
    */
   public PostMoveCheck(final Gson gson) {
 

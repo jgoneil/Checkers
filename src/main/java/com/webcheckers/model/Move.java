@@ -8,6 +8,12 @@ public class Move {
   private Position start;
   private Position end;
 
+  /**
+   * Constructor to create a new move
+   *
+   * @param start the position where the piece is currently at
+   * @param end the position where the piece is attempting to move to
+   */
   public Move(Position start, Position end) {
     this.start = start;
     this.end = end;

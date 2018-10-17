@@ -8,6 +8,12 @@ public class Position {
   private int row;
   private int cell;
 
+  /**
+   * Constructor for the location of a position
+   *
+   * @param row the x-coordinate of the position
+   * @param cell the y-coordinate of the position
+   */
   public Position(int row, int cell) {
     this.row = row;
     this.cell = cell;

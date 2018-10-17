@@ -16,7 +16,7 @@ import static spark.Spark.halt;
 import com.webcheckers.appl.Users;
 import com.webcheckers.appl.Player;
 
-/*
+/**
  * This is {@code POST /signin } route handler. Handles user signin.
  * Checks user input to ensure the username is not already in use
  */
@@ -33,8 +33,9 @@ public class PostSignInRoute implements Route {
   private final Users users;
   private Player player;
 
-  /*
+  /**
    * Constructor for class. Ensures both parameters are included in the declaration for use
+   *
    * @param templateEngine the formatting definition for spark to java messaging
    * @param users the class holding all of the currently connected users
    */
@@ -47,9 +48,10 @@ public class PostSignInRoute implements Route {
     this.users = users;
   }
 
-  /*
+  /**
    * Main connection for users attempting to sign in
    * Handles error checking on input to ensure validity and that the input follows guidelines
+   *
    * @param request the messages coming from the from the frontend
    * @param response the messages the backend (this class) are responding with
    * @return the rendered view page for the user

@@ -10,6 +10,14 @@ public class Space {
   private Color color;
   private boolean occupied;
   private Piece piece;
+
+  /**
+   * Enum for the color of the space (white/black)
+   */
+  public enum Color {
+    BLACK, WHITE
+  }
+
   /**
    * Constructor for the space on the game board
    *
@@ -92,9 +100,5 @@ public class Space {
    */
   public boolean isValid() {
     return this.piece == null && this.color == Color.BLACK;
-  }
-
-  public enum Color {
-    BLACK, WHITE
   }
 }

@@ -27,6 +27,7 @@ public class BoardView implements Iterable {
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();
     this.redTurn = true;
+    //Generating the rows for the board
     for (int i = 0; i < length; i++) {
       Row row = new Row(i, length, color);
       board.add(row);

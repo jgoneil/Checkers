@@ -21,16 +21,20 @@ public class ModelBoard {
    * @param length the lenght of the sides of the board (assuming its a square)
    */
   public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
+    //Setting constants
     this.board = new Space[length][length];
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
+    //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
+        //Checking to see if the space should be white or not
         if (i + j % 2 == 0) {
           board[i][j] = new Space(i, j, Space.Color.WHITE);
         } else {
           Space space = new Space(i, j, Space.Color.BLACK);
           board[i][j] = space;
+          //completing a check to see if a piece should be added to the space (space must be black for this to happen)
           if (i >= 0 && i <= 2) {
             space.occupy(new Piece("white", space));
           } else if (i >= 5 && i <= 7) {
