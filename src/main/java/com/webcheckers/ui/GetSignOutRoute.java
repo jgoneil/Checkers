@@ -17,19 +17,13 @@ import com.webcheckers.appl.Users;
 import com.webcheckers.appl.Player;
 
 /**
- * This is {@code DELETE /signOut } route handler. Handles user signin.
- * Logs user out of the game lobby and returns them to the home screen.
+ * This is {@code GETE /signout } route handler. Handles user signout. Logs user out of the game
+ * lobby and returns them to the home screen.
  */
 public class GetSignOutRoute implements Route {
 
-  static final String VIEW_NAME = "home.ftl";
-  static final String REVERT_VIEW = "signin.ftl";
-  static final String USER_PARAM = "username";
-  static final String PLAYER = "player";
-
   private final TemplateEngine templateEngine;
   private final Users users;
-  private Player player;
 
   /**
    * Constructor for class. Ensures both parameters are included in the declaration for use
@@ -50,24 +44,22 @@ public class GetSignOutRoute implements Route {
    * Main connection for users attempting to sign out
    *
    * Remove player information from game and redirects to home
+   *
    * @param request the messages coming from the from the frontend
    * @param response the messages the backend (this class) are responding with
-   * @return the rendered view page for the user
+   * @return null
    */
   @Override
   public String handle(Request request, Response response) {
-    final Map<String, Object> vm = new HashMap<>();
     final Session httpSession = request.session();
 
     if (httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY) != null) {
-      ModelAndView mv;
-
-      player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+      Player player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
       users.removeUser(player.getName());
       httpSession.removeAttribute(GetHomeRoute.PLAYERSERVICES_KEY);
       response.redirect(WebServer.HOME_URL);
-        return null;
-      } else {
+      return null;
+    } else {
       response.redirect(WebServer.HOME_URL);
       halt();
       return null;
