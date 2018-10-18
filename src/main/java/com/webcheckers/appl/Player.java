@@ -11,7 +11,7 @@ public class Player {
   private String color;
   private BoardView boardView;
   private ModelBoard modelBoard;
-
+  private boolean hasMoved;
   /**
    * Constructor for player class
    *
@@ -19,6 +19,7 @@ public class Player {
    */
   public Player(String username) {
     this.username = username;
+    this.hasMoved = false;
   }
 
   /**
@@ -87,6 +88,14 @@ public class Player {
    */
   public ModelBoard getModelBoard() {
     return this.modelBoard;
+  }
+
+  public void setHasMoved(boolean hasMoved){
+    this.hasMoved = hasMoved;
+  }
+
+  public boolean getHasMoved(){
+    return hasMoved;
   }
 
   /**

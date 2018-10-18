@@ -17,6 +17,7 @@ import com.webcheckers.appl.Player;
 import com.webcheckers.model.ModelBoard;
 
 import static spark.Spark.halt;
+import static spark.Spark.threadPool;
 
 /**
  * UI class that handles all HTTP requests for the /game page
@@ -57,6 +58,7 @@ public class GetGameRoute implements Route {
   public Object handle(Request request, Response response) {
     Session httpSession = request.session();
     this.currentPlayer = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    this.currentPlayer.setHasMoved(false);
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 

@@ -19,6 +19,7 @@ import com.webcheckers.model.CheckMove;
 public class PostMoveCheck implements Route {
 
   private static final String MOVE = "move";
+  private static final String HAS_MOVED = "has_moved";
   private final Gson gson;
   private Player player;
   private CheckMove checkMove;
@@ -55,14 +56,20 @@ public class PostMoveCheck implements Route {
     String customJson = request.body();
     Move move = gson.fromJson(customJson, Move.class);
 
-    Map<Boolean, String> resultFromCheck = this.checkMove
-        .validateMove(move.getStart(), move.getEnd());
 
-    if (resultFromCheck.containsKey(true)) {
-      Message message = new Message(Message.Type.info, resultFromCheck.get(true));
-      return gson.toJson(message);
+    if (!player.getHasMoved()) {
+      Map<Boolean, String> resultFromCheck = this.checkMove
+          .validateMove(move.getStart(), move.getEnd());
+      if (resultFromCheck.containsKey(true)) {
+        player.setHasMoved(true);
+        Message message = new Message(Message.Type.info, resultFromCheck.get(true));
+        return gson.toJson(message);
+      } else {
+        Message message = new Message(Message.Type.error, resultFromCheck.get(false));
+        return gson.toJson(message);
+      }
     } else {
-      Message message = new Message(Message.Type.error, resultFromCheck.get(false));
+      Message message = new Message(Message.Type.error, "Can only do one move per turn");
       return gson.toJson(message);
     }
   }
