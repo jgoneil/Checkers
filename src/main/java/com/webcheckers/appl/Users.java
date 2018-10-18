@@ -9,8 +9,11 @@ import com.webcheckers.appl.Player;
  */
 public class Users {
 
+  //The function for checking if user input for a username is valid
   private CheckSignin checkSignin;
+  //The list of players currently in the game
   private List<Player> users;
+  //The list of usernames for the players signed into the game
   private List<String> usernames;
 
   /**

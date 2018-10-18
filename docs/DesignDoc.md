@@ -9,16 +9,19 @@ geometry: margin=1in
 > and appear in the generated PDF in italics._
 
 ## Team Information
-* Team name: TEAMNAME
+* Team name: Team C
 * Team members
-  * MEMBER1
-  * MEMBER2
-  * MEMBER3
-  * MEMBER4
+  * Cole Melfi
+  * Jake O'Neil
+  * Scott Frauenknecht
+  * Patrick Swink
+  * Pedro Breton
 
 ## Executive Summary
 
-This is a summary of the project.
+This project focuses on the design, development, and maintenance of Software Applications. In order to do this, an online version of the popular board game checkers is created.
+For this application, players are required to sign into the system and then can select from a lobby of users an opponent for a match.
+When a match starts, the game is played using the American rules with the red player going first. Players can forefit the game at any point along with signout from the system at any point.
 
 ### Purpose
 > _Provide a very brief statement about the project and the most
@@ -54,12 +57,10 @@ This section describes the features of the application.
 
 This section describes the application domain.
 
-![The WebCheckers Domain Model](domain-model-placeholder.png)
+![The WebCheckers Domain Model](SWEN-261 Domain Model Diagram.png)
 
-> _Provide a high-level overview of the domain for this application. You
-> can discuss the more important domain entities and their relationship
-> to each other._
-
+The domain model for this project centers around players who sign into the application to play games of checkers against one another. 
+Each game of checkers is played on a board complete with two different colored spaces and pieces. 
 
 ## Architecture and Design
 
@@ -87,11 +88,11 @@ Details of the components within these tiers are supplied below.
 This section describes the web interface flow; this is how the user views and interacts
 with the WebCheckers application.
 
-![The WebCheckers Web Interface Statechart](web-interface-placeholder.png)
+![The WebCheckers Web Interface Statechart](Web Interface swen-261.png)
 
-> _Provide a summary of the application's user interface.  Describe, from
-> the user's perspective, the flow of the pages in the web application._
-
+The Web Interface Statechart defines the connection routes for the system. Players connect to the game and are directed to the home screen to begin.
+Players then have the option to sign into the system and play games of checkers against other signed in players.
+Throughout the game, the system is constantly updating to validate moves, complete piece movements, and switch turns until a pair of players complete the game via forfeit or win/loss.
 
 ### UI Tier
 > _Provide a summary of the Server-side UI tier of your architecture.

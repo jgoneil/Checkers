@@ -58,6 +58,7 @@ public class WebServer {
   public static final String GAME_URL = "/game";
   public static final String CHECK_TURN = "/checkTurn";
   public static final String VALIDATE_MOVE = "/validateMove";
+  public static final String RESIGN_GAME = "/resignGame";
   private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
 
   //
@@ -154,6 +155,8 @@ public class WebServer {
     post(CHECK_TURN, new PostTurnCheck(gson));
 
     post(VALIDATE_MOVE, new PostMoveCheck(gson));
+
+    post(RESIGN_GAME, new PostResignGame(gson));
 
     //
     LOG.config("WebServer is initialized.");

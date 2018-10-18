@@ -11,11 +11,14 @@ import com.webcheckers.appl.BoardView;
 
 import java.util.Objects;
 
+import static spark.Spark.halt;
+
 /**
  * The UI Controller for handling the refresh to check the player turn
  */
 public class PostTurnCheck implements Route {
 
+  //Gson engine for receiving/sending JSON information
   private final Gson gson;
 
   /**
@@ -31,7 +34,7 @@ public class PostTurnCheck implements Route {
   }
 
   /**
-   * Method to render AJAX response via gson for {@code POST /checkturn}
+   * Method to render AJAX response via gson for {@code POST /checkTurn}
    *
    * @param request the HTTP request
    * @param response the HTTP response
@@ -59,7 +62,8 @@ public class PostTurnCheck implements Route {
           return gson.toJson(new Message(Message.Type.info, "true"));
         }
       }
+    } else {
+      return gson.toJson(new Message(Message.Type.info, "true"));
     }
-    return null;
   }
 }

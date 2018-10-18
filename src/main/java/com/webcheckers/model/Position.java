@@ -5,7 +5,9 @@ package com.webcheckers.model;
  */
 public class Position {
 
+  //The x-coordinate of the position
   private int row;
+  //The y-coordinate of the position
   private int cell;
 
   /**

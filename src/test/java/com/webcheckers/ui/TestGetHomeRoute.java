@@ -14,11 +14,10 @@ import spark.*;
 
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Users;
-;
 import java.util.logging.Logger;
 
 @Tag("UI-tier")
-public class TestGetHomeRoute {
+class TestGetHomeRoute {
 
   private GetHomeRoute CuT;
   private static final Player NO_PLAYER = null;
@@ -151,7 +150,7 @@ public class TestGetHomeRoute {
 
     testHelper.assertViewModelAttribute("title", "Welcome!");
     testHelper.assertViewModelAttribute(GetHomeRoute.SIGNEDIN, false);
-    testHelper.assertViewModelAttribute("message", true);
+    testHelper.assertViewModelAttribute("message", MESSAGE);
   }
 
   @Test

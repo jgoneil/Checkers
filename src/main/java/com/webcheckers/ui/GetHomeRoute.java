@@ -23,14 +23,21 @@ import static spark.Spark.halt;
  */
 public class GetHomeRoute implements Route {
 
+  //Static final variables (Constants)
   static final String USERS = "users";
   static final String USER = "user";
   static final String SIGNEDIN = "signedin";
   static final String ONLY_ONE = "onlyOne";
   static final String PLAYERSERVICES_KEY = "playerServices";
+
+  //The logger for the system messages
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+
+  //The HTML template for rendering the freemarker pages
   private final TemplateEngine templateEngine;
+  //The users connected to the system
   private final Users users;
+  //The player signed into the game
   private Player player;
 
   /**
@@ -69,7 +76,7 @@ public class GetHomeRoute implements Route {
     vm.put("title", "Welcome!");
 
     if (httpSession.attribute("message") != null) {
-      vm.put("message", true);
+      vm.put("message", httpSession.attribute("message"));
       httpSession.removeAttribute("message");
     }
 
@@ -83,7 +90,7 @@ public class GetHomeRoute implements Route {
       vm.put(USER, player.getName());
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     } else if (player.getBoardView() != null) {
-      response.redirect("/game");
+      response.redirect(WebServer.GAME_URL);
       halt();
       return null;
     } else {

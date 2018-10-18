@@ -8,9 +8,12 @@ import java.util.Iterator;
  */
 public class BoardView implements Iterable {
 
+  //Players for the current game view
   private Player redPlayer;
   private Player whitePlayer;
+  //The list of rows for the board view
   private ArrayList<Row> board;
+  //Check to see if the turn is currently the red player's turn or not
   private boolean redTurn;
 
   /**

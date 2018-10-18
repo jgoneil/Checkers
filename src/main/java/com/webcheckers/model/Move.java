@@ -5,7 +5,9 @@ package com.webcheckers.model;
  */
 public class Move {
 
+  //The starting location of a piece attempting to move
   private Position start;
+  //The goal location that a piece is attempting to move to
   private Position end;
 
   /**

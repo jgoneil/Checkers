@@ -5,7 +5,9 @@ package com.webcheckers.model;
  */
 public class Message {
 
+  //The text included in the message
   private String text;
+  //The type of message being sent back to the frontend
   private Type type;
 
   /**
