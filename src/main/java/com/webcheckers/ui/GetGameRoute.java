@@ -6,6 +6,7 @@ import java.util.Objects;
 
 
 import com.webcheckers.appl.BoardView;
+import com.webcheckers.model.Message;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -70,11 +71,16 @@ public class GetGameRoute implements Route {
 
     if (httpSession.attribute(BOARD) == null && !currentPlayer.inGame()) {
 
+      if(request.queryParams().size() == 0) {
+        response.redirect(WebServer.HOME_URL);
+        halt();
+        return null;
+      }
       Object[] playerTwo = request.queryParams().toArray();
       Player player2 = users.getSpecificPlayer(playerTwo[0].toString());
 
       if (player2.inGame()) {
-        httpSession.attribute("message", true);
+        httpSession.attribute("message", new Message(Message.Type.error, "Player already in game!"));
         response.redirect(WebServer.HOME_URL);
         halt();
         return null;
@@ -114,8 +120,29 @@ public class GetGameRoute implements Route {
       }
       vm.put("board", this.boardView);
       return templateEngine.render(new ModelAndView(vm, VIEW));
+    } else if (httpSession.attribute(BOARD) != null && !currentPlayer.inGame()) {
+      if (boardView != httpSession.attribute(BOARD)) {
+        boardView = httpSession.attribute(BOARD);
+      }
+      vm.put("currentPlayer", currentPlayer);
+      vm.put("currentPlayer", currentPlayer);
+      vm.put("viewMode", "PLAY");
+      vm.put("redPlayer", this.boardView.getRedPlayer());
+      vm.put("whitePlayer", this.boardView.getWhitePlayer());
+      if (boardView.redTurn()) {
+        vm.put("activeColor", "RED");
+      } else {
+        vm.put("activeColor", "WHITE");
+      }
+      vm.put("message", new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
+      vm.put("board", httpSession.attribute(BOARD));
+      httpSession.removeAttribute(BOARD);
+      httpSession.removeAttribute(MODEL_BOARD);
+      httpSession.attribute("message", new Message(Message.Type.info, "You win!")); 
+      this.boardView = null;
+      return templateEngine.render(new ModelAndView(vm, VIEW));
     } else {
-      if(this.boardView != httpSession.attribute(BOARD)) {
+      if (this.boardView != httpSession.attribute(BOARD)) {
         this.boardView = httpSession.attribute(BOARD);
       }
       vm.put("currentPlayer", currentPlayer);

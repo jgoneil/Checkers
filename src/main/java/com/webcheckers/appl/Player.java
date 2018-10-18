@@ -15,6 +15,7 @@ public class Player {
   private BoardView boardView;
   //The Model board that holds the logic for the game (oriented towards the red player)
   private ModelBoard modelBoard;
+  //Keeps track if a player made a move on their turn or not
   private boolean hasMoved;
 
   /**
@@ -95,20 +96,33 @@ public class Player {
     return this.modelBoard;
   }
 
+
   /**
-   * Getter for move status
-   * @return Boolean corresponding to whether or no player has made a move
+   * Setter for when a player has or hasn't made a move on the turn
+   * @param hasMoved Boolean for new move status
    */
-  public boolean getHasMoved() {
-    return hasMoved;
+   */
+  public void setHasMoved(boolean moveStatus) {
+    this.hasMoved = moveStatus;
   }
 
   /**
-   * Setter for move status
-   * @param hasMoved Boolean for new move status
+   * Getter for if a player has made a move on their current turn or not
+   *
+   * @return a boolean condition based on if the player has made a move or not
    */
-  public void setHasMoved(boolean hasMoved) {
-    this.hasMoved = hasMoved;
+  public boolean getHasMoved() {
+    return this.hasMoved;
+  }
+
+  /**
+   * Removes all game elements upon a player win/loss or player forfeit
+   */
+  public void gameEnd() {
+    this.boardView = null;
+    this.modelBoard = null;
+    this.color = null;
+    this.hasMoved = false;
   }
 
   /**

@@ -21,7 +21,7 @@
     
     <div class="body">
       <#if message??>
-        <p class="error">Player currently in game. Please select a different player.</p>
+          <div id="message" class="${message.type}">${message.text}</div>
       </#if>
       <p>Welcome to the world of online Checkers.</p>
 
