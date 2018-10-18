@@ -4,12 +4,12 @@ import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Users;
 
+import com.webcheckers.model.Message;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import static org.junit.jupiter.api.Assertions.*;
 
-import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,6 +52,20 @@ class TestGetGameRoute {
     users = new Users();
 
     CuT = new GetGameRoute(templateEngine, users);
+  }
+
+  @Test
+  void notInGame() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    //Invoke Testing and Ensure Redirect
+    try {
+      CuT.handle(request, response);
+    } catch (HaltException e) {
+      assertNotNull(e);
+    }
   }
 
   @Test 
@@ -107,7 +121,7 @@ class TestGetGameRoute {
   }
 
   @Test 
-  void reloadSameGame() {
+  void reloadSameGameRedPlayer() {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
     users.addPlayer(whitePlayer.getName());
     users.addPlayer(redPlayer.getName());
@@ -129,6 +143,58 @@ class TestGetGameRoute {
     testHelper.assertViewModelAttribute("title", "Welcome!");
     testHelper.assertViewModelAttribute("viewMode", "PLAY");
     testHelper.assertViewModelAttribute("whitePlayer", whitePlayer);
+    testHelper.assertViewModelAttribute("activeColor", "RED");
+  }
+
+  @Test
+  void reloadSameGameWhitePlayer() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
+    users.addPlayer(whitePlayer.getName());
+    users.addPlayer(redPlayer.getName());
+    BoardView boardView = new BoardView(users.getSpecificPlayer(redPlayer.getName()),
+            users.getSpecificPlayer(whitePlayer.getName()), 8, "white");
+    redPlayer.setColor("red", boardView);
+    whitePlayer.setColor("white", boardView);
+    boardView.turnEnded();
+    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    //Invoke Testing
+    CuT.handle(request, response);
+
+    //Ensure results
+    testHelper.assertViewModelExists();
+    testHelper.assertViewModelIsaMap();
+
+    testHelper.assertViewModelAttribute("title", "Welcome!");
+    testHelper.assertViewModelAttribute("viewMode", "PLAY");
+    testHelper.assertViewModelAttribute("whitePlayer", whitePlayer);
+    testHelper.assertViewModelAttribute("activeColor", "WHITE");
+  }
+
+  @Test
+  void otherPlayerResigned() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
+    users.addPlayer(whitePlayer.getName());
+    users.addPlayer(redPlayer.getName());
+    BoardView boardView = new BoardView(users.getSpecificPlayer(redPlayer.getName()),
+            users.getSpecificPlayer(whitePlayer.getName()), 8, "red");
+    Set<String> players = new HashSet<>();
+    players.add(redPlayer.getName());
+    when(request.queryParams()).thenReturn(players);
+    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    //Invoking Test
+    CuT.handle(request, response);
+    testHelper.assertViewModelExists();
+    testHelper.assertViewModelIsaMap();
+
+    testHelper.assertViewModelAttribute("title", "Welcome!");
+    testHelper.assertViewModelAttribute("viewMode", "PLAY");
+    testHelper.assertViewModelAttribute("redPlayer", redPlayer);
     testHelper.assertViewModelAttribute("activeColor", "RED");
   }
 
