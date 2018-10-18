@@ -9,8 +9,11 @@ import com.webcheckers.appl.Piece;
  */
 public class ModelBoard {
 
+  //The 2-D array holding the spaces on the board
   private Space[][] board;
+  //The red player for the game
   private Player redPlayer;
+  //The white player for the game
   private Player whitePlayer;
 
   /**

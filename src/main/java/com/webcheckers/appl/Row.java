@@ -8,7 +8,9 @@ import java.util.Iterator;
  */
 public class Row implements Iterable {
 
+  //The list of spaces that make up the row
   private ArrayList<Space> row;
+  //The index location of where on the board the row is
   private int index;
 
   /**

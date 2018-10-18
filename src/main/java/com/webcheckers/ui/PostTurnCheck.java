@@ -16,6 +16,7 @@ import java.util.Objects;
  */
 public class PostTurnCheck implements Route {
 
+  //Gson engine for receiving/sending JSON information
   private final Gson gson;
 
   /**
