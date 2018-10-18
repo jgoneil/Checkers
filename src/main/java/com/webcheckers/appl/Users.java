@@ -85,4 +85,9 @@ public class Users {
     }
     return playerNames;
   }
+
+  public void removeUser(String username){
+    users.remove(getSpecificPlayer(username));
+    usernames.remove(username);
+  }
 }
