@@ -18,19 +18,20 @@ public class CheckSignin {
    */
   public boolean validateUser(String input, List<Player> users) {
     String username = input.toLowerCase().trim();
+    //Checking to make sure the username is not already in the system
     for (Player user : users) {
       if (username.equals(user.getName().toLowerCase())) {
         return false;
       }
     }
+    //Checking to make sure the username is not empty
     if (username.equals("")) {
-      return false;
-    } else if (username.length() >= 18) {
       return false;
     } else {
       int spaces = 0;
       for (int i = 0; i < username.length(); i++) {
         int c = username.charAt(i);
+        //Checking to make sure each entered letter is a character, number, or space
         if (!((65 <= c && c <= 90) || (97 <= c && c <= 122) || c == 32 ||
             (48 <= c && c <= 57))) {
           return false;
@@ -39,6 +40,7 @@ public class CheckSignin {
           spaces++;
         }
       }
+      //Checking to see if the amount of spaces is equal to the whole length of the username
       if (spaces == username.length()) {
         return false;
       }
