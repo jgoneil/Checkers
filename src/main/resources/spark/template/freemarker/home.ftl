@@ -14,6 +14,8 @@
       <a href="/">my home</a>
       <#if !signedin>
         <a href="/signin" class="tab">Sign in</a>
+      <#else>
+        <a href="/signout">sign out[${user}]</a>
       </#if>
     </div>
     
