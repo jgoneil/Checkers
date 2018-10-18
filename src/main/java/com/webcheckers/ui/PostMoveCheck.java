@@ -19,7 +19,6 @@ import com.webcheckers.model.CheckMove;
 public class PostMoveCheck implements Route {
 
   private static final String MOVE = "move";
-  private static final String HAS_MOVED = "has_moved";
   private final Gson gson;
   private Player player;
   private CheckMove checkMove;

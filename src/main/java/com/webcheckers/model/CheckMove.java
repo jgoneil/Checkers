@@ -21,11 +21,10 @@ public class CheckMove {
   }
 
   /**
-   * Checks to see if the distance for the column or row is too large
-   *
-   * @param start the starting position of the checker
+   * Checks if the piece is moving diagonally
+    * @param start the starting position of the checker
    * @param end the ending position of the checker
-   * @return true/false based on if the distance is too large or not
+   * @return true/false based on whether the move is diagonal
    */
   private boolean isMovingDiagonal(Position start, Position end) {
     int xDiff = Math.abs(start.getRow() - end.getRow());
@@ -33,12 +32,26 @@ public class CheckMove {
     return xDiff == yDiff;
   }
 
+  /**
+   * Checks to see if the distance for the column or row is too large
+   *
+   * @param start the starting position of the checker
+   * @param end the ending position of the checker
+   * @return true/false based on if the distance is too large or not
+   */
   private boolean isMovingOne(Position start, Position end) {
     int xDiff = Math.abs(start.getRow() - end.getRow());
     int yDiff = Math.abs(start.getCell() - end.getCell());
     return xDiff == 1 && yDiff == 1;
   }
 
+  /**
+   * Check to see if checker is moving forward
+   *
+   * @param start the starting position of the checker
+   * @param end the ending position of the checker
+   * @return true/false based on whether checker is moving forward
+   */
   private boolean isMovingForward(Position start, Position end) {
     return end.getRow() < start.getRow();
   }

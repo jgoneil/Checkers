@@ -91,10 +91,18 @@ public class Player {
     return this.modelBoard;
   }
 
+  /**
+   * Getter for move status
+   * @return Boolean corresponding to whether or no player has made a move
+   */
   public boolean getHasMoved() {
     return hasMoved;
   }
 
+  /**
+   * Setter for move status
+   * @param hasMoved Boolean for new move status
+   */
   public void setHasMoved(boolean hasMoved) {
     this.hasMoved = hasMoved;
   }
