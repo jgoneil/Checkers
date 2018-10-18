@@ -133,6 +133,7 @@ public class GetGameRoute implements Route {
       vm.put("board", httpSession.attribute(BOARD));
       httpSession.removeAttribute(BOARD);
       httpSession.removeAttribute(MODEL_BOARD);
+      httpSession.attribute("message", new Message(Message.Type.info, "You win!")); 
       this.boardView = null;
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else {
