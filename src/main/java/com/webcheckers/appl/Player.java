@@ -101,7 +101,6 @@ public class Player {
    * Setter for when a player has or hasn't made a move on the turn
    * @param hasMoved Boolean for new move status
    */
-   */
   public void setHasMoved(boolean moveStatus) {
     this.hasMoved = moveStatus;
   }
