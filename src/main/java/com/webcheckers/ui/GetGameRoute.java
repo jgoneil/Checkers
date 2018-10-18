@@ -24,14 +24,20 @@ import static spark.Spark.threadPool;
  */
 public class GetGameRoute implements Route {
 
+  //The template engine for rendering the freemarker html page
+  private TemplateEngine templateEngine;
+  //The player currently interacting with the game backend
+  private Player currentPlayer;
+  //The view for the player interacting with the backend (oriented at them)
+  private BoardView boardView;
+  //The users connected to the system
+  private Users users;
+
+  //Static final variables (Constants)
+  public static final String BOARD = "boardView";
   public static final String VIEW = "game.ftl";
   public static final String MODEL_BOARD = "modelBoard";
-  private final int LENGTH = 8;
-  private TemplateEngine templateEngine;
-  private Player currentPlayer;
-  private BoardView boardView;
-  private Users users;
-  private String BOARD = "boardView";
+  private static final int LENGTH = 8;
 
   /**
    * Creates a spark route that handles all {@code Get /game} HTTP requests
@@ -69,7 +75,7 @@ public class GetGameRoute implements Route {
 
       if (player2.inGame()) {
         httpSession.attribute("message", true);
-        response.redirect("/");
+        response.redirect(WebServer.HOME_URL);
         halt();
         return null;
       }
@@ -109,6 +115,9 @@ public class GetGameRoute implements Route {
       vm.put("board", this.boardView);
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else {
+      if(this.boardView != httpSession.attribute(BOARD)) {
+        this.boardView = httpSession.attribute(BOARD);
+      }
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", this.boardView.getRedPlayer());

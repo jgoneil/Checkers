@@ -5,10 +5,15 @@ package com.webcheckers.appl;
  */
 public class Space {
 
+  //The column that the space is located at
   private int cellIdx;
+  //The row that the space is located at
   private int xCoordinate;
+  //The color of the space
   private Color color;
+  //Boolean condition based on if the space is occupied or not
   private boolean occupied;
+  //The piece occupying the space or null if no piece is currently occupying the space
   private Piece piece;
 
   /**

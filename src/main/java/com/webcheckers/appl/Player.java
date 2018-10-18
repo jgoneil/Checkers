@@ -7,9 +7,13 @@ import com.webcheckers.model.ModelBoard;
  */
 public class Player {
 
+  //The username that has been validated by the system after being inputted by the user
   private String username;
+  //The color on the game board that the player is
   private String color;
+  //The Application board that the player sees (oriented towards them)
   private BoardView boardView;
+  //The Model board that holds the logic for the game (oriented towards the red player)
   private ModelBoard modelBoard;
   private boolean hasMoved;
 

@@ -18,9 +18,14 @@ import com.webcheckers.model.CheckMove;
  */
 public class PostMoveCheck implements Route {
 
+  //Static final variables (constant)
   private static final String MOVE = "move";
+
+  //Gson controller for reading and sending JSON information
   private final Gson gson;
+  //The player moving the piece
   private Player player;
+  //The model method for verifying the move
   private CheckMove checkMove;
 
   /**

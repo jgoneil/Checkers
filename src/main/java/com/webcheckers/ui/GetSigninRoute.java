@@ -17,11 +17,16 @@ import spark.TemplateEngine;
  */
 public class GetSigninRoute implements Route {
 
+  //Static final variables (Constants)
   static final String TITLE = "Welcome!";
   static final String HEADER = "Please Sign In Below.";
   static final String VIEW_NAME = "signin.ftl";
   static final String ATTEMPT_FAILED = "attemptFailed";
+
+  //Logger for recording events
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
+
+  //HTML template loader for the freemarker pages
   private TemplateEngine templateEngine;
 
   /**

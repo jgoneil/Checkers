@@ -9,6 +9,7 @@ import java.util.HashMap;
  */
 public class CheckMove {
 
+  //The board holding the logic for checking if a piece is valid or not (the model board)
   private ModelBoard board;
 
   /**
