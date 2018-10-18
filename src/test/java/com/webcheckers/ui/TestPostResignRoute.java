@@ -49,7 +49,7 @@ class TestPostResignRoute {
 
   @Test
   void playerAlreadyMovedPiece() {
-    playerOne.madeTurn();
+    playerOne.setHasMoved(true);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
