@@ -12,6 +12,7 @@ public class Player {
   private BoardView boardView;
   private ModelBoard modelBoard;
   private boolean hasMoved;
+
   /**
    * Constructor for player class
    *
@@ -90,12 +91,12 @@ public class Player {
     return this.modelBoard;
   }
 
-  public void setHasMoved(boolean hasMoved){
-    this.hasMoved = hasMoved;
+  public boolean getHasMoved() {
+    return hasMoved;
   }
 
-  public boolean getHasMoved(){
-    return hasMoved;
+  public void setHasMoved(boolean hasMoved) {
+    this.hasMoved = hasMoved;
   }
 
   /**

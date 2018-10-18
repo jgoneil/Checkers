@@ -39,10 +39,9 @@ public class CheckMove {
     return xDiff == 1 && yDiff == 1;
   }
 
-  private boolean isMovingForward(Position start, Position end){
-    return end.getRow()<start.getRow();
+  private boolean isMovingForward(Position start, Position end) {
+    return end.getRow() < start.getRow();
   }
-
 
 
   /**
@@ -64,7 +63,7 @@ public class CheckMove {
       response.put(false, "Attempted to move piece too far.");
     } else if (!isMovingDiagonal(start, target)) {
       response.put(false, "Pieces can only move diagonally.");
-    } else if (!isMovingForward(start, target)){
+    } else if (!isMovingForward(start, target)) {
       response.put(false, "Piece can only move forward");
     } else {
 
