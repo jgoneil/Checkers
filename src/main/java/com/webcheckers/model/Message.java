@@ -5,10 +5,23 @@ package com.webcheckers.model;
  */
 public class Message {
 
+  //The text included in the message
   private String text;
+  //The type of message being sent back to the frontend
   private Type type;
+
+  /**
+   * Enum for the message type
+   */
+  public enum Type {
+    error, info
+  }
+
   /**
    * Constructor to create a new message for the game
+   *
+   * @param message the message going to the system
+   * @param messageType the type of the message response
    */
   public Message(Type messageType, String message) {
     this.type = messageType;
@@ -31,9 +44,5 @@ public class Message {
    */
   public String getText() {
     return this.text;
-  }
-
-  public enum Type {
-    error, info
   }
 }

@@ -5,9 +5,27 @@ package com.webcheckers.appl;
  */
 public class Piece {
 
+  //The space the piece is occupying
   private Space loc;
+  //The color of the piece
   private Color color;
+  //The type that the piece is
   private Type type;
+
+  /**
+   * Enum for the color of the piece (red/white)
+   */
+  public enum Color {
+    RED, WHITE
+  }
+
+  /**
+   * Enum for the type of the piece (King/Single)
+   */
+  public enum Type {
+    SINGLE, KING
+  }
+
   /**
    * Constructor for the piece class
    *
@@ -56,13 +74,5 @@ public class Piece {
    */
   public Color getColor() {
     return this.color;
-  }
-
-  public enum Color {
-    RED, WHITE
-  }
-
-  public enum Type {
-    SINGLE, KING
   }
 }

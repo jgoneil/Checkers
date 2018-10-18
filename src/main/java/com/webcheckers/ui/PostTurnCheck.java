@@ -16,10 +16,13 @@ import java.util.Objects;
  */
 public class PostTurnCheck implements Route {
 
+  //Gson engine for receiving/sending JSON information
   private final Gson gson;
 
   /**
    * Main method for POST check of turn
+   *
+   * @param gson the json system for handling JQuery response/request methods
    */
   public PostTurnCheck(final Gson gson) {
 
@@ -58,6 +61,6 @@ public class PostTurnCheck implements Route {
         }
       }
     }
-    return "";
+    return null;
   }
 }

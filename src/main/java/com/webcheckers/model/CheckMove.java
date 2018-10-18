@@ -1,6 +1,5 @@
 package com.webcheckers.model;
 
-import com.webcheckers.appl.Piece;
 import com.webcheckers.appl.Space;
 import java.util.Map;
 import java.util.HashMap;
@@ -10,6 +9,7 @@ import java.util.HashMap;
  */
 public class CheckMove {
 
+  //The board holding the logic for checking if a piece is valid or not (the model board)
   private ModelBoard board;
 
   /**
@@ -23,6 +23,7 @@ public class CheckMove {
 
   /**
    * Checks to see if the distance for the column or row is too large
+   *
    * @param start the starting position of the checker
    * @param end the ending position of the checker
    * @return true/false based on if the distance is too large or not

@@ -18,13 +18,19 @@ import com.webcheckers.model.CheckMove;
  */
 public class PostMoveCheck implements Route {
 
+  //Static final variables (constant)
   private static final String MOVE = "move";
+
+  //Gson controller for reading and sending JSON information
   private final Gson gson;
+  //The player moving the piece
   private Player player;
+  //The model method for verifying the move
   private CheckMove checkMove;
 
   /**
    * Main method for POST check of a valid move
+   * @param gson the gson parser for JQuery Requests/Responses
    */
   public PostMoveCheck(final Gson gson) {
 
