@@ -27,8 +27,6 @@ public class CheckSignin {
     //Checking to make sure the username is not empty
     if (username.equals("")) {
       return false;
-    } else if (username.length() >= 18) { //Checking length of username to make sure its not more than 18 characters
-      return false;
     } else {
       int spaces = 0;
       for (int i = 0; i < username.length(); i++) {
