@@ -16,7 +16,7 @@ public class Player {
   //The Model board that holds the logic for the game (oriented towards the red player)
   private ModelBoard modelBoard;
   //Keeps track if a player made a move on their turn or not
-  private Boolean madeMove;
+  private Boolean hasMoved;
 
   /**
    * Constructor for player class
@@ -25,7 +25,7 @@ public class Player {
    */
   public Player(String username) {
     this.username = username;
-    this.madeMove = false;
+    this.hasMoved = false;
   }
 
   /**
@@ -99,8 +99,8 @@ public class Player {
   /**
    * Setter for when a player has or hasn't made a move on the turn
    */
-  public void madeTurn() {
-    this.madeMove = !madeMove;
+  public void setHasMoved(boolean moveStatus) {
+    this.hasMoved = moveStatus;
   }
 
   /**
@@ -108,8 +108,8 @@ public class Player {
    *
    * @return a boolean condition based on if the player has made a move or not
    */
-  public boolean madeMove() {
-    return this.madeMove;
+  public boolean getHasMoved() {
+    return this.hasMoved;
   }
 
   /**
@@ -119,7 +119,7 @@ public class Player {
     this.boardView = null;
     this.modelBoard = null;
     this.color = null;
-    this.madeMove = false;
+    this.hasMoved = false;
   }
 
   /**

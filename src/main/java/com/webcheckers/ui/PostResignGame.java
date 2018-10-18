@@ -6,7 +6,6 @@ import com.webcheckers.appl.Player;
 import spark.*;
 
 import java.util.Objects;
-import java.util.Map;
 
 import com.google.gson.Gson;
 
@@ -48,7 +47,7 @@ public class PostResignGame implements Route {
 
     Player player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
 
-    if(player.madeMove()) {
+    if(player.getHasMoved()) {
       Message message = new Message(Message.Type.error, ERROR_RESIGN);
       return gson.toJson(message);
     } else {
