@@ -119,6 +119,9 @@ public class GetGameRoute implements Route {
       vm.put("board", this.boardView);
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else if (httpSession.attribute(BOARD) != null && !currentPlayer.inGame()) {
+      if (boardView != httpSession.attribute(BOARD)) {
+        boardView = httpSession.attribute(BOARD);
+      }
       vm.put("currentPlayer", currentPlayer);
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");

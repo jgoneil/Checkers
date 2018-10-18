@@ -16,7 +16,7 @@ public class PostResignGame implements Route {
 
   //Static final variables (constants)
   static final String ERROR_RESIGN = "Cannot resign due a move being made. Reverse the move if you would like to truly resign.";
-  private static final String SUCCESS_RESIGN = "You have successfully resigned from the game. You lost.";
+  static final String SUCCESS_RESIGN = "You have successfully resigned from the game. You lost.";
   static final String OTHER_PLAYER_RESIGN = "Your opponent resigned from the game. You win!";
 
   //Gson controller for reading and sending JSON information
@@ -58,9 +58,6 @@ public class PostResignGame implements Route {
         return gson.toJson(message);
       }
       BoardView boardView = httpSession.attribute(GetGameRoute.BOARD);
-      if (boardView == null) {
-        return new Message(Message.Type.info, OTHER_PLAYER_RESIGN);
-      }
       if (player.getColor().equals("Red")) {
         player2 = boardView.getWhitePlayer();
       } else {
