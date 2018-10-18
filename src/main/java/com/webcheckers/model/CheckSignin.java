@@ -1,23 +1,25 @@
 package com.webcheckers.model;
 
-import java.util.*;
 import com.webcheckers.appl.Player;
+import java.util.List;
 
-/*
+/**
  * Class that ensures input for usernames matches requirements
  */
 public class CheckSignin {
 
-  /*
-   * Main validation for user input. Ensures that the username doesn't already exist
-   * and that the values entered are only alpha numeric characters or spaces
-   * @param username the string input from the signin page
+  /**
+   * Main validation for user input. Ensures that the username doesn't already exist and that the
+   * values entered are only alpha numeric characters or spaces
+   *
+   * @param input the string input from the signin page
    * @param users the list of users already signed into the game
    * @return boolean true/false based on if the player entered information is valid or not
    */
-  public boolean validateUser(String username, List<Player> users) {
+  public boolean validateUser(String input, List<Player> users) {
+    String username = input.toLowerCase().trim();
     for (Player user : users) {
-      if (user.getUsername().equals(username)) {
+      if (username.equals(user.getName().toLowerCase())) {
         return false;
       }
     }

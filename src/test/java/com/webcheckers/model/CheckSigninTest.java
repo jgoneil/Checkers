@@ -22,6 +22,7 @@ public class CheckSigninTest {
   // Invalid usernames
   final String nonAlphabeticalString1 = "$$$";
   final String nonAlphabeticalString2 = "\"System.out.println(\"Sanitize your input\");";
+  final String invalidPlayerString6 = "     a ";
 
   // Invalid whitespace
   final String emptyString = "";
@@ -33,14 +34,14 @@ public class CheckSigninTest {
   CheckSignin checkSignin;
 
   @BeforeEach
-  public void setUp() throws Exception {
+  void setUp() throws Exception {
     users = new ArrayList<>();
     checkSignin = new CheckSignin();
 
   }
 
   @AfterEach
-  public void tearDown() throws Exception {
+  void tearDown() throws Exception {
     users = null;
     checkSignin = null;
 
@@ -49,24 +50,24 @@ public class CheckSigninTest {
   @ParameterizedTest
   @ValueSource(strings = {validPlayerString1, validPlayerString2, validPlayerString3,
       validPlayerString4, validPlayerString5})
-  public void ValidateUserTest_ValidUser(String user) {
+  void ValidateUserTest_ValidUser(String user) {
     assertTrue(checkSignin.validateUser(user, users));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {nonAlphabeticalString1, nonAlphabeticalString2})
-  public void ValidateUserTest_InvalidUser(String user) {
+  void ValidateUserTest_InvalidUser(String user) {
     assertFalse(checkSignin.validateUser(user, users));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {emptyString, whiteSpace, tab, newLine})
-  public void ValidateUserTest_InvalidWhitespace(String user) {
+  void ValidateUserTest_InvalidWhitespace(String user) {
     assertFalse(checkSignin.validateUser(user, users));
   }
 
   @Test
-  public void ValidateUserTest_AlreadyTaken() {
+  void ValidateUserTest_AlreadyTaken() {
     users.add(new Player(validPlayerString1));
     assertFalse(checkSignin.validateUser(validPlayerString1, users));
   }

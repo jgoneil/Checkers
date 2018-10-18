@@ -64,7 +64,7 @@ public class PostSignInRoute implements Route {
       ModelAndView mv;
 
       if (users.addPlayer(username)) {
-        this.player = users.getSpecificPlayer(username);
+        this.player = users.getSpecificPlayer(username.trim());
         httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY, player);
         response.redirect(WebServer.HOME_URL);
         return null;

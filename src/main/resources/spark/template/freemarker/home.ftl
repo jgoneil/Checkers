@@ -18,6 +18,9 @@
     </div>
     
     <div class="body">
+      <#if message??>
+        <p class="error">Player currently in game. Please select a different player.</p>
+      </#if>
       <p>Welcome to the world of online Checkers.</p>
 
       <#if signedin>
@@ -26,9 +29,9 @@
           <p>You're the only one currently logged in</p>
         <#else>
           <#list users as player>
-            <p>
+            <p><a href="/game?${player}" name=otherPlayer>
               ${player}
-            </p>
+            </a></p>
           </#list>
         </#if>
       <#else>
