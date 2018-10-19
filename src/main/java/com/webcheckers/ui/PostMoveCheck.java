@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.BoardView;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
@@ -27,6 +28,8 @@ public class PostMoveCheck implements Route {
   private Player player;
   //The model method for verifying the move
   private CheckMove checkMove;
+  //The player that resigned for the game
+  private Player resignedPlayer;
 
   /**
    * Main method for POST check of a valid move
@@ -53,8 +56,17 @@ public class PostMoveCheck implements Route {
     this.player = HTTPSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
 
     if(!this.player.inGame()) {
+      BoardView boardView = HTTPSession.attribute(GetGameRoute.BOARD);
+      if(this.resignedPlayer == null) {
+        if (boardView.getRedPlayer().equals(this.player)) {
+          this.resignedPlayer = boardView.getWhitePlayer();
+        } else {
+          this.resignedPlayer = boardView.getRedPlayer();
+        }
+      }
       HTTPSession.removeAttribute(GetGameRoute.BOARD);
       HTTPSession.removeAttribute(GetGameRoute.MODEL_BOARD);
+      HTTPSession.attribute(PostResignGame.RESIGNED_PLAYER, resignedPlayer);
       return gson.toJson(new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
     }
 
