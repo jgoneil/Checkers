@@ -1,5 +1,7 @@
 package com.webcheckers.ui;
 
+
+import com.webcheckers.appl.BoardView;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -55,6 +57,21 @@ public class GetSignOutRoute implements Route {
 
     if (httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY) != null) {
       Player player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+
+      if (player.inGame()) {
+        Player player2;
+        BoardView boardView = httpSession.attribute(GetGameRoute.BOARD);
+        if (player.getColor().equals("Red")) {
+          player2 = boardView.getWhitePlayer();
+        } else {
+          player2 = boardView.getRedPlayer();
+        }
+
+        player2.gameEnd();
+        httpSession.removeAttribute(GetGameRoute.BOARD);
+        httpSession.removeAttribute(GetGameRoute.MODEL_BOARD);
+      }
+
       users.removeUser(player.getName());
       httpSession.removeAttribute(GetHomeRoute.PLAYERSERVICES_KEY);
       response.redirect(WebServer.HOME_URL);
