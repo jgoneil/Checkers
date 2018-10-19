@@ -79,6 +79,20 @@ public class GetHomeRoute implements Route {
       httpSession.removeAttribute("message");
     }
 
+    if (player != null) {
+      if (player.getBoardView() == null) {
+        if (httpSession.attribute(GetGameRoute.BOARD) != null) {
+          httpSession.removeAttribute(GetGameRoute.BOARD);
+        }
+        if (httpSession.attribute(GetGameRoute.MODEL_BOARD) != null) {
+          httpSession.removeAttribute(GetGameRoute.MODEL_BOARD);
+        }
+        if (httpSession.attribute(PostResignGame.RESIGNED_PLAYER) != null) {
+          httpSession.removeAttribute(PostResignGame.RESIGNED_PLAYER);
+        }
+      }
+    }
+
     if (this.player == null) {
       vm.put(SIGNEDIN, false);
       vm.put(USERS, users.getAllPlayers().size());
