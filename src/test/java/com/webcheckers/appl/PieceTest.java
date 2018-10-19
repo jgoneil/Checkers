@@ -6,8 +6,10 @@ import com.webcheckers.appl.Piece.Type;
 import com.webcheckers.appl.Space.Color;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+@Tag("Application-tier")
 class PieceTest {
 
   Piece piece1;
