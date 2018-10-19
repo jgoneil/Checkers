@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+
 import com.webcheckers.appl.BoardView;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +71,7 @@ public class GetSignOutRoute implements Route {
         httpSession.removeAttribute(GetGameRoute.BOARD);
         httpSession.removeAttribute(GetGameRoute.MODEL_BOARD);
       }
+
       users.removeUser(player.getName());
       httpSession.removeAttribute(GetHomeRoute.PLAYERSERVICES_KEY);
       response.redirect(WebServer.HOME_URL);
