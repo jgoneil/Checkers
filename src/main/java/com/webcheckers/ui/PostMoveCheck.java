@@ -28,6 +28,8 @@ public class PostMoveCheck implements Route {
   private Player player;
   //The model method for verifying the move
   private CheckMove checkMove;
+  //The player that resigned for the game
+  private Player resignedPlayer;
 
   /**
    * Main method for POST check of a valid move
@@ -55,11 +57,12 @@ public class PostMoveCheck implements Route {
 
     if(!this.player.inGame()) {
       BoardView boardView = HTTPSession.attribute(GetGameRoute.BOARD);
-      Player resignedPlayer;
-      if (boardView.getRedPlayer().equals(this.player)){
-        resignedPlayer = boardView.getWhitePlayer();
-      } else {
-        resignedPlayer = boardView.getRedPlayer();
+      if(this.resignedPlayer == null) {
+        if (boardView.getRedPlayer().equals(this.player)) {
+          this.resignedPlayer = boardView.getWhitePlayer();
+        } else {
+          this.resignedPlayer = boardView.getRedPlayer();
+        }
       }
       HTTPSession.removeAttribute(GetGameRoute.BOARD);
       HTTPSession.removeAttribute(GetGameRoute.MODEL_BOARD);
