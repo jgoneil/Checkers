@@ -69,13 +69,23 @@ public class GetGameRoute implements Route {
 
     if (httpSession.attribute(BOARD) == null && !currentPlayer.inGame()) {
 
-      if(request.queryParams().size() == 0) {
+      if (request.queryParams().size() == 0) {
         response.redirect(WebServer.HOME_URL);
         halt();
         return null;
       }
+
       Object[] playerTwo = request.queryParams().toArray();
       Player player2 = users.getSpecificPlayer(playerTwo[0].toString());
+
+      if (httpSession.attribute(PostResignGame.RESIGNED_PLAYER) != null) {
+        if(httpSession.attribute(PostResignGame.RESIGNED_PLAYER).equals(player2)) {
+          httpSession.removeAttribute(PostResignGame.RESIGNED_PLAYER);
+          response.redirect(WebServer.HOME_URL);
+          halt();
+          return null;
+        }
+      }
 
       if (player2.inGame()) {
         httpSession.attribute("message", new Message(Message.Type.error, "Player already in game!"));
@@ -119,26 +129,10 @@ public class GetGameRoute implements Route {
       vm.put("board", this.boardView);
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else if (httpSession.attribute(BOARD) != null && !currentPlayer.inGame()) {
-      if (boardView != httpSession.attribute(BOARD)) {
-        boardView = httpSession.attribute(BOARD);
-      }
-      vm.put("currentPlayer", currentPlayer);
-      vm.put("currentPlayer", currentPlayer);
-      vm.put("viewMode", "PLAY");
-      vm.put("redPlayer", this.boardView.getRedPlayer());
-      vm.put("whitePlayer", this.boardView.getWhitePlayer());
-      if (boardView.redTurn()) {
-        vm.put("activeColor", "RED");
-      } else {
-        vm.put("activeColor", "WHITE");
-      }
-      vm.put("message", new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
-      vm.put("board", httpSession.attribute(BOARD));
-      httpSession.removeAttribute(BOARD);
-      httpSession.removeAttribute(MODEL_BOARD);
-      httpSession.attribute("message", new Message(Message.Type.info, "You win!")); 
-      this.boardView = null;
-      return templateEngine.render(new ModelAndView(vm, VIEW));
+      httpSession.attribute("message", new Message(Message.Type.info, PostResignGame.OTHER_PLAYER_RESIGN)); 
+      response.redirect(WebServer.HOME_URL);
+      halt();
+      return null;
     } else {
       if (this.boardView != httpSession.attribute(BOARD)) {
         this.boardView = httpSession.attribute(BOARD);

@@ -4,7 +4,6 @@ import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Users;
 
-import com.webcheckers.model.Message;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -188,14 +187,11 @@ class TestGetGameRoute {
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
     //Invoking Test
-    CuT.handle(request, response);
-    testHelper.assertViewModelExists();
-    testHelper.assertViewModelIsaMap();
-
-    testHelper.assertViewModelAttribute("title", "Welcome!");
-    testHelper.assertViewModelAttribute("viewMode", "PLAY");
-    testHelper.assertViewModelAttribute("redPlayer", redPlayer);
-    testHelper.assertViewModelAttribute("activeColor", "RED");
+    try{
+      CuT.handle(request, response);
+    } catch(HaltException e) {
+      assertNotNull(e);
+    }
   }
 
   @Test 
@@ -210,6 +206,27 @@ class TestGetGameRoute {
     Set<String> players = new HashSet<>();
     players.add(redPlayer.getName());
     when(request.queryParams()).thenReturn(players);
+    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(NO_BOARD);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    //Invoke Testing
+    try {
+      CuT.handle(request, response);
+    } catch (HaltException e) {
+      assertNotNull(e);
+    }
+  }
+
+  @Test
+  void playerResigned() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
+    users.addPlayer(whitePlayer.getName());
+    users.addPlayer(redPlayer.getName());
+    Set<String> players = new HashSet<>();
+    players.add(redPlayer.getName());
+    when(request.queryParams()).thenReturn(players);
+    when(request.session().attribute(PostResignGame.RESIGNED_PLAYER)).thenReturn(redPlayer);
     when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(NO_BOARD);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

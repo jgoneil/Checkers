@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.BoardView;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
@@ -53,8 +54,16 @@ public class PostMoveCheck implements Route {
     this.player = HTTPSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
 
     if(!this.player.inGame()) {
+      BoardView boardView = HTTPSession.attribute(GetGameRoute.BOARD);
+      Player resignedPlayer;
+      if (boardView.getRedPlayer().equals(this.player)){
+        resignedPlayer = boardView.getWhitePlayer();
+      } else {
+        resignedPlayer = boardView.getRedPlayer();
+      }
       HTTPSession.removeAttribute(GetGameRoute.BOARD);
       HTTPSession.removeAttribute(GetGameRoute.MODEL_BOARD);
+      HTTPSession.attribute(PostResignGame.RESIGNED_PLAYER, resignedPlayer);
       return gson.toJson(new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
     }
 
