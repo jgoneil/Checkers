@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Space;
 import java.util.Map;
 import java.util.HashMap;
@@ -65,10 +66,17 @@ public class CheckMove {
    * @param target - target space to move to
    * @return - validity of move to target space
    */
-  public Map<Boolean, String> validateMove(Position start, Position target) {
+  public Map<Boolean, String> validateMove(Position start, Position target, Player player) {
     Map<Boolean, String> response = new HashMap<>();
-    Space current = board.getSpace(start.getRow(), start.getCell());
-    Space goal = board.getSpace(target.getRow(), target.getCell());
+    Space current;
+    Space goal;
+    if(player.getColor().equals("Red")) {
+      current = board.getSpace(start.getRow(), start.getCell());
+      goal = board.getSpace(target.getRow(), target.getCell());
+    } else {
+      current = board.getSpace(7 - start.getRow(), 7 - start.getCell());
+      goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());
+    }
     if (goal.getColor().equals(Space.Color.WHITE)) {
       response.put(false, "Attempted to move a piece to a white space.");
     } else if (goal.isOccupied()) {

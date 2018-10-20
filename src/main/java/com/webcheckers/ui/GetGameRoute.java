@@ -33,6 +33,8 @@ public class GetGameRoute implements Route {
   private BoardView boardView;
   //The users connected to the system
   private Users users;
+  //The modelBoard for the game session
+  private ModelBoard modelBoard;
 
   //Static final variables (Constants)
   public static final String BOARD = "boardView";
@@ -65,7 +67,6 @@ public class GetGameRoute implements Route {
   public Object handle(Request request, Response response) {
     Session httpSession = request.session();
     this.currentPlayer = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
-    this.currentPlayer.setHasMoved(false);
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
@@ -100,7 +101,7 @@ public class GetGameRoute implements Route {
       httpSession.attribute(BOARD, this.boardView);
       currentPlayer.setColor("Red", this.boardView);
 
-      ModelBoard modelBoard = new ModelBoard(currentPlayer, player2, LENGTH);
+      this.modelBoard = new ModelBoard(currentPlayer, player2, LENGTH);
       httpSession.attribute(MODEL_BOARD, modelBoard);
       currentPlayer.addModelBoard(modelBoard);
       player2.addModelBoard(modelBoard);
@@ -118,12 +119,13 @@ public class GetGameRoute implements Route {
       httpSession.attribute(BOARD, currentPlayer.getBoardView());
       httpSession.attribute(MODEL_BOARD, currentPlayer.getModelBoard());
       this.boardView = currentPlayer.getBoardView();
+      this.modelBoard = currentPlayer.getModelBoard();
 
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", this.boardView.getRedPlayer());
       vm.put("whitePlayer", this.boardView.getWhitePlayer());
-      if (boardView.redTurn()) {
+      if (modelBoard.checkRedTurn()) {
         vm.put("activeColor", "RED");
       } else {
         vm.put("activeColor", "WHITE");
@@ -143,7 +145,7 @@ public class GetGameRoute implements Route {
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", this.boardView.getRedPlayer());
       vm.put("whitePlayer", this.boardView.getWhitePlayer());
-      if (boardView.redTurn()) {
+      if (modelBoard.checkRedTurn()) {
         vm.put("activeColor", "RED");
       } else {
         vm.put("activeColor", "WHITE");

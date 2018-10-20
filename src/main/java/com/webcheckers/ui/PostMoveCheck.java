@@ -70,8 +70,9 @@ public class PostMoveCheck implements Route {
       return gson.toJson(new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
     }
 
+    ModelBoard board = HTTPSession.attribute(GetGameRoute.MODEL_BOARD);
+
     if (this.checkMove == null) {
-      ModelBoard board = HTTPSession.attribute(GetGameRoute.MODEL_BOARD);
       this.checkMove = new CheckMove(board);
     }
 
@@ -79,11 +80,11 @@ public class PostMoveCheck implements Route {
     Move move = gson.fromJson(customJson, Move.class);
 
 
-    if (!player.getHasMoved()) {
+    if (!board.checkMadeMove()) {
       Map<Boolean, String> resultFromCheck = this.checkMove
-          .validateMove(move.getStart(), move.getEnd());
+          .validateMove(move.getStart(), move.getEnd(), player);
       if (resultFromCheck.containsKey(true)) {
-        player.setHasMoved(true);
+        board.madeMove(move);
         Message message = new Message(Message.Type.info, resultFromCheck.get(true));
         return gson.toJson(message);
       } else {

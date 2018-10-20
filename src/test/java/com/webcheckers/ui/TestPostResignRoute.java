@@ -6,6 +6,9 @@ import com.webcheckers.appl.Users;
 import com.google.gson.Gson;
 
 import com.webcheckers.model.Message;
+import com.webcheckers.model.ModelBoard;
+import com.webcheckers.model.Move;
+import com.webcheckers.model.Position;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -27,6 +30,7 @@ class TestPostResignRoute {
   private Player playerTwo;
   private Gson gson = new Gson();
   private BoardView boardView;
+  private ModelBoard modelBoard;
   
   //attributes holding mock objects (non-friendly)
   private Request request;
@@ -41,6 +45,7 @@ class TestPostResignRoute {
     session = mock(Session.class);
     playerOne = new Player("Ben");
     playerTwo = new Player("Steve");
+    modelBoard = new ModelBoard(playerOne, playerTwo, 8);
     when(request.session()).thenReturn(session);
     templateEngine = mock(TemplateEngine.class);
     
@@ -49,7 +54,7 @@ class TestPostResignRoute {
 
   @Test
   void playerAlreadyMovedPiece() {
-    playerOne.setHasMoved(true);
+    modelBoard.madeMove(new Move(new Position(5, 0), new Position(4, 1)));
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

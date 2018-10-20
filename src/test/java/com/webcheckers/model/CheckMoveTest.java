@@ -14,6 +14,7 @@ class CheckMoveTest {
 
   private ModelBoard modelBoard;
   private CheckMove checkMove;
+  private Player redPlayerMock;
 
   private Position position54;
   private Position position43;
@@ -27,7 +28,7 @@ class CheckMoveTest {
 
   @BeforeEach
   void setUp() {
-    Player redPlayerMock = mock(Player.class);
+    this.redPlayerMock = mock(Player.class);
     Player whitePlayerMock = mock(Player.class);
 
     modelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8);
@@ -51,23 +52,23 @@ class CheckMoveTest {
 
   @Test
   void validateMoveTest_ValidMove() {
-    assertTrue(checkMove.validateMove(position54, position43).containsKey(true));
+    assertTrue(checkMove.validateMove(position54, position43, redPlayerMock).containsKey(true));
   }
 
   @Test
   void validateMoveTest_InvalidMove() {
     // more than one space
-    assertTrue(checkMove.validateMove(position54, position34).containsKey(false));
-    assertTrue(checkMove.validateMove(position54, position47).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position34, redPlayerMock).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position47, redPlayerMock).containsKey(false));
 
     // move backward
-    assertTrue(checkMove.validateMove(position54, position63).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position63, redPlayerMock).containsKey(false));
 
     // move to white
-    assertTrue(checkMove.validateMove(position54, position44).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position44, redPlayerMock).containsKey(false));
 
     // move to occupied
-    assertTrue(checkMove.validateMove(position34, position23).containsKey(false));
+    assertTrue(checkMove.validateMove(position34, position23, redPlayerMock).containsKey(false));
 
   }
 }
