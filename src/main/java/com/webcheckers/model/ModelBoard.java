@@ -2,6 +2,7 @@ package com.webcheckers.model;
 
 import com.webcheckers.appl.Space;
 import com.webcheckers.appl.Player;
+import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Piece;
 
 /**
@@ -15,6 +16,12 @@ public class ModelBoard {
   private Player redPlayer;
   //The white player for the game
   private Player whitePlayer;
+  //If a move has recently been made
+  private boolean madeMove;
+  //The move made
+  private Move move;
+  //Holds if the redPlayer has the active move or not
+  private boolean redTurn;
 
   /**
    * Constructor for the model version of the board
@@ -28,6 +35,7 @@ public class ModelBoard {
     this.board = new Space[length][length];
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
+    this.redTurn = true;
     //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
@@ -57,6 +65,68 @@ public class ModelBoard {
    */
   public Space getSpace(int xCoordinate, int yCoordinate) {
     return board[xCoordinate][yCoordinate];
+  }
+
+  /**
+   * Sets the system to reflect a move has been made
+   *
+   * @param move the move made
+   */
+  public void madeMove(Move move) {
+    this.madeMove = true;
+    this.move = move;
+  }
+
+  /**
+   * Submits a move for the game and change the active player
+   */
+  public void submitMove() {
+    Space startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
+    Space endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+    Piece movingPiece = startingSpace.getPiece();
+    startingSpace.unoccupy();
+    endingSpace.occupy(movingPiece);
+    BoardView redBoardView = redPlayer.getBoardView();
+    BoardView whiteBoardView = whitePlayer.getBoardView();
+    Move reverseMove = new Move(new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
+            new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
+    if(this.redTurn) {
+      redBoardView.makeMove(move);
+      whiteBoardView.makeMove(reverseMove);
+    } else {
+      redBoardView.makeMove(reverseMove);
+      whiteBoardView.makeMove(move);
+    }
+    this.redTurn = !redTurn;
+    this.madeMove = false;
+  }
+
+  /**
+   * Checks to see who's turn is currently active
+   *
+   * @return a boolean condition based on if it is currently the red player's turn or not
+   */
+  public boolean checkRedTurn() {
+    return this.redTurn;
+  }
+
+  /**
+   * Checks to see if a move has been mad or not
+   *
+   * @return a boolean condition based on if a move has been made or not
+   */
+  public boolean checkMadeMove() {
+    return this.madeMove;
+  }
+
+  /**
+   * Updates the system to certify a move has or has not been made (for testing)
+   *
+   * @param madeMove boolean condition based on if a move has been made or not
+   */
+  public void setMove(boolean madeMove) {
+    this.madeMove = madeMove;
+    this.redTurn = !redTurn;
   }
 
   /**

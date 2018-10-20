@@ -50,7 +50,7 @@ public class PostResignGame implements Route {
 
     Player player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
 
-    if(player.getHasMoved()) {
+    if(player.getModelBoard().checkMadeMove()) {
       Message message = new Message(Message.Type.error, ERROR_RESIGN);
       return gson.toJson(message);
     } else {

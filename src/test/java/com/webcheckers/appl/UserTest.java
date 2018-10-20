@@ -91,4 +91,13 @@ public class UserTest {
     assertEquals(3, users.getAllPlayersExceptUser("").size());
 
   }
+
+  @Test
+  void removePlayer() {
+    users.addPlayer(validPlayerString1);
+    users.addPlayer(validPlayerString2);
+    users.addPlayer(validPlayerString3);
+    users.removeUser(validPlayerString1);
+    assertEquals(2, users.getAllPlayers().size());
+  }
 }
