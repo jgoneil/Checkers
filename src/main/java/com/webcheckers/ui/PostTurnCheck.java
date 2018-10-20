@@ -50,7 +50,7 @@ public class PostTurnCheck implements Route {
 
     if (player.getModelBoard() != null) {
       modelBoard = player.getModelBoard();
-      if (player.getColor().equals("red")) {
+      if (player.getColor().equals("Red")) {
         if (modelBoard.checkRedTurn()) {
           return gson.toJson(new Message(Message.Type.info, "true"));
         } else {

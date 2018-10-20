@@ -67,6 +67,13 @@ public class GetGameRoute implements Route {
   public Object handle(Request request, Response response) {
     Session httpSession = request.session();
     this.currentPlayer = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+
+    if (this.currentPlayer == null) {
+      response.redirect(WebServer.HOME_URL);
+      halt();
+      return null;
+    }
+
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
@@ -141,11 +148,14 @@ public class GetGameRoute implements Route {
       if (this.boardView != httpSession.attribute(BOARD)) {
         this.boardView = httpSession.attribute(BOARD);
       }
+      if (this.modelBoard != httpSession.attribute(MODEL_BOARD)) {
+        this.modelBoard = httpSession.attribute(MODEL_BOARD);
+      }
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", this.boardView.getRedPlayer());
       vm.put("whitePlayer", this.boardView.getWhitePlayer());
-      if (modelBoard.checkRedTurn()) {
+      if (this.modelBoard.checkRedTurn()) {
         vm.put("activeColor", "RED");
       } else {
         vm.put("activeColor", "WHITE");

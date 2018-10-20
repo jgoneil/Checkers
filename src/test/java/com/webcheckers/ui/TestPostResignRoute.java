@@ -55,6 +55,7 @@ class TestPostResignRoute {
   @Test
   void playerAlreadyMovedPiece() {
     modelBoard.madeMove(new Move(new Position(5, 0), new Position(4, 1)));
+    playerOne.addModelBoard(modelBoard);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -73,6 +74,8 @@ class TestPostResignRoute {
 
   @Test
   void otherPlayerResignedAndSessionNull() {
+    ModelBoard modelBoard = new ModelBoard(playerOne, playerTwo, 8);
+    playerOne.addModelBoard(modelBoard);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -93,6 +96,8 @@ class TestPostResignRoute {
   void playerIsRedPlayer() {
     boardView = new BoardView(playerOne, playerTwo, 8, "red");
     playerOne.setColor("Red", boardView);
+    ModelBoard modelBoard = new ModelBoard(playerOne, playerTwo, 8);
+    playerOne.addModelBoard(modelBoard);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne);
     when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
 
@@ -115,6 +120,8 @@ class TestPostResignRoute {
   void playerIsWhitePlayer() {
     boardView = new BoardView(playerTwo, playerOne, 8, "red");
     playerOne.setColor("White", boardView);
+    ModelBoard modelBoard = new ModelBoard(playerOne, playerTwo, 8);
+    playerOne.addModelBoard(modelBoard);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne);
     when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
 

@@ -126,6 +126,7 @@ public class ModelBoard {
    */
   public void setMove(boolean madeMove) {
     this.madeMove = madeMove;
+    this.redTurn = !redTurn;
   }
 
   /**

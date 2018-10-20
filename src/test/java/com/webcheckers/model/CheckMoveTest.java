@@ -3,6 +3,7 @@ package com.webcheckers.model;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
+import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,10 +29,12 @@ class CheckMoveTest {
 
   @BeforeEach
   void setUp() {
-    this.redPlayerMock = mock(Player.class);
+    this.redPlayerMock = new Player("Tim");
     Player whitePlayerMock = mock(Player.class);
 
     modelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8);
+    BoardView boardView = mock(BoardView.class);
+    redPlayerMock.setColor("Red", boardView);
     checkMove = new CheckMove(modelBoard);
 
     position54 = new Position(5, 4);
