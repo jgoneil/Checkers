@@ -16,7 +16,7 @@ public class Player {
   //The Model board that holds the logic for the game (oriented towards the red player)
   private ModelBoard modelBoard;
   //Keeps track if a player made a move on their turn or not
-  private Boolean hasMoved;
+  private boolean hasMoved;
 
   /**
    * Constructor for player class
@@ -96,8 +96,10 @@ public class Player {
     return this.modelBoard;
   }
 
+
   /**
    * Setter for when a player has or hasn't made a move on the turn
+   * @param hasMoved Boolean for new move status
    */
   public void setHasMoved(boolean moveStatus) {
     this.hasMoved = moveStatus;

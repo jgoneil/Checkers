@@ -18,9 +18,12 @@ public class PostResignGame implements Route {
   static final String ERROR_RESIGN = "Cannot resign due a move being made. Reverse the move if you would like to truly resign.";
   static final String SUCCESS_RESIGN = "You have successfully resigned from the game. You lost.";
   static final String OTHER_PLAYER_RESIGN = "Your opponent resigned from the game. You win!";
+  static final String RESIGNED_PLAYER = "resignedPlayer";
 
   //Gson controller for reading and sending JSON information
   private final Gson gson;
+  //Player that disconnected from the system
+  private Player resignedPlayer;
   
   /**
    * Main method for POST resign game
@@ -52,8 +55,9 @@ public class PostResignGame implements Route {
       return gson.toJson(message);
     } else {
       Player player2;
-      if (httpSession.attribute(GetGameRoute.BOARD) == null) {
+      if (httpSession.attribute(GetGameRoute.BOARD) == null || player.getColor() == null) {
         Message message = new Message(Message.Type.info, OTHER_PLAYER_RESIGN);
+        httpSession.attribute(RESIGNED_PLAYER, resignedPlayer);
         httpSession.attribute("message", message);
         return gson.toJson(message);
       }
@@ -65,6 +69,7 @@ public class PostResignGame implements Route {
       }
       player.gameEnd();
       player2.gameEnd();
+      this.resignedPlayer = player;
       httpSession.removeAttribute(GetGameRoute.BOARD);
       httpSession.removeAttribute(GetGameRoute.MODEL_BOARD);
       Message message = new Message(Message.Type.info, SUCCESS_RESIGN);

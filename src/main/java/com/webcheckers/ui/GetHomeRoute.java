@@ -25,6 +25,7 @@ public class GetHomeRoute implements Route {
 
   //Static final variables (Constants)
   static final String USERS = "users";
+  static final String USER = "user";
   static final String SIGNEDIN = "signedin";
   static final String ONLY_ONE = "onlyOne";
   static final String PLAYERSERVICES_KEY = "playerServices";
@@ -79,6 +80,20 @@ public class GetHomeRoute implements Route {
       httpSession.removeAttribute("message");
     }
 
+    if (player != null) {
+      if (player.getBoardView() == null) {
+        if (httpSession.attribute(GetGameRoute.BOARD) != null) {
+          httpSession.removeAttribute(GetGameRoute.BOARD);
+        }
+        if (httpSession.attribute(GetGameRoute.MODEL_BOARD) != null) {
+          httpSession.removeAttribute(GetGameRoute.MODEL_BOARD);
+        }
+        if (httpSession.attribute(PostResignGame.RESIGNED_PLAYER) != null) {
+          httpSession.removeAttribute(PostResignGame.RESIGNED_PLAYER);
+        }
+      }
+    }
+
     if (this.player == null) {
       vm.put(SIGNEDIN, false);
       vm.put(USERS, users.getAllPlayers().size());
@@ -86,6 +101,7 @@ public class GetHomeRoute implements Route {
     } else if (users.getAllPlayers().size() == 1) {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, true);
+      vm.put(USER, player.getName());
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     } else if (player.getBoardView() != null) {
       response.redirect(WebServer.GAME_URL);
@@ -94,6 +110,7 @@ public class GetHomeRoute implements Route {
     } else {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, false);
+      vm.put(USER, player.getName());
       vm.put(USERS, users.getAllPlayersExceptUser(player.getName()));
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
