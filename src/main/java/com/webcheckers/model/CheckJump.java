@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.Piece;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Space;
 
@@ -28,6 +29,13 @@ public class CheckJump {
         return end.getRow() < start.getRow();
     }
 
+    private boolean isJumpingPiece(Position start, Position end, Player player) {
+        Space middleSpace = board.getSpace(start.getRow() - end.getRow() - 1,
+                start.getCell() - end.getCell() - 1);
+        Piece middlePiece = middleSpace.getPiece();
+        return middleSpace.isOccupied() && middlePiece.getColor().toString().equals(player.getColor());
+    }
+
     public Map<Boolean, String> validateJump(Position start, Position target, Player player) {
         Map<Boolean, String> response = new HashMap<>();
         Space current;
@@ -49,8 +57,9 @@ public class CheckJump {
             response.put(false, "Pieces can only move diagonally.");
         } else if (!isMovingForward(start, target)) {
             response.put(false, "Piece can only move forward");
+        } else if (!isJumpingPiece(start, target, player)) {
+            response.put(false, "Must be jumping other players piece");
         } else {
-
             board.addPieceToSpace(current.getPiece(), goal);
             current.unoccupy();
             response.put(true, "This move is valid.");
