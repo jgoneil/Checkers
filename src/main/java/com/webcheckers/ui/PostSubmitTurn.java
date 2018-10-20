@@ -20,8 +20,8 @@ public class PostSubmitTurn implements Route {
   private final Gson gson;
   
   //Static final variables (constants)
-  private static final String ERROR_SUBMIT_TURN = "Error on submission";
-  private static final String SUCCESS_SUBMIT_TURN = "Submission successful";
+  static final String ERROR_SUBMIT_TURN = "Error on submission";
+  static final String SUCCESS_SUBMIT_TURN = "Submission successful";
 
   /**
    * Main method for POST submit move 

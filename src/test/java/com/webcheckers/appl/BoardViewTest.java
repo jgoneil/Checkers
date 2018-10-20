@@ -40,6 +40,16 @@ public class BoardViewTest {
   }
 
   @Test
+  void getRow() {
+    assertNotNull(boardView1.getRow(0));
+  }
+
+  @Test
+  void getIterator() {
+    assertNotNull(boardView1.iterator());
+  }
+
+  @Test
   void redTurn() {
     assertTrue(modelBoard.checkRedTurn());
     modelBoard.setMove(true);
