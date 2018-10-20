@@ -72,9 +72,7 @@ public class PostMoveCheck implements Route {
 
     ModelBoard board = HTTPSession.attribute(GetGameRoute.MODEL_BOARD);
 
-    if (this.checkMove == null) {
-      this.checkMove = new CheckMove(board);
-    }
+    this.checkMove = new CheckMove(board);
 
     String customJson = request.body();
     Move move = gson.fromJson(customJson, Move.class);
