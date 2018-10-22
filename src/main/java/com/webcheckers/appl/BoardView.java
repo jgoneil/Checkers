@@ -85,12 +85,6 @@ public class BoardView implements Iterable {
     endingRow.addPieceToSpace(move.getEnd().getCell(), piece);
   }
 
-//  public void undoMove(Move move) {
-//    Row endingRow = board.get(move.getEnd().getRow());
-//    Piece piece = endingRow.removePieceFromSpace(move.getEnd().getCell());
-//    Row startingRow = board.get(move.getStart().getRow());
-//    startingRow.addPieceToSpace(move.getStart().getCell(), piece);
-//  }
   /**
    * Iterator declaration used for getting all of the spaces on the board
    *

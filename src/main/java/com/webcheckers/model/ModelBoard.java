@@ -81,8 +81,15 @@ public class ModelBoard {
    * Submits a move for the game and change the active player
    */
   public void submitMove() {
-    Space startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
-    Space endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+    Space startingSpace;
+    Space endingSpace;
+    if (redTurn) {
+      startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
+      endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+    } else {
+      startingSpace = board[7-move.getStart().getRow()][7-move.getStart().getCell()];
+      endingSpace = board[7-move.getEnd().getRow()][7-move.getEnd().getCell()];
+    }
     Piece movingPiece = startingSpace.getPiece();
     startingSpace.unoccupy();
     endingSpace.occupy(movingPiece);
@@ -91,7 +98,13 @@ public class ModelBoard {
     Move reverseMove = new Move(
         new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
         new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
-    submitMoveToBoardView(redBoardView, whiteBoardView, move, reverseMove);
+    if (this.redTurn) {
+      redBoardView.makeMove(move);
+      whiteBoardView.makeMove(reverseMove);
+    } else {
+      redBoardView.makeMove(reverseMove);
+      whiteBoardView.makeMove(move);
+    }
     this.redTurn = !redTurn;
     this.madeMove = false;
   }
@@ -156,17 +169,6 @@ public class ModelBoard {
       startingSpace.occupy(movingPiece);
       madeMove = false;
       move = null;
-    }
-  }
-
-  private void submitMoveToBoardView(BoardView redBoardView, BoardView whiteBoardView,
-      Move move, Move reverseMove) {
-    if (this.redTurn) {
-      redBoardView.makeMove(move);
-      whiteBoardView.makeMove(reverseMove);
-    } else {
-      redBoardView.makeMove(reverseMove);
-      whiteBoardView.makeMove(move);
     }
   }
 }
