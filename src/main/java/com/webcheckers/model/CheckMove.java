@@ -74,7 +74,7 @@ public class CheckMove {
       current = board.getSpace(start.getRow(), start.getCell());
       goal = board.getSpace(target.getRow(), target.getCell());
     } else {
-      current = board.getSpace(7 - start.getRow(), 7 - start.getCell());
+      current = board.getSpace(7-start.getRow(), 7- start.getCell());
       goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());
     }
     if (goal.getColor().equals(Space.Color.WHITE)) {
