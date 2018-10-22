@@ -5,6 +5,8 @@ import com.webcheckers.appl.Player;
 import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Piece;
 
+import java.util.ArrayList;
+
 /**
  * Model class that holds the main board for model configurations
  */
@@ -22,6 +24,10 @@ public class ModelBoard {
   private Move move;
   //Holds if the redPlayer has the active move or not
   private boolean redTurn;
+  //Holds all of the pieces for the redPlayer in the game
+  private ArrayList<Piece> redPieces;
+  //Holds all of the pieces for the whitePlayer in the game
+  private ArrayList<Piece> whitePieces;
 
   /**
    * Constructor for the model version of the board
@@ -36,6 +42,8 @@ public class ModelBoard {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.redTurn = true;
+    this.redPieces = new ArrayList<>();
+    this.whitePieces = new ArrayList<>();
     //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
@@ -47,9 +55,13 @@ public class ModelBoard {
           board[i][j] = space;
           //completing a check to see if a piece should be added to the space (space must be black for this to happen)
           if (i >= 0 && i <= 2) {
-            space.occupy(new Piece("white", space));
+            Piece piece = new Piece("white", space);
+            whitePieces.add(piece);
+            space.occupy(piece);
           } else if (i >= 5 && i <= 7) {
-            space.occupy(new Piece("red", space));
+            Piece piece = new Piece("red", space);
+            redPieces.add(piece);
+            space.occupy(piece);
           }
         }
       }
@@ -127,6 +139,30 @@ public class ModelBoard {
   public void setMove(boolean madeMove) {
     this.madeMove = madeMove;
     this.redTurn = !redTurn;
+  }
+
+  /**
+   * Checks to see if a redPlayer can still play the game or not
+   *
+   * @return true/false based on if the amount of pieces a red player has equals 0
+   */
+  public boolean redCanPlay() {
+    if (this.redPieces.size() == 0) {
+      return false;
+    } 
+    return true;
+  }
+
+  /**
+   * Checks to see if a whitePlayer can still play the game or not
+   *
+   * @return true/false based on if the aount of pieces a white player has equals 0
+   */
+  public boolean whiteCanPlay() {
+    if (this.whitePieces.size() == 0) {
+      return false;
+    }
+    return true;
   }
 
   /**
