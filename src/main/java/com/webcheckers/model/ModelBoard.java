@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.Piece.Type;
 import com.webcheckers.appl.Space;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.BoardView;
@@ -29,6 +30,8 @@ public class ModelBoard {
   private ArrayList<Piece> redPieces;
   //Holds all of the pieces for the whitePlayer in the game
   private ArrayList<Piece> whitePieces;
+  //Checks if a Piece is being Kinged in a given move
+  private boolean isKinging;
 
   /**
    * Constructor for the model version of the board
@@ -45,6 +48,7 @@ public class ModelBoard {
     this.redTurn = true;
     this.redPieces = new ArrayList<>();
     this.whitePieces = new ArrayList<>();
+    this.isKinging = true;
     //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
@@ -109,32 +113,31 @@ public class ModelBoard {
    * Submits a move for the game and change the active player
    */
   public void submitMove() {
-    Space startingSpace;
     Space endingSpace;
     if (redTurn) {
-      startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
       endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
     } else {
-      startingSpace = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
       endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
     }
-    Piece movingPiece = startingSpace.getPiece();
-    startingSpace.unoccupy();
-    endingSpace.occupy(movingPiece);
+    isKinging = isBecomingKing(endingSpace.getPiece(), move.getEnd().getRow());
+    if (isKinging){
+      endingSpace.getPiece().King();
+    }
     BoardView redBoardView = redPlayer.getBoardView();
     BoardView whiteBoardView = whitePlayer.getBoardView();
     Move reverseMove = new Move(
         new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
         new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
     if (this.redTurn) {
-      redBoardView.makeMove(move);
-      whiteBoardView.makeMove(reverseMove);
+      redBoardView.makeMove(move, isKinging);
+      whiteBoardView.makeMove(reverseMove, isKinging);
     } else {
-      redBoardView.makeMove(reverseMove);
-      whiteBoardView.makeMove(move);
+      redBoardView.makeMove(reverseMove, isKinging);
+      whiteBoardView.makeMove(move, isKinging);
     }
     this.redTurn = !redTurn;
     this.madeMove = false;
+    this.isKinging = false;
   }
 
   /**
@@ -222,5 +225,18 @@ public class ModelBoard {
       madeMove = false;
       move = null;
     }
+  }
+
+  /**
+   * Tests to see if a piece is able to King a piece
+   * @param piece - Piece to be kinged
+   * @param row - Row of the Piece being checked
+   * @return - if the King is able to be Kinged
+   */
+  public boolean isBecomingKing(Piece piece, int row) {
+    if (piece.getType().equals(Type.SINGLE)) {
+      return row == 0;
+    }
+    return false;
   }
 }
