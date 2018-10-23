@@ -148,11 +148,6 @@ public class ModelBoard {
     goalSpace.occupy(piece);
   }
 
-  public void removePieceFromSpace(Space space){
-    Space goalspace = board[space.getxCoordinate()][space.getCellIdx()];
-    goalspace.unoccupy();
-  }
-
   public void backupMove() {
     if (madeMove) {
       Space startingSpace;
