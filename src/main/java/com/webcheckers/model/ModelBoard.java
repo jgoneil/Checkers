@@ -23,7 +23,7 @@ public class ModelBoard {
   private Move move;
   //Holds if the redPlayer has the active move or not
   private boolean redTurn;
-
+  //Checks if a Piece is being Kinged in a given move
   private boolean isKinging;
 
   /**
@@ -109,6 +109,7 @@ public class ModelBoard {
     }
     this.redTurn = !redTurn;
     this.madeMove = false;
+    this.isKinging = false;
   }
 
   /**
@@ -174,8 +175,13 @@ public class ModelBoard {
     }
   }
 
-
-  private boolean isBecomingKing(Piece piece, int row) {
+  /**
+   * Tests to see if a piece is able to King a piece
+   * @param piece - Piece to be kinged
+   * @param row - Row of the Piece being checked
+   * @return - if the King is able to be Kinged
+   */
+  public boolean isBecomingKing(Piece piece, int row) {
     if (piece.getType().equals(Type.SINGLE)) {
       return row == 0;
     }
