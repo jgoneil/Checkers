@@ -58,4 +58,16 @@ class ModelBoardTest {
     assertTrue(modelBoard.getSpace(5,0).isOccupied());
     assertFalse(modelBoard.getSpace(4,1).isOccupied());
   }
+
+  @Test
+  void redPiecesList(){
+    assertNotNull(modelBoard.getRedPieces());
+    assertEquals(12, modelBoard.getRedPieces().size());
+  }
+
+  @Test
+  void whitePiecesList() {
+    assertNotNull(modelBoard.getWhitePieces());
+    assertEquals(12,modelBoard.getWhitePieces().size());
+  }
 }

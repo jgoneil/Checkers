@@ -5,6 +5,9 @@ import com.webcheckers.appl.Player;
 import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Piece;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Model class that holds the main board for model configurations
  */
@@ -22,6 +25,10 @@ public class ModelBoard {
   private Move move;
   //Holds if the redPlayer has the active move or not
   private boolean redTurn;
+  //Holds all red Pieces
+  private List<Piece> redPieces = new ArrayList<>();
+  //Holds all white Pieces
+  private List<Piece> whitePieces = new ArrayList<>();
 
   /**
    * Constructor for the model version of the board
@@ -47,9 +54,13 @@ public class ModelBoard {
           board[i][j] = space;
           //completing a check to see if a piece should be added to the space (space must be black for this to happen)
           if (i >= 0 && i <= 2) {
-            space.occupy(new Piece("white", space));
+            Piece whitePiece = new Piece("white", space);
+            space.occupy(whitePiece);
+            whitePieces.add(whitePiece);
           } else if (i >= 5 && i <= 7) {
-            space.occupy(new Piece("red", space));
+            Piece redPiece = new Piece("red", space);
+            space.occupy(redPiece);
+            redPieces.add(redPiece);
           }
         }
       }
@@ -170,5 +181,23 @@ public class ModelBoard {
       madeMove = false;
       move = null;
     }
+  }
+
+  /**
+   * Gets a list of all red pieces
+   *
+   * @return A list of red pieces
+   */
+  public List<Piece> getRedPieces(){
+    return redPieces;
+  }
+
+  /**
+   * Gets a list of all white pieces
+   *
+   * @return A list of white pieces
+   */
+  public List<Piece> getWhitePieces() {
+    return whitePieces;
   }
 }
