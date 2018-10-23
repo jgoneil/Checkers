@@ -2,6 +2,7 @@ package com.webcheckers.appl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Class for each row on the game board
@@ -24,6 +25,20 @@ public class Row implements Iterable {
     this.row = new ArrayList<>();
     this.index = xCoordinate;
     fillRow(length, color);
+  }
+
+  /**
+   * Constructor for the row class (testing)
+   *
+   * @param xCoordinate the xCoordinate of each space for the row of the board
+   * @param length the length of the side of the board
+   * @param color the color of the player for the row being generated
+   * @param pieces the list of pieces for the game
+   */
+  public Row(int xCoordinate, int length, String color, List<Piece> pieces) {
+    this.row = new ArrayList<>();
+    this.index = xCoordinate;
+    fillRowAndPieces(length, color, pieces);
   }
 
   /**
@@ -62,6 +77,31 @@ public class Row implements Iterable {
             space.occupy(new Piece("red", space));
           }
         }
+      }
+    }
+  }
+
+  /**
+   * Fills the arrayList of spaces for the row being created
+   *
+   * @param length the length of the side of the board
+   * @param color the color of the Player the row is being created for
+   * @param pieces the pieces being added to the space
+   */
+  private void fillRowAndPieces(int length, String color, List<Piece> pieces) {
+    for (int i = 0; i < length; i++) {
+      if ((this.index + i) % 2 == 0) {
+        row.add(new Space(this.index, i, Space.Color.WHITE));
+      } else {
+        Space space = new Space(this.index, i, Space.Color.BLACK);
+        for (Piece p: pieces) {
+          if (p.getSpace().equals(space)) {
+            space.occupy(p);
+            pieces.remove(p);
+            break;
+          }
+        }
+        row.add(space);
       }
     }
   }

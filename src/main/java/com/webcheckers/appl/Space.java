@@ -106,4 +106,23 @@ public class Space {
   public boolean isValid() {
     return this.piece == null && this.color == Color.BLACK;
   }
+
+  /**
+   * Checks to see if a space is equal to another object or not
+   *
+   * @param space the space being checked to see if it is equal or not
+   * @return a boolean condition based on if the spaces are equal to one another or not
+   */
+  @Override
+  public boolean equals(Object space) {
+    if (space instanceof Space) {
+      Space checkSpace = (Space) space;
+      if (checkSpace.getCellIdx() == this.cellIdx 
+          && checkSpace.getxCoordinate() == this.xCoordinate
+          && checkSpace.getColor().equals(this.color)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
