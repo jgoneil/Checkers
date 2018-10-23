@@ -34,7 +34,7 @@ public class ModelBoard {
    *
    * @param redPlayer the player associated to the color red for the game
    * @param whitePlayer the player associated to the color white for the game
-   * @param length the lenght of the sides of the board (assuming its a square)
+   * @param length the length of the sides of the board (assuming its a square)
    */
   public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
     //Setting constants
@@ -48,7 +48,7 @@ public class ModelBoard {
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
         //Checking to see if the space should be white or not
-        if (i + j % 2 == 0) {
+        if ((i + j) % 2 == 0) {
           board[i][j] = new Space(i, j, Space.Color.WHITE);
         } else {
           Space space = new Space(i, j, Space.Color.BLACK);
@@ -93,16 +93,24 @@ public class ModelBoard {
    * Submits a move for the game and change the active player
    */
   public void submitMove() {
-    Space startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
-    Space endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+    Space startingSpace;
+    Space endingSpace;
+    if (redTurn) {
+      startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
+      endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+    } else {
+      startingSpace = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
+      endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
+    }
     Piece movingPiece = startingSpace.getPiece();
     startingSpace.unoccupy();
     endingSpace.occupy(movingPiece);
     BoardView redBoardView = redPlayer.getBoardView();
     BoardView whiteBoardView = whitePlayer.getBoardView();
-    Move reverseMove = new Move(new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
-            new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
-    if(this.redTurn) {
+    Move reverseMove = new Move(
+        new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
+        new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
+    if (this.redTurn) {
       redBoardView.makeMove(move);
       whiteBoardView.makeMove(reverseMove);
     } else {
@@ -174,5 +182,29 @@ public class ModelBoard {
   public void addPieceToSpace(Piece piece, Space space) {
     Space goalSpace = board[space.getxCoordinate()][space.getCellIdx()];
     goalSpace.occupy(piece);
+  }
+
+  /**
+   * Backup a move made by the player before submitting.
+   *
+   * Returns the game to the state before choosing a move.
+   */
+  public void backupMove() {
+    if (madeMove) {
+      Space startingSpace;
+      Space endingSpace;
+      if (redTurn) {
+        startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
+        endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+      } else {
+        startingSpace = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
+        endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
+      }
+      Piece movingPiece = endingSpace.getPiece();
+      endingSpace.unoccupy();
+      startingSpace.occupy(movingPiece);
+      madeMove = false;
+      move = null;
+    }
   }
 }
