@@ -4,6 +4,7 @@ import com.webcheckers.model.Move;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Class that creates and handles the board for gameplay
@@ -32,6 +33,25 @@ public class BoardView implements Iterable {
     //Generating the rows for the board
     for (int i = 0; i < length; i++) {
       Row row = new Row(i, length, color);
+      board.add(row);
+    }
+  }
+
+  /**
+   * Main constructor for class that establishes the two players, size of board, and the pieces on the board
+   *
+   * @param redPlayer the player associated to the red checkers for the checkers game
+   * @param whitePlayer the player associated to the white checkers for the checkers game
+   * @param length the side of the board (assuming square)
+   * @param color the color of the player
+   * @param pieces the pieces being added to the board
+   */
+  public BoardView(Player redPlayer, Player whitePlayer, int length, String color, List<Piece> pieces) {
+    this.redPlayer = redPlayer;
+    this.whitePlayer = whitePlayer;
+    this.board = new ArrayList<>();
+    for (int i = 0; i < length; i++) {
+      Row row = new Row(i, length, color, pieces);
       board.add(row);
     }
   }

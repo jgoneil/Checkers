@@ -6,6 +6,7 @@ import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Piece;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Model class that holds the main board for model configurations
@@ -66,6 +67,21 @@ public class ModelBoard {
         }
       }
     }
+  }
+
+  /**
+   * Constructor for the model version of the board
+   *
+   * @param redPlayer the player associated to the color red for the game
+   * @param whitePlayer the player associated to the color white for the game
+   * @param length the length of the sides of the board (assuming square)
+   * @param pieces the pieces being added to the board
+   */
+  public ModelBoard(Player redPlayer, Player whitePlayer, int length, List<Piece> pieces) {
+    this.board = new Space[length][length];
+    this.redPlayer = redPlayer;
+    this.whitePlayer = whitePlayer;
+    this.redTurn = true;
   }
 
   /**
