@@ -40,7 +40,7 @@ public class ModelBoard {
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
         //Checking to see if the space should be white or not
-        if (i + j % 2 == 0) {
+        if ((i + j) % 2 == 0) {
           board[i][j] = new Space(i, j, Space.Color.WHITE);
         } else {
           Space space = new Space(i, j, Space.Color.BLACK);
