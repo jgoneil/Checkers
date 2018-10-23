@@ -75,6 +75,9 @@ class SpaceTest {
   void isValid() {
     assertTrue(space1.isValid());
     assertFalse(space2.isValid());
+
+    space1.occupy(pieceMock);
+    assertFalse(space1.isValid());
   }
 
 

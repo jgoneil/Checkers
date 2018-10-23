@@ -70,7 +70,7 @@ class CheckMoveTest {
     assertTrue(checkMove.validateMove(position54, position47, whitePlayerMock).containsKey(false));
 
     // move backward
-    assertTrue(checkMove.validateMove(position54, position63, redPlayerMock).containsKey(false));
+    assertTrue(checkMove.validateMove(position34, position43, redPlayerMock).containsKey(false));
     assertTrue(checkMove.validateMove(position54, position63, whitePlayerMock).containsKey(false));
 
     // move to white

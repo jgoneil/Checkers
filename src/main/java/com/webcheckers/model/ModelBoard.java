@@ -5,9 +5,6 @@ import com.webcheckers.appl.Player;
 import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Piece;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Model class that holds the main board for model configurations
  */
@@ -25,19 +22,13 @@ public class ModelBoard {
   private Move move;
   //Holds if the redPlayer has the active move or not
   private boolean redTurn;
-  //Holds all pieces belonging to the red player
-  private List<Piece> whitePieces = new ArrayList<>();
-  //Holds all pieces belonging to the white player
-  private List<Piece> redPieces = new ArrayList<>();
-
-  private boolean tester = false;
 
   /**
    * Constructor for the model version of the board
    *
-   * @param redPlayer   the player associated to the color red for the game
+   * @param redPlayer the player associated to the color red for the game
    * @param whitePlayer the player associated to the color white for the game
-   * @param length      the lenght of the sides of the board (assuming its a square)
+   * @param length the length of the sides of the board (assuming its a square)
    */
   public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
     //Setting constants
@@ -49,20 +40,16 @@ public class ModelBoard {
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
         //Checking to see if the space should be white or not
-        if (i + j % 2 == 0) {
+        if ((i + j) % 2 == 0) {
           board[i][j] = new Space(i, j, Space.Color.WHITE);
         } else {
           Space space = new Space(i, j, Space.Color.BLACK);
           board[i][j] = space;
           //completing a check to see if a piece should be added to the space (space must be black for this to happen)
           if (i >= 0 && i <= 2) {
-            Piece whitePiece = new Piece("white", space);
-            space.occupy(whitePiece);
-            whitePieces.add(whitePiece);
+            space.occupy(new Piece("white", space));
           } else if (i >= 5 && i <= 7) {
-            Piece redPiece = new Piece("red", space);
-            space.occupy(redPiece);
-            redPieces.add(redPiece);
+            space.occupy(new Piece("red", space));
           }
         }
       }
@@ -94,15 +81,23 @@ public class ModelBoard {
    * Submits a move for the game and change the active player
    */
   public void submitMove() {
-    Space startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
-    Space endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+    Space startingSpace;
+    Space endingSpace;
+    if (redTurn) {
+      startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
+      endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+    } else {
+      startingSpace = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
+      endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
+    }
     Piece movingPiece = startingSpace.getPiece();
     startingSpace.unoccupy();
     endingSpace.occupy(movingPiece);
     BoardView redBoardView = redPlayer.getBoardView();
     BoardView whiteBoardView = whitePlayer.getBoardView();
-    Move reverseMove = new Move(new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
-            new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
+    Move reverseMove = new Move(
+        new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
+        new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
     if (this.redTurn) {
       redBoardView.makeMove(move);
       whiteBoardView.makeMove(reverseMove);
@@ -154,20 +149,26 @@ public class ModelBoard {
   }
 
   /**
-   * Getter for the white players pieces
+   * Backup a move made by the player before submitting.
    *
-   * @return An array holding the white pieces
+   * Returns the game to the state before choosing a move.
    */
-  public List<Piece> getWhitePieces() {
-    return whitePieces;
-  }
-
-  /**
-   * Getter for the red players pieces
-   *
-   * @return An array holding the red pieces
-   */
-  public List<Piece> getRedPieces() {
-    return redPieces;
+  public void backupMove() {
+    if (madeMove) {
+      Space startingSpace;
+      Space endingSpace;
+      if (redTurn) {
+        startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
+        endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+      } else {
+        startingSpace = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
+        endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
+      }
+      Piece movingPiece = endingSpace.getPiece();
+      endingSpace.unoccupy();
+      startingSpace.occupy(movingPiece);
+      madeMove = false;
+      move = null;
+    }
   }
 }
