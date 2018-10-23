@@ -59,6 +59,7 @@ public class PlayerTest {
   void equalsTest() {
     assertEquals(player1, player3);
     assertNotEquals(player1, player2);
+    assertNotEquals(player1, "a");
   }
 
   @Test
