@@ -22,6 +22,8 @@ public class PostSubmitTurn implements Route {
   //Static final variables (constants)
   static final String ERROR_SUBMIT_TURN = "Error on submission";
   static final String SUCCESS_SUBMIT_TURN = "Submission successful";
+  static final String PLAYER_WON = "Game over! You WIN!";
+  static final String PLAYER_LOSS = "Game over! You LOST!";
 
   /**
    * Main method for POST submit move 
@@ -47,9 +49,25 @@ public class PostSubmitTurn implements Route {
     Session session = request.session();
 
     ModelBoard modelBoard = session.attribute(GetGameRoute.MODEL_BOARD);
+    Player currentPlayer = session.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
 
     if (modelBoard.checkMadeMove()) {
       modelBoard.submitMove();
+      if (!modelBoard.whiteCanPlay() || !modelBoard.redCanPlay()) {
+        if (currentPlayer.getColor().equals("Red")) {
+          if (!modelBoard.whiteCanPlay()) {
+            return gson.toJson(new Message(Message.Type.info, PLAYER_WON));
+          } else {
+            return gson.toJson(new Message(Message.Type.info, PLAYER_LOSS));
+          } 
+        } else {
+          if (!modelBoard.redCanPlay()) {
+            return gson.toJson(new Message(Message.Type.info, PLAYER_WON));
+          } else {
+            return gson.toJson(new Message(Message.Type.info, PLAYER_LOSS));
+          }
+        }
+      }
       Message message = new Message(Message.Type.info, SUCCESS_SUBMIT_TURN);
       return gson.toJson(message);
     } else {

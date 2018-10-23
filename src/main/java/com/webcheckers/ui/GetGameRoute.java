@@ -18,7 +18,6 @@ import com.webcheckers.appl.Player;
 import com.webcheckers.model.ModelBoard;
 
 import static spark.Spark.halt;
-import static spark.Spark.threadPool;
 
 /**
  * UI class that handles all HTTP requests for the /game page
@@ -160,6 +159,24 @@ public class GetGameRoute implements Route {
       } else {
         vm.put("activeColor", "WHITE");
       }
+      if (!this.modelBoard.whiteCanPlay() || !this.modelBoard.redCanPlay()) {
+        if (this.currentPlayer.getColor().equals("Red")) {
+          if (!this.modelBoard.whiteCanPlay()) {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
+          } else {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+          }
+        if (!this.modelBoard.redCanPlay()) {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
+          } else {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+          }
+        }
+        response.redirect(WebServer.HOME_URL);
+        halt();
+        return null;
+      }
+          
       vm.put("board", currentPlayer.getBoardView());
       return templateEngine.render(new ModelAndView(vm, VIEW));
     }
