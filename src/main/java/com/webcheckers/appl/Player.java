@@ -40,10 +40,7 @@ public class Player {
    * @return True/False based on if the player is in a game or not
    */
   public boolean inGame() {
-    if (color == null) {
-      return false;
-    }
-    return true;
+    return color != null;
   }
 
   /**
