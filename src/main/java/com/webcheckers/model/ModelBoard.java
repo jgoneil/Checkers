@@ -28,7 +28,7 @@ public class ModelBoard {
    *
    * @param redPlayer the player associated to the color red for the game
    * @param whitePlayer the player associated to the color white for the game
-   * @param length the lenght of the sides of the board (assuming its a square)
+   * @param length the length of the sides of the board (assuming its a square)
    */
   public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
     //Setting constants
@@ -87,8 +87,8 @@ public class ModelBoard {
       startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
       endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
     } else {
-      startingSpace = board[7-move.getStart().getRow()][7-move.getStart().getCell()];
-      endingSpace = board[7-move.getEnd().getRow()][7-move.getEnd().getCell()];
+      startingSpace = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
+      endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
     }
     Piece movingPiece = startingSpace.getPiece();
     startingSpace.unoccupy();
@@ -148,6 +148,11 @@ public class ModelBoard {
     goalSpace.occupy(piece);
   }
 
+  /**
+   * Backup a move made by the player before submitting.
+   *
+   * Returns the game to the state before choosing a move.
+   */
   public void backupMove() {
     if (madeMove) {
       Space startingSpace;
@@ -156,8 +161,8 @@ public class ModelBoard {
         startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
         endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
       } else {
-        startingSpace = board[7-move.getStart().getRow()][7-move.getStart().getCell()];
-        endingSpace = board[7-move.getEnd().getRow()][7-move.getEnd().getCell()];
+        startingSpace = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
+        endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
       }
       Piece movingPiece = endingSpace.getPiece();
       endingSpace.unoccupy();
