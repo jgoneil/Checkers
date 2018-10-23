@@ -1,7 +1,10 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.Piece;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Space;
+
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -59,6 +62,90 @@ public class CheckMove {
     return end.getRow() < start.getRow();
   }
 
+  /**
+   * Check to see if any piece during the players turn can jump.
+   *
+   * @param player current player
+   * @return true/false based on if the player has a piece that can jump.
+   */
+  private boolean canJump(Player player) {
+    boolean canJump = false;
+    if (player.getColor().equals("Red")) {
+      List<Piece> redPieces = board.getRedPieces();
+      for (int i = 0; i < redPieces.size(); i++) {
+        Piece piece = redPieces.get(i);
+        if(pieceCanJump(piece.getSpace(),player)){
+          canJump = true;
+        }
+      }
+    }
+    else{
+      List<Piece> whitePieces = board.getWhitePieces();
+      for (int i = 0; i < whitePieces.size(); i++) {
+        Piece piece = whitePieces.get(i);
+        if(pieceCanJump(piece.getSpace(),player)){
+          canJump = true;
+        }
+      }
+    }
+    return canJump;
+  }
+
+  private boolean pieceCanJump(Space start, Player player) {
+    int pieceY = start.getxCoordinate();
+    int pieceX = start.getCellIdx();
+    if (player.getColor().equals("Red")) {
+      System.out.println(pieceX + " " + pieceY);
+      if (pieceX < 6 && pieceX > 1) {
+        Space right1stSpace = board.getSpace(pieceX + 1, pieceY - 1);
+        Space left1stSpace = board.getSpace(pieceX - 1, pieceY - 1);
+        Space right2ndSpace = board.getSpace(pieceX + 2, pieceY - 2);
+        Space left2ndSpace = board.getSpace(pieceX - 2, pieceY - 2);
+        if (right1stSpace.getPiece() != null && right2ndSpace.isValid() && right1stSpace.getPiece().getColor().toString().equals("White")) {
+          return true;
+        } else if (left1stSpace.getPiece() != null && left2ndSpace.isValid()) {
+          return true;
+        }
+      } else if (pieceX <= 1) {
+        Space right1stSpace = board.getSpace(pieceX + 1, pieceY - 1);
+        Space right2ndSpace = board.getSpace(pieceX + 2, pieceY - 2);
+        if (right1stSpace.getPiece() != null && right2ndSpace.isValid()) {
+          return true;
+        }
+      } else if (pieceX >= 6) {
+        Space left1stSpace = board.getSpace(pieceX - 1, pieceY - 1);
+        Space left2ndSpace = board.getSpace(pieceX - 2, pieceY - 2);
+        if (left1stSpace.getPiece() != null && left2ndSpace.isValid()) {
+          return true;
+        }
+      }
+    } else{
+      if (pieceX < 6 && pieceX > 1) {
+        Space right1stSpace = board.getSpace(pieceX + 1, pieceY + 1);
+        Space left1stSpace = board.getSpace(pieceX - 1, pieceY + 1);
+        Space right2ndSpace = board.getSpace(pieceX + 2, pieceY + 2);
+        Space left2ndSpace = board.getSpace(pieceX - 2, pieceY + 2);
+        if (right1stSpace.getPiece() != null && right2ndSpace.isValid()) {
+          return true;
+        } else if (left1stSpace.getPiece() != null && left2ndSpace.isValid()) {
+          return true;
+        }
+      } else if (pieceX <= 1) {
+        Space right1stSpace = board.getSpace(pieceX + 1, pieceY + 1);
+        Space right2ndSpace = board.getSpace(pieceX + 2, pieceY + 2);
+        if (right1stSpace.getPiece() != null && right2ndSpace.isValid()) {
+          return true;
+        }
+      } else if (pieceX >= 6) {
+        Space left1stSpace = board.getSpace(pieceX - 1, pieceY + 1);
+        Space left2ndSpace = board.getSpace(pieceX - 2, pieceY + 2);
+        if (left1stSpace.getPiece() != null && left2ndSpace.isValid()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
   /**
    * Sees if a space is valid for a piece to move onto
@@ -71,12 +158,23 @@ public class CheckMove {
     Map<Boolean, String> response = new HashMap<>();
     Space current;
     Space goal;
+    Space middle;
     if (player.getColor().equals("Red")) {
       current = board.getSpace(start.getRow(), start.getCell());
       goal = board.getSpace(target.getRow(), target.getCell());
     } else {
       current = board.getSpace(7 - start.getRow(), 7 - start.getCell());
       goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());
+    }
+    if (canJump(player) && !pieceCanJump(current,player)){
+      response.put(false, "Attempted to move when jump is possible.");
+    } else if(canJump(player) && pieceCanJump(current,player)){
+      board.addPieceToSpace(current.getPiece(), goal);
+      current.unoccupy();
+      middle = board.getSpace(Math.abs(current.getxCoordinate() - goal.getxCoordinate()),
+              Math.abs(current.getCellIdx() - goal.getCellIdx()));
+      middle.unoccupy();
+      response.put(true, "This jump is valid.");
     }
     if (goal.getColor().equals(Space.Color.WHITE)) {
       response.put(false, "Attempted to move a piece to a white space.");
