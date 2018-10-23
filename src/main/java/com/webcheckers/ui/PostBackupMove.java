@@ -15,10 +15,12 @@ import java.util.Objects;
 import static spark.Spark.halt;
 
 /**
- * The UI Controller for handling the refresh to check the player turn
+ * the ui controller for handling the backup of a Player move
  */
-public class PostTurnCheck implements Route {
+public class PostBackupMove implements Route {
 
+  private static final String SUCCESS_BACKUP_MOVE = "Your move was backed up successfully.";
+  private static final String ERROR_BACKUP_MOVE = "No move to backup.";
   //Gson engine for receiving/sending JSON information
   private final Gson gson;
 
@@ -27,7 +29,7 @@ public class PostTurnCheck implements Route {
    *
    * @param gson the json system for handling JQuery response/request methods
    */
-  public PostTurnCheck(final Gson gson) {
+  public PostBackupMove(final Gson gson) {
 
     Objects.requireNonNull(gson, "gson cannot be null");
 
@@ -44,27 +46,15 @@ public class PostTurnCheck implements Route {
   @Override
   public Object handle(Request request, Response response) {
     Session session = request.session();
-    Player player = session.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
 
-    ModelBoard modelBoard;
+    ModelBoard modelBoard = session.attribute(GetGameRoute.MODEL_BOARD);
 
-    if (player.getModelBoard() != null) {
-      modelBoard = player.getModelBoard();
-      if (player.getColor().equals("Red")) {
-        if (modelBoard.checkRedTurn()) {
-          return gson.toJson(new Message(Message.Type.info, "true"));
-        } else {
-          return gson.toJson(new Message(Message.Type.info, "false"));
-        }
-      } else {
-        if (modelBoard.checkRedTurn()) {
-          return gson.toJson(new Message(Message.Type.info, "false"));
-        } else {
-          return gson.toJson(new Message(Message.Type.info, "true"));
-        }
-      }
+    if (modelBoard.checkMadeMove()) {
+      modelBoard.backupMove();
+      Message message = new Message(Message.Type.info, SUCCESS_BACKUP_MOVE);
+      return gson.toJson(message);
     } else {
-      return gson.toJson(new Message(Message.Type.info, "true"));
+      return gson.toJson(new Message(Message.Type.error, ERROR_BACKUP_MOVE));
     }
   }
 }

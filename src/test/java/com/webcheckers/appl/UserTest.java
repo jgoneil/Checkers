@@ -69,6 +69,8 @@ public class UserTest {
 
   @Test
   void GetSpecificPlayerTest() {
+    users.getAllPlayers().add("No players");
+    assertNull(users.getSpecificPlayer("No players"));
     users.addPlayer(validPlayerString1);
     assertEquals(users.getSpecificPlayer(validPlayerString1).getName(), validPlayerString1);
     assertNull(users.getSpecificPlayer("Not a user"));
@@ -90,5 +92,14 @@ public class UserTest {
     assertEquals(2, users.getAllPlayersExceptUser(validPlayerString1).size());
     assertEquals(3, users.getAllPlayersExceptUser("").size());
 
+  }
+
+  @Test
+  void removePlayer() {
+    users.addPlayer(validPlayerString1);
+    users.addPlayer(validPlayerString2);
+    users.addPlayer(validPlayerString3);
+    users.removeUser(validPlayerString1);
+    assertEquals(2, users.getAllPlayers().size());
   }
 }

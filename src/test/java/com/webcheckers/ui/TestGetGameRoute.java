@@ -4,6 +4,7 @@ import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Users;
 
+import com.webcheckers.model.ModelBoard;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -102,6 +103,8 @@ class TestGetGameRoute {
             users.getSpecificPlayer(whitePlayer.getName()), 8, "red");
     redPlayer.setColor("red", boardView);
     whitePlayer.setColor("white", boardView);
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
+    whitePlayer.addModelBoard(modelBoard);
     when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(NO_BOARD);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -128,6 +131,8 @@ class TestGetGameRoute {
             users.getSpecificPlayer(whitePlayer.getName()), 8, "red");
     redPlayer.setColor("red", boardView);
     whitePlayer.setColor("white", boardView);
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
+    when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(modelBoard);
     when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -154,7 +159,9 @@ class TestGetGameRoute {
             users.getSpecificPlayer(whitePlayer.getName()), 8, "white");
     redPlayer.setColor("red", boardView);
     whitePlayer.setColor("white", boardView);
-    boardView.turnEnded();
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
+    modelBoard.setMove(true);
+    when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(modelBoard);
     when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

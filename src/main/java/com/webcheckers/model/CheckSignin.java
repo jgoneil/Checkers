@@ -40,10 +40,7 @@ public class CheckSignin {
           spaces++;
         }
       }
-      //Checking to see if the amount of spaces is equal to the whole length of the username
-      if (spaces == username.length()) {
-        return false;
-      }
+
       return true;
     }
   }

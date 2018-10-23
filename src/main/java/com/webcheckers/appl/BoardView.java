@@ -1,5 +1,7 @@
 package com.webcheckers.appl;
 
+import com.webcheckers.model.Move;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -13,8 +15,6 @@ public class BoardView implements Iterable {
   private Player whitePlayer;
   //The list of rows for the board view
   private ArrayList<Row> board;
-  //Check to see if the turn is currently the red player's turn or not
-  private boolean redTurn;
 
   /**
    * Main constructor for class that establishes the two players and size of the board
@@ -29,7 +29,6 @@ public class BoardView implements Iterable {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();
-    this.redTurn = true;
     //Generating the rows for the board
     for (int i = 0; i < length; i++) {
       Row row = new Row(i, length, color);
@@ -65,22 +64,6 @@ public class BoardView implements Iterable {
   }
 
   /**
-   * Boolean expression to determine who's turn it is
-   *
-   * @return a true or false statement based on if it is the red player's turn or not
-   */
-  public boolean redTurn() {
-    return this.redTurn;
-  }
-
-  /**
-   * Declares a turn switch for the board
-   */
-  public void turnEnded() {
-    this.redTurn = !this.redTurn;
-  }
-
-  /**
    * Getter for a specific row in the board
    *
    * @param row the row of the board being retrieved
@@ -88,6 +71,18 @@ public class BoardView implements Iterable {
    */
   public Row getRow(int row) {
     return this.board.get(row);
+  }
+
+  /**
+   * Setter for a move made on the board
+   *
+   * @param move the move on the board
+   */
+  public void makeMove(Move move) {
+    Row startingRow = board.get(move.getStart().getRow());
+    Piece piece = startingRow.removePieceFromSpace(move.getStart().getCell());
+    Row endingRow = board.get(move.getEnd().getRow());
+    endingRow.addPieceToSpace(move.getEnd().getCell(), piece);
   }
 
   /**

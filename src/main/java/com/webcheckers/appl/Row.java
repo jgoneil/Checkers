@@ -102,4 +102,26 @@ public class Row implements Iterable {
   public Iterator iterator() {
     return this.row.iterator();
   }
+
+  /**
+   * Updates the row to remove a piece from a space in the row
+   *
+   * @param spaceLoc the space that the piece is being removed from
+   */
+  public Piece removePieceFromSpace(int spaceLoc) {
+    Space space = row.get(spaceLoc);
+    Piece piece = space.getPiece();
+    space.unoccupy();
+    return piece;
+  }
+
+  /**
+   * Updates the row to add a piece to a row
+   *
+   * @param spaceLoc the space that the piece is moving to
+   */
+  public void addPieceToSpace(int spaceLoc, Piece piece) {
+    Space space = row.get(spaceLoc);
+    space.occupy(piece);
+  }
 }
