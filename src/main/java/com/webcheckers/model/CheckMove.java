@@ -24,7 +24,8 @@ public class CheckMove {
 
   /**
    * Checks if the piece is moving diagonally
-    * @param start the starting position of the checker
+   *
+   * @param start the starting position of the checker
    * @param end the ending position of the checker
    * @return true/false based on whether the move is diagonal
    */
@@ -70,7 +71,7 @@ public class CheckMove {
     Map<Boolean, String> response = new HashMap<>();
     Space current;
     Space goal;
-    if(player.getColor().equals("Red")) {
+    if (player.getColor().equals("Red")) {
       current = board.getSpace(start.getRow(), start.getCell());
       goal = board.getSpace(target.getRow(), target.getCell());
     } else {

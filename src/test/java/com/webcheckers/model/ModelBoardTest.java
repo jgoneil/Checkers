@@ -4,7 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 import com.webcheckers.appl.BoardView;
+import com.webcheckers.appl.Piece;
 import com.webcheckers.appl.Player;
+import com.webcheckers.appl.Space;
+import com.webcheckers.appl.Space.Color;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -43,10 +46,16 @@ class ModelBoardTest {
   }
 
   @Test
-  void getSpace() {
-  }
+  void backupMoveTest(){
+    Piece piece = new Piece("red", new Space(5, 0, Color.BLACK));
+    Move move = (new Move(new Position(5, 0), new Position(4, 1)));
+    modelBoard.madeMove(move);
+    modelBoard.addPieceToSpace(piece, new Space(4, 1 , Color.BLACK));
 
-  @Test
-  void addPieceToSpace() {
+    modelBoard.backupMove();
+
+    assertFalse(modelBoard.checkMadeMove());
+    assertTrue(modelBoard.getSpace(5,0).isOccupied());
+    assertFalse(modelBoard.getSpace(4,1).isOccupied());
   }
 }
