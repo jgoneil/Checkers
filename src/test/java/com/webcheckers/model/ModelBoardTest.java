@@ -13,12 +13,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Tag("Model-tier")
 class ModelBoardTest {
 
   private Player player1Mock;
   private Player player2Mock;
   private ModelBoard modelBoard;
+  private ModelBoard modelBoardTest;
+  private Piece piece;
 
   @BeforeEach
   void setUp() {
@@ -27,6 +32,10 @@ class ModelBoardTest {
     modelBoard = new ModelBoard(player1Mock, player2Mock, 8);
     BoardView boardViewRed = new BoardView(player1Mock, player2Mock, 8, "red");
     BoardView boardViewWhite = new BoardView(player2Mock, player1Mock, 8, "white");
+    this.piece = new Piece("red", new Space(4, 1, Color.BLACK));
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(piece);
+    modelBoardTest = new ModelBoard(player1Mock, player2Mock, 8, pieces);
     player1Mock.setColor("Red", boardViewRed);
     player2Mock.setColor("White", boardViewWhite);
   }
@@ -43,6 +52,12 @@ class ModelBoardTest {
     player1Mock.addModelBoard(modelBoard);
     player2Mock.addModelBoard(modelBoard);
     modelBoard.submitMove();
+  }
+
+  @Test
+  void CreateBoardWithSpecifiedPieces() {
+    assertEquals(modelBoardTest.getSpace(4, 1).getPiece(), piece);
+    assertNull(modelBoardTest.getSpace(0, 1).getPiece());
   }
 
   @Test

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +26,7 @@ public class BoardViewTest {
     this.redPLayer = new Player("Red");
     this.boardView1 = new BoardView(redPLayer, whitePlayer, 8, "red");
     this.piece = new Piece("red", new Space(4, 1, Space.Color.BLACK));
-    ArrayList<Piece> pieces = new ArrayList<>();
+    List<Piece> pieces = new ArrayList<>();
     pieces.add(piece);
     this.boardViewTesting = new BoardView(redPLayer, whitePlayer, 8, "red", pieces);
     this.modelBoard = new ModelBoard(redPLayer, whitePlayer, 8);

@@ -82,10 +82,37 @@ public class ModelBoard {
    * @param pieces the pieces being added to the board
    */
   public ModelBoard(Player redPlayer, Player whitePlayer, int length, List<Piece> pieces) {
+    //Setting constants
     this.board = new Space[length][length];
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.redTurn = true;
+    this.redPieces = new ArrayList<>();
+    this.whitePieces = new ArrayList<>();
+    this.isKinging = true;
+    //Preforming a loop to generate all of the spaces for the board
+    for (int i = 0; i < length; i++) {
+      for (int j = 0; j < length; j ++) {
+        if ((i + j) % 2 == 0) {
+          board[i][j] = new Space(i, j, Space.Color.WHITE);
+        } else {
+          Space space = new Space(i, j, Space.Color.BLACK);
+          for (Piece p: pieces) {
+            if (p.getSpace().equals(space)) {
+              if (p.getColor() == Piece.Color.RED) {
+                this.redPieces.add(p);
+              } else {
+                this.whitePieces.add(p);
+              }
+              space.occupy(p);
+              pieces.remove(p);
+              break;
+            }
+          }
+          board[i][j] = space;
+        }
+      }
+    }
   }
 
   /**
