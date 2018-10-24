@@ -23,7 +23,9 @@ class ModelBoardTest {
   private Player player2Mock;
   private ModelBoard modelBoard;
   private ModelBoard modelBoardTest;
-  private Piece piece;
+  private ModelBoard modelBoardEmpty;
+  private Piece pieceRed;
+  private Piece pieceWhite;
 
   @BeforeEach
   void setUp() {
@@ -32,9 +34,13 @@ class ModelBoardTest {
     modelBoard = new ModelBoard(player1Mock, player2Mock, 8);
     BoardView boardViewRed = new BoardView(player1Mock, player2Mock, 8, "red");
     BoardView boardViewWhite = new BoardView(player2Mock, player1Mock, 8, "white");
-    this.piece = new Piece("red", new Space(4, 1, Color.BLACK));
+    this.pieceRed = new Piece("red", new Space(4, 1, Color.BLACK));
+    this.pieceWhite = new Piece("white", new Space(0, 1, Color.BLACK));
     List<Piece> pieces = new ArrayList<>();
-    pieces.add(piece);
+    pieces.add(pieceRed);
+    pieces.add(pieceWhite);
+    List<Piece> piecesEmpty = new ArrayList<>();
+    modelBoardEmpty = new ModelBoard(player1Mock, player2Mock, 8, piecesEmpty);
     modelBoardTest = new ModelBoard(player1Mock, player2Mock, 8, pieces);
     player1Mock.setColor("Red", boardViewRed);
     player2Mock.setColor("White", boardViewWhite);
@@ -56,8 +62,16 @@ class ModelBoardTest {
 
   @Test
   void CreateBoardWithSpecifiedPieces() {
-    assertEquals(modelBoardTest.getSpace(4, 1).getPiece(), piece);
-    assertNull(modelBoardTest.getSpace(0, 1).getPiece());
+    assertEquals(modelBoardTest.getSpace(4, 1).getPiece(), pieceRed);
+    assertEquals(modelBoardTest.getSpace(0, 1).getPiece(), pieceWhite);
+    assertNull(modelBoardTest.getSpace(0, 3).getPiece());
+  }
+
+  @Test
+  void CreateEmptyBoard() {
+    assertNull(modelBoardEmpty.getSpace(0,1).getPiece());
+    assertFalse(modelBoardEmpty.whiteCanPlay());
+    assertFalse(modelBoardEmpty.redCanPlay());
   }
 
   @Test

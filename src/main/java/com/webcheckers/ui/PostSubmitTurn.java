@@ -53,21 +53,6 @@ public class PostSubmitTurn implements Route {
 
     if (modelBoard.checkMadeMove()) {
       modelBoard.submitMove();
-      if (!modelBoard.whiteCanPlay() || !modelBoard.redCanPlay()) {
-        if (currentPlayer.getColor().equals("Red")) {
-          if (!modelBoard.whiteCanPlay()) {
-            return gson.toJson(new Message(Message.Type.info, PLAYER_WON));
-          } else {
-            return gson.toJson(new Message(Message.Type.info, PLAYER_LOSS));
-          } 
-        } else {
-          if (!modelBoard.redCanPlay()) {
-            return gson.toJson(new Message(Message.Type.info, PLAYER_WON));
-          } else {
-            return gson.toJson(new Message(Message.Type.info, PLAYER_LOSS));
-          }
-        }
-      }
       Message message = new Message(Message.Type.info, SUCCESS_SUBMIT_TURN);
       return gson.toJson(message);
     } else {

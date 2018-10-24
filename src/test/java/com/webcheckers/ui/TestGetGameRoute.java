@@ -1,8 +1,6 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Users;
+import com.webcheckers.appl.*;
 
 import com.webcheckers.model.ModelBoard;
 import org.junit.jupiter.api.Test;
@@ -16,8 +14,10 @@ import static org.mockito.ArgumentMatchers.any;
 
 import spark.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 @Tag("UI-tier")
 class TestGetGameRoute {
@@ -235,6 +235,106 @@ class TestGetGameRoute {
     when(request.queryParams()).thenReturn(players);
     when(request.session().attribute(PostResignGame.RESIGNED_PLAYER)).thenReturn(redPlayer);
     when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(NO_BOARD);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    //Invoke Testing
+    try {
+      CuT.handle(request, response);
+    } catch (HaltException e) {
+      assertNotNull(e);
+    }
+  }
+
+  @Test
+  void redPlayerWon() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
+    users.addPlayer(whitePlayer.getName());
+    users.addPlayer(redPlayer.getName());
+    BoardView boardView = new BoardView(users.getSpecificPlayer(redPlayer.getName()),
+            users.getSpecificPlayer(whitePlayer.getName()), 8, "red");
+    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(new Piece("red", new Space(7, 0, Space.Color.BLACK)));
+    ModelBoard tempBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieces);
+    redPlayer.setColor("Red", boardView);
+    redPlayer.addModelBoard(tempBoard);
+    when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(tempBoard);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    //Invoke Testing
+    try {
+      CuT.handle(request, response);
+    } catch (HaltException e) {
+      assertNotNull(e);
+    }
+  }
+
+  @Test
+  void whitePlayerLost() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
+    users.addPlayer(whitePlayer.getName());
+    users.addPlayer(redPlayer.getName());
+    BoardView boardView = new BoardView(users.getSpecificPlayer(redPlayer.getName()),
+            users.getSpecificPlayer(whitePlayer.getName()), 8, "red");
+    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(new Piece("red", new Space(7, 0, Space.Color.BLACK)));
+    ModelBoard tempBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieces);
+    whitePlayer.setColor("White", boardView);
+    whitePlayer.addModelBoard(tempBoard);
+    when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(tempBoard);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    //Invoke Testing
+    try {
+      CuT.handle(request, response);
+    } catch (HaltException e) {
+      assertNotNull(e);
+    }
+  }
+
+  @Test
+  void whitePlayerWin() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
+    users.addPlayer(whitePlayer.getName());
+    users.addPlayer(redPlayer.getName());
+    BoardView boardView = new BoardView(users.getSpecificPlayer(redPlayer.getName()),
+            users.getSpecificPlayer(whitePlayer.getName()), 8, "red");
+    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(new Piece("white", new Space(0, 1, Space.Color.BLACK)));
+    ModelBoard tempBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieces);
+    whitePlayer.setColor("White", boardView);
+    whitePlayer.addModelBoard(tempBoard);
+    when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(tempBoard);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    //Invoke Testing
+    try {
+      CuT.handle(request, response);
+    } catch (HaltException e) {
+      assertNotNull(e);
+    }
+  }
+
+  @Test
+  void redPlayerLost() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
+    users.addPlayer(whitePlayer.getName());
+    users.addPlayer(redPlayer.getName());
+    BoardView boardView = new BoardView(users.getSpecificPlayer(redPlayer.getName()),
+            users.getSpecificPlayer(whitePlayer.getName()), 8, "red");
+    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(new Piece("white", new Space(0, 1, Space.Color.BLACK)));
+    ModelBoard tempBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieces);
+    redPlayer.setColor("Red", boardView);
+    redPlayer.addModelBoard(tempBoard);
+    when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(tempBoard);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 

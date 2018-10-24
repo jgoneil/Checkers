@@ -166,7 +166,8 @@ public class GetGameRoute implements Route {
           } else {
             httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
           }
-        if (!this.modelBoard.redCanPlay()) {
+        } else {
+          if (!this.modelBoard.redCanPlay()) {
             httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
           } else {
             httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
