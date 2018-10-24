@@ -1,6 +1,5 @@
 package com.webcheckers.appl;
 
-import com.webcheckers.appl.Piece.Color;
 import com.webcheckers.model.Move;
 
 import java.util.ArrayList;
