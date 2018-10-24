@@ -175,7 +175,7 @@ public class CheckMove {
         current.unoccupy();
         middle = board.getSpace((current.getxCoordinate() + goal.getxCoordinate()) / 2,
             (current.getCellIdx() + goal.getCellIdx()) / 2);
-        middle.unoccupy();
+        board.eatPiece(middle.getPiece());
         response.put(true, "This jump is valid.");
       } else {
         response.put(false, "Attempted to move when jump is possible.");

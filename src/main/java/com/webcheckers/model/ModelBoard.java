@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.Piece.Color;
 import com.webcheckers.appl.Piece.Type;
 import com.webcheckers.appl.Space;
 import com.webcheckers.appl.Player;
@@ -216,5 +217,26 @@ public class ModelBoard {
       return row == 0;
     }
     return false;
+  }
+
+  public void eatPiece(Piece piece){
+    if (piece.getColor().equals(Color.RED)){
+      redPieces.remove(piece);
+    } else {
+      whitePieces.remove(piece);
+    }
+    piece.getSpace().unoccupy();
+
+    BoardView redBoardView = redPlayer.getBoardView();
+    BoardView whiteBoardView = whitePlayer.getBoardView();
+
+    if (redTurn){
+      redBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
+      whiteBoardView.eatPiece(7-piece.getSpace().getxCoordinate(), 7-piece.getSpace().getCellIdx());
+    } else {
+      redBoardView.eatPiece(7-piece.getSpace().getxCoordinate(), 7-piece.getSpace().getCellIdx());
+      whiteBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
+    }
+
   }
 }

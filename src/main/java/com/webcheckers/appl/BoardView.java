@@ -1,5 +1,6 @@
 package com.webcheckers.appl;
 
+import com.webcheckers.appl.Piece.Color;
 import com.webcheckers.model.Move;
 
 import java.util.ArrayList;
@@ -96,5 +97,10 @@ public class BoardView implements Iterable {
   @Override
   public Iterator iterator() {
     return this.board.iterator();
+  }
+
+  public void eatPiece(int xCoordinate, int cellIdx) {
+    board.get(xCoordinate)
+          .removePieceFromSpace(cellIdx);
   }
 }
