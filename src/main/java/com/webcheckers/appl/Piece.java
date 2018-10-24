@@ -75,4 +75,9 @@ public class Piece {
   public Color getColor() {
     return this.color;
   }
+
+  /**
+   * Kings a piece
+   */
+  public void King(){this.type = Type.KING;}
 }
