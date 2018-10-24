@@ -135,11 +135,11 @@ public class CheckMove {
     if (isMovingTwo(start, end)) {
       if (!end.isOccupied()) {
         if (middle.isOccupied()) {
-          if (player.getColor().equals("red") && middle.getPiece().getColor().equals(Color.WHITE)) {
+          if (player.getColor().equals("Red") && middle.getPiece().getColor().equals(Color.WHITE)) {
             return true;
           }
 
-          if (player.getColor().equals("white") && middle.getPiece().getColor().equals(Color.RED)) {
+          if (player.getColor().equals("White") && middle.getPiece().getColor().equals(Color.RED)) {
             return true;
           }
         }

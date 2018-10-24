@@ -159,6 +159,7 @@ public class ModelBoard {
    */
   public void addPieceToSpace(Piece piece, Space space) {
     Space goalSpace = board[space.getxCoordinate()][space.getCellIdx()];
+    piece.move(space);
     goalSpace.occupy(piece);
   }
 
@@ -180,7 +181,7 @@ public class ModelBoard {
       }
       Piece movingPiece = endingSpace.getPiece();
       endingSpace.unoccupy();
-      startingSpace.occupy(movingPiece);
+      addPieceToSpace(movingPiece, startingSpace);
       madeMove = false;
       move = null;
     }
