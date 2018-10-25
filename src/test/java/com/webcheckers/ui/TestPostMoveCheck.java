@@ -1,14 +1,12 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
-import com.sun.tools.internal.xjc.model.Model;
 import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Player;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Position;
-import javafx.geometry.Pos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 
