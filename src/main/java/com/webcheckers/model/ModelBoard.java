@@ -249,13 +249,7 @@ public class ModelBoard {
     BoardView redBoardView = redPlayer.getBoardView();
     BoardView whiteBoardView = whitePlayer.getBoardView();
 
-    if (redTurn){
-      redBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
-      whiteBoardView.eatPiece(7-piece.getSpace().getxCoordinate(), 7-piece.getSpace().getCellIdx());
-    } else {
-      redBoardView.eatPiece(7-piece.getSpace().getxCoordinate(), 7-piece.getSpace().getCellIdx());
-      whiteBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
-    }
-
+    redBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
+    whiteBoardView.eatPiece(7-piece.getSpace().getxCoordinate(), 7-piece.getSpace().getCellIdx());
   }
 }

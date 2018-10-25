@@ -106,19 +106,19 @@ public class CheckMove {
       }
     } else {
       for (Piece whitePiece : board.getWhitePieces()) {
-        if (whitePiece.getSpace().getxCoordinate() - 2 >= 0
-            && whitePiece.getSpace().getCellIdx() - 2 >= 0) {
-          Space upperLeft = board.getSpace(whitePiece.getSpace().getxCoordinate() - 2,
-              whitePiece.getSpace().getCellIdx() - 2);
+        if (whitePiece.getSpace().getxCoordinate() + 2 <= 7
+            && whitePiece.getSpace().getCellIdx() + 2 <= 7) {
+          Space upperLeft = board.getSpace(whitePiece.getSpace().getxCoordinate() + 2,
+              whitePiece.getSpace().getCellIdx() + 2);
           if (pieceCanJump(whitePiece.getSpace(), upperLeft, player)) {
             canJump = true;
           }
         }
 
-        if (whitePiece.getSpace().getxCoordinate() - 2 >= 0
-            && whitePiece.getSpace().getCellIdx() + 2 <= 7) {
-          Space upperRight = board.getSpace(whitePiece.getSpace().getxCoordinate() - 2,
-              whitePiece.getSpace().getCellIdx() + 2);
+        if (whitePiece.getSpace().getxCoordinate() + 2 <= 7
+            && whitePiece.getSpace().getCellIdx() - 2 >= 0) {
+          Space upperRight = board.getSpace(whitePiece.getSpace().getxCoordinate() + 2,
+              whitePiece.getSpace().getCellIdx() - 2);
           if (pieceCanJump(whitePiece.getSpace(), upperRight, player)) {
             canJump = true;
           }
