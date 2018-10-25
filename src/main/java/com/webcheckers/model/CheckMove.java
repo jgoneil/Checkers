@@ -89,9 +89,14 @@ public class CheckMove {
       response.put(false, "Attempted to move piece too far.");
     } else if (!isMovingDiagonal(start, target)) {
       response.put(false, "Pieces can only move diagonally.");
-    } else if (!isMovingForward(start, target)) {
+    } else if (!isMovingForward(start, target) && current.getPiece().getType() == Type.KING) {
+      board.addPieceToSpace(current.getPiece(), goal);
+      current.unoccupy();
+      response.put(true, "This move is valid");
+    } else if (!isMovingForward(start, target) && current.getPiece().getType() == Type.SINGLE) {
       response.put(false, "Piece can only move forward");
-    } else {
+    }
+    else {
       board.addPieceToSpace(current.getPiece(), goal);
       current.unoccupy();
       response.put(true, "This move is valid.");
