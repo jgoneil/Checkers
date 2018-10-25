@@ -33,7 +33,12 @@ public class ModelBoard {
   private List<Piece> whitePieces = new ArrayList<>();
   //Checks if a Piece is being Kinged in a given move
   private boolean isKinging;
-
+  //Holds a piece if it were ate
+  private Piece atePiece;
+  //If a jump was recently made
+  private boolean madeJump;
+  //Holds the space a piece was ate from
+  private Space ateSpace;
   /**
    * Constructor for the model version of the board
    *
@@ -48,6 +53,7 @@ public class ModelBoard {
     this.whitePlayer = whitePlayer;
     this.redTurn = true;
     this.isKinging = true;
+    this.madeJump = false;
     //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
@@ -176,9 +182,19 @@ public class ModelBoard {
       if (redTurn) {
         startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
         endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+        if (madeJump){
+          this.madeJump = false;
+          redPieces.add(atePiece);
+          addPieceToSpace(atePiece,ateSpace);
+        }
       } else {
         startingSpace = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
         endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
+        if (madeJump){
+          this.madeJump = false;
+          whitePieces.add(atePiece);
+          addPieceToSpace(atePiece,ateSpace);
+        }
       }
       Piece movingPiece = endingSpace.getPiece();
       endingSpace.unoccupy();
@@ -225,6 +241,9 @@ public class ModelBoard {
     } else {
       whitePieces.remove(piece);
     }
+    this.atePiece = piece;
+    this.madeJump = true;
+    this.ateSpace = piece.getSpace();
     piece.getSpace().unoccupy();
 
     BoardView redBoardView = redPlayer.getBoardView();
