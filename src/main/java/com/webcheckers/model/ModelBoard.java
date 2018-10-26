@@ -1,9 +1,14 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.Piece.Color;
+import com.webcheckers.appl.Piece.Type;
 import com.webcheckers.appl.Space;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Piece;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Model class that holds the main board for model configurations
@@ -22,13 +27,24 @@ public class ModelBoard {
   private Move move;
   //Holds if the redPlayer has the active move or not
   private boolean redTurn;
-
+  //Holds all red Pieces
+  private List<Piece> redPieces = new ArrayList<>();
+  //Holds all white Pieces
+  private List<Piece> whitePieces = new ArrayList<>();
+  //Checks if a Piece is being Kinged in a given move
+  private boolean isKinging;
+  //Holds a piece if it were ate
+  private Piece atePiece;
+  //If a jump was recently made
+  private boolean madeJump;
+  //Holds the space a piece was ate from
+  private Space ateSpace;
   /**
    * Constructor for the model version of the board
    *
    * @param redPlayer the player associated to the color red for the game
    * @param whitePlayer the player associated to the color white for the game
-   * @param length the lenght of the sides of the board (assuming its a square)
+   * @param length the length of the sides of the board (assuming its a square)
    */
   public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
     //Setting constants
@@ -36,20 +52,26 @@ public class ModelBoard {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.redTurn = true;
+    this.isKinging = true;
+    this.madeJump = false;
     //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
         //Checking to see if the space should be white or not
-        if (i + j % 2 == 0) {
+        if ((i + j) % 2 == 0) {
           board[i][j] = new Space(i, j, Space.Color.WHITE);
         } else {
           Space space = new Space(i, j, Space.Color.BLACK);
           board[i][j] = space;
           //completing a check to see if a piece should be added to the space (space must be black for this to happen)
           if (i >= 0 && i <= 2) {
-            space.occupy(new Piece("white", space));
+            Piece whitePiece = new Piece("white", space);
+            space.occupy(whitePiece);
+            whitePieces.add(whitePiece);
           } else if (i >= 5 && i <= 7) {
-            space.occupy(new Piece("red", space));
+            Piece redPiece = new Piece("red", space);
+            space.occupy(redPiece);
+            redPieces.add(redPiece);
           }
         }
       }
@@ -81,24 +103,31 @@ public class ModelBoard {
    * Submits a move for the game and change the active player
    */
   public void submitMove() {
-    Space startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
-    Space endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
-    Piece movingPiece = startingSpace.getPiece();
-    startingSpace.unoccupy();
-    endingSpace.occupy(movingPiece);
+    Space endingSpace;
+    if (redTurn) {
+      endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+    } else {
+      endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
+    }
+    isKinging = isBecomingKing(endingSpace.getPiece(), move.getEnd().getRow());
+    if (isKinging){
+      endingSpace.getPiece().King();
+    }
     BoardView redBoardView = redPlayer.getBoardView();
     BoardView whiteBoardView = whitePlayer.getBoardView();
-    Move reverseMove = new Move(new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
-            new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
-    if(this.redTurn) {
-      redBoardView.makeMove(move);
-      whiteBoardView.makeMove(reverseMove);
+    Move reverseMove = new Move(
+        new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
+        new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
+    if (this.redTurn) {
+      redBoardView.makeMove(move, isKinging);
+      whiteBoardView.makeMove(reverseMove, isKinging);
     } else {
-      redBoardView.makeMove(reverseMove);
-      whiteBoardView.makeMove(move);
+      redBoardView.makeMove(reverseMove, isKinging);
+      whiteBoardView.makeMove(move, isKinging);
     }
     this.redTurn = !redTurn;
     this.madeMove = false;
+    this.isKinging = false;
   }
 
   /**
@@ -137,6 +166,90 @@ public class ModelBoard {
    */
   public void addPieceToSpace(Piece piece, Space space) {
     Space goalSpace = board[space.getxCoordinate()][space.getCellIdx()];
+    piece.move(space);
     goalSpace.occupy(piece);
+  }
+
+  /**
+   * Backup a move made by the player before submitting.
+   *
+   * Returns the game to the state before choosing a move.
+   */
+  public void backupMove() {
+    if (madeMove) {
+      Space startingSpace;
+      Space endingSpace;
+      if (redTurn) {
+        startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
+        endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+        if (madeJump){
+          this.madeJump = false;
+          redPieces.add(atePiece);
+          addPieceToSpace(atePiece,ateSpace);
+        }
+      } else {
+        startingSpace = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
+        endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
+        if (madeJump){
+          this.madeJump = false;
+          whitePieces.add(atePiece);
+          addPieceToSpace(atePiece,ateSpace);
+        }
+      }
+      Piece movingPiece = endingSpace.getPiece();
+      endingSpace.unoccupy();
+      addPieceToSpace(movingPiece, startingSpace);
+      madeMove = false;
+      move = null;
+    }
+  }
+
+  /**
+   * Gets a list of all red pieces
+   *
+   * @return A list of red pieces
+   */
+  public List<Piece> getRedPieces(){
+    return redPieces;
+  }
+
+  /**
+   * Gets a list of all white pieces
+   *
+   * @return A list of white pieces
+   */
+  public List<Piece> getWhitePieces() {
+    return whitePieces;
+  }
+
+  /**
+   * Tests to see if a piece is able to King a piece
+   * @param piece - Piece to be kinged
+   * @param row - Row of the Piece being checked
+   * @return - if the King is able to be Kinged
+   */
+  public boolean isBecomingKing(Piece piece, int row) {
+    if (piece.getType().equals(Type.SINGLE)) {
+      return row == 0;
+    }
+    return false;
+  }
+
+  public void eatPiece(Piece piece){
+    if (piece.getColor().equals(Color.RED)){
+      redPieces.remove(piece);
+    } else {
+      whitePieces.remove(piece);
+    }
+    this.atePiece = piece;
+    this.madeJump = true;
+    this.ateSpace = piece.getSpace();
+    piece.getSpace().unoccupy();
+
+    BoardView redBoardView = redPlayer.getBoardView();
+    BoardView whiteBoardView = whitePlayer.getBoardView();
+
+    redBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
+    whiteBoardView.eatPiece(7-piece.getSpace().getxCoordinate(), 7-piece.getSpace().getCellIdx());
   }
 }

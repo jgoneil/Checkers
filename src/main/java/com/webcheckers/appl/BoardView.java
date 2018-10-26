@@ -78,9 +78,12 @@ public class BoardView implements Iterable {
    *
    * @param move the move on the board
    */
-  public void makeMove(Move move) {
+  public void makeMove(Move move, boolean isKinging) {
     Row startingRow = board.get(move.getStart().getRow());
     Piece piece = startingRow.removePieceFromSpace(move.getStart().getCell());
+    if (isKinging){
+      piece.King();
+    }
     Row endingRow = board.get(move.getEnd().getRow());
     endingRow.addPieceToSpace(move.getEnd().getCell(), piece);
   }
@@ -93,5 +96,10 @@ public class BoardView implements Iterable {
   @Override
   public Iterator iterator() {
     return this.board.iterator();
+  }
+
+  public void eatPiece(int xCoordinate, int cellIdx) {
+    board.get(xCoordinate)
+          .removePieceFromSpace(cellIdx);
   }
 }
