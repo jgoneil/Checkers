@@ -5,7 +5,8 @@ import java.util.Map;
 import java.util.Objects;
 
 
-import com.webcheckers.model.BoardView;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Message;
 import spark.ModelAndView;
@@ -15,7 +16,6 @@ import spark.Route;
 import spark.Session;
 import spark.TemplateEngine;
 import com.webcheckers.model.Player;
-import com.webcheckers.model.ModelBoard;
 
 import static spark.Spark.halt;
 import static spark.Spark.threadPool;
@@ -29,18 +29,14 @@ public class GetGameRoute implements Route {
   private TemplateEngine templateEngine;
   //The player currently interacting with the game backend
   private Player currentPlayer;
-  //The view for the player interacting with the backend (oriented at them)
-  private BoardView boardView;
   //The playerLobby connected to the system
   private PlayerLobby playerLobby;
-  //The modelBoard for the game session
-  private ModelBoard modelBoard;
+  //The gameLobby for the active game session
+  private GameLobby gameLobby;
 
   //Static final variables (Constants)
-  public static final String BOARD = "boardView";
+  public static final String GAMELOBBY = "gameLobby";
   public static final String VIEW = "game.ftl";
-  public static final String MODEL_BOARD = "modelBoard";
-  private static final int LENGTH = 8;
 
   /**
    * Creates a spark route that handles all {@code Get /game} HTTP requests
@@ -77,7 +73,7 @@ public class GetGameRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
-    if (httpSession.attribute(BOARD) == null && !currentPlayer.inGame()) {
+    if (httpSession.attribute(GAMELOBBY) == null && !currentPlayer.inGame()) {
 
       if (request.queryParams().size() == 0) {
         response.redirect(WebServer.HOME_URL);
@@ -104,63 +100,43 @@ public class GetGameRoute implements Route {
         return null;
       }
 
-      this.boardView = new BoardView(currentPlayer, player2, LENGTH, "red");
-      httpSession.attribute(BOARD, this.boardView);
-      currentPlayer.setColor("Red", this.boardView);
+      this.gameLobby = new GameLobby(currentPlayer, player2);
+      httpSession.attribute(GAMELOBBY, this.gameLobby);
 
-      this.modelBoard = new ModelBoard(currentPlayer, player2, LENGTH);
-      httpSession.attribute(MODEL_BOARD, modelBoard);
-      currentPlayer.addModelBoard(modelBoard);
-      player2.addModelBoard(modelBoard);
-
-      player2.setColor("White", new BoardView(currentPlayer, player2, LENGTH, "white"));
+      PlayerBoardView playerBoardView = gameLobby.getRedPlayerBoardView();
 
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", currentPlayer);
       vm.put("whitePlayer", player2);
-      vm.put("activeColor", "RED");
-      vm.put("board", this.boardView);
+      vm.put("activeColor", GameLobby.RED);
+      vm.put("board", playerBoardView);
       return templateEngine.render(new ModelAndView(vm, VIEW));
-    } else if (httpSession.attribute(BOARD) == null && currentPlayer.inGame()) {
-      httpSession.attribute(BOARD, currentPlayer.getBoardView());
-      httpSession.attribute(MODEL_BOARD, currentPlayer.getModelBoard());
-      this.boardView = currentPlayer.getBoardView();
-      this.modelBoard = currentPlayer.getModelBoard();
+    } else if (httpSession.attribute(GAMELOBBY) == null && currentPlayer.inGame()) {
+      httpSession.attribute(GAMELOBBY, this.gameLobby);
 
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
-      vm.put("redPlayer", this.boardView.getRedPlayer());
-      vm.put("whitePlayer", this.boardView.getWhitePlayer());
-      if (modelBoard.checkRedTurn()) {
-        vm.put("activeColor", "RED");
-      } else {
-        vm.put("activeColor", "WHITE");
-      }
-      vm.put("board", this.boardView);
+      vm.put("redPlayer", gameLobby.getRedPlayer());
+      vm.put("whitePlayer", gameLobby.getWhitePlayer());
+      vm.put("activeColor", gameLobby.getTurn());
+      vm.put("board", gameLobby.getWhiteBoadView());
       return templateEngine.render(new ModelAndView(vm, VIEW));
-    } else if (httpSession.attribute(BOARD) != null && !currentPlayer.inGame()) {
+    } else if (httpSession.attribute(GAMELOBBY) != null && !currentPlayer.inGame()) {
       httpSession.attribute("message", new Message(Message.Type.info, PostResignGame.OTHER_PLAYER_RESIGN)); 
       response.redirect(WebServer.HOME_URL);
       halt();
       return null;
     } else {
-      if (this.boardView != httpSession.attribute(BOARD)) {
-        this.boardView = httpSession.attribute(BOARD);
-      }
-      if (this.modelBoard != httpSession.attribute(MODEL_BOARD)) {
-        this.modelBoard = httpSession.attribute(MODEL_BOARD);
+      if (this.gameLobby != httpSession.attribute(GAMELOBBY)) {
+        this.gameLobby = httpSession.attribute(GAMELOBBY);
       }
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
-      vm.put("redPlayer", this.boardView.getRedPlayer());
-      vm.put("whitePlayer", this.boardView.getWhitePlayer());
-      if (this.modelBoard.checkRedTurn()) {
-        vm.put("activeColor", "RED");
-      } else {
-        vm.put("activeColor", "WHITE");
-      }
-      vm.put("board", currentPlayer.getBoardView());
+      vm.put("redPlayer", gameLobby.getRedPlayer());
+      vm.put("whitePlayer", gameLobby.getWhitePlayer());
+      vm.put("activeColor", gameLobby.getTurn());
+      vm.put("board", gameLobby.getBoardViewForPlayer(currentPlayer));
       return templateEngine.render(new ModelAndView(vm, VIEW));
     }
   }

@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.model.BoardView;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
@@ -26,8 +27,6 @@ public class PostMoveCheck implements Route {
   private final Gson gson;
   //The player moving the piece
   private Player player;
-  //The model method for verifying the move
-  private CheckMove checkMove;
   //The player that resigned for the game
   private Player resignedPlayer;
 
@@ -56,33 +55,29 @@ public class PostMoveCheck implements Route {
     this.player = HTTPSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
 
     if(!this.player.inGame()) {
-      BoardView boardView = HTTPSession.attribute(GetGameRoute.BOARD);
+      GameLobby gameLobby = HTTPSession.attribute(GetGameRoute.GAMELOBBY);
       if(this.resignedPlayer == null) {
-        if (boardView.getRedPlayer().equals(this.player)) {
-          this.resignedPlayer = boardView.getWhitePlayer();
+        if (gameLobby.checkRedPlayer(this.player)) {
+          this.resignedPlayer = gameLobby.getWhitePlayer();
         } else {
-          this.resignedPlayer = boardView.getRedPlayer();
+          this.resignedPlayer = gameLobby.getRedPlayer();
         }
       }
-      HTTPSession.removeAttribute(GetGameRoute.BOARD);
-      HTTPSession.removeAttribute(GetGameRoute.MODEL_BOARD);
+      HTTPSession.removeAttribute(GetGameRoute.GAMELOBBY);
       HTTPSession.attribute(PostResignGame.RESIGNED_PLAYER, resignedPlayer);
       return gson.toJson(new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
     }
 
-    ModelBoard board = HTTPSession.attribute(GetGameRoute.MODEL_BOARD);
-
-    this.checkMove = new CheckMove(board);
+    GameLobby gameLobby = HTTPSession.attribute(GetGameRoute.GAMELOBBY);
 
     String customJson = request.body();
     Move move = gson.fromJson(customJson, Move.class);
 
 
-    if (!board.checkMadeMove()) {
-      Map<Boolean, String> resultFromCheck = this.checkMove
-          .validateMove(move.getStart(), move.getEnd(), player);
+    if (!gameLobby.checkMadeMove()) {
+      Map<Boolean, String> resultFromCheck = gameLobby.validateMove(move.getStart(), move.getEnd(), player);
       if (resultFromCheck.containsKey(true)) {
-        board.madeMove(move);
+        gameLobby.madeMove(move);
         Message message = new Message(Message.Type.info, resultFromCheck.get(true));
         return gson.toJson(message);
       } else {

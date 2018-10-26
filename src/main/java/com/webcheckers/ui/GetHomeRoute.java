@@ -81,12 +81,9 @@ public class GetHomeRoute implements Route {
     }
 
     if (player != null) {
-      if (player.getBoardView() == null) {
-        if (httpSession.attribute(GetGameRoute.BOARD) != null) {
-          httpSession.removeAttribute(GetGameRoute.BOARD);
-        }
-        if (httpSession.attribute(GetGameRoute.MODEL_BOARD) != null) {
-          httpSession.removeAttribute(GetGameRoute.MODEL_BOARD);
+      if (!player.inGame()) {
+        if (httpSession.attribute(GetGameRoute.GAMELOBBY) != null) {
+          httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
         }
         if (httpSession.attribute(PostResignGame.RESIGNED_PLAYER) != null) {
           httpSession.removeAttribute(PostResignGame.RESIGNED_PLAYER);
@@ -103,7 +100,7 @@ public class GetHomeRoute implements Route {
       vm.put(ONLY_ONE, true);
       vm.put(USER, player.getName());
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
-    } else if (player.getBoardView() != null) {
+    } else if (player.inGame()) {
       response.redirect(WebServer.GAME_URL);
       halt();
       return null;

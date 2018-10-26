@@ -9,10 +9,6 @@ public class Player {
   private String username;
   //The color on the game board that the player is
   private String color;
-  //The Application board that the player sees (oriented towards them)
-  private BoardView boardView;
-  //The Model board that holds the logic for the game (oriented towards the red player)
-  private ModelBoard modelBoard;
 
   /**
    * Constructor for player class
@@ -45,11 +41,9 @@ public class Player {
    * Sets the color for the player for the game they are in
    *
    * @param color the color the player is associated to in the game
-   * @param boardView the boardView the player is playing on
    */
-  public void setColor(String color, BoardView boardView) {
+  public void setColor(String color) {
     this.color = color;
-    this.boardView = boardView;
   }
 
   /**
@@ -62,38 +56,9 @@ public class Player {
   }
 
   /**
-   * The getter for the boardView the player is using for the game they are in
-   *
-   * @return the boardView the player is using for the game
-   */
-  public BoardView getBoardView() {
-    return this.boardView;
-  }
-
-  /**
-   * Setter for the model boardView for the player
-   *
-   * @param modelBoard the model boardView for the game
-   */
-  public void addModelBoard(ModelBoard modelBoard) {
-    this.modelBoard = modelBoard;
-  }
-
-  /**
-   * Getter for the model boardView
-   *
-   * @return the boardView for the model class
-   */
-  public ModelBoard getModelBoard() {
-    return this.modelBoard;
-  }
-
-  /**
    * Removes all game elements upon a player win/loss or player forfeit
    */
   public void gameEnd() {
-    this.boardView = null;
-    this.modelBoard = null;
     this.color = null;
   }
 

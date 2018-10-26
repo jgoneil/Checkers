@@ -21,10 +21,10 @@ class ModelBoardTest {
     player1Mock = new Player("a");
     player2Mock = new Player("b");
     modelBoard = new ModelBoard(player1Mock, player2Mock, 8);
-    BoardView boardViewRed = new BoardView(player1Mock, player2Mock, 8, "red");
-    BoardView boardViewWhite = new BoardView(player2Mock, player1Mock, 8, "white");
-    player1Mock.setColor("Red", boardViewRed);
-    player2Mock.setColor("White", boardViewWhite);
+    PlayerBoardView playerBoardViewRed = new PlayerBoardView(player1Mock, player2Mock, 8, "red");
+    PlayerBoardView playerBoardViewWhite = new PlayerBoardView(player2Mock, player1Mock, 8, "white");
+    player1Mock.setColor("Red", playerBoardViewRed);
+    player2Mock.setColor("White", playerBoardViewWhite);
   }
 
   @AfterEach

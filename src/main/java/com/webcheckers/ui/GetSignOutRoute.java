@@ -1,7 +1,8 @@
 package com.webcheckers.ui;
 
 
-import com.webcheckers.model.BoardView;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.PlayerBoardView;
 
 import java.util.Objects;
 
@@ -57,17 +58,11 @@ public class GetSignOutRoute implements Route {
       Player player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
 
       if (player.inGame()) {
-        Player player2;
-        BoardView boardView = httpSession.attribute(GetGameRoute.BOARD);
-        if (player.getColor().equals("Red")) {
-          player2 = boardView.getWhitePlayer();
-        } else {
-          player2 = boardView.getRedPlayer();
-        }
+        GameLobby gameLobby = httpSession.attribute(GetGameRoute.GAMELOBBY);
+        Player player2 = gameLobby.getOpponent(player);
 
         player2.gameEnd();
-        httpSession.removeAttribute(GetGameRoute.BOARD);
-        httpSession.removeAttribute(GetGameRoute.MODEL_BOARD);
+        httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
       }
 
       playerLobby.removeUser(player.getName());

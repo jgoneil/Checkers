@@ -35,6 +35,11 @@ public class ModelBoard {
   private boolean madeJump;
   //Holds the space a piece was ate from
   private Space ateSpace;
+  //Holds the information about the redPlayerBoardView
+  private PlayerBoardView redPlayerBoardView;
+  //Holds the information about the whitePlayerBoardView
+  private PlayerBoardView whitePlayerBoardView;
+
   /**
    * Constructor for the model version of the board
    *
@@ -42,7 +47,8 @@ public class ModelBoard {
    * @param whitePlayer the player associated to the color white for the game
    * @param length the length of the sides of the board (assuming its a square)
    */
-  public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
+  public ModelBoard(Player redPlayer, Player whitePlayer, int length, PlayerBoardView redPlayerBoardView,
+                    PlayerBoardView whitePlayerBoadView) {
     //Setting constants
     this.board = new Space[length][length];
     this.redPlayer = redPlayer;
@@ -50,6 +56,8 @@ public class ModelBoard {
     this.redTurn = true;
     this.isKinging = true;
     this.madeJump = false;
+    this.redPlayerBoardView = redPlayerBoardView;
+    this.whitePlayerBoardView = whitePlayerBoadView;
     //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
@@ -109,17 +117,15 @@ public class ModelBoard {
     if (isKinging){
       endingSpace.getPiece().King();
     }
-    BoardView redBoardView = redPlayer.getBoardView();
-    BoardView whiteBoardView = whitePlayer.getBoardView();
     Move reverseMove = new Move(
         new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
         new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
     if (this.redTurn) {
-      redBoardView.makeMove(move, isKinging);
-      whiteBoardView.makeMove(reverseMove, isKinging);
+      redPlayerBoardView.makeMove(move, isKinging);
+      whitePlayerBoardView.makeMove(reverseMove, isKinging);
     } else {
-      redBoardView.makeMove(reverseMove, isKinging);
-      whiteBoardView.makeMove(move, isKinging);
+      redPlayerBoardView.makeMove(reverseMove, isKinging);
+      whitePlayerBoardView.makeMove(move, isKinging);
     }
     this.redTurn = !redTurn;
     this.madeMove = false;
@@ -242,10 +248,7 @@ public class ModelBoard {
     this.ateSpace = piece.getSpace();
     piece.getSpace().unoccupy();
 
-    BoardView redBoardView = redPlayer.getBoardView();
-    BoardView whiteBoardView = whitePlayer.getBoardView();
-
-    redBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
-    whiteBoardView.eatPiece(7-piece.getSpace().getxCoordinate(), 7-piece.getSpace().getCellIdx());
+    redPlayerBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
+    whitePlayerBoardView.eatPiece(7-piece.getSpace().getxCoordinate(), 7-piece.getSpace().getCellIdx());
   }
 }

@@ -1,6 +1,6 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.model.BoardView;
+import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.appl.PlayerLobby;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +26,7 @@ class TestGetHomeRoute {
   private static final Player LEGIT_PLAYER_NO_BOARD = new Player("steve");
   private static final String TEMP_USERNAME = "Joe";
   private static final String MESSAGE = "Testing";
-  private static final BoardView BOARD = new BoardView(LEGIT_PLAYER, new Player("Joe"), 8, "red");
+  private static final PlayerBoardView BOARD = new PlayerBoardView(LEGIT_PLAYER, new Player("Joe"), 8, "red");
 
   //friendly objects
   private Player player1;

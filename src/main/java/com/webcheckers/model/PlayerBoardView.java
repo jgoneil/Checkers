@@ -6,7 +6,7 @@ import java.util.Iterator;
 /**
  * Class that creates and handles the board for gameplay
  */
-public class BoardView implements Iterable {
+public class PlayerBoardView implements Iterable {
 
   //Players for the current game view
   private Player redPlayer;
@@ -23,7 +23,7 @@ public class BoardView implements Iterable {
    * square)
    * @param color the color of the player
    */
-  public BoardView(Player redPlayer, Player whitePlayer, int length, String color) {
+  public PlayerBoardView(Player redPlayer, Player whitePlayer, int length, String color) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();

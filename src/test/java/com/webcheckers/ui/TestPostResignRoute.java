@@ -1,6 +1,6 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.model.BoardView;
+import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Player;
 import com.google.gson.Gson;
 
@@ -28,7 +28,7 @@ class TestPostResignRoute {
   private Player playerOne;
   private Player playerTwo;
   private Gson gson = new Gson();
-  private BoardView boardView;
+  private PlayerBoardView playerBoardView;
   private ModelBoard modelBoard;
   
   //attributes holding mock objects (non-friendly)
@@ -93,12 +93,12 @@ class TestPostResignRoute {
 
   @Test
   void playerIsRedPlayer() {
-    boardView = new BoardView(playerOne, playerTwo, 8, "red");
-    playerOne.setColor("Red", boardView);
+    playerBoardView = new PlayerBoardView(playerOne, playerTwo, 8, "red");
+    playerOne.setColor("Red", playerBoardView);
     ModelBoard modelBoard = new ModelBoard(playerOne, playerTwo, 8);
     playerOne.addModelBoard(modelBoard);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne);
-    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
+    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(playerBoardView);
 
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -117,12 +117,12 @@ class TestPostResignRoute {
 
   @Test
   void playerIsWhitePlayer() {
-    boardView = new BoardView(playerTwo, playerOne, 8, "red");
-    playerOne.setColor("White", boardView);
+    playerBoardView = new PlayerBoardView(playerTwo, playerOne, 8, "red");
+    playerOne.setColor("White", playerBoardView);
     ModelBoard modelBoard = new ModelBoard(playerOne, playerTwo, 8);
     playerOne.addModelBoard(modelBoard);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne);
-    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardView);
+    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(playerBoardView);
 
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

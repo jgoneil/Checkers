@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Message;
 import spark.Request;
 import spark.Response;
@@ -45,10 +46,10 @@ public class PostSubmitTurn implements Route {
   public Object handle(Request request, Response response) {
     Session session = request.session();
 
-    ModelBoard modelBoard = session.attribute(GetGameRoute.MODEL_BOARD);
+    GameLobby gameLobby = session.attribute(GetGameRoute.GAMELOBBY);
 
-    if (modelBoard.checkMadeMove()) {
-      modelBoard.submitMove();
+    if (gameLobby.checkMadeMove()) {
+      gameLobby.submitMove();
       Message message = new Message(Message.Type.info, SUCCESS_SUBMIT_TURN);
       return gson.toJson(message);
     } else {

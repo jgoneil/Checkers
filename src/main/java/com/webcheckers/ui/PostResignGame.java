@@ -1,7 +1,8 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Message;
-import com.webcheckers.model.BoardView;
+import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Player;
 import spark.*;
 
@@ -49,29 +50,24 @@ public class PostResignGame implements Route {
     Session httpSession = request.session();
 
     Player player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    GameLobby gameLobby = httpSession.attribute(GetGameRoute.GAMELOBBY);
 
-    if(player.getModelBoard().checkMadeMove()) {
+    if(gameLobby.checkMadeMove()) {
       Message message = new Message(Message.Type.error, ERROR_RESIGN);
       return gson.toJson(message);
     } else {
       Player player2;
-      if (httpSession.attribute(GetGameRoute.BOARD) == null || player.getColor() == null) {
+      if (httpSession.attribute(GetGameRoute.GAMELOBBY) == null || !player.inGame()) {
         Message message = new Message(Message.Type.info, OTHER_PLAYER_RESIGN);
         httpSession.attribute(RESIGNED_PLAYER, resignedPlayer);
         httpSession.attribute("message", message);
         return gson.toJson(message);
       }
-      BoardView boardView = httpSession.attribute(GetGameRoute.BOARD);
-      if (player.getColor().equals("Red")) {
-        player2 = boardView.getWhitePlayer();
-      } else {
-        player2 = boardView.getRedPlayer();
-      }
+      player2 = gameLobby.getOpponent(player);
       player.gameEnd();
       player2.gameEnd();
       this.resignedPlayer = player;
-      httpSession.removeAttribute(GetGameRoute.BOARD);
-      httpSession.removeAttribute(GetGameRoute.MODEL_BOARD);
+      httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
       Message message = new Message(Message.Type.info, SUCCESS_RESIGN);
       httpSession.attribute("message", message);
       return gson.toJson(message);

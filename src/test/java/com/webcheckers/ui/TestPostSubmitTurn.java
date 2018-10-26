@@ -1,7 +1,7 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
-import com.webcheckers.model.BoardView;
+import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.ModelBoard;
@@ -41,10 +41,10 @@ public class TestPostSubmitTurn {
     session = mock(Session.class);
     redPlayer = new Player("a");
     whitePlayer = new Player("b");
-    BoardView boardViewRed = new BoardView(redPlayer, whitePlayer, 8, "Red");
-    BoardView boardViewWhite = new BoardView(redPlayer, whitePlayer, 8, "White");
-    redPlayer.setColor("Red", boardViewRed);
-    whitePlayer.setColor("White", boardViewWhite);
+    PlayerBoardView playerBoardViewRed = new PlayerBoardView(redPlayer, whitePlayer, 8, "Red");
+    PlayerBoardView playerBoardViewWhite = new PlayerBoardView(redPlayer, whitePlayer, 8, "White");
+    redPlayer.setColor("Red", playerBoardViewRed);
+    whitePlayer.setColor("White", playerBoardViewWhite);
     when(request.session()).thenReturn(session);
     templateEngine = mock(TemplateEngine.class);
 

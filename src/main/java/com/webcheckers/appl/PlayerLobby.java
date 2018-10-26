@@ -15,6 +15,8 @@ public class PlayerLobby {
   private List<Player> users;
   //The list of usernames for the players signed into the game
   private List<String> usernames;
+  //Map to get the gameLobby a player is connected to
+  private Map<Player, GameLobby> connectedPlayers;
 
   /**
    * Constructor for the class that establishes sign in checks and the list of currently signed in
@@ -24,6 +26,7 @@ public class PlayerLobby {
     this.checkSignin = new CheckSignin();
     this.users = new ArrayList<>();
     this.usernames = new ArrayList<>();
+    this.connectedPlayers = new HashMap<>();
   }
 
   /**
@@ -87,6 +90,29 @@ public class PlayerLobby {
       }
     }
     return playerNames;
+  }
+
+  /**
+   * Adds a player to the map of players currently in a game
+   *
+   * @param player the player being added to the map
+   * @param lobby the game lobby the player is associated to
+   */
+  public void playerConnectedToGame(Player player, GameLobby lobby) {
+    this.connectedPlayers.put(player, lobby);
+  }
+
+  /**
+   * Checks to see if a player is currently in a game or not
+   *
+   * @param player the player being checked to see if they are in a game
+   * @return true/false based on if a GameLobby exists for the player
+   */
+  public boolean playerCurrentlyInGame(Player player) {
+    if(this.connectedPlayers.containsKey(player)) {
+      return true;
+    }
+    return false;
   }
 
   /**

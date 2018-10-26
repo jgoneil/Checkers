@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
  * Test class for User
  */
 @Tag("Application-tier")
-public class UserTest {
+public class PlayerLobbyTest {
 
   // Valid usernames
   final String validPlayerString1 = "abc";

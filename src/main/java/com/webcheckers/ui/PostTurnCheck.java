@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.ModelBoard;
 import spark.Request;
@@ -44,19 +45,19 @@ public class PostTurnCheck implements Route {
   public Object handle(Request request, Response response) {
     Session session = request.session();
     Player player = session.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    GameLobby gameLobby = session.attribute(GetGameRoute.GAMELOBBY);
 
     ModelBoard modelBoard;
 
-    if (player.getModelBoard() != null) {
-      modelBoard = player.getModelBoard();
-      if (player.getColor().equals("Red")) {
-        if (modelBoard.checkRedTurn()) {
+    if (gameLobby != null) {
+      if (gameLobby.checkRedPlayer(player)) {
+        if (gameLobby.checkRedTurn()) {
           return gson.toJson(new Message(Message.Type.info, "true"));
         } else {
           return gson.toJson(new Message(Message.Type.info, "false"));
         }
       } else {
-        if (modelBoard.checkRedTurn()) {
+        if (gameLobby.checkRedTurn()) {
           return gson.toJson(new Message(Message.Type.info, "false"));
         } else {
           return gson.toJson(new Message(Message.Type.info, "true"));
