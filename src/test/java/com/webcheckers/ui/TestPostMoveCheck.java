@@ -1,14 +1,12 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
-import com.sun.tools.internal.xjc.model.Model;
 import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Player;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Position;
-import javafx.geometry.Pos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 
@@ -113,6 +111,42 @@ public class TestPostMoveCheck {
             Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
             assertEquals(Message.Type.error, respondedMessage.getType());
             assertEquals("Can only do one move per turn", respondedMessage.getText());
+        }
+    }
+
+    @Test
+    void MakingMoveForward() {
+        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
+        when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(board);
+        when(request.body()).thenReturn(gson.toJson(new Move(position45,position34)));
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+        Object info = CuT.handle(request, response);
+
+        if (info instanceof String) {
+            String temporaryInfo = (String) info;
+            Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
+            assertEquals(Message.Type.info, respondedMessage.getType());
+            assertEquals("This move is valid.", respondedMessage.getText());
+        }
+    }
+
+    @Test
+    void MakingWrongMove() {
+        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
+        when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(board);
+        when(request.body()).thenReturn(gson.toJson(new Move(position34,position45)));
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+        Object info = CuT.handle(request, response);
+
+        if (info instanceof String) {
+            String temporaryInfo = (String) info;
+            Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
+            assertEquals(Message.Type.error, respondedMessage.getType());
+            assertEquals("Piece can only move forward", respondedMessage.getText());
         }
     }
 
