@@ -1,6 +1,4 @@
-package com.webcheckers.appl;
-
-import com.webcheckers.model.ModelBoard;
+package com.webcheckers.model;
 
 /**
  * Class that controls specific information connected to each player logged into the game.

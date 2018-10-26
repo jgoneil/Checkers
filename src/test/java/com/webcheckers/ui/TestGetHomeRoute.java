@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.appl.BoardView;
+import com.webcheckers.model.BoardView;
+import com.webcheckers.appl.PlayerLobby;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -12,8 +13,8 @@ import static org.mockito.ArgumentMatchers.any;
 
 import spark.*;
 
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Users;
+import com.webcheckers.model.Player;
+
 import java.util.logging.Logger;
 
 @Tag("UI-tier")
@@ -29,7 +30,7 @@ class TestGetHomeRoute {
 
   //friendly objects
   private Player player1;
-  private Users users;
+  private PlayerLobby playerLobby;
 
   // attributes holding mock objects (non-friendly)
   private Request request;
@@ -47,10 +48,10 @@ class TestGetHomeRoute {
     templateEngine = mock(TemplateEngine.class);
 
     logger = Logger.getLogger(GetHomeRoute.class.getName());
-    users = new Users();
+    playerLobby = new PlayerLobby();
 
     //Creating a unique CuT for each test
-    CuT = new GetHomeRoute(templateEngine, users);
+    CuT = new GetHomeRoute(templateEngine, playerLobby);
   }
 
   @Test
@@ -80,7 +81,7 @@ class TestGetHomeRoute {
   @Test
   void onePlayerNoSignIn() {
     player1 = NO_PLAYER;
-    users.addPlayer(TEMP_USERNAME);
+    playerLobby.addPlayer(TEMP_USERNAME);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -99,7 +100,7 @@ class TestGetHomeRoute {
   @Test
   void noPlayerSignedIn() {
     player1 = LEGIT_PLAYER;
-    users.addPlayer(LEGIT_PLAYER.getName());
+    playerLobby.addPlayer(LEGIT_PLAYER.getName());
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -119,8 +120,8 @@ class TestGetHomeRoute {
   void onePlayerSignedIn() {
     player1 = LEGIT_PLAYER_NO_BOARD;
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
-    users.addPlayer(LEGIT_PLAYER_NO_BOARD.getName());
-    users.addPlayer(TEMP_USERNAME);
+    playerLobby.addPlayer(LEGIT_PLAYER_NO_BOARD.getName());
+    playerLobby.addPlayer(TEMP_USERNAME);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -132,7 +133,7 @@ class TestGetHomeRoute {
 
     testHelper.assertViewModelAttribute("title", "Welcome!");
     testHelper.assertViewModelAttribute(GetHomeRoute.SIGNEDIN, true);
-    testHelper.assertViewModelAttribute(GetHomeRoute.USERS, users.getAllPlayersExceptUser(LEGIT_PLAYER_NO_BOARD.getName()));
+    testHelper.assertViewModelAttribute(GetHomeRoute.USERS, playerLobby.getAllPlayersExceptUser(LEGIT_PLAYER_NO_BOARD.getName()));
   }
 
   @Test
@@ -157,8 +158,8 @@ class TestGetHomeRoute {
   void redirect() {
     player1 = LEGIT_PLAYER;
     player1.setColor("red", BOARD);
-    users.addPlayer(LEGIT_PLAYER.getName());
-    users.addPlayer(TEMP_USERNAME);
+    playerLobby.addPlayer(LEGIT_PLAYER.getName());
+    playerLobby.addPlayer(TEMP_USERNAME);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
 
     final TemplateEngineTester testHelper = new TemplateEngineTester();

@@ -13,8 +13,8 @@ import spark.Session;
 
 import static spark.Spark.halt;
 
-import com.webcheckers.appl.Users;
-import com.webcheckers.appl.Player;
+import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Player;
 
 /**
  * This is {@code POST /signin } route handler. Handles user signin.
@@ -32,8 +32,8 @@ public class PostSignInRoute implements Route {
 
   //HTML template loader for freemarker pages
   private final TemplateEngine templateEngine;
-  //List of users connected to the game
-  private final Users users;
+  //List of playerLobby connected to the game
+  private final PlayerLobby playerLobby;
   //The player attempting to sign into the system
   private Player player;
 
@@ -41,19 +41,19 @@ public class PostSignInRoute implements Route {
    * Constructor for class. Ensures both parameters are included in the declaration for use
    *
    * @param templateEngine the formatting definition for spark to java messaging
-   * @param users the class holding all of the currently connected users
+   * @param playerLobby the class holding all of the currently connected playerLobby
    */
-  public PostSignInRoute(final TemplateEngine templateEngine, final Users users) {
+  public PostSignInRoute(final TemplateEngine templateEngine, final PlayerLobby playerLobby) {
 
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
-    Objects.requireNonNull(users, "users must not be null");
+    Objects.requireNonNull(playerLobby, "playerLobby must not be null");
 
     this.templateEngine = templateEngine;
-    this.users = users;
+    this.playerLobby = playerLobby;
   }
 
   /**
-   * Main connection for users attempting to sign in
+   * Main connection for playerLobby attempting to sign in
    * Handles error checking on input to ensure validity and that the input follows guidelines
    *
    * @param request the messages coming from the from the frontend
@@ -69,8 +69,8 @@ public class PostSignInRoute implements Route {
     if (username != null) {
       ModelAndView mv;
 
-      if (users.addPlayer(username)) {
-        this.player = users.getSpecificPlayer(username.trim());
+      if (playerLobby.addPlayer(username)) {
+        this.player = playerLobby.getSpecificPlayer(username.trim());
         httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY, player);
         response.redirect(WebServer.HOME_URL);
         return null;

@@ -1,7 +1,9 @@
 package com.webcheckers.appl;
 
 
+import com.webcheckers.model.BoardView;
 import com.webcheckers.model.ModelBoard;
+import com.webcheckers.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

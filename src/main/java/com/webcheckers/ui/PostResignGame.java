@@ -1,8 +1,8 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.model.Message;
-import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Player;
+import com.webcheckers.model.BoardView;
+import com.webcheckers.model.Player;
 import spark.*;
 
 import java.util.Objects;

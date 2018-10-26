@@ -7,8 +7,7 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 import com.google.gson.Gson;
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.BoardView;
+import com.webcheckers.model.Player;
 
 import java.util.Objects;
 

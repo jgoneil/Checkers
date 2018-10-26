@@ -3,8 +3,6 @@ package com.webcheckers.model;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;

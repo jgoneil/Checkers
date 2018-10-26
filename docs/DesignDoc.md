@@ -20,7 +20,7 @@ geometry: margin=1in
 ## Executive Summary
 
 This project focuses on the design, development, and maintenance of Software Applications. In order to do this, an online version of the popular board game checkers was created.
-For this application, players are required to sign into the system and then can select from a lobby of users an opponent for a match.
+For this application, players are required to sign into the system and then can select from a lobby of playerLobby an opponent for a match.
 When a match starts, the game is played using the American rules with the red player going first. Players can forefit the game at any point along with signout from the system at any point.
 
 ### Purpose

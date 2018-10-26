@@ -1,8 +1,7 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Users;
+import com.webcheckers.model.BoardView;
+import com.webcheckers.model.Player;
 import com.google.gson.Gson;
 
 import com.webcheckers.model.Message;

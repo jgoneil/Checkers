@@ -1,6 +1,6 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.appl.BoardView;
+import com.webcheckers.model.BoardView;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import com.webcheckers.appl.Player;
+import com.webcheckers.model.Player;
 import com.webcheckers.model.CheckMove;
 
 

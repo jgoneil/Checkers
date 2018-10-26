@@ -5,7 +5,8 @@ import java.util.Map;
 import java.util.Objects;
 
 
-import com.webcheckers.appl.BoardView;
+import com.webcheckers.model.BoardView;
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Message;
 import spark.ModelAndView;
 import spark.Request;
@@ -13,8 +14,7 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 import spark.TemplateEngine;
-import com.webcheckers.appl.Users;
-import com.webcheckers.appl.Player;
+import com.webcheckers.model.Player;
 import com.webcheckers.model.ModelBoard;
 
 import static spark.Spark.halt;
@@ -31,8 +31,8 @@ public class GetGameRoute implements Route {
   private Player currentPlayer;
   //The view for the player interacting with the backend (oriented at them)
   private BoardView boardView;
-  //The users connected to the system
-  private Users users;
+  //The playerLobby connected to the system
+  private PlayerLobby playerLobby;
   //The modelBoard for the game session
   private ModelBoard modelBoard;
 
@@ -47,13 +47,13 @@ public class GetGameRoute implements Route {
    *
    * @param templateEngine the html template engine
    */
-  public GetGameRoute(TemplateEngine templateEngine, Users users) {
+  public GetGameRoute(TemplateEngine templateEngine, PlayerLobby playerLobby) {
 
     Objects.requireNonNull(templateEngine, "templateEngine cannot be null");
-    Objects.requireNonNull(users, "users cannot be null");
+    Objects.requireNonNull(playerLobby, "playerLobby cannot be null");
 
     this.templateEngine = templateEngine;
-    this.users = users;
+    this.playerLobby = playerLobby;
   }
 
   /**
@@ -86,7 +86,7 @@ public class GetGameRoute implements Route {
       }
 
       Object[] playerTwo = request.queryParams().toArray();
-      Player player2 = users.getSpecificPlayer(playerTwo[0].toString());
+      Player player2 = playerLobby.getSpecificPlayer(playerTwo[0].toString());
 
       if (httpSession.attribute(PostResignGame.RESIGNED_PLAYER) != null) {
         if(httpSession.attribute(PostResignGame.RESIGNED_PLAYER).equals(player2)) {

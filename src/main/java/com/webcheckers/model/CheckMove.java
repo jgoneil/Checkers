@@ -1,11 +1,7 @@
 package com.webcheckers.model;
 
-import com.webcheckers.appl.Piece;
-import com.webcheckers.appl.Piece.Color;
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Space;
+import com.webcheckers.model.Piece.Color;
 
-import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 

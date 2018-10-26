@@ -1,4 +1,6 @@
-package com.webcheckers.appl;
+package com.webcheckers.model;
+
+import com.webcheckers.model.Piece;
 
 /**
  * Class that establishes spaces on the game board

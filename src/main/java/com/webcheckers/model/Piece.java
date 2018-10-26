@@ -1,4 +1,4 @@
-package com.webcheckers.appl;
+package com.webcheckers.model;
 
 /**
  * Defines a piece for use on the board

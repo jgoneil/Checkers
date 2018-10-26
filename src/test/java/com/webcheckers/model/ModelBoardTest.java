@@ -3,11 +3,7 @@ package com.webcheckers.model;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Piece;
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Space;
-import com.webcheckers.appl.Space.Color;
+import com.webcheckers.model.Space.Color;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;

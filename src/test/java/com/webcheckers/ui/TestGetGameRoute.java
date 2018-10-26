@@ -1,8 +1,8 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Users;
+import com.webcheckers.model.BoardView;
+import com.webcheckers.model.Player;
+import com.webcheckers.appl.PlayerLobby;
 
 import com.webcheckers.model.ModelBoard;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ class TestGetGameRoute {
   private static final BoardView NO_BOARD = null;
   
   //friendly objects
-  private Users users;
+  private PlayerLobby playerLobby;
   private Player redPlayer;
   private Player whitePlayer;
   private Player lonelyPlayer;
@@ -49,9 +49,9 @@ class TestGetGameRoute {
     whitePlayer = new Player("nameB");
     lonelyPlayer = new Player("nameC");
 
-    users = new Users();
+    playerLobby = new PlayerLobby();
 
-    CuT = new GetGameRoute(templateEngine, users);
+    CuT = new GetGameRoute(templateEngine, playerLobby);
   }
 
   @Test
@@ -74,8 +74,8 @@ class TestGetGameRoute {
     when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(NO_BOARD);
     Set<String> players = new HashSet<>();
     players.add(redPlayer.getName());
-    users.addPlayer(whitePlayer.getName());
-    users.addPlayer(redPlayer.getName());
+    playerLobby.addPlayer(whitePlayer.getName());
+    playerLobby.addPlayer(redPlayer.getName());
     when(request.queryParams()).thenReturn(players);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -97,10 +97,10 @@ class TestGetGameRoute {
   @Test
   void secondPlayerConnect() {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
-    users.addPlayer(whitePlayer.getName());
-    users.addPlayer(redPlayer.getName());
-    BoardView boardView = new BoardView(users.getSpecificPlayer(redPlayer.getName()),
-            users.getSpecificPlayer(whitePlayer.getName()), 8, "red");
+    playerLobby.addPlayer(whitePlayer.getName());
+    playerLobby.addPlayer(redPlayer.getName());
+    BoardView boardView = new BoardView(playerLobby.getSpecificPlayer(redPlayer.getName()),
+            playerLobby.getSpecificPlayer(whitePlayer.getName()), 8, "red");
     redPlayer.setColor("red", boardView);
     whitePlayer.setColor("white", boardView);
     ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
@@ -125,10 +125,10 @@ class TestGetGameRoute {
   @Test 
   void reloadSameGameRedPlayer() {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
-    users.addPlayer(whitePlayer.getName());
-    users.addPlayer(redPlayer.getName());
-    BoardView boardView = new BoardView(users.getSpecificPlayer(redPlayer.getName()),
-            users.getSpecificPlayer(whitePlayer.getName()), 8, "red");
+    playerLobby.addPlayer(whitePlayer.getName());
+    playerLobby.addPlayer(redPlayer.getName());
+    BoardView boardView = new BoardView(playerLobby.getSpecificPlayer(redPlayer.getName()),
+            playerLobby.getSpecificPlayer(whitePlayer.getName()), 8, "red");
     redPlayer.setColor("red", boardView);
     whitePlayer.setColor("white", boardView);
     ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
@@ -153,10 +153,10 @@ class TestGetGameRoute {
   @Test
   void reloadSameGameWhitePlayer() {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
-    users.addPlayer(whitePlayer.getName());
-    users.addPlayer(redPlayer.getName());
-    BoardView boardView = new BoardView(users.getSpecificPlayer(redPlayer.getName()),
-            users.getSpecificPlayer(whitePlayer.getName()), 8, "white");
+    playerLobby.addPlayer(whitePlayer.getName());
+    playerLobby.addPlayer(redPlayer.getName());
+    BoardView boardView = new BoardView(playerLobby.getSpecificPlayer(redPlayer.getName()),
+            playerLobby.getSpecificPlayer(whitePlayer.getName()), 8, "white");
     redPlayer.setColor("red", boardView);
     whitePlayer.setColor("white", boardView);
     ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
@@ -182,10 +182,10 @@ class TestGetGameRoute {
   @Test
   void otherPlayerResigned() {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
-    users.addPlayer(whitePlayer.getName());
-    users.addPlayer(redPlayer.getName());
-    BoardView boardView = new BoardView(users.getSpecificPlayer(redPlayer.getName()),
-            users.getSpecificPlayer(whitePlayer.getName()), 8, "red");
+    playerLobby.addPlayer(whitePlayer.getName());
+    playerLobby.addPlayer(redPlayer.getName());
+    BoardView boardView = new BoardView(playerLobby.getSpecificPlayer(redPlayer.getName()),
+            playerLobby.getSpecificPlayer(whitePlayer.getName()), 8, "red");
     Set<String> players = new HashSet<>();
     players.add(redPlayer.getName());
     when(request.queryParams()).thenReturn(players);
@@ -204,10 +204,10 @@ class TestGetGameRoute {
   @Test 
   void playerAlreadyInGame() {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(lonelyPlayer);
-    users.addPlayer(whitePlayer.getName());
-    users.addPlayer(redPlayer.getName());
-    BoardView boardView = new BoardView(users.getSpecificPlayer(redPlayer.getName()),
-            users.getSpecificPlayer(whitePlayer.getName()), 8, "red");
+    playerLobby.addPlayer(whitePlayer.getName());
+    playerLobby.addPlayer(redPlayer.getName());
+    BoardView boardView = new BoardView(playerLobby.getSpecificPlayer(redPlayer.getName()),
+            playerLobby.getSpecificPlayer(whitePlayer.getName()), 8, "red");
     redPlayer.setColor("red", boardView);
     whitePlayer.setColor("white", boardView);
     Set<String> players = new HashSet<>();
@@ -228,8 +228,8 @@ class TestGetGameRoute {
   @Test
   void playerResigned() {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
-    users.addPlayer(whitePlayer.getName());
-    users.addPlayer(redPlayer.getName());
+    playerLobby.addPlayer(whitePlayer.getName());
+    playerLobby.addPlayer(redPlayer.getName());
     Set<String> players = new HashSet<>();
     players.add(redPlayer.getName());
     when(request.queryParams()).thenReturn(players);
