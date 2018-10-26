@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Piece.Color;
 import com.webcheckers.model.Piece.Type;
 
@@ -69,11 +70,11 @@ public class ModelBoard {
           board[i][j] = space;
           //completing a check to see if a piece should be added to the space (space must be black for this to happen)
           if (i >= 0 && i <= 2) {
-            Piece whitePiece = new Piece("white", space);
+            Piece whitePiece = new Piece(GameLobby.WHITE, space);
             space.occupy(whitePiece);
             whitePieces.add(whitePiece);
           } else if (i >= 5 && i <= 7) {
-            Piece redPiece = new Piece("red", space);
+            Piece redPiece = new Piece(GameLobby.RED, space);
             space.occupy(redPiece);
             redPieces.add(redPiece);
           }
@@ -167,8 +168,8 @@ public class ModelBoard {
    * @param space the space from the appl that the piece is moving to
    */
   public void addPieceToSpace(Piece piece, Space space) {
-    Space goalSpace = board[space.getxCoordinate()][space.getCellIdx()];
-    piece.move(space);
+    Space goalSpace = this.board[space.getxCoordinate()][space.getCellIdx()];
+    piece.move(goalSpace);
     goalSpace.occupy(piece);
   }
 

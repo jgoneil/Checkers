@@ -52,18 +52,18 @@ public class PostResignGame implements Route {
     Player player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
     GameLobby gameLobby = httpSession.attribute(GetGameRoute.GAMELOBBY);
 
+    if (gameLobby == null) {
+      Message message = new Message(Message.Type.info, OTHER_PLAYER_RESIGN);
+      httpSession.attribute(RESIGNED_PLAYER, resignedPlayer);
+      httpSession.attribute("message", message);
+      return gson.toJson(message);
+    }
+
     if(gameLobby.checkMadeMove()) {
       Message message = new Message(Message.Type.error, ERROR_RESIGN);
       return gson.toJson(message);
     } else {
-      Player player2;
-      if (httpSession.attribute(GetGameRoute.GAMELOBBY) == null || !player.inGame()) {
-        Message message = new Message(Message.Type.info, OTHER_PLAYER_RESIGN);
-        httpSession.attribute(RESIGNED_PLAYER, resignedPlayer);
-        httpSession.attribute("message", message);
-        return gson.toJson(message);
-      }
-      player2 = gameLobby.getOpponent(player);
+      Player player2 = gameLobby.getOpponent(player);
       player.gameEnd();
       player2.gameEnd();
       this.resignedPlayer = player;

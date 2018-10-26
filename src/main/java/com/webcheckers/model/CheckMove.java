@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Piece.Color;
 
 import java.util.Map;
@@ -158,7 +159,7 @@ public class CheckMove {
     Space current;
     Space goal;
     Space middle;
-    if (player.getColor().equals("Red")) {
+    if (player.getColor().equals(GameLobby.RED)) {
       current = board.getSpace(start.getRow(), start.getCell());
       goal = board.getSpace(target.getRow(), target.getCell());
     } else {

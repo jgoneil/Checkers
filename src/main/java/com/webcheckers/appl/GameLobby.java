@@ -14,6 +14,7 @@ public class GameLobby {
   private ModelBoard modelBoard;
   private PlayerBoardView redPlayerBoardView;
   private PlayerBoardView whitePlayerBoadView;
+  private CheckMove checkMove;
 
   static final int BOARD_SIZE = 8;
   public static final String RED = "RED";
@@ -33,6 +34,7 @@ public class GameLobby {
     this.redPlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, BOARD_SIZE, RED);
     this.whitePlayerBoadView = new PlayerBoardView(redPlayer, whitePlayer, BOARD_SIZE, WHITE);
     this.modelBoard = new ModelBoard(redPlayer, whitePlayer, BOARD_SIZE, redPlayerBoardView, whitePlayerBoadView);
+    this.checkMove = new CheckMove(this.modelBoard);
   }
 
   /**
@@ -138,8 +140,7 @@ public class GameLobby {
   }
 
   public Map<Boolean, String> validateMove(Position start, Position target, Player player) {
-    CheckMove checkMove = new CheckMove(this.modelBoard);
-    return  checkMove.validateMove(start, target, player);
+    return this.checkMove.validateMove(start, target, player);
   }
 
   public void submitMove() {

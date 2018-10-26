@@ -47,9 +47,7 @@ public class PostTurnCheck implements Route {
     Player player = session.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
     GameLobby gameLobby = session.attribute(GetGameRoute.GAMELOBBY);
 
-    ModelBoard modelBoard;
-
-    if (gameLobby != null) {
+    if (player.inGame()) {
       if (gameLobby.checkRedPlayer(player)) {
         if (gameLobby.checkRedTurn()) {
           return gson.toJson(new Message(Message.Type.info, "true"));
