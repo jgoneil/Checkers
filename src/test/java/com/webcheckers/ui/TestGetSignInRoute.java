@@ -3,7 +3,6 @@ package com.webcheckers.ui;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.Mockito.mock;
@@ -18,6 +17,7 @@ public class TestGetSignInRoute {
 
   //Instance of GetSigninRoute
   GetSigninRoute CuT;
+
   //Friendly Objects
 
   //Mock Objects
@@ -36,9 +36,7 @@ public class TestGetSignInRoute {
     logger = Logger.getLogger(GetSigninRoute.class.getName());
     templateEngine = mock(TemplateEngine.class);
 
-
     CuT = new GetSigninRoute(templateEngine);
-
   }
 
   @Test

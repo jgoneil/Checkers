@@ -58,4 +58,19 @@ class ModelBoardTest {
     assertTrue(modelBoard.getSpace(5,0).isOccupied());
     assertFalse(modelBoard.getSpace(4,1).isOccupied());
   }
+
+  @Test
+  void isBecomingKingTest(){
+    Piece piece = new Piece("red", new Space(6, 1, Color.BLACK));
+    Move move = (new Move(new Position(6,1), new Position(7,0)));
+    modelBoard.madeMove(move);
+    Space space = new Space(7, 0 , Color.BLACK);
+    modelBoard.addPieceToSpace(piece, space);
+
+    assertTrue(modelBoard.isBecomingKing(piece, move.getEnd().getCell()));
+    assertFalse(modelBoard.isBecomingKing(piece, move.getStart().getRow()));
+
+    piece.King();
+    assertFalse(modelBoard.isBecomingKing(piece, move.getEnd().getRow()));
+  }
 }

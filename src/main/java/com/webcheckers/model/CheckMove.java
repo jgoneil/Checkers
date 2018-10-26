@@ -1,5 +1,8 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.Piece;
+import com.webcheckers.appl.Piece.Color;
+import com.webcheckers.appl.Piece.Type;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Space;
 import java.util.Map;
@@ -89,7 +92,6 @@ public class CheckMove {
     } else if (!isMovingForward(start, target)) {
       response.put(false, "Piece can only move forward");
     } else {
-
       board.addPieceToSpace(current.getPiece(), goal);
       current.unoccupy();
       response.put(true, "This move is valid.");
