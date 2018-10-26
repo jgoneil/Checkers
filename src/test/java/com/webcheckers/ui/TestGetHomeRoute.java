@@ -157,7 +157,7 @@ class TestGetHomeRoute {
   @Test
   void redirect() {
     player1 = LEGIT_PLAYER;
-    player1.setColor("red", BOARD);
+    player1.setColor("red");
     playerLobby.addPlayer(LEGIT_PLAYER.getName());
     playerLobby.addPlayer(TEMP_USERNAME);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);

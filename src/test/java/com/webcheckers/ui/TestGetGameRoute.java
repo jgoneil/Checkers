@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Player;
 import com.webcheckers.appl.PlayerLobby;
@@ -23,7 +24,7 @@ import java.util.Set;
 class TestGetGameRoute {
 
   private GetGameRoute CuT;
-  private static final PlayerBoardView NO_BOARD = null;
+  private static final PlayerBoardView NO_LOBBY = null;
   
   //friendly objects
   private PlayerLobby playerLobby;
@@ -71,7 +72,7 @@ class TestGetGameRoute {
   @Test 
   void newGame() {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer); 
-    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(NO_BOARD);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(NO_LOBBY);
     Set<String> players = new HashSet<>();
     players.add(redPlayer.getName());
     playerLobby.addPlayer(whitePlayer.getName());
@@ -99,13 +100,8 @@ class TestGetGameRoute {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
-    PlayerBoardView playerBoardView = new PlayerBoardView(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()), 8, "red");
-    redPlayer.setColor("red", playerBoardView);
-    whitePlayer.setColor("white", playerBoardView);
-    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
-    whitePlayer.addModelBoard(modelBoard);
-    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(NO_BOARD);
+    GameLobby gameLobby = new GameLobby(redPlayer, whitePlayer);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(NO_LOBBY);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -127,13 +123,8 @@ class TestGetGameRoute {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
-    PlayerBoardView playerBoardView = new PlayerBoardView(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()), 8, "red");
-    redPlayer.setColor("red", playerBoardView);
-    whitePlayer.setColor("white", playerBoardView);
-    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
-    when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(modelBoard);
-    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(playerBoardView);
+    GameLobby gameLobby = new GameLobby(redPlayer, whitePlayer);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -155,14 +146,10 @@ class TestGetGameRoute {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer);
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
-    PlayerBoardView playerBoardView = new PlayerBoardView(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()), 8, "white");
-    redPlayer.setColor("red", playerBoardView);
-    whitePlayer.setColor("white", playerBoardView);
-    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
-    modelBoard.setMove(true);
-    when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(modelBoard);
-    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(playerBoardView);
+    GameLobby gameLobby = new GameLobby(redPlayer, whitePlayer);
+    gameLobby.setMove(true);
+
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -184,12 +171,11 @@ class TestGetGameRoute {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
-    PlayerBoardView playerBoardView = new PlayerBoardView(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()), 8, "red");
+    GameLobby gameLobby = new GameLobby(redPlayer, whitePlayer);
     Set<String> players = new HashSet<>();
     players.add(redPlayer.getName());
     when(request.queryParams()).thenReturn(players);
-    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(playerBoardView);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -206,14 +192,11 @@ class TestGetGameRoute {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(lonelyPlayer);
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
-    PlayerBoardView playerBoardView = new PlayerBoardView(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()), 8, "red");
-    redPlayer.setColor("red", playerBoardView);
-    whitePlayer.setColor("white", playerBoardView);
+    GameLobby gameLobby = new GameLobby(redPlayer, whitePlayer);
     Set<String> players = new HashSet<>();
     players.add(redPlayer.getName());
     when(request.queryParams()).thenReturn(players);
-    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(NO_BOARD);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -234,7 +217,7 @@ class TestGetGameRoute {
     players.add(redPlayer.getName());
     when(request.queryParams()).thenReturn(players);
     when(request.session().attribute(PostResignGame.RESIGNED_PLAYER)).thenReturn(redPlayer);
-    when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(NO_BOARD);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(NO_LOBBY);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 

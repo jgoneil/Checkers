@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 @Tag("Application-tier")
 public class PlayerBoardViewTest {
@@ -20,7 +21,8 @@ public class PlayerBoardViewTest {
     this.whitePlayer = new Player("White");
     this.redPLayer = new Player("Red");
     this.playerBoardView1 = new PlayerBoardView(redPLayer, whitePlayer, 8, "red");
-    this.modelBoard = new ModelBoard(redPLayer, whitePlayer, 8);
+    PlayerBoardView mockWhiteBoardView = mock(PlayerBoardView.class);
+    this.modelBoard = new ModelBoard(redPLayer, whitePlayer, 8, playerBoardView1, mockWhiteBoardView);
   }
 
   @Test

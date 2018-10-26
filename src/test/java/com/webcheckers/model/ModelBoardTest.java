@@ -20,11 +20,9 @@ class ModelBoardTest {
   void setUp() {
     player1Mock = new Player("a");
     player2Mock = new Player("b");
-    modelBoard = new ModelBoard(player1Mock, player2Mock, 8);
     PlayerBoardView playerBoardViewRed = new PlayerBoardView(player1Mock, player2Mock, 8, "red");
     PlayerBoardView playerBoardViewWhite = new PlayerBoardView(player2Mock, player1Mock, 8, "white");
-    player1Mock.setColor("Red", playerBoardViewRed);
-    player2Mock.setColor("White", playerBoardViewWhite);
+    modelBoard = new ModelBoard(player1Mock, player2Mock, 8, playerBoardViewRed, playerBoardViewWhite);
   }
 
   @AfterEach
@@ -36,8 +34,6 @@ class ModelBoardTest {
   @Test
   void submitMove() {
     modelBoard.madeMove(new Move(new Position(5, 0), new Position(6, 1)));
-    player1Mock.addModelBoard(modelBoard);
-    player2Mock.addModelBoard(modelBoard);
     modelBoard.submitMove();
   }
 

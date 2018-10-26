@@ -64,39 +64,20 @@ public class PlayerTest {
   @Test
   void inGameTest() {
     assertFalse(player1.inGame());
-    player1.setColor("White", playerBoardViewMock);
+    player1.setColor("White");
     assertTrue(player1.inGame());
   }
 
   @Test
   void setColorTest() {
-    player1.setColor("White", playerBoardViewMock);
+    player1.setColor("White");
     assertEquals("White", player1.getColor());
-    assertEquals(playerBoardViewMock, player1.getBoardView());
   }
 
   @Test
   void getColorTest() {
-    player1.setColor("White", playerBoardViewMock);
+    player1.setColor("White");
     assertEquals("White", player1.getColor());
-  }
-
-  @Test
-  void getBoardViewTest() {
-    player1.setColor("White", playerBoardViewMock);
-    assertEquals(playerBoardViewMock, player1.getBoardView());
-  }
-
-  @Test
-  void addModelBoardTest() {
-    player1.addModelBoard(modelBoardMock);
-    assertEquals(player1.getModelBoard(), modelBoardMock);
-  }
-
-  @Test
-  void getModelBoardTest() {
-    player1.addModelBoard(modelBoardMock);
-    assertEquals(player1.getModelBoard(), modelBoardMock);
   }
 
 }

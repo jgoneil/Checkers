@@ -149,4 +149,8 @@ public class GameLobby {
   public void backupMove() {
     this.modelBoard.backupMove();
   }
+
+  public void setMove(boolean moved) {
+    modelBoard.setMove(moved);
+  }
 }
