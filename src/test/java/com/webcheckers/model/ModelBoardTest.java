@@ -85,4 +85,22 @@ class ModelBoardTest {
     piece.King();
     assertFalse(modelBoard.isBecomingKing(piece, move.getEnd().getRow()));
   }
+
+  @Test
+  void eatRedPiece() {
+    Space space = new Space(6, 1, Color.BLACK);
+    Piece piece = new Piece("red", space);
+    modelBoard.eatPiece(piece);
+
+    assertFalse(modelBoard.getRedPieces().contains(piece));
+  }
+
+  @Test
+  void eatWhitePiece() {
+    Space space = new Space(6, 1, Color.BLACK);
+    Piece piece = new Piece("white", space);
+    modelBoard.eatPiece(piece);
+
+    assertFalse(modelBoard.getRedPieces().contains(piece));
+  }
 }
