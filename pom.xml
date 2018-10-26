@@ -29,7 +29,7 @@
     <slf4j.version>1.7.25</slf4j.version>
 
     <!-- Test build dependency versions -->
-    <maven.surefire.version>2.22.0</maven.surefire.version>
+    <maven.surefire.version>2.20</maven.surefire.version>
     <jacoco.version>0.8.2</jacoco.version>
 
     <!-- Test dependency versions -->
