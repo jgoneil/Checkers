@@ -5,7 +5,6 @@ import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Player;
 import com.webcheckers.appl.PlayerLobby;
 
-import com.webcheckers.model.ModelBoard;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -101,6 +100,7 @@ class TestGetGameRoute {
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     GameLobby gameLobby = new GameLobby(redPlayer, whitePlayer);
+    CuT.setGameLobby(gameLobby);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(NO_LOBBY);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

@@ -93,29 +93,6 @@ public class PlayerLobby {
   }
 
   /**
-   * Adds a player to the map of players currently in a game
-   *
-   * @param player the player being added to the map
-   * @param lobby the game lobby the player is associated to
-   */
-  public void playerConnectedToGame(Player player, GameLobby lobby) {
-    this.connectedPlayers.put(player, lobby);
-  }
-
-  /**
-   * Checks to see if a player is currently in a game or not
-   *
-   * @param player the player being checked to see if they are in a game
-   * @return true/false based on if a GameLobby exists for the player
-   */
-  public boolean playerCurrentlyInGame(Player player) {
-    if(this.connectedPlayers.containsKey(player)) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
    * Removes a user from the list of users connected to the system
    *
    * @param username the username of the player being removed

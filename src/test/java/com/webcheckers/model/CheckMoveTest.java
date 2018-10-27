@@ -58,7 +58,7 @@ class CheckMoveTest {
   @Test
   void validateMoveTest_ValidMove() {
     assertTrue(checkMove.validateMove(position54, position43, redPlayerMock).containsKey(true));
-    assertFalse(checkMove.validateMove(position54, position43, whitePlayerMock).containsKey(true));
+    assertTrue(checkMove.validateMove(position54, position43, whitePlayerMock).containsKey(true));
   }
 
   @Test

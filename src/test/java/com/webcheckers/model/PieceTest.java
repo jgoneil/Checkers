@@ -2,6 +2,7 @@ package com.webcheckers.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Piece.Type;
 import com.webcheckers.model.Space;
@@ -21,7 +22,7 @@ class PieceTest {
   void setUp() {
     originalSpace = new Space(0, 0, Space.Color.WHITE);
     finalSapce = new Space(1, 1, Space.Color.WHITE);
-    piece1 = new Piece("red", originalSpace);
+    piece1 = new Piece(GameLobby.RED, originalSpace);
 
 
   }

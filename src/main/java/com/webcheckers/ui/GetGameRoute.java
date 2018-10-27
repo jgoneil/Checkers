@@ -53,6 +53,15 @@ public class GetGameRoute implements Route {
   }
 
   /**
+   * Setter for the game lobby for testing purposes
+   *
+   * @param gameLobby the game lobby being added to the game route class
+   */
+  public void setGameLobby(GameLobby gameLobby) {
+    this.gameLobby = gameLobby;
+  }
+
+  /**
    * Render the Game page for the WebCheckers Application
    *
    * @param request the HTTP request
