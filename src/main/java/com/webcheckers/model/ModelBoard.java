@@ -235,6 +235,10 @@ public class ModelBoard {
     return false;
   }
 
+  /**
+   * Used to eat a piece when that piece is jumped, data of that piece is stored
+   * @param piece The piece that is being jumped/ate
+   */
   public void eatPiece(Piece piece){
     if (piece.getColor().equals(Color.RED)){
       redPieces.remove(piece);

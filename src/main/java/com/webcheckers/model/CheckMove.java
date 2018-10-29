@@ -128,6 +128,13 @@ public class CheckMove {
     return canJump;
   }
 
+  /**
+   * Checks to see a single piece can jump.
+   * @param start Starting space that contains the piece
+   * @param end The end space that the piece could possibly jump to
+   * @param player The player who owns the piece
+   * @return true/false based on if the piece can jump or not.
+   */
   private boolean pieceCanJump(Space start, Space end, Player player) {
     Space middle = board.getSpace((start.getxCoordinate() + end.getxCoordinate()) / 2,
         (start.getCellIdx() + end.getCellIdx()) / 2);
