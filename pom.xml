@@ -209,6 +209,10 @@
       <!-- START: Testing plugins -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <testFailureIgnore>true</testFailureIgnore>
+          <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
+        </configuration>
         <version>${maven.surefire.version}</version>
         <dependencies>
           <dependency>
