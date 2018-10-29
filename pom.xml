@@ -209,11 +209,10 @@
       <!-- START: Testing plugins -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <testFailureIgnore>true</testFailureIgnore>
-          <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
-        </configuration>
         <version>${maven.surefire.version}</version>
+        <configuration>
+          <useSystemClassLoader>false</useSystemClassLoader>
+        </configuration>
         <dependencies>
           <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -313,14 +312,14 @@
             </goals>
             <configuration>
               <excludes>
-                <exclude>**/ui/**/*</exclude>
+                <exclude>**/WebServer**</exclude>
                 <exclude>**/Application**</exclude>
               </excludes>
               <rules>
                 <!--  implementation is needed only for Maven 2  -->
                 <rule implementation="org.jacoco.maven.RuleConfiguration">
 
-                  <element>CLASS</element>
+                  <element>PACKAGE</element>
                   <limits>
                     <!--  implementation is needed only for Maven 2  -->
                     <limit implementation="org.jacoco.report.check.Limit">
