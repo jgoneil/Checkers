@@ -19,8 +19,8 @@ import static spark.Spark.halt;
  */
 public class PostBackupMove implements Route {
 
-  private static final String SUCCESS_BACKUP_MOVE = "Your move was backed up successfully.";
-  private static final String ERROR_BACKUP_MOVE = "No move to backup.";
+  static final String SUCCESS_BACKUP_MOVE = "Your move was backed up successfully.";
+  static final String ERROR_BACKUP_MOVE = "No move to backup.";
   //Gson engine for receiving/sending JSON information
   private final Gson gson;
 
