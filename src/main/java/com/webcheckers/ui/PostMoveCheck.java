@@ -35,7 +35,7 @@ public class PostMoveCheck implements Route {
    * Main method for POST check of a valid move
    * @param gson the gson parser for JQuery Requests/Responses
    */
-  private PostMoveCheck(final Gson gson) {
+  public PostMoveCheck(final Gson gson) {
 
     Objects.requireNonNull(gson, "gson cannot be null");
 
