@@ -35,7 +35,7 @@ public class PostMoveCheck implements Route {
    * Main method for POST check of a valid move
    * @param gson the gson parser for JQuery Requests/Responses
    */
-  public PostMoveCheck(final Gson gson) {
+  private PostMoveCheck(final Gson gson) {
 
     Objects.requireNonNull(gson, "gson cannot be null");
 
@@ -80,7 +80,7 @@ public class PostMoveCheck implements Route {
 
     if (!board.checkMadeMove()) {
       Map<Boolean, String> resultFromCheck = this.checkMove
-          .validateMove(move.getStart(), move.getEnd(), player);
+              .validateMove(move.getStart(), move.getEnd(), player);
       if (resultFromCheck.containsKey(true)) {
         board.madeMove(move);
         Message message = new Message(Message.Type.info, resultFromCheck.get(true));
