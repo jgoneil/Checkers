@@ -209,10 +209,6 @@
       <!-- START: Testing plugins -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <testFailureIgnore>true</testFailureIgnore>
-          <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
-        </configuration>
         <version>${maven.surefire.version}</version>
         <configuration>
           <useSystemClassLoader>false</useSystemClassLoader>
@@ -323,13 +319,13 @@
                 <!--  implementation is needed only for Maven 2  -->
                 <rule implementation="org.jacoco.maven.RuleConfiguration">
 
-                  <element>CLASS</element>
+                  <element>PACKAGE</element>
                   <limits>
                     <!--  implementation is needed only for Maven 2  -->
                     <limit implementation="org.jacoco.report.check.Limit">
                       <counter>COMPLEXITY</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.80</minimum>
+                      <minimum>0.60</minimum>
                     </limit>
                   </limits>
                 </rule>
