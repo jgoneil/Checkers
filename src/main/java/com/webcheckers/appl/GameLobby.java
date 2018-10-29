@@ -12,8 +12,6 @@ public class GameLobby {
   private Player redPlayer;
   private Player whitePlayer;
   private ModelBoard modelBoard;
-  private PlayerBoardView redPlayerBoardView;
-  private PlayerBoardView whitePlayerBoadView;
   private CheckMove checkMove;
 
   static final int BOARD_SIZE = 8;
@@ -31,9 +29,7 @@ public class GameLobby {
     this.whitePlayer = whitePlayer;
     redPlayer.setColor(RED);
     whitePlayer.setColor(WHITE);
-    this.redPlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, BOARD_SIZE, RED);
-    this.whitePlayerBoadView = new PlayerBoardView(redPlayer, whitePlayer, BOARD_SIZE, WHITE);
-    this.modelBoard = new ModelBoard(redPlayer, whitePlayer, BOARD_SIZE, redPlayerBoardView, whitePlayerBoadView);
+    this.modelBoard = new ModelBoard(redPlayer, whitePlayer, BOARD_SIZE);
     this.checkMove = new CheckMove(this.modelBoard);
   }
 
@@ -43,7 +39,7 @@ public class GameLobby {
    * @return the PlayerBoardView associated to the red player for the active game session
    */
   public PlayerBoardView getRedPlayerBoardView() {
-    return this.redPlayerBoardView;
+    return modelBoard.getRedPlayerBoardView();
   }
 
   /**
@@ -52,7 +48,7 @@ public class GameLobby {
    * @return the PlayerBoardView associated to the white player for the active game session
    */
   public PlayerBoardView getWhiteBoadView() {
-    return this.whitePlayerBoadView;
+    return modelBoard.getWhitePlayerBoardView();
   }
 
   /**
@@ -63,9 +59,9 @@ public class GameLobby {
    */
   public PlayerBoardView getBoardViewForPlayer(Player player) {
     if (this.redPlayer.equals(player)) {
-      return redPlayerBoardView;
+      return modelBoard.getRedPlayerBoardView();
     } else if (this.whitePlayer.equals(player)){
-      return whitePlayerBoadView;
+      return modelBoard.getWhitePlayerBoardView();
     } else {
       return null;
     }

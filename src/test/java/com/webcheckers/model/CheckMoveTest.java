@@ -33,10 +33,8 @@ class CheckMoveTest {
     this.whitePlayerMock = new Player("Joe");
     this.redPlayerMock.setColor(GameLobby.RED);
     this.whitePlayerMock.setColor(GameLobby.WHITE);
-    PlayerBoardView redPlayerBoardView = mock(PlayerBoardView.class);
-    PlayerBoardView whitePlayerBoardView = mock(PlayerBoardView.class);
 
-    modelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, redPlayerBoardView, whitePlayerBoardView);
+    modelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8);
     checkMove = new CheckMove(modelBoard);
 
     position54 = new Position(5, 4);

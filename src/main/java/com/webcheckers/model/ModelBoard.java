@@ -48,17 +48,16 @@ public class ModelBoard {
    * @param whitePlayer the player associated to the color white for the game
    * @param length the length of the sides of the board (assuming its a square)
    */
-  public ModelBoard(Player redPlayer, Player whitePlayer, int length, PlayerBoardView redPlayerBoardView,
-                    PlayerBoardView whitePlayerBoadView) {
+  public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
     //Setting constants
+    this.redPlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.RED);
+    this.whitePlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.WHITE);
     this.board = new Space[length][length];
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.redTurn = true;
     this.isKinging = true;
     this.madeJump = false;
-    this.redPlayerBoardView = redPlayerBoardView;
-    this.whitePlayerBoardView = whitePlayerBoadView;
     //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
@@ -92,6 +91,24 @@ public class ModelBoard {
    */
   public Space getSpace(int xCoordinate, int yCoordinate) {
     return board[xCoordinate][yCoordinate];
+  }
+
+  /**
+   * Getter for the player board view for the red player
+   *
+   * @return the playerBoardView for the red player
+   */
+  public PlayerBoardView getRedPlayerBoardView() {
+    return this.redPlayerBoardView;
+  }
+
+  /**
+   * Getter for the player board view for the white player
+   *
+   * @return the playerBoardVire for the white player
+   */
+  public PlayerBoardView getWhitePlayerBoardView() {
+    return this.whitePlayerBoardView;
   }
 
   /**

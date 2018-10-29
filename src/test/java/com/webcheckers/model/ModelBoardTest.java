@@ -20,9 +20,7 @@ class ModelBoardTest {
   void setUp() {
     player1Mock = new Player("a");
     player2Mock = new Player("b");
-    PlayerBoardView playerBoardViewRed = new PlayerBoardView(player1Mock, player2Mock, 8, "red");
-    PlayerBoardView playerBoardViewWhite = new PlayerBoardView(player2Mock, player1Mock, 8, "white");
-    modelBoard = new ModelBoard(player1Mock, player2Mock, 8, playerBoardViewRed, playerBoardViewWhite);
+    modelBoard = new ModelBoard(player1Mock, player2Mock, 8);
   }
 
   @AfterEach

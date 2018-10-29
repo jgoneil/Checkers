@@ -21,8 +21,7 @@ public class PlayerBoardViewTest {
     this.whitePlayer = new Player("White");
     this.redPLayer = new Player("Red");
     this.playerBoardView1 = new PlayerBoardView(redPLayer, whitePlayer, 8, "red");
-    PlayerBoardView mockWhiteBoardView = mock(PlayerBoardView.class);
-    this.modelBoard = new ModelBoard(redPLayer, whitePlayer, 8, playerBoardView1, mockWhiteBoardView);
+    this.modelBoard = new ModelBoard(redPLayer, whitePlayer, 8);
   }
 
   @Test
