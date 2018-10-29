@@ -48,8 +48,8 @@ public class TestPostMoveCheck {
         gameLobby = new GameLobby(redPlayer, whitePlayer);
         when(request.session()).thenReturn(session);
         templateEngine = mock(TemplateEngine.class);
-        position34 = new Position(3,4);
-        position45 = new Position(4,5);
+        position34 = new Position(4,3);
+        position45 = new Position(5,4);
 
 
         CuT = new PostMoveCheck(gson);
@@ -139,7 +139,7 @@ public class TestPostMoveCheck {
             String temporaryInfo = (String) info;
             Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
             assertEquals(Message.Type.error, respondedMessage.getType());
-            assertEquals("Piece can only move forward", respondedMessage.getText());
+            assertEquals("Attempted to move a piece to an already occupied space", respondedMessage.getText());
         }
     }
 

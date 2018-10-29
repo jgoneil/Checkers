@@ -1,8 +1,8 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Users;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.Player;
+import com.webcheckers.appl.PlayerLobby;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -24,11 +24,11 @@ public class TestGetSignOutRoute {
     private static final Player NO_PLAYER = null;
     private static final Player LEGIT_PLAYER = new Player("bob");
     private static final String TEMP_USERNAME = "Joe";
-    private static final BoardView BOARD = new BoardView(LEGIT_PLAYER, new Player("Joe"), 8, "red");
+    private static final GameLobby gamelobby = new GameLobby(LEGIT_PLAYER, new Player("Joe"));
 
     //Friendly Objects
     Player player1;
-    private Users users;
+    private PlayerLobby users;
 
     //Mock Objects
     private Request request;
@@ -46,7 +46,7 @@ public class TestGetSignOutRoute {
         logger = Logger.getLogger(GetSignOutRoute.class.getName());
         templateEngine = mock(TemplateEngine.class);
 
-        users = new Users();
+        users = new PlayerLobby();
         CuT = new GetSignOutRoute(templateEngine,users);
     }
 
@@ -80,11 +80,11 @@ public class TestGetSignOutRoute {
     @Test
     void redPlayerInGameSignOut(){
         player1 = LEGIT_PLAYER;
-        player1.setColor("Red",BOARD);
+        player1.setColor(GameLobby.RED);
         users.addPlayer(LEGIT_PLAYER.getName());
         users.addPlayer(TEMP_USERNAME);
         when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
-        when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(BOARD);
+        when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gamelobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -94,11 +94,11 @@ public class TestGetSignOutRoute {
     @Test
     void whitePlayerInGameSignOut(){
         player1 = LEGIT_PLAYER;
-        player1.setColor("White",BOARD);
+        player1.setColor(GameLobby.WHITE);
         users.addPlayer(LEGIT_PLAYER.getName());
         users.addPlayer(TEMP_USERNAME);
         when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
-        when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(BOARD);
+        when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gamelobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 

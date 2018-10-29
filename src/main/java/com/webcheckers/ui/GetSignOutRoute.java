@@ -59,10 +59,14 @@ public class GetSignOutRoute implements Route {
 
       if (player.inGame()) {
         GameLobby gameLobby = httpSession.attribute(GetGameRoute.GAMELOBBY);
-        Player player2 = gameLobby.getOpponent(player);
+        if(gameLobby != null) {
+          Player player2 = gameLobby.getOpponent(player);
 
-        player2.gameEnd();
-        httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
+          player2.gameEnd();
+          httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
+        } else {
+          httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
+        }
       }
 
       playerLobby.removeUser(player.getName());
