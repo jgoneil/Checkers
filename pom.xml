@@ -312,6 +312,7 @@
             </goals>
             <configuration>
               <excludes>
+                <exclude>**/WebServer**</exclude>
                 <exclude>**/Application**</exclude>
               </excludes>
               <rules>
