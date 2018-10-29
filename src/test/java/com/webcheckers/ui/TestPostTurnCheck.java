@@ -54,7 +54,7 @@ public class TestPostTurnCheck {
    */
   @Test
   void nullPlayerTest(){
-    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(badPlayer);
+    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(badPlayer.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
@@ -71,7 +71,7 @@ public class TestPostTurnCheck {
   */
   @Test
   void redsTurnTest(){
-    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodRedPlayer);
+    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodRedPlayer.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
@@ -88,7 +88,7 @@ public class TestPostTurnCheck {
    */
   @Test
   void notWhitesTurnTest(){
-    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodWhitePlayer);
+    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodWhitePlayer.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
@@ -105,7 +105,7 @@ public class TestPostTurnCheck {
    */
   @Test
   void notRedsTurnTest(){
-    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodRedPlayer);
+    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodRedPlayer.getName());
     gameLobby.setMove(true);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -123,7 +123,7 @@ public class TestPostTurnCheck {
    */
   @Test
   void whitesTurnTest(){
-    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodWhitePlayer);
+    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodWhitePlayer.getName());
     gameLobby.setMove(true);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

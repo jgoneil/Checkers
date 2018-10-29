@@ -101,7 +101,7 @@ class TestGetHomeRoute {
   void noPlayerSignedIn() {
     player1 = LEGIT_PLAYER;
     playerLobby.addPlayer(LEGIT_PLAYER.getName());
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -119,7 +119,7 @@ class TestGetHomeRoute {
   @Test
   void onePlayerSignedIn() {
     player1 = LEGIT_PLAYER_NO_BOARD;
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
     playerLobby.addPlayer(LEGIT_PLAYER_NO_BOARD.getName());
     playerLobby.addPlayer(TEMP_USERNAME);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -160,7 +160,7 @@ class TestGetHomeRoute {
     player1.setColor("red");
     playerLobby.addPlayer(LEGIT_PLAYER.getName());
     playerLobby.addPlayer(TEMP_USERNAME);
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
 
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

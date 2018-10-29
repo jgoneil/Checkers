@@ -71,7 +71,8 @@ public class GetGameRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     Session httpSession = request.session();
-    this.currentPlayer = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    String player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    this.currentPlayer = playerLobby.getSpecificPlayer(player);
 
     if (this.currentPlayer == null) {
       response.redirect(WebServer.HOME_URL);

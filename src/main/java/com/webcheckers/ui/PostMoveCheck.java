@@ -25,8 +25,6 @@ public class PostMoveCheck implements Route {
 
   //Gson controller for reading and sending JSON information
   private final Gson gson;
-  //The player moving the piece
-  private Player player;
   //The player that resigned for the game
   private Player resignedPlayer;
 
@@ -52,12 +50,16 @@ public class PostMoveCheck implements Route {
   public Object handle(Request request, Response response) {
     Session HTTPSession = request.session();
 
-    this.player = HTTPSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    String playerUsername = HTTPSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    GameLobby gameLobby = HTTPSession.attribute(GetGameRoute.GAMELOBBY);
 
-    if(!this.player.inGame()) {
-      GameLobby gameLobby = HTTPSession.attribute(GetGameRoute.GAMELOBBY);
+    if (gameLobby == null) {
+      return gson.toJson(new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
+    }
+
+    if(!gameLobby.verifyInGame(playerUsername)) {
       if(this.resignedPlayer == null) {
-        if (gameLobby.checkRedPlayer(this.player)) {
+        if (gameLobby.checkRedPlayer(playerUsername)) {
           this.resignedPlayer = gameLobby.getWhitePlayer();
         } else {
           this.resignedPlayer = gameLobby.getRedPlayer();
@@ -68,14 +70,16 @@ public class PostMoveCheck implements Route {
       return gson.toJson(new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
     }
 
-    GameLobby gameLobby = HTTPSession.attribute(GetGameRoute.GAMELOBBY);
-
     String customJson = request.body();
     Move move = gson.fromJson(customJson, Move.class);
 
-
     if (!gameLobby.checkMadeMove()) {
-      Map<Boolean, String> resultFromCheck = gameLobby.validateMove(move.getStart(), move.getEnd(), player);
+      Map<Boolean, String> resultFromCheck;
+      if (gameLobby.checkRedPlayer(playerUsername)) {
+        resultFromCheck = gameLobby.validateMove(move.getStart(), move.getEnd(), gameLobby.getRedPlayer());
+      } else {
+        resultFromCheck = gameLobby.validateMove(move.getStart(), move.getEnd(), gameLobby.getWhitePlayer());
+      }
       if (resultFromCheck.containsKey(true)) {
         gameLobby.madeMove(move);
         Message message = new Message(Message.Type.info, resultFromCheck.get(true));

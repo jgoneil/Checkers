@@ -72,6 +72,22 @@ public class GameLobby {
   }
 
   /**
+   * Checks to see if a current player is in the game session or not
+   *
+   * @param username the username of the potential player
+   * @return true/false based on if the username entered matches the red or white player's username
+   */
+  public boolean verifyInGame(String username) {
+    if (username.equals(redPlayer.getName())) {
+      return redPlayer.inGame();
+    }
+    else if( username.equals(whitePlayer.getName())) {
+      return whitePlayer.inGame();
+    }
+    return false;
+  }
+
+  /**
    * Getter for the Player associated to the red side of the board
    *
    * @return the player associated to the red side of the board
@@ -108,11 +124,8 @@ public class GameLobby {
    * @param player the player being checked
    * @return true/false if the red player is the specified player
    */
-  public boolean checkRedPlayer(Player player) {
-    if (redPlayer.equals(player)) {
-      return true;
-    }
-    return false;
+  public boolean checkRedPlayer(String player) {
+    return player.equals(redPlayer.getName());
   }
 
   /**

@@ -57,7 +57,7 @@ public class TestPostMoveCheck {
 
     @Test
     void redNotInGameMove() {
-        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(notInGame);
+        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(notInGame.getName());
         when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -74,7 +74,7 @@ public class TestPostMoveCheck {
 
     @Test
     void whiteNotInGameMove() {
-        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(notInGame);
+        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(notInGame.getName());
         when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -91,7 +91,7 @@ public class TestPostMoveCheck {
 
     @Test
     void madeMove() {
-        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
+        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
         gameLobby.madeMove(new Move(position34,position45));
         when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -109,7 +109,7 @@ public class TestPostMoveCheck {
 
     @Test
     void MakingMoveForward() {
-        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
+        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
         when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
         when(request.body()).thenReturn(gson.toJson(new Move(position45,position34)));
         final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -127,7 +127,7 @@ public class TestPostMoveCheck {
 
     @Test
     void MakingWrongMove() {
-        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
+        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
         when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
         when(request.body()).thenReturn(gson.toJson(new Move(position34,position45)));
         final TemplateEngineTester testHelper = new TemplateEngineTester();

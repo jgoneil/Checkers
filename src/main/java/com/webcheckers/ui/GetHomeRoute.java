@@ -71,7 +71,8 @@ public class GetHomeRoute implements Route {
     final Session httpSession = request.session();
     LOG.finer("GetHomeRoute is invoked.");
     //
-    this.player = httpSession.attribute(PLAYERSERVICES_KEY);
+    String player = httpSession.attribute(PLAYERSERVICES_KEY);
+    this.player = playerLobby.getSpecificPlayer(player);
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
@@ -81,7 +82,7 @@ public class GetHomeRoute implements Route {
     }
 
     if (player != null) {
-      if (!player.inGame()) {
+      if (!this.player.inGame()) {
         if (httpSession.attribute(GetGameRoute.GAMELOBBY) != null) {
           httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
         }
@@ -98,17 +99,17 @@ public class GetHomeRoute implements Route {
     } else if (playerLobby.getNumberOfPlayers() == 1) {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, true);
-      vm.put(USER, player.getName());
+      vm.put(USER, this.player.getName());
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
-    } else if (player.inGame()) {
+    } else if (this.player.inGame()) {
       response.redirect(WebServer.GAME_URL);
       halt();
       return null;
     } else {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, false);
-      vm.put(USER, player.getName());
-      vm.put(USERS, playerLobby.getAllPlayersExceptUser(player.getName()));
+      vm.put(USER, this.player.getName());
+      vm.put(USERS, playerLobby.getAllPlayersExceptUser(this.player.getName()));
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
   }

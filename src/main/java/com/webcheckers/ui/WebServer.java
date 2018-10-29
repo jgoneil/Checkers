@@ -157,7 +157,7 @@ public class WebServer {
 
     post(VALIDATE_MOVE, new PostMoveCheck(gson));
 
-    post(RESIGN_GAME, new PostResignGame(gson));
+    post(RESIGN_GAME, new PostResignGame(gson, playerLobby));
 
     post(SUBMIT_TURN, new PostSubmitTurn(gson));
 

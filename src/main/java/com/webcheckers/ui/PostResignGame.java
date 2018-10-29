@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameLobby;
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Player;
@@ -25,17 +26,21 @@ public class PostResignGame implements Route {
   private final Gson gson;
   //Player that disconnected from the system
   private Player resignedPlayer;
+  //Player lobby for the current session
+  private PlayerLobby playerLobby;
   
   /**
    * Main method for POST resign game
    *
    * @param gson the gson parser for JQuery Requests/Responses
    */
-  public PostResignGame(final Gson gson) {
+  public PostResignGame(final Gson gson, final PlayerLobby playerLobby) {
     
     Objects.requireNonNull(gson, "Gson cannot be null.");
+    Objects.requireNonNull(playerLobby, "Player lobby cannot be null");
 
     this.gson = gson;
+    this.playerLobby = playerLobby;
   }
 
   /**
@@ -49,7 +54,8 @@ public class PostResignGame implements Route {
   public Object handle(Request request, Response response) {
     Session httpSession = request.session();
 
-    Player player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    String playerUsername = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    Player player = playerLobby.getSpecificPlayer(playerUsername);
     GameLobby gameLobby = httpSession.attribute(GetGameRoute.GAMELOBBY);
 
     if (gameLobby == null) {

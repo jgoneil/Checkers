@@ -55,7 +55,8 @@ public class GetSignOutRoute implements Route {
     final Session httpSession = request.session();
 
     if (httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY) != null) {
-      Player player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+      String playerUsername = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+      Player player = playerLobby.getSpecificPlayer(playerUsername);
 
       if (player.inGame()) {
         GameLobby gameLobby = httpSession.attribute(GetGameRoute.GAMELOBBY);

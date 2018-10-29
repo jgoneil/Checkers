@@ -43,8 +43,8 @@ public class GameLobbyTest {
 
   @Test
   void testCheckRedPlayer() {
-    assertTrue(gameLobby.checkRedPlayer(redPlayer));
-    assertFalse(gameLobby.checkRedPlayer(whitePlayer));
+    assertTrue(gameLobby.checkRedPlayer(redPlayer.getName()));
+    assertFalse(gameLobby.checkRedPlayer(whitePlayer.getName()));
   }
 
   @Test

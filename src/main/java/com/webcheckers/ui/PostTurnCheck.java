@@ -44,11 +44,11 @@ public class PostTurnCheck implements Route {
   @Override
   public Object handle(Request request, Response response) {
     Session session = request.session();
-    Player player = session.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+    String playerUsername = session.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
     GameLobby gameLobby = session.attribute(GetGameRoute.GAMELOBBY);
 
-    if (player.inGame()) {
-      if (gameLobby.checkRedPlayer(player)) {
+    if (gameLobby.verifyInGame(playerUsername)) {
+      if (gameLobby.checkRedPlayer(playerUsername)) {
         if (gameLobby.checkRedTurn()) {
           return gson.toJson(new Message(Message.Type.info, "true"));
         } else {

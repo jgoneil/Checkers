@@ -70,7 +70,8 @@ public class TestGetSignOutRoute {
     @Test
     void playerNotInGameSignOut() {
         player1 = LEGIT_PLAYER;
-        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
+        users.addPlayer(player1.getName());
+        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -83,7 +84,7 @@ public class TestGetSignOutRoute {
         player1.setColor(GameLobby.RED);
         users.addPlayer(LEGIT_PLAYER.getName());
         users.addPlayer(TEMP_USERNAME);
-        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
+        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
         when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gamelobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -97,7 +98,7 @@ public class TestGetSignOutRoute {
         player1.setColor(GameLobby.WHITE);
         users.addPlayer(LEGIT_PLAYER.getName());
         users.addPlayer(TEMP_USERNAME);
-        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1);
+        when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
         when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gamelobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
