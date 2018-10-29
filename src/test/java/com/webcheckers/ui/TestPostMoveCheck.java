@@ -1,10 +1,9 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
-import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Player;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.Player;
 import com.webcheckers.model.Message;
-import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Position;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +27,6 @@ public class TestPostMoveCheck {
     private Player redPlayer;
     private Player whitePlayer;
     private Player notInGame;
-    private ModelBoard board;
     private Position position34;
     private Position position45;
 
@@ -36,6 +34,7 @@ public class TestPostMoveCheck {
     private Request request;
     private Response response;
     private Session session;
+    private GameLobby gameLobby;
     private TemplateEngine templateEngine;
 
     @BeforeEach
@@ -46,11 +45,7 @@ public class TestPostMoveCheck {
         notInGame = new Player("c");
         redPlayer = new Player("a");
         whitePlayer = new Player("b");
-        BoardView boardViewRed = new BoardView(redPlayer, whitePlayer, 8, "Red");
-        BoardView boardViewWhite = new BoardView(redPlayer, whitePlayer, 8, "White");
-        board = new ModelBoard(redPlayer,whitePlayer,8);
-        redPlayer.setColor("Red", boardViewRed);
-        whitePlayer.setColor("White", boardViewWhite);
+        gameLobby = new GameLobby(redPlayer, whitePlayer);
         when(request.session()).thenReturn(session);
         templateEngine = mock(TemplateEngine.class);
         position34 = new Position(3,4);
@@ -63,8 +58,7 @@ public class TestPostMoveCheck {
     @Test
     void redNotInGameMove() {
         when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(notInGame);
-        BoardView whiteBoardView = whitePlayer.getBoardView();
-        when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(whiteBoardView);
+        when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -81,8 +75,7 @@ public class TestPostMoveCheck {
     @Test
     void whiteNotInGameMove() {
         when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(notInGame);
-        BoardView boardViewRed = new BoardView(notInGame, redPlayer, 8, "Red");
-        when(request.session().attribute(GetGameRoute.BOARD)).thenReturn(boardViewRed);
+        when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -99,8 +92,8 @@ public class TestPostMoveCheck {
     @Test
     void madeMove() {
         when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
-        board.madeMove(new Move(position34,position45));
-        when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(board);
+        gameLobby.madeMove(new Move(position34,position45));
+        when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -117,7 +110,7 @@ public class TestPostMoveCheck {
     @Test
     void MakingMoveForward() {
         when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
-        when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(board);
+        when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
         when(request.body()).thenReturn(gson.toJson(new Move(position45,position34)));
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -135,7 +128,7 @@ public class TestPostMoveCheck {
     @Test
     void MakingWrongMove() {
         when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer);
-        when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(board);
+        when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
         when(request.body()).thenReturn(gson.toJson(new Move(position34,position45)));
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

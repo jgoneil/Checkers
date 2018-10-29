@@ -1,8 +1,8 @@
 package com.webcheckers.ui;
 
 
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Users;
+import com.webcheckers.model.Player;
+import com.webcheckers.appl.PlayerLobby;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
@@ -26,7 +26,7 @@ public class TestPostSignInRoute {
   private TemplateEngine templateEngine;
 
   private Player player;
-  private Users users;
+  private PlayerLobby users;
 
   /**
    * Setup for tests
@@ -37,7 +37,7 @@ public class TestPostSignInRoute {
     request = mock(Request.class);
     session = mock(Session.class);
     templateEngine = mock(TemplateEngine.class);
-    users = new Users();
+    users = new PlayerLobby();
     users.addPlayer("Example");
     when(request.session()).thenReturn(session);
 

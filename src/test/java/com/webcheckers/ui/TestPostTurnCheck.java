@@ -2,7 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Player;
+import com.webcheckers.model.Player;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.ModelBoard;
 import org.junit.jupiter.api.BeforeEach;
