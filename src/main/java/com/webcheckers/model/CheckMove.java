@@ -5,7 +5,6 @@ import com.webcheckers.appl.Piece.Color;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Space;
 
-import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -128,6 +127,14 @@ public class CheckMove {
     return canJump;
   }
 
+  /**
+   * Checks to see if a piece is able to jump another piece or not
+   *
+   * @param start the space the jump is starting at
+   * @param end the space the jump is attempting to move to
+   * @param player the player attempting to make the jump
+   * @return true/false if a jump can occur or not
+   */
   private boolean pieceCanJump(Space start, Space end, Player player) {
     Space middle = board.getSpace((start.getxCoordinate() + end.getxCoordinate()) / 2,
         (start.getCellIdx() + end.getCellIdx()) / 2);
@@ -161,7 +168,6 @@ public class CheckMove {
     Map<Boolean, String> response = new HashMap<>();
     Space current;
     Space goal;
-    Space middle;
     if (player.getColor().equals("Red")) {
       current = board.getSpace(start.getRow(), start.getCell());
       goal = board.getSpace(target.getRow(), target.getCell());
@@ -171,11 +177,7 @@ public class CheckMove {
     }
     if (canJump(player)) {
       if (pieceCanJump(current, goal, player)) {
-        board.addPieceToSpace(current.getPiece(), goal);
-        current.unoccupy();
-        middle = board.getSpace((current.getxCoordinate() + goal.getxCoordinate()) / 2,
-            (current.getCellIdx() + goal.getCellIdx()) / 2);
-        board.eatPiece(middle.getPiece());
+        board.isJumping(true);
         response.put(true, "This jump is valid.");
       } else {
         response.put(false, "Attempted to move when jump is possible.");
@@ -192,9 +194,6 @@ public class CheckMove {
       } else if (!isMovingForward(start, target)) {
         response.put(false, "Piece can only move forward");
       } else {
-
-        board.addPieceToSpace(current.getPiece(), goal);
-        current.unoccupy();
         response.put(true, "This move is valid.");
       }
     }

@@ -33,12 +33,12 @@ public class ModelBoard {
   private List<Piece> whitePieces = new ArrayList<>();
   //Checks if a Piece is being Kinged in a given move
   private boolean isKinging;
-  //Holds a piece if it were ate
-  private Piece atePiece;
-  //If a jump was recently made
-  private boolean madeJump;
-  //Holds the space a piece was ate from
-  private Space ateSpace;
+  //If a player has found a valid move to make
+  private boolean pendingMove;
+  //Checks if a jump action is being made
+  private boolean isJumping;
+
+
   /**
    * Constructor for the model version of the board
    *
@@ -53,7 +53,8 @@ public class ModelBoard {
     this.whitePlayer = whitePlayer;
     this.redTurn = true;
     this.isKinging = true;
-    this.madeJump = false;
+    this.pendingMove = false;
+    this.isJumping = false;
     //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
@@ -90,9 +91,26 @@ public class ModelBoard {
   }
 
   /**
-   * Sets the system to reflect a move has been made
+   * Sets the system to reflect a move has been validated but not submitted
+   */
+  public void pendingMove(Move move) {
+    this.pendingMove = true;
+    this.move = move;
+  }
+
+  /**
+   * Sets the pendingMove boolean to the parameter value (used for testing)
    *
-   * @param move the move made
+   * @param madeMove true/false based on what pendingMove should be set to
+   */
+  public void setPendingMove(boolean madeMove) {
+    this.pendingMove = madeMove;
+  }
+
+  /**
+   * Sets the system to state a move was made
+   *
+   * @param move the move that was made
    */
   public void madeMove(Move move) {
     this.madeMove = true;
@@ -100,18 +118,55 @@ public class ModelBoard {
   }
 
   /**
+   * Sets the system to show if a move is an attempted jump or not
+   *
+   * @param jumping true/false based on if the player is attempting to jump a piece or not
+   */
+  public void isJumping(boolean jumping) {
+    this.isJumping = jumping;
+  }
+
+  /**
+   * Checks to see if a move is currently pending
+   *
+   * @return true/false based on if a player has a pending move
+   */
+  public boolean checkPendingMove() {
+    return this.pendingMove;
+  }
+
+  /**
    * Submits a move for the game and change the active player
    */
   public void submitMove() {
+    Space current;
     Space endingSpace;
     if (redTurn) {
+      current = board[move.getStart().getRow()][move.getStart().getCell()];
       endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
     } else {
+      current = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
       endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
     }
-    isKinging = isBecomingKing(endingSpace.getPiece(), move.getEnd().getRow());
+    isKinging = isBecomingKing(current.getPiece(), move.getEnd().getRow());
     if (isKinging){
-      endingSpace.getPiece().King();
+      current.getPiece().King();
+    }
+    if (isJumping) {
+      addPieceToSpace(current.getPiece(), endingSpace);
+      current.unoccupy();
+      if (endingSpace.getPiece().getColor() == Color.RED) {
+        Space middle = getSpace((current.getxCoordinate() + endingSpace.getxCoordinate()) / 2,
+                (current.getCellIdx() + endingSpace.getCellIdx()) / 2);
+        eatPiece(middle.getPiece());
+      } else {
+        Space middle = getSpace((current.getxCoordinate() + endingSpace.getxCoordinate()) / 2,
+                (current.getCellIdx() + endingSpace.getCellIdx()) / 2);
+        eatPiece(middle.getPiece());
+      }
+    } else {
+      addPieceToSpace(current.getPiece(), endingSpace);
+      current.unoccupy();
     }
     BoardView redBoardView = redPlayer.getBoardView();
     BoardView whiteBoardView = whitePlayer.getBoardView();
@@ -128,6 +183,9 @@ public class ModelBoard {
     this.redTurn = !redTurn;
     this.madeMove = false;
     this.isKinging = false;
+    this.pendingMove = false;
+    this.move = null;
+    this.isJumping = false;
   }
 
   /**
@@ -176,31 +234,10 @@ public class ModelBoard {
    * Returns the game to the state before choosing a move.
    */
   public void backupMove() {
-    if (madeMove) {
-      Space startingSpace;
-      Space endingSpace;
-      if (redTurn) {
-        startingSpace = board[move.getStart().getRow()][move.getStart().getCell()];
-        endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
-        if (madeJump){
-          this.madeJump = false;
-          redPieces.add(atePiece);
-          addPieceToSpace(atePiece,ateSpace);
-        }
-      } else {
-        startingSpace = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
-        endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
-        if (madeJump){
-          this.madeJump = false;
-          whitePieces.add(atePiece);
-          addPieceToSpace(atePiece,ateSpace);
-        }
-      }
-      Piece movingPiece = endingSpace.getPiece();
-      endingSpace.unoccupy();
-      addPieceToSpace(movingPiece, startingSpace);
+    if (pendingMove) {
       madeMove = false;
       move = null;
+      pendingMove = false;
     }
   }
 
@@ -235,15 +272,17 @@ public class ModelBoard {
     return false;
   }
 
+  /**
+   * Removes a piece from all 3 boards after a jump occurs
+   *
+   * @param piece the piece being removed
+   */
   public void eatPiece(Piece piece){
     if (piece.getColor().equals(Color.RED)){
       redPieces.remove(piece);
     } else {
       whitePieces.remove(piece);
     }
-    this.atePiece = piece;
-    this.madeJump = true;
-    this.ateSpace = piece.getSpace();
     piece.getSpace().unoccupy();
 
     BoardView redBoardView = redPlayer.getBoardView();
