@@ -81,7 +81,7 @@ public class CheckMove {
    */
   private boolean canJump(Player player) {
     boolean canJump = false;
-    if (player.getColor().equals("Red")) {
+    if (player.getColor().equals(GameLobby.RED)) {
       for (Piece redPiece : board.getRedPieces()) {
         if (redPiece.getSpace().getxCoordinate() - 2 >= 0
             && redPiece.getSpace().getCellIdx() - 2 >= 0) {
@@ -140,11 +140,11 @@ public class CheckMove {
     if (isMovingTwo(start, end)) {
       if (!end.isOccupied()) {
         if (middle.isOccupied()) {
-          if (player.getColor().equals("Red") && middle.getPiece().getColor().equals(Color.WHITE)) {
+          if (player.getColor().equals(GameLobby.RED) && middle.getPiece().getColor().equals(Color.WHITE)) {
             return true;
           }
 
-          if (player.getColor().equals("White") && middle.getPiece().getColor().equals(Color.RED)) {
+          if (player.getColor().equals(GameLobby.WHITE) && middle.getPiece().getColor().equals(Color.RED)) {
             return true;
           }
         }

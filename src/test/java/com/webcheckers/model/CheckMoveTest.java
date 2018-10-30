@@ -91,8 +91,6 @@ class CheckMoveTest {
 
   @Test
   void validateJump() {
-    modelBoard.addPieceToSpace(new Piece("red", new Space(5, 0, Space.Color.BLACK)),
-            new Space(5, 0, Space.Color.BLACK));
     modelBoard.addPieceToSpace(new Piece("white", new Space(4, 1, Space.Color.BLACK)),
             new Space(4, 1, Space.Color.BLACK));
     assertTrue(checkMove.validateMove(position50, position32, redPlayerMock).containsKey(true));
