@@ -23,6 +23,9 @@ class CheckMoveTest {
   private Position position47;
   private Position position63;
   private Position position23;
+  private Position position50;
+  private Position position41;
+  private Position position32;
 
   // White square
   private Position position44;
@@ -44,6 +47,9 @@ class CheckMoveTest {
     position63 = new Position(6, 3);
     position23 = new Position(2, 3);
     position44 = new Position(4, 4);
+    position50 = new Position(5, 0);
+    position41 = new Position(4, 1);
+    position32 = new Position(3, 2);
   }
 
   @AfterEach
@@ -79,5 +85,25 @@ class CheckMoveTest {
     assertTrue(checkMove.validateMove(position34, position23, redPlayerMock).containsKey(false));
     assertTrue(checkMove.validateMove(position34, position23, whitePlayerMock).containsKey(false));
 
+    // move forward not diagonally
+    assertTrue(checkMove.validateMove(position50, position54, redPlayerMock).containsKey(false));
+  }
+
+  @Test
+  void validateJump() {
+    modelBoard.addPieceToSpace(new Piece("red", new Space(5, 0, Space.Color.BLACK)),
+            new Space(5, 0, Space.Color.BLACK));
+    modelBoard.addPieceToSpace(new Piece("white", new Space(4, 1, Space.Color.BLACK)),
+            new Space(4, 1, Space.Color.BLACK));
+    assertTrue(checkMove.validateMove(position50, position32, redPlayerMock).containsKey(true));
+  }
+
+  @Test
+  void CantJump() {
+    modelBoard.addPieceToSpace(new Piece("red", new Space(5, 0, Space.Color.BLACK)),
+            new Space(3, 2, Space.Color.BLACK));
+    modelBoard.addPieceToSpace(new Piece("white", new Space(4, 1, Space.Color.BLACK)),
+            new Space(4, 1, Space.Color.BLACK));
+    assertTrue(checkMove.validateMove(position54, position43, redPlayerMock).containsKey(false));
   }
 }

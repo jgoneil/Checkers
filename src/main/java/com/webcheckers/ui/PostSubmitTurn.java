@@ -48,7 +48,7 @@ public class PostSubmitTurn implements Route {
 
     GameLobby gameLobby = session.attribute(GetGameRoute.GAMELOBBY);
 
-    if (gameLobby.checkMadeMove()) {
+    if (gameLobby.checkPendingMove()) {
       gameLobby.submitMove();
       Message message = new Message(Message.Type.info, SUCCESS_SUBMIT_TURN);
       return gson.toJson(message);

@@ -125,6 +125,14 @@ public class CheckMove {
     return canJump;
   }
 
+  /**
+   * Checks to see a single piece can jump.
+   *
+   * @param start Starting space that contains the piece
+   * @param end The end space that the piece could possibly jump to
+   * @param player The player who owns the piece
+   * @return true/false based on if the piece can jump or not.
+   */
   private boolean pieceCanJump(Space start, Space end, Player player) {
     Space middle = board.getSpace((start.getxCoordinate() + end.getxCoordinate()) / 2,
         (start.getCellIdx() + end.getCellIdx()) / 2);
@@ -142,9 +150,7 @@ public class CheckMove {
         }
       }
     }
-
     return false;
-
   }
 
   /**
@@ -158,7 +164,6 @@ public class CheckMove {
     Map<Boolean, String> response = new HashMap<>();
     Space current;
     Space goal;
-    Space middle;
     if (player.getColor().equals(GameLobby.RED)) {
       current = board.getSpace(start.getRow(), start.getCell());
       goal = board.getSpace(target.getRow(), target.getCell());
@@ -168,11 +173,7 @@ public class CheckMove {
     }
     if (canJump(player)) {
       if (pieceCanJump(current, goal, player)) {
-        board.addPieceToSpace(current.getPiece(), goal);
-        current.unoccupy();
-        middle = board.getSpace((current.getxCoordinate() + goal.getxCoordinate()) / 2,
-            (current.getCellIdx() + goal.getCellIdx()) / 2);
-        board.eatPiece(middle.getPiece());
+        board.isJumping(true);
         response.put(true, "This jump is valid.");
       } else {
         response.put(false, "Attempted to move when jump is possible.");
@@ -189,9 +190,6 @@ public class CheckMove {
       } else if (!isMovingForward(start, target)) {
         response.put(false, "Piece can only move forward");
       } else {
-
-        board.addPieceToSpace(current.getPiece(), goal);
-        current.unoccupy();
         response.put(true, "This move is valid.");
       }
     }

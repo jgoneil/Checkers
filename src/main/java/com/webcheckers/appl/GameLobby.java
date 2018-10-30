@@ -144,6 +144,18 @@ public class GameLobby {
     return this.modelBoard.checkMadeMove();
   }
 
+  public void setPendingMove(boolean movePending) {
+    this.modelBoard.setPendingMove(movePending);
+  }
+
+  public boolean checkPendingMove() {
+    return this.modelBoard.checkPendingMove();
+  }
+
+  public void pendingMove(Move move) {
+    this.modelBoard.pendingMove(move);
+  }
+
   public void madeMove(Move move) {
     this.modelBoard.madeMove(move);
   }

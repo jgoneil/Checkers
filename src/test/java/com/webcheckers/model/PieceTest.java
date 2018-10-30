@@ -3,9 +3,7 @@ package com.webcheckers.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.webcheckers.appl.GameLobby;
-import com.webcheckers.model.Piece;
 import com.webcheckers.model.Piece.Type;
-import com.webcheckers.model.Space;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;

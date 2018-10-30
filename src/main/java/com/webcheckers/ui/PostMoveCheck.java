@@ -73,7 +73,7 @@ public class PostMoveCheck implements Route {
     String customJson = request.body();
     Move move = gson.fromJson(customJson, Move.class);
 
-    if (!gameLobby.checkMadeMove()) {
+    if (!gameLobby.checkPendingMove()) {
       Map<Boolean, String> resultFromCheck;
       if (gameLobby.checkRedPlayer(playerUsername)) {
         resultFromCheck = gameLobby.validateMove(move.getStart(), move.getEnd(), gameLobby.getRedPlayer());
@@ -81,7 +81,7 @@ public class PostMoveCheck implements Route {
         resultFromCheck = gameLobby.validateMove(move.getStart(), move.getEnd(), gameLobby.getWhitePlayer());
       }
       if (resultFromCheck.containsKey(true)) {
-        gameLobby.madeMove(move);
+        gameLobby.pendingMove(move);
         Message message = new Message(Message.Type.info, resultFromCheck.get(true));
         return gson.toJson(message);
       } else {
