@@ -12,7 +12,7 @@ import java.util.Objects;
 import com.google.gson.Gson;
 
 /**
- *
+ * Class for resigning a game {@code postResign}
  */
 public class PostResignGame implements Route {
 

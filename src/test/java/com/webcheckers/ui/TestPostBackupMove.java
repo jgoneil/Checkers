@@ -51,6 +51,7 @@ public class TestPostBackupMove {
   @Test
   void moveMade() {
     gameLobby.madeMove(new Move(new Position(5, 0), new Position(6, 1)));
+    gameLobby.setPendingMove(true);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

@@ -81,28 +81,30 @@ public class TestGetSignOutRoute {
     @Test
     void redPlayerInGameSignOut(){
         player1 = LEGIT_PLAYER;
-        player1.setColor(GameLobby.RED);
         users.addPlayer(LEGIT_PLAYER.getName());
         users.addPlayer(TEMP_USERNAME);
+        users.getSpecificPlayer(LEGIT_PLAYER.getName()).setColor(GameLobby.RED);
         when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
         when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gamelobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
-        CuT.handle(request,response);
+        Object result  = CuT.handle(request,response);
+        assertNull(result);
     }
 
     @Test
     void whitePlayerInGameSignOut(){
         player1 = LEGIT_PLAYER;
-        player1.setColor(GameLobby.WHITE);
         users.addPlayer(LEGIT_PLAYER.getName());
         users.addPlayer(TEMP_USERNAME);
+        users.getSpecificPlayer(LEGIT_PLAYER.getName()).setColor(GameLobby.WHITE);
         when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
         when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gamelobby);
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
-        CuT.handle(request,response);
+        Object result = CuT.handle(request,response);
+        assertNull(result);
     }
 }

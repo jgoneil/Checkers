@@ -9,11 +9,16 @@ import java.util.Map;
  */
 public class GameLobby {
 
+  //The red player connected to the game
   private Player redPlayer;
+  //The white player connected to the game
   private Player whitePlayer;
+  //The model board being created for the game logic
   private ModelBoard modelBoard;
+  //The check Move class to check if a move is valid or not
   private CheckMove checkMove;
 
+  //Static final (constant) variables
   static final int BOARD_SIZE = 8;
   public static final String RED = "RED";
   public static final String WHITE = "WHITE";
@@ -136,42 +141,91 @@ public class GameLobby {
     return WHITE;
   }
 
+  /**
+   * Checks to see if the turn is currently the red player's turn or not
+   *
+   * @return true/false based on if the turn is the red player's or not
+   */
   public boolean checkRedTurn() {
     return modelBoard.checkRedTurn();
   }
 
+  /**
+   * Checks to see if a move has been made on the board or not
+   *
+   * @return true/false based on if a move has been submitted or not
+   */
   public boolean checkMadeMove() {
     return this.modelBoard.checkMadeMove();
   }
 
+  /**
+   * Sets the pendingMove variable to an inputted value
+   *
+   * @param movePending true/false depending on what the pendingMove variable should be set to
+   */
   public void setPendingMove(boolean movePending) {
     this.modelBoard.setPendingMove(movePending);
   }
 
+  /**
+   * Checks to see if a move has happened but is pending or not
+   *
+   * @return true/false based on if a move is pending
+   */
   public boolean checkPendingMove() {
     return this.modelBoard.checkPendingMove();
   }
 
+  /**
+   * Sets a move to be pending for the board til the player submits or backs up the move
+   *
+   * @param move the move that is waiting to be backed up or submitted
+   */
   public void pendingMove(Move move) {
     this.modelBoard.pendingMove(move);
   }
 
+  /**
+   * Sets the game to have completed a move
+   *
+   * @param move the move completed
+   */
   public void madeMove(Move move) {
     this.modelBoard.madeMove(move);
   }
 
+  /**
+   * Validates the move a player is attempting to make
+   *
+   * @param start the starting position for the move
+   * @param target the ending position for the move
+   * @param player the player making the move
+   * @return true/false based on if the player can make the move or not
+   */
   public Map<Boolean, String> validateMove(Position start, Position target, Player player) {
     return this.checkMove.validateMove(start, target, player);
   }
 
+  /**
+   * Submits the pending move for the player and ends the player's turn
+   */
   public void submitMove() {
     this.modelBoard.submitMove();
   }
 
+  /**
+   * Revers the pending move on the board
+   */
   public void backupMove() {
     this.modelBoard.backupMove();
   }
 
+  /**
+   * Sets a move to true/false based on the parameter
+   *
+   * @param moved true/false based on if a move has occurred or not
+   */
   public void setMove(boolean moved) {
     modelBoard.setMove(moved);
   }

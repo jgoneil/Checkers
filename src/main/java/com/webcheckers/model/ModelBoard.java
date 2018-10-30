@@ -30,6 +30,7 @@ public class ModelBoard {
   private List<Piece> whitePieces = new ArrayList<>();
   //Checks if a Piece is being Kinged in a given move
   private boolean isKinging;
+  //Holds the information about the redPlayerBoardView
   private PlayerBoardView redPlayerBoardView;
   //Holds the information about the whitePlayerBoardView
   private PlayerBoardView whitePlayerBoardView;

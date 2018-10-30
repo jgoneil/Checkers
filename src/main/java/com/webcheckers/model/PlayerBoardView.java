@@ -96,8 +96,13 @@ public class PlayerBoardView implements Iterable {
     return this.board.iterator();
   }
 
-  public void eatPiece(int xCoordinate, int cellIdx) {
-    board.get(xCoordinate)
-          .removePieceFromSpace(cellIdx);
+  /**
+   * Removes a piece from the playerBoard
+   *
+   * @param row the row the piece is in
+   * @param column the column the piece is in
+   */
+  public void eatPiece(int row, int column) {
+    board.get(row).removePieceFromSpace(column);
   }
 }
