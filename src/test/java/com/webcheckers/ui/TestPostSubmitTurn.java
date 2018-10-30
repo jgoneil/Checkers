@@ -55,6 +55,7 @@ public class TestPostSubmitTurn {
   void successfulSubmit() {
     ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
     modelBoard.madeMove(new Move(new Position(5, 0), new Position(6, 1)));
+    modelBoard.setPendingMove(true);
     when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(modelBoard);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

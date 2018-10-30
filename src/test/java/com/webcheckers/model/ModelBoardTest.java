@@ -47,14 +47,13 @@ class ModelBoardTest {
 
   @Test
   void backupMoveTest(){
-    Piece piece = new Piece("red", new Space(5, 0, Color.BLACK));
     Move move = (new Move(new Position(5, 0), new Position(4, 1)));
-    modelBoard.madeMove(move);
-    modelBoard.addPieceToSpace(piece, new Space(4, 1 , Color.BLACK));
+    modelBoard.pendingMove(move);
+    modelBoard.setPendingMove(true);
 
     modelBoard.backupMove();
 
-    assertFalse(modelBoard.checkMadeMove());
+    assertFalse(modelBoard.checkPendingMove());
     assertTrue(modelBoard.getSpace(5,0).isOccupied());
     assertFalse(modelBoard.getSpace(4,1).isOccupied());
   }
@@ -116,10 +115,10 @@ class ModelBoardTest {
 
     modelBoard.backupMove();
 
-    assertFalse(modelBoard.checkMadeMove());
+    assertFalse(modelBoard.checkPendingMove());
     assertTrue(modelBoard.getSpace(5,0).isOccupied());
-    assertFalse(modelBoard.getSpace(3,2).isOccupied());
-    assertTrue(modelBoard.getSpace(4, 1).isOccupied());
+    assertTrue(modelBoard.getSpace(3,2).isOccupied());
+    assertFalse(modelBoard.getSpace(4, 1).isOccupied());
   }
 
   @Test
@@ -135,7 +134,7 @@ class ModelBoardTest {
 
     modelBoard.backupMove();
 
-    assertFalse(modelBoard.checkMadeMove());
-    assertTrue(modelBoard.getSpace(4,1).isOccupied());
+    assertFalse(modelBoard.checkPendingMove());
+    assertFalse(modelBoard.getSpace(4,1).isOccupied());
   }
 }
