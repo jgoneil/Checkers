@@ -49,7 +49,7 @@ public class PostBackupMove implements Route {
 
     GameLobby gameLobby = session.attribute(GetGameRoute.GAMELOBBY);
 
-    if (gameLobby.checkMadeMove()) {
+    if (gameLobby.checkPendingMove()) {
       gameLobby.backupMove();
       Message message = new Message(Message.Type.info, SUCCESS_BACKUP_MOVE);
       return gson.toJson(message);

@@ -141,6 +141,7 @@ public class GetGameRoute implements Route {
       if (this.gameLobby != httpSession.attribute(GAMELOBBY)) {
         this.gameLobby = httpSession.attribute(GAMELOBBY);
       }
+      gameLobby.setPendingMove(false);
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", gameLobby.getRedPlayer());

@@ -24,7 +24,6 @@ class CheckMoveTest {
   private Position position63;
   private Position position23;
   private Position position50;
-  private Position position41;
   private Position position32;
 
   // White square
@@ -48,7 +47,6 @@ class CheckMoveTest {
     position23 = new Position(2, 3);
     position44 = new Position(4, 4);
     position50 = new Position(5, 0);
-    position41 = new Position(4, 1);
     position32 = new Position(3, 2);
   }
 
