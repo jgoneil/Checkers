@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.Player;
+import com.webcheckers.appl.Space;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -46,6 +47,8 @@ class CheckMoveTest {
     position63 = new Position(6, 3);
     position23 = new Position(2, 3);
     position44 = new Position(4, 4);
+
+
   }
 
   @AfterEach
@@ -57,8 +60,26 @@ class CheckMoveTest {
 
   @Test
   void validateMoveTest_ValidMove() {
+    //Single Valid Move
     assertTrue(checkMove.validateMove(position54, position43, redPlayerMock).containsKey(true));
     assertTrue(checkMove.validateMove(position54, position43, whitePlayerMock).containsKey(true));
+  }
+
+  @Test
+  void validateKingMoveTest_Valid(){
+    //King pieces for move
+    Space kingSpace1 = modelBoard.getSpace(position34.getRow(), position34.getCell());
+    Space kingSpace2 = modelBoard.getSpace(position43.getRow(), position43.getCell());
+    Space kingSpace3 = modelBoard.getSpace(position54.getRow(), position54.getCell());
+    Space kingSpace4 = modelBoard.getSpace(position63.getRow(), position63.getCell());
+    kingSpace1.getPiece().King();
+    kingSpace2.getPiece().King();
+    kingSpace3.getPiece().King();
+    kingSpace4.getPiece().King();
+
+    //King Valid Backward Move
+    assertTrue(checkMove.validateMove(position34, position43, redPlayerMock).containsKey(true));
+    assertTrue(checkMove.validateMove(position54, position63, whitePlayerMock).containsKey(true));
   }
 
   @Test
@@ -69,7 +90,7 @@ class CheckMoveTest {
     assertTrue(checkMove.validateMove(position54, position47, redPlayerMock).containsKey(false));
     assertTrue(checkMove.validateMove(position54, position47, whitePlayerMock).containsKey(false));
 
-    // move backward
+    // Single attempt to move backward
     assertTrue(checkMove.validateMove(position34, position43, redPlayerMock).containsKey(false));
     assertTrue(checkMove.validateMove(position54, position63, whitePlayerMock).containsKey(false));
 
