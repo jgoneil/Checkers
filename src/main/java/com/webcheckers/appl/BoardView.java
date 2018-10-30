@@ -97,4 +97,9 @@ public class BoardView implements Iterable {
   public Iterator iterator() {
     return this.board.iterator();
   }
+
+  public void eatPiece(int xCoordinate, int cellIdx) {
+    board.get(xCoordinate)
+          .removePieceFromSpace(cellIdx);
+  }
 }

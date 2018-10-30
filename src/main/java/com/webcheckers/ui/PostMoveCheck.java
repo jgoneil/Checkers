@@ -78,11 +78,11 @@ public class PostMoveCheck implements Route {
     Move move = gson.fromJson(customJson, Move.class);
 
 
-    if (!board.checkMadeMove()) {
+    if (!board.checkPendingMove()) {
       Map<Boolean, String> resultFromCheck = this.checkMove
-          .validateMove(move.getStart(), move.getEnd(), player);
+              .validateMove(move.getStart(), move.getEnd(), player);
       if (resultFromCheck.containsKey(true)) {
-        board.madeMove(move);
+        board.pendingMove(move);
         Message message = new Message(Message.Type.info, resultFromCheck.get(true));
         return gson.toJson(message);
       } else {
