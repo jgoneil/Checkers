@@ -275,7 +275,7 @@ public class ModelBoard {
   /**
    * Removes a piece from all 3 boards after a jump occurs
    *
-   * @param piece the piece being removed
+   * @param piece The piece that is being jumped/ate
    */
   public void eatPiece(Piece piece){
     if (piece.getColor().equals(Color.RED)){
