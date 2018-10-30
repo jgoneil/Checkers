@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 import com.webcheckers.appl.BoardView;
+import com.webcheckers.appl.Piece;
 import com.webcheckers.appl.Player;
 import com.webcheckers.appl.Space;
 import org.junit.jupiter.api.AfterEach;
@@ -25,6 +26,9 @@ class CheckMoveTest {
   private Position position47;
   private Position position63;
   private Position position23;
+
+  private Position position32;
+  private Position position45;
 
   // White square
   private Position position44;
@@ -48,6 +52,9 @@ class CheckMoveTest {
     position23 = new Position(2, 3);
     position44 = new Position(4, 4);
 
+    position32 = new Position(3,2);
+    position45 = new Position(4,5);
+
 
   }
 
@@ -68,18 +75,24 @@ class CheckMoveTest {
   @Test
   void validateKingMoveTest_Valid(){
     //King pieces for move
-    Space kingSpace1 = modelBoard.getSpace(position34.getRow(), position34.getCell());
-    Space kingSpace2 = modelBoard.getSpace(position43.getRow(), position43.getCell());
-    Space kingSpace3 = modelBoard.getSpace(position54.getRow(), position54.getCell());
-    Space kingSpace4 = modelBoard.getSpace(position63.getRow(), position63.getCell());
+    //Space kingSpace1 = modelBoard.getSpace(position34.getRow(), position34.getCell());
+    //Space kingSpace2 = modelBoard.getSpace(position43.getRow(), position43.getCell());
+    //Space kingSpace3 = modelBoard.getSpace(position54.getRow(), position54.getCell());
+    //Space kingSpace4 = modelBoard.getSpace(position63.getRow(), position63.getCell());
+    //kingSpace1.getPiece().King();
+    //kingSpace2.getPiece().King();
+    //kingSpace3.getPiece().King();
+    //kingSpace4.getPiece().King();
+    Space kingSpace1 = new Space(position32.getRow(), position32.getCell(), Space.Color.BLACK);
+    modelBoard.addPieceToSpace(new Piece("red", kingSpace1), kingSpace1);
     kingSpace1.getPiece().King();
-    kingSpace2.getPiece().King();
-    kingSpace3.getPiece().King();
-    kingSpace4.getPiece().King();
 
+    Space kingSpace2 = new Space(position45.getRow(), position45.getCell(), Space.Color.BLACK);
+    modelBoard.addPieceToSpace(new Piece("white", kingSpace2), kingSpace2);
+    kingSpace2.getPiece().King();
     //King Valid Backward Move
-    assertTrue(checkMove.validateMove(position34, position43, redPlayerMock).containsKey(true));
-    assertTrue(checkMove.validateMove(position54, position63, whitePlayerMock).containsKey(true));
+    assertTrue(checkMove.validateMove(position32, position43, redPlayerMock).containsKey(true));
+    assertTrue(checkMove.validateMove(position45, position34, whitePlayerMock).containsKey(true));
   }
 
   @Test
