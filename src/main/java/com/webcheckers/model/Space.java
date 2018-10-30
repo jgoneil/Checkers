@@ -28,7 +28,8 @@ public class Space {
   /**
    * Constructor for the space on the game board
    *
-   * @param cellIdx the idex of the space on the board (y-coordinate of the space)
+   * @param xCoordinate the row of the space on the board (the y-coordinate of the space)
+   * @param cellIdx the column of the space on the board (x-coordinate of the space)
    * @param color the color the space is
    */
   public Space(int xCoordinate, int cellIdx, Color color) {
@@ -49,6 +50,7 @@ public class Space {
 
   /**
    * Sets occupied value to true for space with a piece
+   *
    * @param piece the piece now occupying the space
    */
   public void occupy(Piece piece) {
