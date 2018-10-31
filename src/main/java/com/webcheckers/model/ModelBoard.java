@@ -14,10 +14,6 @@ public class ModelBoard {
 
   //The 2-D array holding the spaces on the board
   private Space[][] board;
-  //The red player for the game
-  private Player redPlayer;
-  //The white player for the game
-  private Player whitePlayer;
   //If a move has recently been made
   private boolean madeMove;
   //The move made
@@ -31,9 +27,9 @@ public class ModelBoard {
   //Checks if a Piece is being Kinged in a given move
   private boolean isKinging;
   //Holds the information about the redPlayerBoardView
-  private PlayerBoardView redPlayerBoardView;
+  private final PlayerBoardView redPlayerBoardView;
   //Holds the information about the whitePlayerBoardView
-  private PlayerBoardView whitePlayerBoardView;
+  private final PlayerBoardView whitePlayerBoardView;
   //If a player has found a valid move to make
   private boolean pendingMove;
   //Checks if a jump action is being made
@@ -51,8 +47,6 @@ public class ModelBoard {
     this.redPlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.RED);
     this.whitePlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.WHITE);
     this.board = new Space[length][length];
-    this.redPlayer = redPlayer;
-    this.whitePlayer = whitePlayer;
     this.redTurn = true;
     this.isKinging = true;
     this.pendingMove = false;

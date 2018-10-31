@@ -10,9 +10,9 @@ import java.util.Map;
 public class GameLobby {
 
   //The red player connected to the game
-  private Player redPlayer;
+  private final Player redPlayer;
   //The white player connected to the game
-  private Player whitePlayer;
+  private final Player whitePlayer;
   //The model board being created for the game logic
   private ModelBoard modelBoard;
   //The check Move class to check if a move is valid or not

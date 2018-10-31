@@ -10,13 +10,11 @@ import com.webcheckers.model.Player;
 public class PlayerLobby {
 
   //The function for checking if user input for a username is valid
-  private CheckSignin checkSignin;
+  private final CheckSignin checkSignin;
   //The list of players currently in the game
   private List<Player> users;
   //The list of usernames for the players signed into the game
   private List<String> usernames;
-  //Map to get the gameLobby a player is connected to
-  private Map<Player, GameLobby> connectedPlayers;
 
   /**
    * Constructor for the class that establishes sign in checks and the list of currently signed in
@@ -26,7 +24,6 @@ public class PlayerLobby {
     this.checkSignin = new CheckSignin();
     this.users = new ArrayList<>();
     this.usernames = new ArrayList<>();
-    this.connectedPlayers = new HashMap<>();
   }
 
   /**
