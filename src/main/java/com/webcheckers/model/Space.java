@@ -1,4 +1,6 @@
-package com.webcheckers.appl;
+package com.webcheckers.model;
+
+import com.webcheckers.model.Piece;
 
 /**
  * Class that establishes spaces on the game board
@@ -26,7 +28,8 @@ public class Space {
   /**
    * Constructor for the space on the game board
    *
-   * @param cellIdx the idex of the space on the board (y-coordinate of the space)
+   * @param xCoordinate the row of the space on the board (the y-coordinate of the space)
+   * @param cellIdx the column of the space on the board (x-coordinate of the space)
    * @param color the color the space is
    */
   public Space(int xCoordinate, int cellIdx, Color color) {
@@ -47,6 +50,7 @@ public class Space {
 
   /**
    * Sets occupied value to true for space with a piece
+   *
    * @param piece the piece now occupying the space
    */
   public void occupy(Piece piece) {
@@ -60,6 +64,31 @@ public class Space {
   public void unoccupy() {
     this.occupied = false;
     this.piece = null;
+  }
+
+
+  /**
+  * Checks to see if the piece is white
+  *
+  * @return true/false if a piece on the space is white;
+  */ 
+  public boolean pieceIsRed() {
+    if (this.piece != null) {
+      return piece.isRed();
+    } 
+    return false;
+  }
+
+  /**
+   * Checks to see if the piece is white
+   *
+   * @return true/false if a piece on the space is white;
+   */ 
+  public boolean pieceIsWhite() {
+    if (this.piece != null) { 
+      return piece.isWhite();
+    }
+    return false;
   }
 
   /**

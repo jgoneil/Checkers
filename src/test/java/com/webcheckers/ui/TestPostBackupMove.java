@@ -1,10 +1,9 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
-import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Player;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.Player;
 import com.webcheckers.model.Message;
-import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Position;
 import org.junit.jupiter.api.Test;
@@ -25,7 +24,7 @@ public class TestPostBackupMove {
   //Friendly
   Player redPlayer;
   Player whitePlayer;
-  ModelBoard modelBoard;
+  GameLobby gameLobby;
   Gson gson;
 
   //Mock Objects
@@ -42,10 +41,7 @@ public class TestPostBackupMove {
     templateEngine = mock(TemplateEngine.class);
     redPlayer = new Player("red");
     whitePlayer = new Player("white");
-    BoardView rBoard = new BoardView(redPlayer, whitePlayer,8, "Red");
-    BoardView wBoard = new BoardView(redPlayer, whitePlayer, 8, "White");
-    redPlayer.setColor("Red", rBoard);
-    whitePlayer.setColor("White", wBoard);
+    gameLobby = new GameLobby(redPlayer, whitePlayer);
     when(request.session()).thenReturn(session);
 
     gson = new Gson();
@@ -54,10 +50,9 @@ public class TestPostBackupMove {
 
   @Test
   void moveMade() {
-    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
-    modelBoard.madeMove(new Move(new Position(5, 0), new Position(6, 1)));
-    modelBoard.setPendingMove(true);
-    when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(modelBoard);
+    gameLobby.madeMove(new Move(new Position(5, 0), new Position(6, 1)));
+    gameLobby.setPendingMove(true);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -72,8 +67,7 @@ public class TestPostBackupMove {
 
   @Test
   void moveNotMade() {
-    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
-    when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(modelBoard);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 

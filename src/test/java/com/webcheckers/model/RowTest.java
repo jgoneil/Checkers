@@ -1,7 +1,8 @@
-package com.webcheckers.appl;
+package com.webcheckers.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.webcheckers.model.Row;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;

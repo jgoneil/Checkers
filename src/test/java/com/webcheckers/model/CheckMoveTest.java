@@ -3,10 +3,7 @@ package com.webcheckers.model;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Piece;
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Space;
+import com.webcheckers.appl.GameLobby;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -27,7 +24,6 @@ class CheckMoveTest {
   private Position position63;
   private Position position23;
   private Position position50;
-  private Position position41;
   private Position position32;
   private Position position45;
 
@@ -38,11 +34,10 @@ class CheckMoveTest {
   void setUp() {
     this.redPlayerMock = new Player("Tim");
     this.whitePlayerMock = new Player("Joe");
+    this.redPlayerMock.setColor(GameLobby.RED);
+    this.whitePlayerMock.setColor(GameLobby.WHITE);
 
     modelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8);
-    BoardView boardView = mock(BoardView.class);
-    redPlayerMock.setColor("Red", boardView);
-    whitePlayerMock.setColor("White", boardView);
     checkMove = new CheckMove(modelBoard);
 
     position54 = new Position(5, 4);
@@ -58,7 +53,11 @@ class CheckMoveTest {
 
 
     position50 = new Position(5, 0);
+<<<<<<< HEAD
     position41 = new Position(4, 1);
+=======
+    position32 = new Position(3, 2);
+>>>>>>> master
   }
 
   @AfterEach
@@ -126,8 +125,6 @@ class CheckMoveTest {
 
   @Test
   void validateJump() {
-    modelBoard.addPieceToSpace(new Piece("red", new Space(5, 0, Space.Color.BLACK)),
-            new Space(5, 0, Space.Color.BLACK));
     modelBoard.addPieceToSpace(new Piece("white", new Space(4, 1, Space.Color.BLACK)),
             new Space(4, 1, Space.Color.BLACK));
     assertTrue(checkMove.validateMove(position50, position32, redPlayerMock).containsKey(true));

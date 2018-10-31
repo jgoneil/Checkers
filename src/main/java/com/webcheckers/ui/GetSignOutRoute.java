@@ -1,12 +1,12 @@
 package com.webcheckers.ui;
 
 
-import com.webcheckers.appl.BoardView;
-import java.util.HashMap;
-import java.util.Map;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.PlayerBoardView;
+
 import java.util.Objects;
 
-import spark.ModelAndView;
+import com.webcheckers.appl.PlayerLobby;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -15,8 +15,7 @@ import spark.Session;
 
 import static spark.Spark.halt;
 
-import com.webcheckers.appl.Users;
-import com.webcheckers.appl.Player;
+import com.webcheckers.model.Player;
 
 /**
  * This is {@code GETE /signout } route handler. Handles user signout. Logs user out of the game
@@ -25,25 +24,25 @@ import com.webcheckers.appl.Player;
 public class GetSignOutRoute implements Route {
 
   private final TemplateEngine templateEngine;
-  private final Users users;
+  private final PlayerLobby playerLobby;
 
   /**
    * Constructor for class. Ensures both parameters are included in the declaration for use
    *
    * @param templateEngine the formatting definition for spark to java messaging
-   * @param users the class holding all of the currently connected users
+   * @param playerLobby the class holding all of the currently connected playerLobby
    */
-  public GetSignOutRoute(final TemplateEngine templateEngine, final Users users) {
+  public GetSignOutRoute(final TemplateEngine templateEngine, final PlayerLobby playerLobby) {
 
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
-    Objects.requireNonNull(users, "users must not be null");
+    Objects.requireNonNull(playerLobby, "playerLobby must not be null");
 
     this.templateEngine = templateEngine;
-    this.users = users;
+    this.playerLobby = playerLobby;
   }
 
   /**
-   * Main connection for users attempting to sign out
+   * Main connection for playerLobby attempting to sign out
    *
    * Remove player information from game and redirects to home
    *
@@ -56,23 +55,22 @@ public class GetSignOutRoute implements Route {
     final Session httpSession = request.session();
 
     if (httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY) != null) {
-      Player player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+      String playerUsername = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
+      Player player = playerLobby.getSpecificPlayer(playerUsername);
 
       if (player.inGame()) {
-        Player player2;
-        BoardView boardView = httpSession.attribute(GetGameRoute.BOARD);
-        if (player.getColor().equals("Red")) {
-          player2 = boardView.getWhitePlayer();
-        } else {
-          player2 = boardView.getRedPlayer();
-        }
+        GameLobby gameLobby = httpSession.attribute(GetGameRoute.GAMELOBBY);
+        if(gameLobby != null) {
+          Player player2 = gameLobby.getOpponent(player);
 
-        player2.gameEnd();
-        httpSession.removeAttribute(GetGameRoute.BOARD);
-        httpSession.removeAttribute(GetGameRoute.MODEL_BOARD);
+          player2.gameEnd();
+          httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
+        } else {
+          httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
+        }
       }
 
-      users.removeUser(player.getName());
+      playerLobby.removeUser(player.getName());
       httpSession.removeAttribute(GetHomeRoute.PLAYERSERVICES_KEY);
       response.redirect(WebServer.HOME_URL);
       return null;

@@ -1,7 +1,7 @@
 package com.webcheckers.model;
 
 import java.util.*;
-import com.webcheckers.appl.*;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;

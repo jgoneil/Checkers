@@ -1,9 +1,7 @@
 package com.webcheckers.model;
 
-import com.webcheckers.appl.Piece;
-import com.webcheckers.appl.Piece.Color;
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.Space;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.Piece.Color;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -83,7 +81,7 @@ public class CheckMove {
    */
   private boolean canJump(Player player) {
     boolean canJump = false;
-    if (player.getColor().equals("Red")) {
+    if (player.isRed()) {
       for (Piece redPiece : board.getRedPieces()) {
         if (redPiece.getSpace().getxCoordinate() - 2 >= 0
             && redPiece.getSpace().getCellIdx() - 2 >= 0) {
@@ -142,11 +140,11 @@ public class CheckMove {
     if (isMovingTwo(start, end)) {
       if (!end.isOccupied()) {
         if (middle.isOccupied()) {
-          if (player.getColor().equals("Red") && middle.getPiece().getColor().equals(Color.WHITE)) {
+          if (player.isRed() && middle.pieceIsWhite()) {
             return true;
           }
 
-          if (player.getColor().equals("White") && middle.getPiece().getColor().equals(Color.RED)) {
+          if (player.isWhite() && middle.pieceIsRed()) {
             return true;
           }
         }
@@ -166,7 +164,7 @@ public class CheckMove {
     Map<Boolean, String> response = new HashMap<>();
     Space current;
     Space goal;
-    if (player.getColor().equals("Red")) {
+    if (player.isRed()) {
       current = board.getSpace(start.getRow(), start.getCell());
       goal = board.getSpace(target.getRow(), target.getCell());
     } else {

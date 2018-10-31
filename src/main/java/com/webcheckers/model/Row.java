@@ -1,4 +1,6 @@
-package com.webcheckers.appl;
+package com.webcheckers.model;
+
+import com.webcheckers.appl.GameLobby;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -34,7 +36,7 @@ public class Row implements Iterable {
    */
   private void fillRow(int length, String color) {
     for (int i = 0; i < length; i++) {
-      if (color.equals("red")) {
+      if (color.equals(GameLobby.RED)) {
         //Checking to see if a space should be white or not
         if ((this.index + i) % 2 == 0) {
           row.add(new Space(this.index, i, Space.Color.WHITE));
@@ -43,9 +45,9 @@ public class Row implements Iterable {
           row.add(space);
           //Checking to see if a space should be occupied or not
           if (this.index >= 5 && this.index <= 7) {
-            space.occupy(new Piece("red", space));
+            space.occupy(new Piece(GameLobby.RED, space));
           } else if (this.index >= 0 && this.index <= 2) {
-            space.occupy(new Piece("white", space));
+            space.occupy(new Piece(GameLobby.WHITE, space));
           }
         }
       } else {
@@ -57,9 +59,9 @@ public class Row implements Iterable {
           row.add(space);
           //Checks to see if a space should be occupied or not
           if (this.index >= 5 && this.index <= 7) {
-            space.occupy(new Piece("white", space));
+            space.occupy(new Piece(GameLobby.WHITE, space));
           } else if (this.index >= 0 && this.index <= 2) {
-            space.occupy(new Piece("red", space));
+            space.occupy(new Piece(GameLobby.RED, space));
           }
         }
       }
