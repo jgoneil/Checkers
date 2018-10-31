@@ -84,11 +84,13 @@ class CheckMoveTest {
     //kingSpace3.getPiece().King();
     //kingSpace4.getPiece().King();
     Space kingSpace1 = new Space(position32.getRow(), position32.getCell(), Space.Color.BLACK);
-    modelBoard.addPieceToSpace(new Piece("red", kingSpace1), kingSpace1);
+    //modelBoard.addPieceToSpace(new Piece("red", kingSpace1), kingSpace1);
+    kingSpace1.occupy(new Piece("red", kingSpace1));
     kingSpace1.getPiece().King();
 
     Space kingSpace2 = new Space(position45.getRow(), position45.getCell(), Space.Color.BLACK);
-    modelBoard.addPieceToSpace(new Piece("white", kingSpace2), kingSpace2);
+    //modelBoard.addPieceToSpace(new Piece("white", kingSpace2), kingSpace2);
+    kingSpace2.occupy(new Piece("white", kingSpace2));
     kingSpace2.getPiece().King();
     //King Valid Backward Move
     assertTrue(checkMove.validateMove(position32, position43, redPlayerMock).containsKey(true));
