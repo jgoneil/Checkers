@@ -173,27 +173,6 @@ public class CheckMove {
       current = board.getSpace(7 - start.getRow(), 7 - start.getCell());
       goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());
     }
-<<<<<<< HEAD
-    if (goal.getColor().equals(Space.Color.WHITE)) {
-      response.put(false, "Attempted to move a piece to a white space.");
-    } else if (goal.isOccupied()) {
-      response.put(false, "Attempted to move a piece to an already occupied space");
-    } else if (!isMovingOne(start, target)) {
-      response.put(false, "Attempted to move piece too far.");
-    } else if (!isMovingDiagonal(start, target)) {
-      response.put(false, "Pieces can only move diagonally.");
-    } else if (!isMovingForward(start, target) && current.getPiece().getType() == Type.KING) {
-      board.addPieceToSpace(current.getPiece(), goal);
-      current.unoccupy();
-      response.put(true, "This move is valid");
-    } else if (!isMovingForward(start, target) && current.getPiece().getType() == Type.SINGLE) {
-      response.put(false, "Piece can only move forward");
-    }
-    else {
-      board.addPieceToSpace(current.getPiece(), goal);
-      current.unoccupy();
-      response.put(true, "This move is valid.");
-=======
     if (canJump(player)) {
       if (pieceCanJump(current, goal, player)) {
         board.isJumping(true);
@@ -210,12 +189,13 @@ public class CheckMove {
         response.put(false, "Attempted to move piece too far.");
       } else if (!isMovingDiagonal(start, target)) {
         response.put(false, "Pieces can only move diagonally.");
-      } else if (!isMovingForward(start, target)) {
-        response.put(false, "Piece can only move forward");
+      } else if (!isMovingForward(start, target) && current.isPieceKing()) {
+        response.put(true, "This is a valid move for a King.");
+      } else if (!isMovingForward(start, target)){
+        response.put(false, "Single pieces can only move forward.");
       } else {
         response.put(true, "This move is valid.");
       }
->>>>>>> master
     }
     return response;
   }

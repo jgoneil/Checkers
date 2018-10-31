@@ -29,8 +29,6 @@ class CheckMoveTest {
   private Position position50;
   private Position position41;
   private Position position32;
-
-  private Position position32;
   private Position position45;
 
   // White square
@@ -54,17 +52,13 @@ class CheckMoveTest {
     position63 = new Position(6, 3);
     position23 = new Position(2, 3);
     position44 = new Position(4, 4);
-<<<<<<< HEAD
 
     position32 = new Position(3,2);
     position45 = new Position(4,5);
 
 
-=======
     position50 = new Position(5, 0);
     position41 = new Position(4, 1);
-    position32 = new Position(3, 2);
->>>>>>> master
   }
 
   @AfterEach
@@ -102,7 +96,7 @@ class CheckMoveTest {
     kingSpace2.occupy(new Piece("white", kingSpace2));
     kingSpace2.getPiece().King();
     //King Valid Backward Move
-    assertTrue(checkMove.validateMove(position32, position43, redPlayerMock).containsKey(true));
+    assertTrue(checkMove.validateMove(position43, position54, redPlayerMock).containsKey(true));
     assertTrue(checkMove.validateMove(position45, position34, whitePlayerMock).containsKey(true));
   }
 
@@ -115,7 +109,7 @@ class CheckMoveTest {
     assertTrue(checkMove.validateMove(position54, position47, whitePlayerMock).containsKey(false));
 
     // Single attempt to move backward
-    assertTrue(checkMove.validateMove(position34, position43, redPlayerMock).containsKey(false));
+    assertTrue(checkMove.validateMove(position43, position54, redPlayerMock).containsKey(false));
     assertTrue(checkMove.validateMove(position54, position63, whitePlayerMock).containsKey(false));
 
     // move to white

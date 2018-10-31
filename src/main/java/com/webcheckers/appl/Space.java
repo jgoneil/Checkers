@@ -106,4 +106,8 @@ public class Space {
   public boolean isValid() {
     return this.piece == null && this.color == Color.BLACK;
   }
+
+  public boolean isPieceKing(){
+    return this.piece.getType() == Piece.Type.KING;
+  }
 }
