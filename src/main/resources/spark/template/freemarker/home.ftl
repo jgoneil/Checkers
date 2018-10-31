@@ -26,18 +26,18 @@
       <p>Welcome to the world of online Checkers.</p>
 
       <#if signedin>
-        <p>Other users currently signed in: </p>
+        <p>Other playerLobby currently signed in: </p>
         <#if onlyOne>
           <p>You're the only one currently logged in</p>
         <#else>
-          <#list users as player>
+          <#list playerLobby as player>
             <p><a href="/game?${player}" name=otherPlayer>
               ${player}
             </a></p>
           </#list>
         </#if>
       <#else>
-        <p>Number of players in the game: ${users}</p>
+        <p>Number of players in the game: ${playerLobby}</p>
       </#if>
     </div>
     

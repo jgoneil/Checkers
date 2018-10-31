@@ -1,4 +1,6 @@
-package com.webcheckers.appl;
+package com.webcheckers.model;
+
+import com.webcheckers.appl.GameLobby;
 
 /**
  * Defines a piece for use on the board
@@ -34,7 +36,7 @@ public class Piece {
    */
   public Piece(String tempColor, Space s) {
     this.loc = s;
-    if (tempColor.equals("red")) {
+    if (tempColor.equals(GameLobby.RED)) {
       this.color = Color.RED;
     } else {
       this.color = Color.WHITE;
@@ -74,6 +76,24 @@ public class Piece {
    */
   public Color getColor() {
     return this.color;
+  }
+
+  /**
+   * Checks to see if the piece is red
+   *
+   * @return true/false to see if a piece is red or not
+   */ 
+  public boolean isRed() {
+    return this.color == Color.RED;
+  }
+
+  /**
+   * Checks to see if the piece is white
+   *
+   * @return true/false to see if a piece is white or not
+   */
+  public boolean isWhite() {
+    return this.color == Color.WHITE;
   }
 
   /**

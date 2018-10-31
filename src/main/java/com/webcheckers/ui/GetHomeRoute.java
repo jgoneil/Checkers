@@ -11,8 +11,8 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 import spark.TemplateEngine;
-import com.webcheckers.appl.Users;
-import com.webcheckers.appl.Player;
+import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Player;
 
 import static spark.Spark.halt;
 
@@ -24,7 +24,7 @@ import static spark.Spark.halt;
 public class GetHomeRoute implements Route {
 
   //Static final variables (Constants)
-  static final String USERS = "users";
+  static final String USERS = "playerLobby";
   static final String USER = "user";
   static final String SIGNEDIN = "signedin";
   static final String ONLY_ONE = "onlyOne";
@@ -35,8 +35,8 @@ public class GetHomeRoute implements Route {
 
   //The HTML template for rendering the freemarker pages
   private final TemplateEngine templateEngine;
-  //The users connected to the system
-  private final Users users;
+  //The playerLobby connected to the system
+  private final PlayerLobby playerLobby;
   //The player signed into the game
   private Player player;
 
@@ -44,17 +44,17 @@ public class GetHomeRoute implements Route {
    * Create the Spark Route (UI controller) for the {@code GET /} HTTP request.
    *
    * @param templateEngine the HTML template rendering engine
-   * @param users the users currently in the game
+   * @param playerLobby the playerLobby currently in the game
    */
-  public GetHomeRoute(final TemplateEngine templateEngine, Users users) {
+  public GetHomeRoute(final TemplateEngine templateEngine, PlayerLobby playerLobby) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
 
-    Objects.requireNonNull(users, "users must not be null");
+    Objects.requireNonNull(playerLobby, "playerLobby must not be null");
     //
     this.templateEngine = templateEngine;
 
-    this.users = users;
+    this.playerLobby = playerLobby;
     //
     LOG.config("GetHomeRoute is initialized.");
   }
@@ -71,7 +71,8 @@ public class GetHomeRoute implements Route {
     final Session httpSession = request.session();
     LOG.finer("GetHomeRoute is invoked.");
     //
-    this.player = httpSession.attribute(PLAYERSERVICES_KEY);
+    String player = httpSession.attribute(PLAYERSERVICES_KEY);
+    this.player = playerLobby.getSpecificPlayer(player);
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
 
@@ -81,12 +82,9 @@ public class GetHomeRoute implements Route {
     }
 
     if (player != null) {
-      if (player.getBoardView() == null) {
-        if (httpSession.attribute(GetGameRoute.BOARD) != null) {
-          httpSession.removeAttribute(GetGameRoute.BOARD);
-        }
-        if (httpSession.attribute(GetGameRoute.MODEL_BOARD) != null) {
-          httpSession.removeAttribute(GetGameRoute.MODEL_BOARD);
+      if (!this.player.inGame()) {
+        if (httpSession.attribute(GetGameRoute.GAMELOBBY) != null) {
+          httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
         }
         if (httpSession.attribute(PostResignGame.RESIGNED_PLAYER) != null) {
           httpSession.removeAttribute(PostResignGame.RESIGNED_PLAYER);
@@ -96,22 +94,22 @@ public class GetHomeRoute implements Route {
 
     if (this.player == null) {
       vm.put(SIGNEDIN, false);
-      vm.put(USERS, users.getAllPlayers().size());
+      vm.put(USERS, playerLobby.getNumberOfPlayers());
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
-    } else if (users.getAllPlayers().size() == 1) {
+    } else if (playerLobby.getNumberOfPlayers() == 1) {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, true);
-      vm.put(USER, player.getName());
+      vm.put(USER, this.player.getName());
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
-    } else if (player.getBoardView() != null) {
+    } else if (this.player.inGame()) {
       response.redirect(WebServer.GAME_URL);
       halt();
       return null;
     } else {
       vm.put(SIGNEDIN, true);
       vm.put(ONLY_ONE, false);
-      vm.put(USER, player.getName());
-      vm.put(USERS, users.getAllPlayersExceptUser(player.getName()));
+      vm.put(USER, this.player.getName());
+      vm.put(USERS, playerLobby.getAllPlayersExceptUser(this.player.getName()));
       return templateEngine.render(new ModelAndView(vm, "home.ftl"));
     }
   }

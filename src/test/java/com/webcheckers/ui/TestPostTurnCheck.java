@@ -1,10 +1,9 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
-import com.webcheckers.appl.BoardView;
-import com.webcheckers.appl.Player;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.Player;
 import com.webcheckers.model.Message;
-import com.webcheckers.model.ModelBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
@@ -25,6 +24,7 @@ public class TestPostTurnCheck {
   private Player goodRedPlayer;
   private Player goodWhitePlayer;
   private Player badPlayer;
+  private GameLobby gameLobby;
   //Mock objects
   private Request request;
   private Response response;
@@ -43,12 +43,9 @@ public class TestPostTurnCheck {
     goodRedPlayer = new Player("Red");
     goodWhitePlayer = new Player("White");
     badPlayer = new Player("Bad");
-    badPlayer.addModelBoard(null);
-    BoardView bvRed = new BoardView(goodRedPlayer, goodWhitePlayer, 8, "Red");
-    BoardView bvWhite = new BoardView(goodRedPlayer, goodWhitePlayer, 8, "White");
-    goodRedPlayer.setColor("Red", bvRed);
-    goodWhitePlayer.setColor("White", bvWhite);
+    gameLobby = new GameLobby(goodRedPlayer, goodWhitePlayer);
     when(request.session()).thenReturn(session);
+    when(session.attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     check = new PostTurnCheck(gson);
   }
 
@@ -57,7 +54,7 @@ public class TestPostTurnCheck {
    */
   @Test
   void nullPlayerTest(){
-    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(badPlayer);
+    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(badPlayer.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
@@ -74,9 +71,7 @@ public class TestPostTurnCheck {
   */
   @Test
   void redsTurnTest(){
-    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodRedPlayer);
-    ModelBoard model = new ModelBoard(goodRedPlayer, goodWhitePlayer, 8);
-    goodRedPlayer.addModelBoard(model);
+    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodRedPlayer.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
@@ -93,9 +88,7 @@ public class TestPostTurnCheck {
    */
   @Test
   void notWhitesTurnTest(){
-    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodWhitePlayer);
-    ModelBoard model = new ModelBoard(goodRedPlayer, goodWhitePlayer, 8);
-    goodWhitePlayer.addModelBoard(model);
+    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodWhitePlayer.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
@@ -112,10 +105,8 @@ public class TestPostTurnCheck {
    */
   @Test
   void notRedsTurnTest(){
-    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodRedPlayer);
-    ModelBoard model = new ModelBoard(goodRedPlayer, goodWhitePlayer, 8);
-    model.setMove(false);
-    goodRedPlayer.addModelBoard(model);
+    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodRedPlayer.getName());
+    gameLobby.setMove(true);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
@@ -132,10 +123,8 @@ public class TestPostTurnCheck {
    */
   @Test
   void whitesTurnTest(){
-    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodWhitePlayer);
-    ModelBoard model = new ModelBoard(goodRedPlayer, goodWhitePlayer, 8);
-    model.setMove(false);
-    goodWhitePlayer.addModelBoard(model);
+    when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodWhitePlayer.getName());
+    gameLobby.setMove(true);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);

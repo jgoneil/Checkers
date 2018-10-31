@@ -1,9 +1,9 @@
-package com.webcheckers.appl;
+package com.webcheckers.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.webcheckers.appl.Piece.Type;
-import com.webcheckers.appl.Space.Color;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.Piece.Type;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -20,9 +20,7 @@ class PieceTest {
   void setUp() {
     originalSpace = new Space(0, 0, Space.Color.WHITE);
     finalSapce = new Space(1, 1, Space.Color.WHITE);
-    piece1 = new Piece("red", originalSpace);
-
-
+    piece1 = new Piece(GameLobby.RED, originalSpace);
   }
 
   @AfterEach
@@ -50,5 +48,11 @@ class PieceTest {
   @Test
   void getColorTest() {
     assertEquals(piece1.getColor(), Piece.Color.RED);
+  }
+
+  @Test 
+  void checkColor() {
+    assertTrue(piece1.isRed());
+    assertFalse(piece1.isWhite());
   }
 }

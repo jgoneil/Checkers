@@ -1,6 +1,4 @@
-package com.webcheckers.appl;
-
-import com.webcheckers.model.Move;
+package com.webcheckers.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,7 +7,7 @@ import java.util.List;
 /**
  * Class that creates and handles the board for gameplay
  */
-public class BoardView implements Iterable {
+public class PlayerBoardView implements Iterable {
 
   //Players for the current game view
   private Player redPlayer;
@@ -26,7 +24,7 @@ public class BoardView implements Iterable {
    * square)
    * @param color the color of the player
    */
-  public BoardView(Player redPlayer, Player whitePlayer, int length, String color) {
+  public PlayerBoardView(Player redPlayer, Player whitePlayer, int length, String color) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();
@@ -116,5 +114,15 @@ public class BoardView implements Iterable {
   @Override
   public Iterator iterator() {
     return this.board.iterator();
+  }
+
+  /**
+   * Removes a piece from the playerBoard
+   *
+   * @param row the row the piece is in
+   * @param column the column the piece is in
+   */
+  public void eatPiece(int row, int column) {
+    board.get(row).removePieceFromSpace(column);
   }
 }
