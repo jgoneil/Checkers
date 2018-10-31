@@ -4,6 +4,7 @@ import static org.mockito.Mockito.mock;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Piece;
 import com.webcheckers.model.Space;
 import org.junit.jupiter.api.AfterEach;
@@ -38,6 +39,16 @@ class SpaceTest {
 
     assertEquals(space1.getColor(), Space.Color.BLACK);
     assertEquals(space2.getColor(), Space.Color.WHITE);
+  }
+
+  @Test 
+  void pieceColorTest() {
+    Piece piece = new Piece(GameLobby.RED, space1);
+    space1.occupy(piece);
+    assertTrue(space1.pieceIsRed());
+    assertFalse(space1.pieceIsWhite());
+    assertFalse(space2.pieceIsRed());
+    assertFalse(space2.pieceIsWhite());
   }
 
   @Test

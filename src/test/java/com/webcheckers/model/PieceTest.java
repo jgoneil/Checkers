@@ -21,8 +21,6 @@ class PieceTest {
     originalSpace = new Space(0, 0, Space.Color.WHITE);
     finalSapce = new Space(1, 1, Space.Color.WHITE);
     piece1 = new Piece(GameLobby.RED, originalSpace);
-
-
   }
 
   @AfterEach
@@ -50,5 +48,11 @@ class PieceTest {
   @Test
   void getColorTest() {
     assertEquals(piece1.getColor(), Piece.Color.RED);
+  }
+
+  @Test 
+  void checkColor() {
+    assertTrue(piece1.isRed());
+    assertFalse(piece1.isWhite());
   }
 }
