@@ -47,16 +47,27 @@ class ModelBoardTest {
 
   @Test
   void backupMoveTest(){
-    Piece piece = new Piece("red", new Space(5, 0, Color.BLACK));
     Move move = (new Move(new Position(5, 0), new Position(4, 1)));
-    modelBoard.madeMove(move);
-    modelBoard.addPieceToSpace(piece, new Space(4, 1 , Color.BLACK));
+    modelBoard.pendingMove(move);
+    modelBoard.setPendingMove(true);
 
     modelBoard.backupMove();
 
-    assertFalse(modelBoard.checkMadeMove());
+    assertFalse(modelBoard.checkPendingMove());
     assertTrue(modelBoard.getSpace(5,0).isOccupied());
     assertFalse(modelBoard.getSpace(4,1).isOccupied());
+  }
+
+  @Test
+  void redPiecesList(){
+    assertNotNull(modelBoard.getRedPieces());
+    assertEquals(12, modelBoard.getRedPieces().size());
+  }
+
+  @Test
+  void whitePiecesList() {
+    assertNotNull(modelBoard.getWhitePieces());
+    assertEquals(12, modelBoard.getWhitePieces().size());
   }
 
   @Test
@@ -72,5 +83,58 @@ class ModelBoardTest {
 
     piece.King();
     assertFalse(modelBoard.isBecomingKing(piece, move.getEnd().getRow()));
+  }
+
+  @Test
+  void eatRedPiece() {
+    Space space = new Space(6, 1, Color.BLACK);
+    Piece piece = new Piece("red", space);
+    modelBoard.eatPiece(piece);
+
+    assertFalse(modelBoard.getRedPieces().contains(piece));
+  }
+
+  @Test
+  void eatWhitePiece() {
+    Space space = new Space(6, 1, Color.BLACK);
+    Piece piece = new Piece("white", space);
+    modelBoard.eatPiece(piece);
+
+    assertFalse(modelBoard.getRedPieces().contains(piece));
+  }
+
+  @Test
+  void redJumpBackUp() {
+    Piece redPiece = new Piece("red", new Space(5, 0, Color.BLACK));
+    Piece whitePiece = new Piece("white", new Space(4, 1, Color.BLACK));
+    Move move = (new Move(new Position(5, 0), new Position(3, 2)));
+    modelBoard.getWhitePieces().add(whitePiece);
+    modelBoard.madeMove(move);
+    modelBoard.eatPiece(whitePiece);
+    modelBoard.addPieceToSpace(redPiece, new Space(3, 2, Color.BLACK));
+
+    modelBoard.backupMove();
+
+    assertFalse(modelBoard.checkPendingMove());
+    assertTrue(modelBoard.getSpace(5,0).isOccupied());
+    assertTrue(modelBoard.getSpace(3,2).isOccupied());
+    assertFalse(modelBoard.getSpace(4, 1).isOccupied());
+  }
+
+  @Test
+  void whiteJumpBackUp() {
+    modelBoard.setMove(false);
+    Piece redPiece = new Piece("red", new Space(4, 1, Color.BLACK));
+    Piece whitePiece = new Piece("white", new Space(3, 2, Color.BLACK));
+    Move move = (new Move(new Position(3, 2), new Position(5, 0)));
+    modelBoard.getRedPieces().add(redPiece);
+    modelBoard.madeMove(move);
+    modelBoard.eatPiece(redPiece);
+    modelBoard.addPieceToSpace(whitePiece, new Space(5, 0, Color.BLACK));
+
+    modelBoard.backupMove();
+
+    assertFalse(modelBoard.checkPendingMove());
+    assertFalse(modelBoard.getSpace(4,1).isOccupied());
   }
 }

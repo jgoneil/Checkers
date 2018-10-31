@@ -48,7 +48,7 @@ public class PostSubmitTurn implements Route {
 
     ModelBoard modelBoard = session.attribute(GetGameRoute.MODEL_BOARD);
 
-    if (modelBoard.checkMadeMove()) {
+    if (modelBoard.checkPendingMove()) {
       modelBoard.submitMove();
       Message message = new Message(Message.Type.info, SUCCESS_SUBMIT_TURN);
       return gson.toJson(message);

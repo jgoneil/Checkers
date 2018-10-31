@@ -155,6 +155,9 @@ public class GetGameRoute implements Route {
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", this.boardView.getRedPlayer());
       vm.put("whitePlayer", this.boardView.getWhitePlayer());
+      if(modelBoard.checkPendingMove()) {
+        modelBoard.setPendingMove(false);
+      }
       if (this.modelBoard.checkRedTurn()) {
         vm.put("activeColor", "RED");
       } else {

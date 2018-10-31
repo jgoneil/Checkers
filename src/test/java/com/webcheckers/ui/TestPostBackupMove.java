@@ -7,28 +7,28 @@ import com.webcheckers.model.Message;
 import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Position;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import spark.*;
+import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
-/**
- * Test for submitting a turn
- */
-public class TestPostSubmitTurn {
+import spark.*;
 
-  PostSubmitTurn CuT;
+public class TestPostBackupMove {
 
-  //friendly objects
-  private Gson gson = new Gson();
-  private Player redPlayer;
-  private Player whitePlayer;
+  //Instance of PostBackupMove
+  PostBackupMove Cut;
 
-  //attributes holding mock objects (non-friendly)
+  //Friendly
+  Player redPlayer;
+  Player whitePlayer;
+  ModelBoard modelBoard;
+  Gson gson;
+
+  //Mock Objects
   private Request request;
   private Response response;
   private Session session;
@@ -39,20 +39,21 @@ public class TestPostSubmitTurn {
     request = mock(Request.class);
     response = mock(Response.class);
     session = mock(Session.class);
-    redPlayer = new Player("a");
-    whitePlayer = new Player("b");
-    BoardView boardViewRed = new BoardView(redPlayer, whitePlayer, 8, "Red");
-    BoardView boardViewWhite = new BoardView(redPlayer, whitePlayer, 8, "White");
-    redPlayer.setColor("Red", boardViewRed);
-    whitePlayer.setColor("White", boardViewWhite);
-    when(request.session()).thenReturn(session);
     templateEngine = mock(TemplateEngine.class);
+    redPlayer = new Player("red");
+    whitePlayer = new Player("white");
+    BoardView rBoard = new BoardView(redPlayer, whitePlayer,8, "Red");
+    BoardView wBoard = new BoardView(redPlayer, whitePlayer, 8, "White");
+    redPlayer.setColor("Red", rBoard);
+    whitePlayer.setColor("White", wBoard);
+    when(request.session()).thenReturn(session);
 
-    CuT = new PostSubmitTurn(gson);
+    gson = new Gson();
+    Cut = new PostBackupMove(gson);
   }
 
   @Test
-  void successfulSubmit() {
+  void moveMade() {
     ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
     modelBoard.madeMove(new Move(new Position(5, 0), new Position(6, 1)));
     modelBoard.setPendingMove(true);
@@ -60,28 +61,28 @@ public class TestPostSubmitTurn {
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
-    Object info = CuT.handle(request, response);
-    if (info instanceof String) {
-      String temporaryInfo = (String) info;
-      Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
+    Object result = Cut.handle(request, response);
+    if (result instanceof String) {
+      String temp = (String) result;
+      Message respondedMessage = gson.fromJson(temp, Message.class);
       assertEquals(Message.Type.info, respondedMessage.getType());
-      assertEquals(PostSubmitTurn.SUCCESS_SUBMIT_TURN, respondedMessage.getText());
+      assertEquals(PostBackupMove.SUCCESS_BACKUP_MOVE, respondedMessage.getText());
     }
   }
 
   @Test
-  void unsuccessfulSubmit() {
+  void moveNotMade() {
     ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8);
     when(request.session().attribute(GetGameRoute.MODEL_BOARD)).thenReturn(modelBoard);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
-    Object info = CuT.handle(request, response);
-    if (info instanceof String) {
-      String temporaryInfo = (String) info;
-      Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
+    Object result = Cut.handle(request, response);
+    if (result instanceof String) {
+      String temp = (String) result;
+      Message respondedMessage = gson.fromJson(temp, Message.class);
       assertEquals(Message.Type.error, respondedMessage.getType());
-      assertEquals(PostSubmitTurn.ERROR_SUBMIT_TURN, respondedMessage.getText());
+      assertEquals(PostBackupMove.ERROR_BACKUP_MOVE, respondedMessage.getText());
     }
   }
 }

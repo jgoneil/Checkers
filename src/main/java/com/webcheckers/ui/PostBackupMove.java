@@ -19,8 +19,9 @@ import static spark.Spark.halt;
  */
 public class PostBackupMove implements Route {
 
-  private static final String SUCCESS_BACKUP_MOVE = "Your move was backed up successfully.";
-  private static final String ERROR_BACKUP_MOVE = "No move to backup.";
+  //Static final (constant) variables
+  static final String SUCCESS_BACKUP_MOVE = "Your move was backed up successfully.";
+  static final String ERROR_BACKUP_MOVE = "No move to backup.";
   //Gson engine for receiving/sending JSON information
   private final Gson gson;
 
@@ -49,7 +50,7 @@ public class PostBackupMove implements Route {
 
     ModelBoard modelBoard = session.attribute(GetGameRoute.MODEL_BOARD);
 
-    if (modelBoard.checkMadeMove()) {
+    if (modelBoard.checkPendingMove()) {
       modelBoard.backupMove();
       Message message = new Message(Message.Type.info, SUCCESS_BACKUP_MOVE);
       return gson.toJson(message);
