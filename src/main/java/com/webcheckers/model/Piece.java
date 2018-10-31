@@ -79,6 +79,24 @@ public class Piece {
   }
 
   /**
+   * Checks to see if the piece is red
+   *
+   * @return true/false to see if a piece is red or not
+   */ 
+  public boolean isRed() {
+    return this.color == Color.RED;
+  }
+
+  /**
+   * Checks to see if the piece is white
+   *
+   * @return true/false to see if a piece is white or not
+   */
+  public boolean isWhite() {
+    return this.color == Color.WHITE;
+  }
+
+  /**
    * Kings a piece
    */
   public void King(){this.type = Type.KING;}

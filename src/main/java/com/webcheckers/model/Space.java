@@ -66,6 +66,31 @@ public class Space {
     this.piece = null;
   }
 
+
+  /**
+  * Checks to see if the piece is white
+  *
+  * @return true/false if a piece on the space is white;
+  */ 
+  public boolean pieceIsRed() {
+    if (this.piece != null) {
+      return piece.isRed();
+    } 
+    return false;
+  }
+
+  /**
+   * Checks to see if the piece is white
+   *
+   * @return true/false if a piece on the space is white;
+   */ 
+  public boolean pieceIsWhite() {
+    if (this.piece != null) { 
+      return piece.isWhite();
+    }
+    return false;
+  }
+
   /**
    * Sees if this space is occupied
    *

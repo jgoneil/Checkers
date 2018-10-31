@@ -1,5 +1,7 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.GameLobby;
+
 /**
  * Class that controls specific information connected to each player logged into the game.
  */
@@ -60,6 +62,24 @@ public class Player {
    */
   public void gameEnd() {
     this.color = null;
+  }
+
+  /**
+   * Checks to see if a player's color is red
+   *
+   * @return true/false if a player is the red player or not
+   */
+  public boolean isRed() {
+    return this.color == GameLobby.RED;
+  }
+
+  /**
+   * Checks to see if a player's color is white
+   *
+   * @return true/false if a player is the white player or not
+   */
+  public boolean isWhite() {
+    return this.color == GameLobby.WHITE;
   }
 
   /**
