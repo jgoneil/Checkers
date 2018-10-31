@@ -2,15 +2,15 @@ package com.webcheckers.appl;
 
 import java.util.*;
 import com.webcheckers.model.CheckSignin;
-import com.webcheckers.appl.Player;
+import com.webcheckers.model.Player;
 
 /**
  * Class that stores and controls all users signed into the game
  */
-public class Users {
+public class PlayerLobby {
 
   //The function for checking if user input for a username is valid
-  private CheckSignin checkSignin;
+  private final CheckSignin checkSignin;
   //The list of players currently in the game
   private List<Player> users;
   //The list of usernames for the players signed into the game
@@ -20,7 +20,7 @@ public class Users {
    * Constructor for the class that establishes sign in checks and the list of currently signed in
    * users
    */
-  public Users() {
+  public PlayerLobby() {
     this.checkSignin = new CheckSignin();
     this.users = new ArrayList<>();
     this.usernames = new ArrayList<>();
@@ -89,8 +89,22 @@ public class Users {
     return playerNames;
   }
 
+  /**
+   * Removes a user from the list of users connected to the system
+   *
+   * @param username the username of the player being removed
+   */
   public void removeUser(String username){
     users.remove(getSpecificPlayer(username));
     usernames.remove(username);
+  }
+
+  /**
+   * Gets the number of users currently logged into the system
+   *
+   * @return the number of players connected to the system
+   */
+  public int getNumberOfPlayers() {
+    return this.users.size();
   }
 }

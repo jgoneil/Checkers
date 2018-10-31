@@ -1,10 +1,9 @@
-package com.webcheckers.appl;
+package com.webcheckers.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 
-import com.webcheckers.model.ModelBoard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -21,7 +20,7 @@ public class PlayerTest {
   private Player player3;
   private String usernamePlayer1;
   private String usernamePlayer2;
-  private BoardView boardViewMock;
+  private PlayerBoardView playerBoardViewMock;
   private ModelBoard modelBoardMock;
 
 
@@ -35,7 +34,7 @@ public class PlayerTest {
 
     player3 = new Player(usernamePlayer1);
 
-    boardViewMock = mock(BoardView.class);
+    playerBoardViewMock = mock(PlayerBoardView.class);
     modelBoardMock = mock(ModelBoard.class);
 
   }
@@ -46,7 +45,7 @@ public class PlayerTest {
     player2 = null;
     usernamePlayer1 = null;
     usernamePlayer2 = null;
-    boardViewMock = null;
+    playerBoardViewMock = null;
 
   }
 
@@ -65,39 +64,20 @@ public class PlayerTest {
   @Test
   void inGameTest() {
     assertFalse(player1.inGame());
-    player1.setColor("White", boardViewMock);
+    player1.setColor("White");
     assertTrue(player1.inGame());
   }
 
   @Test
   void setColorTest() {
-    player1.setColor("White", boardViewMock);
+    player1.setColor("White");
     assertEquals("White", player1.getColor());
-    assertEquals(boardViewMock, player1.getBoardView());
   }
 
   @Test
   void getColorTest() {
-    player1.setColor("White", boardViewMock);
+    player1.setColor("White");
     assertEquals("White", player1.getColor());
-  }
-
-  @Test
-  void getBoardViewTest() {
-    player1.setColor("White", boardViewMock);
-    assertEquals(boardViewMock, player1.getBoardView());
-  }
-
-  @Test
-  void addModelBoardTest() {
-    player1.addModelBoard(modelBoardMock);
-    assertEquals(player1.getModelBoard(), modelBoardMock);
-  }
-
-  @Test
-  void getModelBoardTest() {
-    player1.addModelBoard(modelBoardMock);
-    assertEquals(player1.getModelBoard(), modelBoardMock);
   }
 
 }

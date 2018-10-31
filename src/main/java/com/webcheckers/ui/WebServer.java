@@ -7,9 +7,8 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 
+import com.webcheckers.appl.PlayerLobby;
 import spark.TemplateEngine;
-
-import com.webcheckers.appl.Users;
 
 
 /**
@@ -68,7 +67,7 @@ public class WebServer {
   //
   private final TemplateEngine templateEngine;
   private final Gson gson;
-  private final Users users;
+  private final PlayerLobby playerLobby;
 
   //
   // Constructor
@@ -81,15 +80,15 @@ public class WebServer {
    * @param gson The Google JSON parser object used to render Ajax responses.
    * @throws NullPointerException If any of the parameters are {@code null}.
    */
-  public WebServer(final TemplateEngine templateEngine, final Gson gson, final Users users) {
+  public WebServer(final TemplateEngine templateEngine, final Gson gson, final PlayerLobby playerLobby) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
-    Objects.requireNonNull(users, "users must not be null");
+    Objects.requireNonNull(playerLobby, "playerLobby must not be null");
     //
     this.templateEngine = templateEngine;
     this.gson = gson;
-    this.users = users;
+    this.playerLobby = playerLobby;
   }
 
   //
@@ -144,21 +143,21 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine, users));
+    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby));
 
     get(SIGNIN_URL, new GetSigninRoute(templateEngine));
 
-    post(POST_SIGNIN_URL, new PostSignInRoute(templateEngine, users));
+    post(POST_SIGNIN_URL, new PostSignInRoute(templateEngine, playerLobby));
 
-    get(GET_SIGNOUT_URL, new GetSignOutRoute(templateEngine, users));
+    get(GET_SIGNOUT_URL, new GetSignOutRoute(templateEngine, playerLobby));
 
-    get(GAME_URL, new GetGameRoute(templateEngine, users));
+    get(GAME_URL, new GetGameRoute(templateEngine, playerLobby));
 
     post(CHECK_TURN, new PostTurnCheck(gson));
 
     post(VALIDATE_MOVE, new PostMoveCheck(gson));
 
-    post(RESIGN_GAME, new PostResignGame(gson));
+    post(RESIGN_GAME, new PostResignGame(gson, playerLobby));
 
     post(SUBMIT_TURN, new PostSubmitTurn(gson));
 

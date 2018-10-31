@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.ModelBoard;
 import spark.Request;
@@ -7,8 +8,6 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 import com.google.gson.Gson;
-import com.webcheckers.appl.Player;
-import com.webcheckers.appl.BoardView;
 
 import java.util.Objects;
 
@@ -48,10 +47,10 @@ public class PostBackupMove implements Route {
   public Object handle(Request request, Response response) {
     Session session = request.session();
 
-    ModelBoard modelBoard = session.attribute(GetGameRoute.MODEL_BOARD);
+    GameLobby gameLobby = session.attribute(GetGameRoute.GAMELOBBY);
 
-    if (modelBoard.checkPendingMove()) {
-      modelBoard.backupMove();
+    if (gameLobby.checkPendingMove()) {
+      gameLobby.backupMove();
       Message message = new Message(Message.Type.info, SUCCESS_BACKUP_MOVE);
       return gson.toJson(message);
     } else {

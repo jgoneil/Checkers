@@ -14,7 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
  * Test class for User
  */
 @Tag("Application-tier")
-public class UserTest {
+public class PlayerLobbyTest {
 
   // Valid usernames
   final String validPlayerString1 = "abc";
@@ -33,18 +33,18 @@ public class UserTest {
   final String tab = "\t";
   final String newLine = "\n";
 
-  private Users users;
+  private PlayerLobby playerLobby;
 
 
   @BeforeEach
   void setUp() throws Exception {
-    users = new Users();
+    playerLobby = new PlayerLobby();
 
   }
 
   @AfterEach
   void tearDown() throws Exception {
-    users = null;
+    playerLobby = null;
 
   }
 
@@ -52,54 +52,54 @@ public class UserTest {
   @ValueSource(strings = {validPlayerString1, validPlayerString2, validPlayerString3,
       validPlayerString4, validPlayerString5})
   void AddPlayerTest_ValidName(String username) {
-    assertTrue(users.addPlayer(username));
+    assertTrue(playerLobby.addPlayer(username));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {nonAlphabeticalString1, nonAlphabeticalString2})
   void AddPlayerTest_InvalidName_InvalidCharacters(String username) {
-    assertFalse(users.addPlayer(username));
+    assertFalse(playerLobby.addPlayer(username));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {emptyString, whiteSpace, tab, newLine})
   void AddPlayerTest_InvalidName_InvalidWhiteSpace(String username) {
-    assertFalse(users.addPlayer(username));
+    assertFalse(playerLobby.addPlayer(username));
   }
 
   @Test
   void GetSpecificPlayerTest() {
-    users.getAllPlayers().add("No players");
-    assertNull(users.getSpecificPlayer("No players"));
-    users.addPlayer(validPlayerString1);
-    assertEquals(users.getSpecificPlayer(validPlayerString1).getName(), validPlayerString1);
-    assertNull(users.getSpecificPlayer("Not a user"));
+    playerLobby.getAllPlayers().add("No players");
+    assertNull(playerLobby.getSpecificPlayer("No players"));
+    playerLobby.addPlayer(validPlayerString1);
+    assertEquals(playerLobby.getSpecificPlayer(validPlayerString1).getName(), validPlayerString1);
+    assertNull(playerLobby.getSpecificPlayer("Not a user"));
   }
 
   @Test
   void getAllPlayersTest() {
-    users.addPlayer(validPlayerString1);
-    users.addPlayer(validPlayerString2);
-    assertEquals(users.getAllPlayers().get(0), validPlayerString1);
-    assertEquals(users.getAllPlayers().get(1), validPlayerString2);
+    playerLobby.addPlayer(validPlayerString1);
+    playerLobby.addPlayer(validPlayerString2);
+    assertEquals(playerLobby.getAllPlayers().get(0), validPlayerString1);
+    assertEquals(playerLobby.getAllPlayers().get(1), validPlayerString2);
   }
 
   @Test
   void getAllPlayersExceptUserTest() {
-    users.addPlayer(validPlayerString1);
-    users.addPlayer(validPlayerString2);
-    users.addPlayer(validPlayerString3);
-    assertEquals(2, users.getAllPlayersExceptUser(validPlayerString1).size());
-    assertEquals(3, users.getAllPlayersExceptUser("").size());
+    playerLobby.addPlayer(validPlayerString1);
+    playerLobby.addPlayer(validPlayerString2);
+    playerLobby.addPlayer(validPlayerString3);
+    assertEquals(2, playerLobby.getAllPlayersExceptUser(validPlayerString1).size());
+    assertEquals(3, playerLobby.getAllPlayersExceptUser("").size());
 
   }
 
   @Test
   void removePlayer() {
-    users.addPlayer(validPlayerString1);
-    users.addPlayer(validPlayerString2);
-    users.addPlayer(validPlayerString3);
-    users.removeUser(validPlayerString1);
-    assertEquals(2, users.getAllPlayers().size());
+    playerLobby.addPlayer(validPlayerString1);
+    playerLobby.addPlayer(validPlayerString2);
+    playerLobby.addPlayer(validPlayerString3);
+    playerLobby.removeUser(validPlayerString1);
+    assertEquals(2, playerLobby.getAllPlayers().size());
   }
 }
