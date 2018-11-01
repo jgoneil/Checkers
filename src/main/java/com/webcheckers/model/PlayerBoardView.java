@@ -44,7 +44,7 @@ public class PlayerBoardView implements Iterable {
    * @param color the color of the player
    * @param pieces the pieces being added to the board
    */
-  public BoardView(Player redPlayer, Player whitePlayer, int length, String color, List<Piece> pieces) {
+  public PlayerBoardView(Player redPlayer, Player whitePlayer, int length, String color, List<Piece> pieces) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();

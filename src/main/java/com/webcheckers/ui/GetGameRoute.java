@@ -140,6 +140,26 @@ public class GetGameRoute implements Route {
       if (this.gameLobby != httpSession.attribute(GAMELOBBY)) {
         this.gameLobby = httpSession.attribute(GAMELOBBY);
       }
+
+      if (!this.gameLobby.whiteCanPlay() || !this.gameLobby.redCanPlay()) {
+        if (this.currentPlayer.getColor().equals(GameLobby.RED)) {
+          if (!this.gameLobby.whiteCanPlay()) {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
+          } else {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+          }
+        } else {
+          if (!this.gameLobby.redCanPlay()) {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
+          } else {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+          }
+        }
+        response.redirect(WebServer.HOME_URL);
+        halt();
+        return null;
+      }
+
       gameLobby.setPendingMove(false);
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");

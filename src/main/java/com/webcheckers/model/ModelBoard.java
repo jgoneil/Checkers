@@ -116,9 +116,6 @@ public class ModelBoard {
               pieces.remove(p);
               break;
             }
-            Piece whitePiece = new Piece(GameLobby.WHITE, space);
-            space.occupy(whitePiece);
-            whitePieces.add(whitePiece);
           }
           board[i][j] = space;
         }

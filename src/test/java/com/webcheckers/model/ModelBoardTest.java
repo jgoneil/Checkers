@@ -3,6 +3,7 @@ package com.webcheckers.model;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Space.Color;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,9 +29,6 @@ class ModelBoardTest {
     player1Mock = new Player("a");
     player2Mock = new Player("b");
     modelBoard = new ModelBoard(player1Mock, player2Mock, 8);
-<<<<<<< HEAD
-    BoardView boardViewRed = new BoardView(player1Mock, player2Mock, 8, "red");
-    BoardView boardViewWhite = new BoardView(player2Mock, player1Mock, 8, "white");
     this.pieceRed = new Piece("red", new Space(4, 1, Color.BLACK));
     this.pieceWhite = new Piece("white", new Space(0, 1, Color.BLACK));
     List<Piece> pieces = new ArrayList<>();
@@ -39,10 +37,8 @@ class ModelBoardTest {
     List<Piece> piecesEmpty = new ArrayList<>();
     modelBoardEmpty = new ModelBoard(player1Mock, player2Mock, 8, piecesEmpty);
     modelBoardTest = new ModelBoard(player1Mock, player2Mock, 8, pieces);
-    player1Mock.setColor("Red", boardViewRed);
-    player2Mock.setColor("White", boardViewWhite);
-=======
->>>>>>> 341cb3a868ec2ee95b3286ce8c9f85e56d0f2a16
+    player1Mock.setColor(GameLobby.RED);
+    player2Mock.setColor(GameLobby.WHITE);
   }
 
   @AfterEach

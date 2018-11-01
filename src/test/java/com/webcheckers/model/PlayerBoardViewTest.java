@@ -1,13 +1,9 @@
 package com.webcheckers.model;
 
-<<<<<<< HEAD:src/test/java/com/webcheckers/appl/BoardViewTest.java
-import com.webcheckers.model.ModelBoard;
-=======
-
->>>>>>> 341cb3a868ec2ee95b3286ce8c9f85e56d0f2a16:src/test/java/com/webcheckers/model/PlayerBoardViewTest.java
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import com.webcheckers.model.Piece;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,28 +16,20 @@ public class PlayerBoardViewTest {
 
   private Player whitePlayer;
   private Player redPLayer;
-<<<<<<< HEAD:src/test/java/com/webcheckers/appl/BoardViewTest.java
-  private BoardView boardView1;
-  private BoardView boardViewTesting;
-  private Piece piece;
-=======
   private PlayerBoardView playerBoardView1;
->>>>>>> 341cb3a868ec2ee95b3286ce8c9f85e56d0f2a16:src/test/java/com/webcheckers/model/PlayerBoardViewTest.java
   private ModelBoard modelBoard;
+  private Piece piece;
+  private PlayerBoardView boardViewTesting;
 
   @BeforeEach
   public void setUp() throws Exception {
     this.whitePlayer = new Player("White");
     this.redPLayer = new Player("Red");
-<<<<<<< HEAD:src/test/java/com/webcheckers/appl/BoardViewTest.java
-    this.boardView1 = new BoardView(redPLayer, whitePlayer, 8, "red");
     this.piece = new Piece("red", new Space(4, 1, Space.Color.BLACK));
     List<Piece> pieces = new ArrayList<>();
     pieces.add(piece);
-    this.boardViewTesting = new BoardView(redPLayer, whitePlayer, 8, "red", pieces);
-=======
+    this.boardViewTesting = new PlayerBoardView(redPLayer, whitePlayer, 8, "red", pieces);
     this.playerBoardView1 = new PlayerBoardView(redPLayer, whitePlayer, 8, "red");
->>>>>>> 341cb3a868ec2ee95b3286ce8c9f85e56d0f2a16:src/test/java/com/webcheckers/model/PlayerBoardViewTest.java
     this.modelBoard = new ModelBoard(redPLayer, whitePlayer, 8);
   }
 
