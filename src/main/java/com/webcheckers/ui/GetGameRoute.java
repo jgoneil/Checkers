@@ -142,7 +142,7 @@ public class GetGameRoute implements Route {
       }
 
       if (!this.gameLobby.whiteCanPlay() || !this.gameLobby.redCanPlay()) {
-        if (this.currentPlayer.getColor().equals(GameLobby.RED)) {
+        if (this.currentPlayer.isRed()) {
           if (!this.gameLobby.whiteCanPlay()) {
             httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
           } else {
@@ -155,6 +155,7 @@ public class GetGameRoute implements Route {
             httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
           }
         }
+        this.currentPlayer.gameEnd();
         response.redirect(WebServer.HOME_URL);
         halt();
         return null;

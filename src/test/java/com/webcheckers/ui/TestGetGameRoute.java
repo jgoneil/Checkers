@@ -243,8 +243,9 @@ class TestGetGameRoute {
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     List<Piece> pieces = new ArrayList<>();
-    pieces.add(new Piece("red", new Space(7, 0, Space.Color.BLACK)));
-    GameLobby gameLobby = new GameLobby(redPlayer, whitePlayer, pieces);
+    pieces.add(new Piece(GameLobby.RED, new Space(7, 0, Space.Color.BLACK)));
+    GameLobby gameLobby = new GameLobby(playerLobby.getSpecificPlayer(redPlayer.getName()),
+            playerLobby.getSpecificPlayer(whitePlayer.getName()), pieces);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
