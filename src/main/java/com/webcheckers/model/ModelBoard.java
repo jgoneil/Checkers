@@ -7,6 +7,9 @@ import com.webcheckers.model.Piece.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Model class that holds the main board for model configurations
  */
@@ -48,6 +51,8 @@ public class ModelBoard {
     this.whitePlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.WHITE);
     this.board = new Space[length][length];
     this.redTurn = true;
+    this.redPieces = new ArrayList<>();
+    this.whitePieces = new ArrayList<>();
     this.isKinging = true;
     this.pendingMove = false;
     this.isJumping = false;
@@ -70,6 +75,49 @@ public class ModelBoard {
             space.occupy(redPiece);
             redPieces.add(redPiece);
           }
+          board[i][j] = space;
+        }
+      }
+    }
+  }
+
+  /**
+   * Constructor for the model version of the board
+   *
+   * @param redPlayer the player associated to the color red for the game
+   * @param whitePlayer the player associated to the color white for the game
+   * @param length the length of the sides of the board (assuming square)
+   * @param pieces the pieces being added to the board
+   */
+  public ModelBoard(Player redPlayer, Player whitePlayer, int length, List<Piece> pieces) {
+    //Setting constants
+    this.board = new Space[length][length];
+    this.redTurn = true;
+    this.redPlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.RED);
+    this.whitePlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.WHITE);
+    this.redPieces = new ArrayList<>();
+    this.whitePieces = new ArrayList<>();
+    this.isKinging = true;
+    //Preforming a loop to generate all of the spaces for the board
+    for (int i = 0; i < length; i++) {
+      for (int j = 0; j < length; j ++) {
+        if ((i + j) % 2 == 0) {
+          board[i][j] = new Space(i, j, Space.Color.WHITE);
+        } else {
+          Space space = new Space(i, j, Space.Color.BLACK);
+          for (Piece p: pieces) {
+            if (p.getSpace().equals(space)) {
+              if (p.getColor() == Piece.Color.RED) {
+                this.redPieces.add(p);
+              } else {
+                this.whitePieces.add(p);
+              }
+              space.occupy(p);
+              pieces.remove(p);
+              break;
+            }
+          }
+          board[i][j] = space;
         }
       }
     }
@@ -226,6 +274,30 @@ public class ModelBoard {
   public void setMove(boolean madeMove) {
     this.madeMove = madeMove;
     this.redTurn = !redTurn;
+  }
+
+  /**
+   * Checks to see if a redPlayer can still play the game or not
+   *
+   * @return true/false based on if the amount of pieces a red player has equals 0
+   */
+  public boolean redCanPlay() {
+    if (this.redPieces.size() == 0) {
+      return false;
+    } 
+    return true;
+  }
+
+  /**
+   * Checks to see if a whitePlayer can still play the game or not
+   *
+   * @return true/false based on if the aount of pieces a white player has equals 0
+   */
+  public boolean whiteCanPlay() {
+    if (this.whitePieces.size() == 0) {
+      return false;
+    }
+    return true;
   }
 
   /**

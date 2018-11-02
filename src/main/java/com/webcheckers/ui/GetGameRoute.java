@@ -18,7 +18,6 @@ import spark.TemplateEngine;
 import com.webcheckers.model.Player;
 
 import static spark.Spark.halt;
-import static spark.Spark.threadPool;
 
 /**
  * UI class that handles all HTTP requests for the /game page
@@ -141,9 +140,31 @@ public class GetGameRoute implements Route {
       if (this.gameLobby != httpSession.attribute(GAMELOBBY)) {
         this.gameLobby = httpSession.attribute(GAMELOBBY);
       }
+
+      if (!this.gameLobby.whiteCanPlay() || !this.gameLobby.redCanPlay()) {
+        if (this.currentPlayer.isRed()) {
+          if (!this.gameLobby.whiteCanPlay()) {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
+          } else {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+          }
+        } else {
+          if (!this.gameLobby.redCanPlay()) {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
+          } else {
+            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+          }
+        }
+        this.currentPlayer.gameEnd();
+        response.redirect(WebServer.HOME_URL);
+        halt();
+        return null;
+      }
+
       gameLobby.setPendingMove(false);
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
+
       vm.put("redPlayer", gameLobby.getRedPlayer());
       vm.put("whitePlayer", gameLobby.getWhitePlayer());
       vm.put("activeColor", gameLobby.getTurn());
