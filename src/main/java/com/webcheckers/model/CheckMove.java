@@ -6,6 +6,8 @@ import com.webcheckers.model.Piece.Color;
 import java.util.Map;
 import java.util.HashMap;
 
+import static com.webcheckers.model.Piece.Type.KING;
+
 /**
  * Model class to handle checking moves for validation
  */
@@ -131,6 +133,9 @@ public class CheckMove {
             canJump = true;
           }
         }
+        if (redPiece.getType().equals(KING)){
+          canJump = kingCanJump(redPiece, player);
+        }
       }
     } else {
       for (Piece whitePiece : board.getWhitePieces()) {
@@ -150,6 +155,9 @@ public class CheckMove {
           if (pieceCanJump(whitePiece.getSpace(), upperRight, player)) {
             canJump = true;
           }
+        }
+        if (whitePiece.getType().equals(KING)){
+          canJump = kingCanJump(whitePiece, player);
         }
       }
     }
@@ -203,11 +211,22 @@ public class CheckMove {
       goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());
     }
     if (canJump(player)) {
-      if (pieceCanJump(current, goal, player)) {
-        board.isJumping(true);
-        response.put(true, "This jump is valid.");
+      Space startSpace = board.getSpace(start.getRow(), start.getCell());
+      Piece piece = startSpace.getPiece();
+      if (current.isPieceKing() && !isMovingForward(start, target)) {
+        if (kingCanJump(piece, player)) {
+          board.isJumping(true);
+          response.put(true, "This jump is valid.");
+        } else {
+          response.put(false, "Attempted to move when jump is possible.");
+        }
       } else {
-        response.put(false, "Attempted to move when jump is possible.");
+        if (pieceCanJump(current, goal, player)) {
+          board.isJumping(true);
+          response.put(true, "This jump is valid.");
+        } else {
+          response.put(false, "Attempted to move when jump is possible.");
+        }
       }
     } else {
       if (goal.getColor().equals(Space.Color.WHITE)) {
