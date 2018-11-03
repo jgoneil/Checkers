@@ -73,6 +73,37 @@ public class CheckMove {
     return end.getRow() < start.getRow();
   }
 
+  private boolean kingCanJump(Piece piece, Player player) {
+    if (player.isRed()) {
+      if (piece.getSpace().getxCoordinate() - 2 >= 0
+              && piece.getSpace().getCellIdx() + 2 <= 7) {
+        Space bottomLeft = board.getSpace(piece.getSpace().getxCoordinate() - 2,
+                piece.getSpace().getCellIdx() + 2);
+        return pieceCanJump(piece.getSpace(), bottomLeft, player);
+      }
+      if (piece.getSpace().getxCoordinate() + 2 >= 0
+              && piece.getSpace().getCellIdx() + 2 <= 7) {
+        Space bottomRight = board.getSpace(piece.getSpace().getxCoordinate() + 2,
+                piece.getSpace().getCellIdx() + 2);
+        return pieceCanJump(piece.getSpace(), bottomRight, player);
+      }
+    } else {
+      if (piece.getSpace().getxCoordinate() + 2 <= 7
+              && piece.getSpace().getCellIdx() - 2 >= 0) {
+        Space bottomLeft = board.getSpace(piece.getSpace().getxCoordinate() + 2,
+                piece.getSpace().getCellIdx() - 2);
+        return pieceCanJump(piece.getSpace(), bottomLeft, player);
+      }
+      if (piece.getSpace().getxCoordinate() - 2 <= 7
+              && piece.getSpace().getCellIdx() - 2 >= 0) {
+        Space bottomRight = board.getSpace(piece.getSpace().getxCoordinate() - 2,
+                piece.getSpace().getCellIdx() - 2);
+        return pieceCanJump(piece.getSpace(), bottomRight, player);
+      }
+    }
+    return false;
+  }
+
   /**
    * Check to see if any piece during the players turn can jump.
    *
