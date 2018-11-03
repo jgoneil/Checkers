@@ -218,8 +218,10 @@ public class CheckMove {
         response.put(false, "Attempted to move piece too far.");
       } else if (!isMovingDiagonal(start, target)) {
         response.put(false, "Pieces can only move diagonally.");
-      } else if (!isMovingForward(start, target)) {
-        response.put(false, "Piece can only move forward");
+      } else if (!isMovingForward(start, target) && current.isPieceKing()) {
+        response.put(true, "This is a valid move for a King.");
+      } else if (!isMovingForward(start, target)){
+        response.put(false, "Single pieces can only move forward.");
       } else {
         response.put(true, "This move is valid.");
       }

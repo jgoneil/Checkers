@@ -137,6 +137,15 @@ public class Space {
   }
 
   /**
+   * Checks to see if the piece on the space is of type KING or not
+   *
+   * @return true/false if the piece on this space is of type KING
+   */ 
+  public boolean isPieceKing(){
+    return this.piece.getType() == Piece.Type.KING;
+  }
+
+  /**
    * Checks to see if a space is equal to another object or not
    *
    * @param space the space being checked to see if it is equal or not
