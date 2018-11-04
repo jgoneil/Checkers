@@ -150,7 +150,7 @@ class CheckMoveTest {
   }
 
   @Test
-  void validateWhiteKingJump() {
+  void validateRedKingJump2() {
     Space kingSpace2 =  modelBoard.getSpace(position34.getRow(), position34.getCell());
     kingSpace2.occupy(new Piece("red", kingSpace2));
     kingSpace2.getPiece().King();
