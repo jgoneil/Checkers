@@ -1,8 +1,5 @@
 package com.webcheckers.model;
 
-import com.webcheckers.appl.GameLobby;
-import com.webcheckers.model.Piece.Color;
-
 import java.util.Map;
 import java.util.HashMap;
 
@@ -77,26 +74,27 @@ public class CheckMove {
 
   private boolean kingCanJump(Piece piece, Player player) {
     if (player.isRed()) {
-      if (piece.getSpace().getxCoordinate() - 2 >= 0
-              && piece.getSpace().getCellIdx() + 2 <= 7) {
-        Space bottomLeft = board.getSpace(piece.getSpace().getxCoordinate() - 2,
-                piece.getSpace().getCellIdx() + 2);
-        return pieceCanJump(piece.getSpace(), bottomLeft, player);
-      }
-      if (piece.getSpace().getxCoordinate() + 2 >= 0
-              && piece.getSpace().getCellIdx() + 2 <= 7) {
-        Space bottomRight = board.getSpace(piece.getSpace().getxCoordinate() + 2,
-                piece.getSpace().getCellIdx() + 2);
-        return pieceCanJump(piece.getSpace(), bottomRight, player);
-      }
-    } else {
       if (piece.getSpace().getxCoordinate() + 2 <= 7
               && piece.getSpace().getCellIdx() - 2 >= 0) {
         Space bottomLeft = board.getSpace(piece.getSpace().getxCoordinate() + 2,
                 piece.getSpace().getCellIdx() - 2);
         return pieceCanJump(piece.getSpace(), bottomLeft, player);
       }
-      if (piece.getSpace().getxCoordinate() - 2 <= 7
+      if (piece.getSpace().getxCoordinate() + 2 <= 7
+              && piece.getSpace().getCellIdx() + 2 <= 7) {
+        Space bottomRight = board.getSpace(piece.getSpace().getxCoordinate() + 2,
+                piece.getSpace().getCellIdx() + 2);
+        return pieceCanJump(piece.getSpace(), bottomRight, player);
+      }
+    } else {
+      System.out.println("hey");
+      if (piece.getSpace().getxCoordinate() - 2 >= 0
+              && piece.getSpace().getCellIdx() + 2 <= 7) {
+        Space bottomLeft = board.getSpace(piece.getSpace().getxCoordinate() - 2,
+                piece.getSpace().getCellIdx() + 2);
+        return pieceCanJump(piece.getSpace(), bottomLeft, player);
+      }
+      if (piece.getSpace().getxCoordinate() - 2 >= 0
               && piece.getSpace().getCellIdx() - 2 >= 0) {
         Space bottomRight = board.getSpace(piece.getSpace().getxCoordinate() - 2,
                 piece.getSpace().getCellIdx() - 2);
@@ -165,7 +163,7 @@ public class CheckMove {
   }
 
   /**
-   * Checks to see a single piece can jump.
+   * Checks to see if a single piece can jump.
    *
    * @param start Starting space that contains the piece
    * @param end The end space that the piece could possibly jump to
@@ -213,7 +211,7 @@ public class CheckMove {
     if (canJump(player)) {
       Space startSpace = board.getSpace(start.getRow(), start.getCell());
       Piece piece = startSpace.getPiece();
-      if (current.isPieceKing() && !isMovingForward(start, target)) {
+      if (current.isPieceKing()) {
         if (kingCanJump(piece, player)) {
           board.isJumping(true);
           response.put(true, "This jump is valid.");
