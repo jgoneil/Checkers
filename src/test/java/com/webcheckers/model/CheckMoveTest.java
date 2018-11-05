@@ -1,13 +1,15 @@
 package com.webcheckers.model;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 import com.webcheckers.appl.GameLobby;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Tag("Model-tier")
 class CheckMoveTest {
@@ -26,10 +28,14 @@ class CheckMoveTest {
   private Position position50;
   private Position position32;
   private Position position45;
-  private Position position27;
   private Position position36;
   private Position position52;
   private Position position56;
+  private Position position01;
+  private Position position41;
+  private Position position05;
+  private Position position76;
+  private Position position72;
 
   // White square
   private Position position44;
@@ -51,13 +57,17 @@ class CheckMoveTest {
     position63 = new Position(6, 3);
     position23 = new Position(2, 3);
     position44 = new Position(4, 4);
+    position01 = new Position(0, 1);
+    position41 = new Position(4, 1);
+    position05 = new Position(0, 5);
+    position76 = new Position(7, 6);
+    position72 = new Position(7, 2);
 
     position32 = new Position(3,2);
     position45 = new Position(4,5);
     position36 = new Position(3,6);
 
     position50 = new Position(5, 0);
-    position27 = new Position(2, 7);
     position32 = new Position(3, 2);
     position52 = new Position(5,2);
     position56 = new Position(5,6);
@@ -150,14 +160,50 @@ class CheckMoveTest {
   }
 
   @Test
-  void validateRedKingJump2() {
-    Space kingSpace2 =  modelBoard.getSpace(position34.getRow(), position34.getCell());
-    kingSpace2.occupy(new Piece("red", kingSpace2));
-    kingSpace2.getPiece().King();
+  void validateRedKingJumpMultiple() {
+    Piece kingRedPiece = new Piece(GameLobby.RED, new Space(2, 3, Space.Color.BLACK));
+    kingRedPiece.King();
+    Piece pieceUpperLeft = new Piece(GameLobby.WHITE, new Space(1, 2, Space.Color.BLACK));
+    Piece pieceUpperRight = new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK));
+    Piece pieceBottomLeft = new Piece(GameLobby.WHITE, new Space(1, 4, Space.Color.BLACK));
+    Piece pieceBottomRight = new Piece(GameLobby.WHITE, new Space(3, 4, Space.Color.BLACK));
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(kingRedPiece);
+    pieces.add(pieceUpperLeft);
+    pieces.add(pieceUpperRight);
+    pieces.add(pieceBottomLeft);
+    pieces.add(pieceBottomRight);
 
-    modelBoard.eatPiece(modelBoard.getSpace(position52.getRow(), position52.getCell()).getPiece());
-    modelBoard.addPieceToSpace(new Piece("white", new Space(4, 3, Space.Color.BLACK)),
-            new Space(4, 3, Space.Color.BLACK));
-    assertTrue(checkMove.validateMove(position34, position52, whitePlayerMock).containsKey(true));
+    ModelBoard customModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkCustomBoard = new CheckMove(customModelBoard);
+
+    assertTrue(checkCustomBoard.validateMove(position23, position01, redPlayerMock).containsKey(true));
+    assertTrue(checkCustomBoard.validateMove(position23, position05, redPlayerMock).containsKey(true));
+    assertTrue(checkCustomBoard.validateMove(position23, position41, redPlayerMock).containsKey(true));
+    assertTrue(checkCustomBoard.validateMove(position23, position45, redPlayerMock).containsKey(true));
+  }
+
+  @Test
+  void validateWhiteKingJumpMultiple() {
+    Piece kingWhitePiece = new Piece(GameLobby.WHITE, new Space(2, 3, Space.Color.BLACK));
+    kingWhitePiece.King();
+    Piece pieceUpperLeft = new Piece(GameLobby.RED, new Space(1, 2, Space.Color.BLACK));
+    Piece pieceUpperRight = new Piece(GameLobby.RED, new Space(3, 2, Space.Color.BLACK));
+    Piece pieceBottomLeft = new Piece(GameLobby.RED, new Space(1, 4, Space.Color.BLACK));
+    Piece pieceBottomRight = new Piece(GameLobby.RED, new Space(3, 4, Space.Color.BLACK));
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(kingWhitePiece);
+    pieces.add(pieceUpperLeft);
+    pieces.add(pieceUpperRight);
+    pieces.add(pieceBottomLeft);
+    pieces.add(pieceBottomRight);
+
+    ModelBoard customModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkCustomBoard = new CheckMove(customModelBoard);
+
+    assertTrue(checkCustomBoard.validateMove(position54, position76, whitePlayerMock).containsKey(true));
+    assertTrue(checkCustomBoard.validateMove(position54, position72, whitePlayerMock).containsKey(true));
+    assertTrue(checkCustomBoard.validateMove(position54, position36, whitePlayerMock).containsKey(true));
+    assertTrue(checkCustomBoard.validateMove(position54, position32, whitePlayerMock).containsKey(true));
   }
 }

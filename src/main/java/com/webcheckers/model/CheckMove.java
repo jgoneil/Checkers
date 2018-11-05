@@ -208,8 +208,7 @@ public class CheckMove {
       goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());
     }
     if (canJump(player)) {
-      Space startSpace = board.getSpace(start.getRow(), start.getCell());
-      Piece piece = startSpace.getPiece();
+      Piece piece = current.getPiece();
       if (current.isPieceKing()) {
         if (kingCanJump(piece, player)) {
           board.isJumping(true);
