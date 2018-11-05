@@ -188,15 +188,16 @@ public class ModelBoard {
       addPieceToSpace(current.getPiece(), endingSpace);
       current.unoccupy();
     }
+    Move actualMove = new Move(firstMove.getStart(), move.getEnd());
     Move reverseMove = new Move(
-        new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
+        new Position(7 - firstMove.getStart().getRow(), 7 - firstMove.getStart().getCell()),
         new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
     if (this.redTurn) {
-      redPlayerBoardView.makeMove(move, isKinging);
+      redPlayerBoardView.makeMove(actualMove, isKinging);
       whitePlayerBoardView.makeMove(reverseMove, isKinging);
     } else {
       redPlayerBoardView.makeMove(reverseMove, isKinging);
-      whitePlayerBoardView.makeMove(move, isKinging);
+      whitePlayerBoardView.makeMove(actualMove, isKinging);
     }
     this.redTurn = !redTurn;
     this.madeMove = false;
@@ -299,14 +300,13 @@ public class ModelBoard {
    */
   public void eatPieces(){
 
-    if (toBeEaten.peek() != null) {
-      toBeEaten.peek().getSpace().unoccupy();
-    }
     for (Piece piece : toBeEaten) {
       if (piece.getColor().equals(Color.RED)) {
         redPieces.remove(piece);
+        piece.getSpace().unoccupy();
       } else {
         whitePieces.remove(piece);
+        piece.getSpace().unoccupy();
       }
 
       redPlayerBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
