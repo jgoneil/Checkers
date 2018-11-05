@@ -202,7 +202,7 @@ public class GameLobby {
    * @return true/false based on if a move is pending
    */
   public boolean checkPendingMove() {
-    return this.modelBoard.checkPendingMove();
+    return this.modelBoard.checkPendingMove() && !this.checkMove.canLastJump();
   }
 
   /**

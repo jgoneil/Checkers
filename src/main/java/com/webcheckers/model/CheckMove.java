@@ -1,8 +1,9 @@
 package com.webcheckers.model;
 
-import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Piece.Color;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -11,8 +12,10 @@ import java.util.HashMap;
  */
 public class CheckMove {
 
+  boolean lastCanJump;
   //The board holding the logic for checking if a piece is valid or not (the model board)
   private ModelBoard board;
+
 
   /**
    * Constructor for the CheckMove Class
@@ -21,6 +24,7 @@ public class CheckMove {
    */
   public CheckMove(ModelBoard board) {
     this.board = board;
+    this.lastCanJump = false;
   }
 
   /**
@@ -76,18 +80,17 @@ public class CheckMove {
   /**
    * Check to see if any piece during the players turn can jump.
    *
-   * @param player current player
    * @return true/false based on if the player has a piece that can jump.
    */
-  private boolean canJump(Player player) {
+  private boolean canJump(List<Piece> redPieces, List<Piece> whitePieces) {
     boolean canJump = false;
-    if (player.isRed()) {
-      for (Piece redPiece : board.getRedPieces()) {
+    if (board.checkRedTurn()) {
+      for (Piece redPiece : redPieces) {
         if (redPiece.getSpace().getxCoordinate() - 2 >= 0
             && redPiece.getSpace().getCellIdx() - 2 >= 0) {
           Space upperLeft = board.getSpace(redPiece.getSpace().getxCoordinate() - 2,
               redPiece.getSpace().getCellIdx() - 2);
-          if (pieceCanJump(redPiece.getSpace(), upperLeft, player)) {
+          if (pieceCanJump(redPiece.getSpace(), upperLeft)) {
             canJump = true;
           }
         }
@@ -96,18 +99,18 @@ public class CheckMove {
             && redPiece.getSpace().getCellIdx() + 2 <= 7) {
           Space upperRight = board.getSpace(redPiece.getSpace().getxCoordinate() - 2,
               redPiece.getSpace().getCellIdx() + 2);
-          if (pieceCanJump(redPiece.getSpace(), upperRight, player)) {
+          if (pieceCanJump(redPiece.getSpace(), upperRight)) {
             canJump = true;
           }
         }
       }
     } else {
-      for (Piece whitePiece : board.getWhitePieces()) {
+      for (Piece whitePiece : whitePieces) {
         if (whitePiece.getSpace().getxCoordinate() + 2 <= 7
             && whitePiece.getSpace().getCellIdx() + 2 <= 7) {
           Space upperLeft = board.getSpace(whitePiece.getSpace().getxCoordinate() + 2,
               whitePiece.getSpace().getCellIdx() + 2);
-          if (pieceCanJump(whitePiece.getSpace(), upperLeft, player)) {
+          if (pieceCanJump(whitePiece.getSpace(), upperLeft)) {
             canJump = true;
           }
         }
@@ -116,7 +119,7 @@ public class CheckMove {
             && whitePiece.getSpace().getCellIdx() - 2 >= 0) {
           Space upperRight = board.getSpace(whitePiece.getSpace().getxCoordinate() + 2,
               whitePiece.getSpace().getCellIdx() - 2);
-          if (pieceCanJump(whitePiece.getSpace(), upperRight, player)) {
+          if (pieceCanJump(whitePiece.getSpace(), upperRight)) {
             canJump = true;
           }
         }
@@ -130,21 +133,20 @@ public class CheckMove {
    *
    * @param start Starting space that contains the piece
    * @param end The end space that the piece could possibly jump to
-   * @param player The player who owns the piece
    * @return true/false based on if the piece can jump or not.
    */
-  private boolean pieceCanJump(Space start, Space end, Player player) {
+  private boolean pieceCanJump(Space start, Space end) {
     Space middle = board.getSpace((start.getxCoordinate() + end.getxCoordinate()) / 2,
         (start.getCellIdx() + end.getCellIdx()) / 2);
 
     if (isMovingTwo(start, end)) {
       if (!end.isOccupied()) {
         if (middle.isOccupied()) {
-          if (player.isRed() && middle.pieceIsWhite()) {
+          if (board.checkRedTurn() && middle.pieceIsWhite()) {
             return true;
           }
 
-          if (player.isWhite() && middle.pieceIsRed()) {
+          if (!board.checkRedTurn() && middle.pieceIsRed()) {
             return true;
           }
         }
@@ -174,8 +176,8 @@ public class CheckMove {
     }
 
     if (firstMove == null) {
-      if (canJump(player)) {
-        if (pieceCanJump(current, goal, player)) {
+      if (canJump(board.getRedPieces(), board.getWhitePieces())) {
+        if (pieceCanJump(current, goal)) {
           board.isJumping(true);
           Space middle;
           if (current.getPiece().getColor() == Color.RED) {
@@ -207,9 +209,10 @@ public class CheckMove {
       }
     } else {
       if (firstMove.getEnd().equals(start) && board.checkIsJumping()) {
-        if (pieceCanJump(current, goal, player)) {
+        if (pieceCanJump(current, goal)) {
           Space middle;
-          if (board.getSpace(firstMove.getStart().getRow(), firstMove.getStart().getCell()).getPiece().getColor() == Color.RED) {
+          if (board.getSpace(firstMove.getStart().getRow(), firstMove.getStart().getCell())
+              .getPiece().getColor() == Color.RED) {
             middle = board.getSpace((current.getxCoordinate() + goal.getxCoordinate()) / 2,
                 (current.getCellIdx() + goal.getCellIdx()) / 2);
           } else {
@@ -227,5 +230,50 @@ public class CheckMove {
     }
 
     return response;
+  }
+
+  public boolean canLastJump() {
+    boolean canJump = false;
+    Space origin = board.getSpace(board.getMove().getEnd().getRow(),
+        board.getMove().getEnd().getCell());
+
+    if (board.checkRedTurn()) {
+      if (board.getMove().getEnd().getRow() - 2 >= 0
+          && board.getMove().getEnd().getCell() - 2 >= 0) {
+        Space upperLeft = board.getSpace(board.getMove().getEnd().getRow() - 2,
+            board.getMove().getEnd().getCell() - 2);
+        if (pieceCanJump(origin, upperLeft)) {
+          canJump = true;
+        }
+      }
+
+      if (board.getMove().getEnd().getRow() - 2 >= 0
+          && board.getMove().getEnd().getCell() + 2 <= 7) {
+        Space upperRight = board.getSpace(board.getMove().getEnd().getRow() - 2,
+            board.getMove().getEnd().getCell() + 2);
+        if (pieceCanJump(origin, upperRight)) {
+          canJump = true;
+        }
+      }
+
+    } else {
+      if (board.getMove().getEnd().getRow() - 2 >= 0
+          && board.getMove().getEnd().getCell() - 2 >= 0) {
+        Space upperLeft = board.getSpace(board.getMove().getEnd().getRow() - 2,
+            board.getMove().getEnd().getCell() - 2);
+        if (pieceCanJump(origin, upperLeft)) {
+          canJump = true;
+        }
+      }
+      if (board.getMove().getEnd().getRow() - 2 >= 0
+          && board.getMove().getEnd().getCell() + 2 <= 7) {
+        Space upperRight = board.getSpace(board.getMove().getEnd().getRow() - 2,
+            board.getMove().getEnd().getCell() + 2);
+        if (pieceCanJump(origin, upperRight)) {
+          canJump = true;
+        }
+      }
+    }
+    return canJump;
   }
 }

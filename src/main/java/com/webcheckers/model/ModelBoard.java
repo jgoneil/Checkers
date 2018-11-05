@@ -17,6 +17,10 @@ import java.util.List;
  */
 public class ModelBoard {
 
+  //Holds the information about the redPlayerBoardView
+  private final PlayerBoardView redPlayerBoardView;
+  //Holds the information about the whitePlayerBoardView
+  private final PlayerBoardView whitePlayerBoardView;
   //The 2-D array holding the spaces on the board
   private Space[][] board;
   //If a move has recently been made
@@ -31,10 +35,6 @@ public class ModelBoard {
   private List<Piece> whitePieces = new ArrayList<>();
   //Checks if a Piece is being Kinged in a given move
   private boolean isKinging;
-  //Holds the information about the redPlayerBoardView
-  private final PlayerBoardView redPlayerBoardView;
-  //Holds the information about the whitePlayerBoardView
-  private final PlayerBoardView whitePlayerBoardView;
   //If a player has found a valid move to make
   private boolean pendingMove;
   //Checks if a jump action is being made
@@ -43,6 +43,7 @@ public class ModelBoard {
   private Queue<Piece> toBeEaten;
 
   private Move firstMove;
+
   /**
    * Constructor for the model version of the board
    *
@@ -53,7 +54,8 @@ public class ModelBoard {
   public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
     //Setting constants
     this.redPlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.RED);
-    this.whitePlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.WHITE);
+    this.whitePlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length,
+        GameLobby.WHITE);
     this.board = new Space[length][length];
     this.redTurn = true;
     this.redPieces = new ArrayList<>();
@@ -165,7 +167,7 @@ public class ModelBoard {
     this.pendingMove = true;
     this.move = move;
 
-    if (firstMove == null ){
+    if (firstMove == null) {
       firstMove = move;
     }
   }
@@ -188,7 +190,7 @@ public class ModelBoard {
     this.madeMove = true;
     this.move = move;
 
-    if (firstMove != null){
+    if (firstMove != null) {
       firstMove = move;
     }
   }
@@ -221,11 +223,11 @@ public class ModelBoard {
       current = board[firstMove.getStart().getRow()][firstMove.getStart().getCell()];
       endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
     } else {
-      current = board[7-firstMove.getStart().getRow()][7-firstMove.getStart().getCell()];
+      current = board[7 - firstMove.getStart().getRow()][7 - firstMove.getStart().getCell()];
       endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
     }
     isKinging = isBecomingKing(current.getPiece(), move.getEnd().getRow());
-    if (isKinging){
+    if (isKinging) {
       current.getPiece().King();
     }
     if (isJumping) {
@@ -340,7 +342,7 @@ public class ModelBoard {
    *
    * @return A list of red pieces
    */
-  public List<Piece> getRedPieces(){
+  public List<Piece> getRedPieces() {
     return redPieces;
   }
 
@@ -355,6 +357,7 @@ public class ModelBoard {
 
   /**
    * Tests to see if a piece is able to King a piece
+   *
    * @param piece - Piece to be kinged
    * @param row - Row of the Piece being checked
    * @return - if the King is able to be Kinged
@@ -368,9 +371,8 @@ public class ModelBoard {
 
   /**
    * Removes all pieces to be eaten from all 3 boards after a jump occurs
-   *
    */
-  public void eatPieces(){
+  public void eatPieces() {
 
     for (Piece piece : toBeEaten) {
       if (piece.getColor().equals(Color.RED)) {
@@ -393,8 +395,8 @@ public class ModelBoard {
    *
    * @param piece The piece that is being jumped/ate
    */
-  public void eatPiece(Piece piece){
-    if (piece.getColor().equals(Color.RED)){
+  public void eatPiece(Piece piece) {
+    if (piece.getColor().equals(Color.RED)) {
       redPieces.remove(piece);
     } else {
       whitePieces.remove(piece);
@@ -402,18 +404,24 @@ public class ModelBoard {
     piece.getSpace().unoccupy();
 
     redPlayerBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
-    whitePlayerBoardView.eatPiece(7-piece.getSpace().getxCoordinate(), 7-piece.getSpace().getCellIdx());
+    whitePlayerBoardView
+        .eatPiece(7 - piece.getSpace().getxCoordinate(), 7 - piece.getSpace().getCellIdx());
   }
 
-  public Move getFirstMove(){
-    return this.move;
+  public Move getFirstMove() {
+    return this.firstMove;
   }
 
-  public void queuePieceToBeEaten(Piece pieceToBeEaten){
+  public void queuePieceToBeEaten(Piece pieceToBeEaten) {
     this.toBeEaten.add(pieceToBeEaten);
   }
 
-  public boolean checkIsJumping(){
+  public boolean checkIsJumping() {
     return this.isJumping;
   }
+
+  public Move getMove(){
+    return this.move;
+  }
+
 }
