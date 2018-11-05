@@ -3,6 +3,7 @@ package com.webcheckers.appl;
 import com.webcheckers.model.*;
 
 import java.util.Map;
+import java.util.List;
 
 /**
  * Class to construct a new game lobby
@@ -35,6 +36,15 @@ public class GameLobby {
     redPlayer.setColor(RED);
     whitePlayer.setColor(WHITE);
     this.modelBoard = new ModelBoard(redPlayer, whitePlayer, BOARD_SIZE);
+    this.checkMove = new CheckMove(this.modelBoard);
+  }
+
+  public GameLobby(Player redPlayer, Player whitePlayer, List<Piece> pieceList) {
+    this.redPlayer = redPlayer;
+    this.whitePlayer = whitePlayer;
+    redPlayer.setColor(RED);
+    whitePlayer.setColor(WHITE);
+    this.modelBoard = new ModelBoard(redPlayer, whitePlayer, BOARD_SIZE, pieceList);
     this.checkMove = new CheckMove(this.modelBoard);
   }
 
@@ -95,6 +105,24 @@ public class GameLobby {
    */
   public Player getRedPlayer() {
     return this.redPlayer;
+  }
+
+  /**
+   * Checks to see if a red player can keep playing the game
+   *
+   * @return true/false if the red player can continue to play
+   */
+  public boolean redCanPlay() {
+    return this.modelBoard.redCanPlay();
+  }
+
+  /**
+   * Checks to see if a white player can keep playing the game
+   *
+   * @return true/false if the white player can continue to play
+   */
+  public boolean whiteCanPlay() {
+    return this.modelBoard.whiteCanPlay();
   }
 
   /**

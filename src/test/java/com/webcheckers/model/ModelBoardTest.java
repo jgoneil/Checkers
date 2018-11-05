@@ -3,11 +3,15 @@ package com.webcheckers.model;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Space.Color;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Tag("Model-tier")
 class ModelBoardTest {
@@ -15,12 +19,26 @@ class ModelBoardTest {
   private Player player1Mock;
   private Player player2Mock;
   private ModelBoard modelBoard;
+  private ModelBoard modelBoardTest;
+  private ModelBoard modelBoardEmpty;
+  private Piece pieceRed;
+  private Piece pieceWhite;
 
   @BeforeEach
   void setUp() {
     player1Mock = new Player("a");
     player2Mock = new Player("b");
     modelBoard = new ModelBoard(player1Mock, player2Mock, 8);
+    this.pieceRed = new Piece("red", new Space(4, 1, Color.BLACK));
+    this.pieceWhite = new Piece("white", new Space(0, 1, Color.BLACK));
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(pieceRed);
+    pieces.add(pieceWhite);
+    List<Piece> piecesEmpty = new ArrayList<>();
+    modelBoardEmpty = new ModelBoard(player1Mock, player2Mock, 8, piecesEmpty);
+    modelBoardTest = new ModelBoard(player1Mock, player2Mock, 8, pieces);
+    player1Mock.setColor(GameLobby.RED);
+    player2Mock.setColor(GameLobby.WHITE);
   }
 
   @AfterEach
@@ -33,6 +51,20 @@ class ModelBoardTest {
   void submitMove() {
     modelBoard.madeMove(new Move(new Position(5, 0), new Position(6, 1)));
     modelBoard.submitMove();
+  }
+
+  @Test
+  void CreateBoardWithSpecifiedPieces() {
+    assertEquals(modelBoardTest.getSpace(4, 1).getPiece(), pieceRed);
+    assertEquals(modelBoardTest.getSpace(0, 1).getPiece(), pieceWhite);
+    assertNull(modelBoardTest.getSpace(0, 3).getPiece());
+  }
+
+  @Test
+  void CreateEmptyBoard() {
+    assertNull(modelBoardEmpty.getSpace(0,1).getPiece());
+    assertFalse(modelBoardEmpty.whiteCanPlay());
+    assertFalse(modelBoardEmpty.redCanPlay());
   }
 
   @Test

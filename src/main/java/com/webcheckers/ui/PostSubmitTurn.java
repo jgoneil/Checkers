@@ -22,6 +22,8 @@ public class PostSubmitTurn implements Route {
   //Static final variables (constants)
   static final String ERROR_SUBMIT_TURN = "Error on submission";
   static final String SUCCESS_SUBMIT_TURN = "Submission successful";
+  static final String PLAYER_WON = "Game over! You WIN!";
+  static final String PLAYER_LOSS = "Game over! You LOST!";
 
   /**
    * Main method for POST submit move 

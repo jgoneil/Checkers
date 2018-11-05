@@ -12,16 +12,11 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.webcheckers.model.Player;
-import com.webcheckers.model.CheckMove;
-
 
 /**
  * The UI Controller for handling the check to see if a move is valid or not
  */
 public class PostMoveCheck implements Route {
-
-  //Static final variables (constant)
-  private static final String MOVE = "move";
 
   //Gson controller for reading and sending JSON information
   private final Gson gson;
