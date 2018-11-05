@@ -1,5 +1,7 @@
 package com.webcheckers.model;
 
+import java.util.Objects;
+
 /**
  * Model class for the position a space is at
  */
@@ -37,5 +39,23 @@ public class Position {
    */
   public int getCell() {
     return this.cell;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Position position = (Position) o;
+    return row == position.row &&
+        cell == position.cell;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(row, cell);
   }
 }

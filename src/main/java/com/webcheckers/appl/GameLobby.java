@@ -204,7 +204,7 @@ public class GameLobby {
    * @return true/false based on if the player can make the move or not
    */
   public Map<Boolean, String> validateMove(Position start, Position target, Player player) {
-    return this.checkMove.validateMove(start, target, player);
+    return this.checkMove.validateMove(start, target, player, modelBoard.getFirstMove());
   }
 
   /**

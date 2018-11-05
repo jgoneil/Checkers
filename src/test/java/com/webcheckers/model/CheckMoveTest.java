@@ -29,6 +29,8 @@ class CheckMoveTest {
   // White square
   private Position position44;
 
+  private Move pendingMove1;
+
   @BeforeEach
   void setUp() {
     this.redPlayerMock = new Player("Tim");
@@ -48,6 +50,8 @@ class CheckMoveTest {
     position44 = new Position(4, 4);
     position50 = new Position(5, 0);
     position32 = new Position(3, 2);
+
+    pendingMove1 = null;
   }
 
   @AfterEach
@@ -59,39 +63,39 @@ class CheckMoveTest {
 
   @Test
   void validateMoveTest_ValidMove() {
-    assertTrue(checkMove.validateMove(position54, position43, redPlayerMock).containsKey(true));
-    assertTrue(checkMove.validateMove(position54, position43, whitePlayerMock).containsKey(true));
+    assertTrue(checkMove.validateMove(position54, position43, redPlayerMock, pendingMove1).containsKey(true));
+    assertTrue(checkMove.validateMove(position54, position43, whitePlayerMock, pendingMove1).containsKey(true));
   }
 
   @Test
   void validateMoveTest_InvalidMove() {
     // more than one space
-    assertTrue(checkMove.validateMove(position54, position34, redPlayerMock).containsKey(false));
-    assertTrue(checkMove.validateMove(position54, position34, whitePlayerMock).containsKey(false));
-    assertTrue(checkMove.validateMove(position54, position47, redPlayerMock).containsKey(false));
-    assertTrue(checkMove.validateMove(position54, position47, whitePlayerMock).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position34, redPlayerMock, pendingMove1).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position34, whitePlayerMock, pendingMove1).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position47, redPlayerMock, pendingMove1).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position47, whitePlayerMock, pendingMove1).containsKey(false));
 
     // move backward
-    assertTrue(checkMove.validateMove(position34, position43, redPlayerMock).containsKey(false));
-    assertTrue(checkMove.validateMove(position54, position63, whitePlayerMock).containsKey(false));
+    assertTrue(checkMove.validateMove(position34, position43, redPlayerMock, pendingMove1).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position63, whitePlayerMock, pendingMove1).containsKey(false));
 
     // move to white
-    assertTrue(checkMove.validateMove(position54, position44, redPlayerMock).containsKey(false));
-    assertTrue(checkMove.validateMove(position54, position44, whitePlayerMock).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position44, redPlayerMock, pendingMove1).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position44, whitePlayerMock, pendingMove1).containsKey(false));
 
     // move to occupied
-    assertTrue(checkMove.validateMove(position34, position23, redPlayerMock).containsKey(false));
-    assertTrue(checkMove.validateMove(position34, position23, whitePlayerMock).containsKey(false));
+    assertTrue(checkMove.validateMove(position34, position23, redPlayerMock, pendingMove1).containsKey(false));
+    assertTrue(checkMove.validateMove(position34, position23, whitePlayerMock, pendingMove1).containsKey(false));
 
     // move forward not diagonally
-    assertTrue(checkMove.validateMove(position50, position54, redPlayerMock).containsKey(false));
+    assertTrue(checkMove.validateMove(position50, position54, redPlayerMock, pendingMove1).containsKey(false));
   }
 
   @Test
   void validateJump() {
     modelBoard.addPieceToSpace(new Piece("white", new Space(4, 1, Space.Color.BLACK)),
             new Space(4, 1, Space.Color.BLACK));
-    assertTrue(checkMove.validateMove(position50, position32, redPlayerMock).containsKey(true));
+    assertTrue(checkMove.validateMove(position50, position32, redPlayerMock, pendingMove1).containsKey(true));
   }
 
   @Test
@@ -100,6 +104,6 @@ class CheckMoveTest {
             new Space(3, 2, Space.Color.BLACK));
     modelBoard.addPieceToSpace(new Piece("white", new Space(4, 1, Space.Color.BLACK)),
             new Space(4, 1, Space.Color.BLACK));
-    assertTrue(checkMove.validateMove(position54, position43, redPlayerMock).containsKey(false));
+    assertTrue(checkMove.validateMove(position54, position43, redPlayerMock, pendingMove1).containsKey(false));
   }
 }

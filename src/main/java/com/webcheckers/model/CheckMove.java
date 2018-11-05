@@ -92,7 +92,7 @@ public class CheckMove {
           }
         }
 
-        if (redPiece.getSpace().getxCoordinate() -2 >=0
+        if (redPiece.getSpace().getxCoordinate() - 2 >= 0
             && redPiece.getSpace().getCellIdx() + 2 <= 7) {
           Space upperRight = board.getSpace(redPiece.getSpace().getxCoordinate() - 2,
               redPiece.getSpace().getCellIdx() + 2);
@@ -160,7 +160,8 @@ public class CheckMove {
    * @param target - target space to move to
    * @return - validity of move to target space
    */
-  public Map<Boolean, String> validateMove(Position start, Position target, Player player) {
+  public Map<Boolean, String> validateMove(Position start, Position target, Player player,
+      Move firstMove) {
     Map<Boolean, String> response = new HashMap<>();
     Space current;
     Space goal;
@@ -171,28 +172,60 @@ public class CheckMove {
       current = board.getSpace(7 - start.getRow(), 7 - start.getCell());
       goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());
     }
-    if (canJump(player)) {
-      if (pieceCanJump(current, goal, player)) {
-        board.isJumping(true);
-        response.put(true, "This jump is valid.");
+
+    if (firstMove == null) {
+      if (canJump(player)) {
+        if (pieceCanJump(current, goal, player)) {
+          board.isJumping(true);
+          Space middle;
+          if (current.getPiece().getColor() == Color.RED) {
+            middle = board.getSpace((current.getxCoordinate() + goal.getxCoordinate()) / 2,
+                (current.getCellIdx() + goal.getCellIdx()) / 2);
+          } else {
+            middle = board.getSpace((current.getxCoordinate() + goal.getxCoordinate()) / 2,
+                (current.getCellIdx() + goal.getCellIdx()) / 2);
+          }
+          board.queuePieceToBeEaten(middle.getPiece());
+          response.put(true, "This jump is valid.");
+        } else {
+          response.put(false, "Attempted to move when jump is possible.");
+        }
       } else {
-        response.put(false, "Attempted to move when jump is possible.");
+        if (goal.getColor().equals(Space.Color.WHITE)) {
+          response.put(false, "Attempted to move a piece to a white space.");
+        } else if (goal.isOccupied()) {
+          response.put(false, "Attempted to move a piece to an already occupied space");
+        } else if (!isMovingOne(start, target)) {
+          response.put(false, "Attempted to move piece too far.");
+        } else if (!isMovingDiagonal(start, target)) {
+          response.put(false, "Pieces can only move diagonally.");
+        } else if (!isMovingForward(start, target)) {
+          response.put(false, "Piece can only move forward");
+        } else {
+          response.put(true, "This move is valid.");
+        }
       }
     } else {
-      if (goal.getColor().equals(Space.Color.WHITE)) {
-        response.put(false, "Attempted to move a piece to a white space.");
-      } else if (goal.isOccupied()) {
-        response.put(false, "Attempted to move a piece to an already occupied space");
-      } else if (!isMovingOne(start, target)) {
-        response.put(false, "Attempted to move piece too far.");
-      } else if (!isMovingDiagonal(start, target)) {
-        response.put(false, "Pieces can only move diagonally.");
-      } else if (!isMovingForward(start, target)) {
-        response.put(false, "Piece can only move forward");
+      if (firstMove.getEnd().equals(start) && board.checkIsJumping()) {
+        if (pieceCanJump(current, goal, player)) {
+          Space middle;
+          if (board.getSpace(firstMove.getStart().getRow(), firstMove.getStart().getCell()).getPiece().getColor() == Color.RED) {
+            middle = board.getSpace((current.getxCoordinate() + goal.getxCoordinate()) / 2,
+                (current.getCellIdx() + goal.getCellIdx()) / 2);
+          } else {
+            middle = board.getSpace((current.getxCoordinate() + goal.getxCoordinate()) / 2,
+                (current.getCellIdx() + goal.getCellIdx()) / 2);
+          }
+          board.queuePieceToBeEaten(middle.getPiece());
+          response.put(true, "This jump is valid.");
+        } else {
+          response.put(false, "No other valid jump.");
+        }
       } else {
-        response.put(true, "This move is valid.");
+        response.put(false, "Can only do one move per turn");
       }
     }
+
     return response;
   }
 }

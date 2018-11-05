@@ -6,6 +6,8 @@ import com.webcheckers.model.Piece.Type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Model class that holds the main board for model configurations
@@ -34,7 +36,10 @@ public class ModelBoard {
   private boolean pendingMove;
   //Checks if a jump action is being made
   private boolean isJumping;
+  //Collection of pieces to be eaten
+  private Queue<Piece> toBeEaten;
 
+  private Move firstMove;
   /**
    * Constructor for the model version of the board
    *
@@ -51,6 +56,7 @@ public class ModelBoard {
     this.isKinging = true;
     this.pendingMove = false;
     this.isJumping = false;
+    this.toBeEaten = new LinkedBlockingQueue<>();
     //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
@@ -110,6 +116,10 @@ public class ModelBoard {
   public void pendingMove(Move move) {
     this.pendingMove = true;
     this.move = move;
+
+    if (firstMove == null ){
+      firstMove = move;
+    }
   }
 
   /**
@@ -129,6 +139,10 @@ public class ModelBoard {
   public void madeMove(Move move) {
     this.madeMove = true;
     this.move = move;
+
+    if (firstMove != null){
+      firstMove = move;
+    }
   }
 
   /**
@@ -156,10 +170,10 @@ public class ModelBoard {
     Space current;
     Space endingSpace;
     if (redTurn) {
-      current = board[move.getStart().getRow()][move.getStart().getCell()];
+      current = board[firstMove.getStart().getRow()][firstMove.getStart().getCell()];
       endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
     } else {
-      current = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
+      current = board[7-firstMove.getStart().getRow()][7-firstMove.getStart().getCell()];
       endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
     }
     isKinging = isBecomingKing(current.getPiece(), move.getEnd().getRow());
@@ -169,15 +183,7 @@ public class ModelBoard {
     if (isJumping) {
       addPieceToSpace(current.getPiece(), endingSpace);
       current.unoccupy();
-      if (endingSpace.getPiece().getColor() == Color.RED) {
-        Space middle = getSpace((current.getxCoordinate() + endingSpace.getxCoordinate()) / 2,
-                (current.getCellIdx() + endingSpace.getCellIdx()) / 2);
-        eatPiece(middle.getPiece());
-      } else {
-        Space middle = getSpace((current.getxCoordinate() + endingSpace.getxCoordinate()) / 2,
-                (current.getCellIdx() + endingSpace.getCellIdx()) / 2);
-        eatPiece(middle.getPiece());
-      }
+      eatPieces();
     } else {
       addPieceToSpace(current.getPiece(), endingSpace);
       current.unoccupy();
@@ -198,6 +204,7 @@ public class ModelBoard {
     this.pendingMove = false;
     this.move = null;
     this.isJumping = false;
+    this.firstMove = null;
   }
 
   /**
@@ -250,6 +257,8 @@ public class ModelBoard {
       madeMove = false;
       move = null;
       pendingMove = false;
+      firstMove = null;
+      toBeEaten.clear();
     }
   }
 
@@ -285,6 +294,29 @@ public class ModelBoard {
   }
 
   /**
+   * Removes all pieces to be eaten from all 3 boards after a jump occurs
+   *
+   */
+  public void eatPieces(){
+
+    if (toBeEaten.peek() != null) {
+      toBeEaten.peek().getSpace().unoccupy();
+    }
+    for (Piece piece : toBeEaten) {
+      if (piece.getColor().equals(Color.RED)) {
+        redPieces.remove(piece);
+      } else {
+        whitePieces.remove(piece);
+      }
+
+      redPlayerBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
+      whitePlayerBoardView
+          .eatPiece(7 - piece.getSpace().getxCoordinate(), 7 - piece.getSpace().getCellIdx());
+    }
+    toBeEaten.clear();
+  }
+
+  /**
    * Removes a piece from all 3 boards after a jump occurs
    *
    * @param piece The piece that is being jumped/ate
@@ -299,5 +331,17 @@ public class ModelBoard {
 
     redPlayerBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
     whitePlayerBoardView.eatPiece(7-piece.getSpace().getxCoordinate(), 7-piece.getSpace().getCellIdx());
+  }
+
+  public Move getFirstMove(){
+    return this.move;
+  }
+
+  public void queuePieceToBeEaten(Piece pieceToBeEaten){
+    this.toBeEaten.add(pieceToBeEaten);
+  }
+
+  public boolean checkIsJumping(){
+    return this.isJumping;
   }
 }
