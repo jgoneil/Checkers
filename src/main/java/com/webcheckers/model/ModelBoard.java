@@ -4,9 +4,7 @@ import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Piece.Color;
 import com.webcheckers.model.Piece.Type;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import java.util.ArrayList;
@@ -42,7 +40,7 @@ public class ModelBoard {
   //Collection of pieces to be eaten
   private Queue<Piece> toBeEaten;
 
-  private Move firstMove;
+  private Stack<Move> pendingMoves;
 
   /**
    * Constructor for the model version of the board
@@ -60,6 +58,7 @@ public class ModelBoard {
     this.redTurn = true;
     this.redPieces = new ArrayList<>();
     this.whitePieces = new ArrayList<>();
+    this.pendingMoves = new Stack<>();
     this.isKinging = true;
     this.pendingMove = false;
     this.isJumping = false;
@@ -165,11 +164,7 @@ public class ModelBoard {
    */
   public void pendingMove(Move move) {
     this.pendingMove = true;
-    this.move = move;
-
-    if (firstMove == null) {
-      firstMove = move;
-    }
+    this.pendingMoves.push(move);
   }
 
   /**
@@ -189,10 +184,6 @@ public class ModelBoard {
   public void madeMove(Move move) {
     this.madeMove = true;
     this.move = move;
-
-    if (firstMove != null) {
-      firstMove = move;
-    }
   }
 
   /**
@@ -219,35 +210,39 @@ public class ModelBoard {
   public void submitMove() {
     Space current;
     Space endingSpace;
-    if (redTurn) {
-      current = board[firstMove.getStart().getRow()][firstMove.getStart().getCell()];
-      endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
-    } else {
-      current = board[7 - firstMove.getStart().getRow()][7 - firstMove.getStart().getCell()];
-      endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
-    }
-    isKinging = isBecomingKing(current.getPiece(), move.getEnd().getRow());
-    if (isKinging) {
-      current.getPiece().King();
-    }
-    if (isJumping) {
-      addPieceToSpace(current.getPiece(), endingSpace);
-      current.unoccupy();
-      eatPieces();
-    } else {
-      addPieceToSpace(current.getPiece(), endingSpace);
-      current.unoccupy();
-    }
-    Move actualMove = new Move(firstMove.getStart(), move.getEnd());
-    Move reverseMove = new Move(
-        new Position(7 - firstMove.getStart().getRow(), 7 - firstMove.getStart().getCell()),
-        new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
-    if (this.redTurn) {
-      redPlayerBoardView.makeMove(actualMove, isKinging);
-      whitePlayerBoardView.makeMove(reverseMove, isKinging);
-    } else {
-      redPlayerBoardView.makeMove(reverseMove, isKinging);
-      whitePlayerBoardView.makeMove(actualMove, isKinging);
+    while(!this.pendingMoves.empty()) {
+      Move firstMove = this.pendingMoves.lastElement();
+      this.pendingMoves.remove(firstMove);
+      if (redTurn) {
+        current = board[firstMove.getStart().getRow()][firstMove.getStart().getCell()];
+        endingSpace = board[firstMove.getEnd().getRow()][firstMove.getEnd().getCell()];
+      } else {
+        current = board[7 - firstMove.getStart().getRow()][7 - firstMove.getStart().getCell()];
+        endingSpace = board[7 - firstMove.getEnd().getRow()][7 - firstMove.getEnd().getCell()];
+      }
+      isKinging = isBecomingKing(current.getPiece(), firstMove.getEnd().getRow());
+      if (isKinging) {
+        current.getPiece().King();
+      }
+      if (isJumping) {
+        addPieceToSpace(current.getPiece(), endingSpace);
+        current.unoccupy();
+        eatPieces();
+      } else {
+        addPieceToSpace(current.getPiece(), endingSpace);
+        current.unoccupy();
+      }
+      Move actualMove = new Move(firstMove.getStart(), firstMove.getEnd());
+      Move reverseMove = new Move(
+              new Position(7 - firstMove.getStart().getRow(), 7 - firstMove.getStart().getCell()),
+              new Position(7 - firstMove.getEnd().getRow(), 7 - firstMove.getEnd().getCell()));
+      if (this.redTurn) {
+        redPlayerBoardView.makeMove(actualMove, isKinging);
+        whitePlayerBoardView.makeMove(reverseMove, isKinging);
+      } else {
+        redPlayerBoardView.makeMove(reverseMove, isKinging);
+        whitePlayerBoardView.makeMove(actualMove, isKinging);
+      }
     }
     this.redTurn = !redTurn;
     this.madeMove = false;
@@ -255,7 +250,6 @@ public class ModelBoard {
     this.pendingMove = false;
     this.move = null;
     this.isJumping = false;
-    this.firstMove = null;
   }
 
   /**
@@ -331,9 +325,15 @@ public class ModelBoard {
     if (pendingMove) {
       madeMove = false;
       move = null;
-      pendingMove = false;
-      firstMove = null;
-      toBeEaten.clear();
+      if (pendingMoves.size() == 1) {
+        pendingMoves.clear();
+        pendingMove = false;
+        toBeEaten.clear();
+      } else {
+        pendingMoves.pop();
+        pendingMove = true;
+        toBeEaten.remove();
+      }
     }
   }
 
@@ -408,10 +408,6 @@ public class ModelBoard {
         .eatPiece(7 - piece.getSpace().getxCoordinate(), 7 - piece.getSpace().getCellIdx());
   }
 
-  public Move getFirstMove() {
-    return this.firstMove;
-  }
-
   public void queuePieceToBeEaten(Piece pieceToBeEaten) {
     this.toBeEaten.add(pieceToBeEaten);
   }
@@ -420,8 +416,7 @@ public class ModelBoard {
     return this.isJumping;
   }
 
-  public Move getMove(){
-    return this.move;
+  public Move getPendingMove(){
+    return this.pendingMoves.peek();
   }
-
 }
