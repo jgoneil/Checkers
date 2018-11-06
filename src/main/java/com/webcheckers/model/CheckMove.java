@@ -1,8 +1,5 @@
 package com.webcheckers.model;
 
-import com.webcheckers.appl.GameLobby;
-import com.webcheckers.model.Piece.Color;
-
 import java.util.Map;
 import java.util.HashMap;
 
@@ -81,21 +78,25 @@ public class CheckMove {
    */
   private boolean canJump(Player player) {
     boolean canJump = false;
+    //Checking to see if a player is red or not
     if (player.isRed()) {
       for (Piece redPiece : board.getRedPieces()) {
-        if (redPiece.getSpace().getxCoordinate() - 2 >= 0
-            && redPiece.getSpace().getCellIdx() - 2 >= 0) {
-          Space upperLeft = board.getSpace(redPiece.getSpace().getxCoordinate() - 2,
-              redPiece.getSpace().getCellIdx() - 2);
+        //checking to see if a piece is within the bounds of the board (that it is not off the left or top sides)
+        if (redPiece.getXCoordinate() - 2 >= 0
+            && redPiece.getCellIdx() - 2 >= 0) {
+          Space upperLeft = board.getSpace(redPiece.getXCoordinate() - 2,
+              redPiece.getCellIdx() - 2);
+          //checking to see if that specific piece can jump another piece
           if (pieceCanJump(redPiece.getSpace(), upperLeft, player)) {
             canJump = true;
           }
         }
-
-        if (redPiece.getSpace().getxCoordinate() -2 >=0
-            && redPiece.getSpace().getCellIdx() + 2 <= 7) {
-          Space upperRight = board.getSpace(redPiece.getSpace().getxCoordinate() - 2,
-              redPiece.getSpace().getCellIdx() + 2);
+        //checking to see if a piece is within the bounds of the board (that it is not off the right or top sides)
+        if (redPiece.getXCoordinate() -2 >=0
+            && redPiece.getCellIdx() + 2 <= 7) {
+          Space upperRight = board.getSpace(redPiece.getXCoordinate() - 2,
+              redPiece.getCellIdx() + 2);
+          //checking to see if that specific piece can jump another piece
           if (pieceCanJump(redPiece.getSpace(), upperRight, player)) {
             canJump = true;
           }
@@ -103,19 +104,22 @@ public class CheckMove {
       }
     } else {
       for (Piece whitePiece : board.getWhitePieces()) {
-        if (whitePiece.getSpace().getxCoordinate() + 2 <= 7
-            && whitePiece.getSpace().getCellIdx() + 2 <= 7) {
-          Space upperLeft = board.getSpace(whitePiece.getSpace().getxCoordinate() + 2,
-              whitePiece.getSpace().getCellIdx() + 2);
+        //checking to see if a piece is within the bounds of the board (that it is not off the right or bottom sides)
+        if (whitePiece.getXCoordinate() + 2 <= 7
+            && whitePiece.getCellIdx() + 2 <= 7) {
+          Space upperLeft = board.getSpace(whitePiece.getXCoordinate() + 2,
+              whitePiece.getCellIdx() + 2);
+          //checking to see if that specific piece can jump another piece
           if (pieceCanJump(whitePiece.getSpace(), upperLeft, player)) {
             canJump = true;
           }
         }
-
-        if (whitePiece.getSpace().getxCoordinate() + 2 <= 7
-            && whitePiece.getSpace().getCellIdx() - 2 >= 0) {
-          Space upperRight = board.getSpace(whitePiece.getSpace().getxCoordinate() + 2,
-              whitePiece.getSpace().getCellIdx() - 2);
+        //checking to see if a piece is within the bounds of the board (that it is not off the left or bottom sides)
+        if (whitePiece.getXCoordinate() + 2 <= 7
+            && whitePiece.getCellIdx() - 2 >= 0) {
+          Space upperRight = board.getSpace(whitePiece.getXCoordinate() + 2,
+              whitePiece.getCellIdx() - 2);
+          //checking to see if that specific piece can jump another piece
           if (pieceCanJump(whitePiece.getSpace(), upperRight, player)) {
             canJump = true;
           }
@@ -165,13 +169,17 @@ public class CheckMove {
     Space current;
     Space goal;
     if (player.isRed()) {
+      //Sets the current and goal spaces for the potential move
       current = board.getSpace(start.getRow(), start.getCell());
       goal = board.getSpace(target.getRow(), target.getCell());
     } else {
+      //Sets the current and goal spaces for the potential move (flipping since it is the white player)
       current = board.getSpace(7 - start.getRow(), 7 - start.getCell());
       goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());
     }
+    //Checking to see if a player can preform a jump
     if (canJump(player)) {
+      //Checking to see if the current piece is preforming a jump
       if (pieceCanJump(current, goal, player)) {
         board.isJumping(true);
         response.put(true, "This jump is valid.");
@@ -179,7 +187,8 @@ public class CheckMove {
         response.put(false, "Attempted to move when jump is possible.");
       }
     } else {
-      if (goal.getColor().equals(Space.Color.WHITE)) {
+      //Checking to see if the goal space is a white space
+      if (goal.isWhite()) {
         response.put(false, "Attempted to move a piece to a white space.");
       } else if (goal.isOccupied()) {
         response.put(false, "Attempted to move a piece to an already occupied space");

@@ -49,7 +49,7 @@ public class PlayerBoardView implements Iterable {
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();
     for (int i = 0; i < length; i++) {
-      Row row = new Row(i, length, color, pieces);
+      Row row = new Row(i, length, pieces);
       board.add(row);
     }
   }

@@ -70,7 +70,7 @@ public class Player {
    * @return true/false if a player is the red player or not
    */
   public boolean isRed() {
-    return this.color == GameLobby.RED;
+    return this.color.equals(GameLobby.RED);
   }
 
   /**
@@ -79,7 +79,7 @@ public class Player {
    * @return true/false if a player is the white player or not
    */
   public boolean isWhite() {
-    return this.color == GameLobby.WHITE;
+    return this.color.equals(GameLobby.WHITE);
   }
 
   /**

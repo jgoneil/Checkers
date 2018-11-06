@@ -1,11 +1,7 @@
 package com.webcheckers.model;
 
 import com.webcheckers.appl.GameLobby;
-import com.webcheckers.model.Piece.Color;
 import com.webcheckers.model.Piece.Type;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +20,9 @@ public class ModelBoard {
   //Holds if the redPlayer has the active move or not
   private boolean redTurn;
   //Holds all red Pieces
-  private List<Piece> redPieces = new ArrayList<>();
+  private List<Piece> redPieces;
   //Holds all white Pieces
-  private List<Piece> whitePieces = new ArrayList<>();
+  private List<Piece> whitePieces;
   //Checks if a Piece is being Kinged in a given move
   private boolean isKinging;
   //Holds the information about the redPlayerBoardView
@@ -66,7 +62,7 @@ public class ModelBoard {
           Space space = new Space(i, j, Space.Color.BLACK);
           board[i][j] = space;
           //completing a check to see if a piece should be added to the space (space must be black for this to happen)
-          if (i >= 0 && i <= 2) {
+          if (i <= 2) {
             Piece whitePiece = new Piece(GameLobby.WHITE, space);
             space.occupy(whitePiece);
             whitePieces.add(whitePiece);
@@ -154,6 +150,8 @@ public class ModelBoard {
 
   /**
    * Sets the system to reflect a move has been validated but not submitted
+   *
+   * @param move the move that is pending
    */
   public void pendingMove(Move move) {
     this.pendingMove = true;
@@ -204,20 +202,25 @@ public class ModelBoard {
     Space current;
     Space endingSpace;
     if (redTurn) {
-      current = board[move.getStart().getRow()][move.getStart().getCell()];
-      endingSpace = board[move.getEnd().getRow()][move.getEnd().getCell()];
+      //Sets the current and ending spaces for the move
+      current = board[move.getStartRow()][move.getStartCell()];
+      endingSpace = board[move.getEndRow()][move.getEndCell()];
     } else {
-      current = board[7 - move.getStart().getRow()][7 - move.getStart().getCell()];
-      endingSpace = board[7 - move.getEnd().getRow()][7 - move.getEnd().getCell()];
+      //Sets the current and ending spaces for the move (flipped since it is the white player making the move)
+      current = board[7 - move.getStartRow()][7 - move.getStartCell()];
+      endingSpace = board[7 - move.getEndRow()][7 - move.getEndCell()];
     }
-    isKinging = isBecomingKing(current.getPiece(), move.getEnd().getRow());
+    isKinging = isBecomingKing(current.getPiece(), move.getEndRow());
+    //Checking to see if the piece is becoming a key or not
     if (isKinging){
       current.getPiece().King();
     }
+    //Checking to see if the piece is completing a jump
     if (isJumping) {
       addPieceToSpace(current.getPiece(), endingSpace);
       current.unoccupy();
-      if (endingSpace.getPiece().getColor() == Color.RED) {
+      //Removing the piece from the space
+      if (endingSpace.pieceIsRed()) {
         Space middle = getSpace((current.getxCoordinate() + endingSpace.getxCoordinate()) / 2,
                 (current.getCellIdx() + endingSpace.getCellIdx()) / 2);
         eatPiece(middle.getPiece());
@@ -230,9 +233,11 @@ public class ModelBoard {
       addPieceToSpace(current.getPiece(), endingSpace);
       current.unoccupy();
     }
+    //Setting up the reverse of the move for the opposite player's view
     Move reverseMove = new Move(
         new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
         new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
+    //Checking to see if the red player is making the move
     if (this.redTurn) {
       redPlayerBoardView.makeMove(move, isKinging);
       whitePlayerBoardView.makeMove(reverseMove, isKinging);
@@ -240,6 +245,7 @@ public class ModelBoard {
       redPlayerBoardView.makeMove(reverseMove, isKinging);
       whitePlayerBoardView.makeMove(move, isKinging);
     }
+    //Resetting values and cases
     this.redTurn = !redTurn;
     this.madeMove = false;
     this.isKinging = false;
@@ -362,14 +368,14 @@ public class ModelBoard {
    * @param piece The piece that is being jumped/ate
    */
   public void eatPiece(Piece piece){
-    if (piece.getColor().equals(Color.RED)){
+    if (piece.isRed()){
       redPieces.remove(piece);
     } else {
       whitePieces.remove(piece);
     }
     piece.getSpace().unoccupy();
 
-    redPlayerBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
-    whitePlayerBoardView.eatPiece(7-piece.getSpace().getxCoordinate(), 7-piece.getSpace().getCellIdx());
+    redPlayerBoardView.eatPiece(piece.getXCoordinate(), piece.getCellIdx());
+    whitePlayerBoardView.eatPiece(7-piece.getXCoordinate(), 7-piece.getCellIdx());
   }
 }
