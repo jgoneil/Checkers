@@ -1,9 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameLobby;
-import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Message;
-import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
 import spark.*;
 
