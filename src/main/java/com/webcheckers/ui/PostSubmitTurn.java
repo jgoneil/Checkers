@@ -7,7 +7,6 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 import com.google.gson.Gson;
-import com.webcheckers.model.ModelBoard;
 
 import java.util.Objects;
 

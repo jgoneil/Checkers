@@ -61,6 +61,24 @@ public class Piece {
   }
 
   /**
+   * Gets the xCoordinate of the space the piece is on
+   *
+   * @return the xCoordinae of the space the piece is on
+   */
+  public int getXCoordinate() {
+    return this.loc.getxCoordinate();
+  }
+
+  /**
+   * Gets the cellIdx of the space the piece is on
+   *
+   * @return the cellIdx of the space the piece is on
+   */
+  public int getCellIdx() {
+    return this.loc.getCellIdx();
+  }
+
+  /**
    * Getter for the type of piece
    *
    * @return the enum for the type of the piece

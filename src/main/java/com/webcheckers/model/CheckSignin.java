@@ -27,16 +27,12 @@ public class CheckSignin {
     if (username.equals("")) {
       return false;
     } else {
-      int spaces = 0;
       for (int i = 0; i < username.length(); i++) {
         int c = username.charAt(i);
         //Checking to make sure each entered letter is a character, number, or space
         if (!((65 <= c && c <= 90) || (97 <= c && c <= 122) || c == 32 ||
             (48 <= c && c <= 57))) {
           return false;
-        }
-        if (c == 32) {
-          spaces++;
         }
       }
 

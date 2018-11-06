@@ -2,12 +2,10 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Player;
 import com.google.gson.Gson;
 
 import com.webcheckers.model.Message;
-import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Position;
 import org.junit.jupiter.api.Test;

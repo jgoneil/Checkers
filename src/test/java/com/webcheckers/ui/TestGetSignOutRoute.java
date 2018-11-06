@@ -47,7 +47,7 @@ public class TestGetSignOutRoute {
         templateEngine = mock(TemplateEngine.class);
 
         users = new PlayerLobby();
-        CuT = new GetSignOutRoute(templateEngine,users);
+        CuT = new GetSignOutRoute(users);
     }
 
     @Test
