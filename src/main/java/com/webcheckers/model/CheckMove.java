@@ -187,7 +187,7 @@ public class CheckMove {
         response.put(false, "Attempted to move when jump is possible.");
       }
     } else {
-      //Checking to see if the goal space is a white space
+      //Checking to see if the goal space is a white space.
       if (goal.isWhite()) {
         response.put(false, "Attempted to move a piece to a white space.");
       } else if (goal.isOccupied()) {
