@@ -3,7 +3,6 @@ package com.webcheckers.ui;
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Message;
-import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Player;
 import spark.*;
 
