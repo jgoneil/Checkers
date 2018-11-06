@@ -1,7 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameLobby;
-import com.webcheckers.model.PlayerBoardView;
+import com.webcheckers.model.PlayerBoard;
 import com.webcheckers.model.Player;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Piece;
@@ -27,7 +27,7 @@ import java.util.Set;
 class TestGetGameRoute {
 
   private GetGameRoute CuT;
-  private static final PlayerBoardView NO_LOBBY = null;
+  private static final PlayerBoard NO_LOBBY = null;
   
   //friendly objects
   private PlayerLobby playerLobby;

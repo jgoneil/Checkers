@@ -25,10 +25,10 @@ public class ModelBoard {
   private List<Piece> whitePieces;
   //Checks if a Piece is being Kinged in a given move
   private boolean isKinging;
-  //Holds the information about the redPlayerBoardView
-  private final PlayerBoardView redPlayerBoardView;
-  //Holds the information about the whitePlayerBoardView
-  private final PlayerBoardView whitePlayerBoardView;
+  //Holds the information about the redPlayerBoard
+  private final PlayerBoard redPlayerBoard;
+  //Holds the information about the whitePlayerBoard
+  private final PlayerBoard whitePlayerBoard;
   //If a player has found a valid move to make
   private boolean pendingMove;
   //Checks if a jump action is being made
@@ -43,8 +43,8 @@ public class ModelBoard {
    */
   public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
     //Setting constants
-    this.redPlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.RED);
-    this.whitePlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.WHITE);
+    this.redPlayerBoard = new PlayerBoard(redPlayer, whitePlayer, length, GameLobby.RED);
+    this.whitePlayerBoard = new PlayerBoard(redPlayer, whitePlayer, length, GameLobby.WHITE);
     this.board = new Space[length][length];
     this.redTurn = true;
     this.redPieces = new ArrayList<>();
@@ -89,8 +89,8 @@ public class ModelBoard {
     //Setting constants
     this.board = new Space[length][length];
     this.redTurn = true;
-    this.redPlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.RED);
-    this.whitePlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.WHITE);
+    this.redPlayerBoard = new PlayerBoard(redPlayer, whitePlayer, length, GameLobby.RED);
+    this.whitePlayerBoard = new PlayerBoard(redPlayer, whitePlayer, length, GameLobby.WHITE);
     this.redPieces = new ArrayList<>();
     this.whitePieces = new ArrayList<>();
     this.isKinging = true;
@@ -135,8 +135,8 @@ public class ModelBoard {
    *
    * @return the playerBoardView for the red player
    */
-  public PlayerBoardView getRedPlayerBoardView() {
-    return this.redPlayerBoardView;
+  public PlayerBoard getRedPlayerBoard() {
+    return this.redPlayerBoard;
   }
 
   /**
@@ -144,8 +144,8 @@ public class ModelBoard {
    *
    * @return the playerBoardVire for the white player
    */
-  public PlayerBoardView getWhitePlayerBoardView() {
-    return this.whitePlayerBoardView;
+  public PlayerBoard getWhitePlayerBoard() {
+    return this.whitePlayerBoard;
   }
 
   /**
@@ -239,11 +239,11 @@ public class ModelBoard {
         new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
     //Checking to see if the red player is making the move
     if (this.redTurn) {
-      redPlayerBoardView.makeMove(move, isKinging);
-      whitePlayerBoardView.makeMove(reverseMove, isKinging);
+      redPlayerBoard.makeMove(move, isKinging);
+      whitePlayerBoard.makeMove(reverseMove, isKinging);
     } else {
-      redPlayerBoardView.makeMove(reverseMove, isKinging);
-      whitePlayerBoardView.makeMove(move, isKinging);
+      redPlayerBoard.makeMove(reverseMove, isKinging);
+      whitePlayerBoard.makeMove(move, isKinging);
     }
     //Resetting values and cases
     this.redTurn = !redTurn;
@@ -375,7 +375,7 @@ public class ModelBoard {
     }
     piece.getSpace().unoccupy();
 
-    redPlayerBoardView.eatPiece(piece.getXCoordinate(), piece.getCellIdx());
-    whitePlayerBoardView.eatPiece(7-piece.getXCoordinate(), 7-piece.getCellIdx());
+    redPlayerBoard.eatPiece(piece.getXCoordinate(), piece.getCellIdx());
+    whitePlayerBoard.eatPiece(7-piece.getXCoordinate(), 7-piece.getCellIdx());
   }
 }
