@@ -1,8 +1,6 @@
 package com.webcheckers.ui;
 
-
 import com.webcheckers.appl.GameLobby;
-import com.webcheckers.model.PlayerBoardView;
 
 import java.util.Objects;
 
@@ -10,7 +8,6 @@ import com.webcheckers.appl.PlayerLobby;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.TemplateEngine;
 import spark.Session;
 
 import static spark.Spark.halt;
@@ -23,21 +20,17 @@ import com.webcheckers.model.Player;
  */
 public class GetSignOutRoute implements Route {
 
-  private final TemplateEngine templateEngine;
   private final PlayerLobby playerLobby;
 
   /**
    * Constructor for class. Ensures both parameters are included in the declaration for use
    *
-   * @param templateEngine the formatting definition for spark to java messaging
    * @param playerLobby the class holding all of the currently connected playerLobby
    */
-  public GetSignOutRoute(final TemplateEngine templateEngine, final PlayerLobby playerLobby) {
+  public GetSignOutRoute(final PlayerLobby playerLobby) {
 
-    Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(playerLobby, "playerLobby must not be null");
 
-    this.templateEngine = templateEngine;
     this.playerLobby = playerLobby;
   }
 

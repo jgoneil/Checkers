@@ -2,17 +2,13 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Message;
-import com.webcheckers.model.ModelBoard;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Session;
 import com.google.gson.Gson;
-import com.webcheckers.model.Player;
 
 import java.util.Objects;
-
-import static spark.Spark.halt;
 
 /**
  * The UI Controller for handling the refresh to check the player turn

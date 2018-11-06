@@ -1,24 +1,16 @@
 package com.webcheckers.model;
 
 import com.webcheckers.appl.GameLobby;
-import com.webcheckers.model.Piece.Color;
 import com.webcheckers.model.Piece.Type;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Model class that holds the main board for model configurations
  */
 public class ModelBoard {
 
-  //Holds the information about the redPlayerBoardView
-  private final PlayerBoardView redPlayerBoardView;
-  //Holds the information about the whitePlayerBoardView
-  private final PlayerBoardView whitePlayerBoardView;
   //The 2-D array holding the spaces on the board
   private Space[][] board;
   //If a move has recently been made
@@ -28,11 +20,15 @@ public class ModelBoard {
   //Holds if the redPlayer has the active move or not
   private boolean redTurn;
   //Holds all red Pieces
-  private List<Piece> redPieces = new ArrayList<>();
+  private List<Piece> redPieces;
   //Holds all white Pieces
-  private List<Piece> whitePieces = new ArrayList<>();
+  private List<Piece> whitePieces;
   //Checks if a Piece is being Kinged in a given move
   private boolean isKinging;
+  //Holds the information about the redPlayerBoard
+  private final PlayerBoard redPlayerBoard;
+  //Holds the information about the whitePlayerBoard
+  private final PlayerBoard whitePlayerBoard;
   //If a player has found a valid move to make
   private boolean pendingMove;
   //Checks if a jump action is being made
@@ -51,9 +47,8 @@ public class ModelBoard {
    */
   public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
     //Setting constants
-    this.redPlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.RED);
-    this.whitePlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length,
-        GameLobby.WHITE);
+    this.redPlayerBoard = new PlayerBoard(redPlayer, whitePlayer, length, GameLobby.RED);
+    this.whitePlayerBoard = new PlayerBoard(redPlayer, whitePlayer, length, GameLobby.WHITE);
     this.board = new Space[length][length];
     this.redTurn = true;
     this.redPieces = new ArrayList<>();
@@ -73,7 +68,7 @@ public class ModelBoard {
           Space space = new Space(i, j, Space.Color.BLACK);
           board[i][j] = space;
           //completing a check to see if a piece should be added to the space (space must be black for this to happen)
-          if (i >= 0 && i <= 2) {
+          if (i <= 2) {
             Piece whitePiece = new Piece(GameLobby.WHITE, space);
             space.occupy(whitePiece);
             whitePieces.add(whitePiece);
@@ -100,8 +95,8 @@ public class ModelBoard {
     //Setting constants
     this.board = new Space[length][length];
     this.redTurn = true;
-    this.redPlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.RED);
-    this.whitePlayerBoardView = new PlayerBoardView(redPlayer, whitePlayer, length, GameLobby.WHITE);
+    this.redPlayerBoard = new PlayerBoard(redPlayer, whitePlayer, length, GameLobby.RED);
+    this.whitePlayerBoard = new PlayerBoard(redPlayer, whitePlayer, length, GameLobby.WHITE);
     this.redPieces = new ArrayList<>();
     this.whitePieces = new ArrayList<>();
     this.isKinging = true;
@@ -146,8 +141,8 @@ public class ModelBoard {
    *
    * @return the playerBoardView for the red player
    */
-  public PlayerBoardView getRedPlayerBoardView() {
-    return this.redPlayerBoardView;
+  public PlayerBoard getRedPlayerBoard() {
+    return this.redPlayerBoard;
   }
 
   /**
@@ -155,12 +150,14 @@ public class ModelBoard {
    *
    * @return the playerBoardVire for the white player
    */
-  public PlayerBoardView getWhitePlayerBoardView() {
-    return this.whitePlayerBoardView;
+  public PlayerBoard getWhitePlayerBoard() {
+    return this.whitePlayerBoard;
   }
 
   /**
    * Sets the system to reflect a move has been validated but not submitted
+   *
+   * @param move the move that is pending
    */
   public void pendingMove(Move move) {
     this.pendingMove = true;
@@ -237,13 +234,14 @@ public class ModelBoard {
               new Position(7 - firstMove.getStart().getRow(), 7 - firstMove.getStart().getCell()),
               new Position(7 - firstMove.getEnd().getRow(), 7 - firstMove.getEnd().getCell()));
       if (this.redTurn) {
-        redPlayerBoardView.makeMove(actualMove, isKinging);
-        whitePlayerBoardView.makeMove(reverseMove, isKinging);
+        redPlayerBoard.makeMove(actualMove, isKinging);
+        whitePlayerBoard.makeMove(reverseMove, isKinging);
       } else {
-        redPlayerBoardView.makeMove(reverseMove, isKinging);
-        whitePlayerBoardView.makeMove(actualMove, isKinging);
+        redPlayerBoard.makeMove(reverseMove, isKinging);
+        whitePlayerBoard.makeMove(actualMove, isKinging);
       }
     }
+    //Resetting values and cases
     this.redTurn = !redTurn;
     this.madeMove = false;
     this.isKinging = false;
@@ -375,17 +373,15 @@ public class ModelBoard {
   public void eatPieces() {
 
     for (Piece piece : toBeEaten) {
-      if (piece.getColor().equals(Color.RED)) {
+      if (piece.isRed()) {
         redPieces.remove(piece);
         piece.getSpace().unoccupy();
       } else {
         whitePieces.remove(piece);
         piece.getSpace().unoccupy();
       }
-
-      redPlayerBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
-      whitePlayerBoardView
-          .eatPiece(7 - piece.getSpace().getxCoordinate(), 7 - piece.getSpace().getCellIdx());
+      redPlayerBoard.eatPiece(piece.getXCoordinate(), piece.getCellIdx());
+      whitePlayerBoard.eatPiece(7 - piece.getXCoordinate(), 7 - piece.getCellIdx());
     }
     toBeEaten.clear();
   }
@@ -395,17 +391,15 @@ public class ModelBoard {
    *
    * @param piece The piece that is being jumped/ate
    */
-  public void eatPiece(Piece piece) {
-    if (piece.getColor().equals(Color.RED)) {
+  public void eatPiece(Piece piece){
+    if (piece.isRed()){
       redPieces.remove(piece);
     } else {
       whitePieces.remove(piece);
     }
     piece.getSpace().unoccupy();
-
-    redPlayerBoardView.eatPiece(piece.getSpace().getxCoordinate(), piece.getSpace().getCellIdx());
-    whitePlayerBoardView
-        .eatPiece(7 - piece.getSpace().getxCoordinate(), 7 - piece.getSpace().getCellIdx());
+    redPlayerBoard.eatPiece(piece.getXCoordinate(), piece.getCellIdx());
+    whitePlayerBoard.eatPiece(7 - piece.getXCoordinate(), 7 - piece.getCellIdx());
   }
 
   public void queuePieceToBeEaten(Piece pieceToBeEaten) {

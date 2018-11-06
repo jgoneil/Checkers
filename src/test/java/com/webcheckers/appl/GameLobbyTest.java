@@ -30,9 +30,9 @@ public class GameLobbyTest {
 
   @Test
   void testGetBoardView() {
-    assertNotNull(gameLobby.getBoardViewForPlayer(redPlayer));
-    assertNotNull(gameLobby.getBoardViewForPlayer(whitePlayer));
-    assertNull(gameLobby.getBoardViewForPlayer(new Player("NULL")));
+    assertNotNull(gameLobby.getBoardForPlayer(redPlayer));
+    assertNotNull(gameLobby.getBoardForPlayer(whitePlayer));
+    assertNull(gameLobby.getBoardForPlayer(new Player("NULL")));
   }
 
   @Test

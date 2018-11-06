@@ -49,34 +49,34 @@ public class GameLobby {
   }
 
   /**
-   * Getter for the PlayerBoardView for the red player (board shown in the rendered HTML page)
+   * Getter for the PlayerBoard for the red player (board shown in the rendered HTML page)
    *
-   * @return the PlayerBoardView associated to the red player for the active game session
+   * @return the PlayerBoard associated to the red player for the active game session
    */
-  public PlayerBoardView getRedPlayerBoardView() {
-    return modelBoard.getRedPlayerBoardView();
+  public PlayerBoard getRedPlayerBoard() {
+    return modelBoard.getRedPlayerBoard();
   }
 
   /**
-   * Getter for the PlayerBoardView for the white player (board shown in the rendered HTML page)
+   * Getter for the PlayerBoard for the white player (board shown in the rendered HTML page)
    *
-   * @return the PlayerBoardView associated to the white player for the active game session
+   * @return the PlayerBoard associated to the white player for the active game session
    */
-  public PlayerBoardView getWhiteBoadView() {
-    return modelBoard.getWhitePlayerBoardView();
+  public PlayerBoard getWhiteBoard() {
+    return modelBoard.getWhitePlayerBoard();
   }
 
   /**
-   * Getter for the PlayerBoardView for the specified player (board shown in the rendered HTML page)
+   * Getter for the PlayerBoard for the specified player (board shown in the rendered HTML page)
    *
-   * @param player the player attempting to retrieve their PlayerBoardView
-   * @return the PlayerBoardView associated to the specified player for the active game session
+   * @param player the player attempting to retrieve their PlayerBoard
+   * @return the PlayerBoard associated to the specified player for the active game session
    */
-  public PlayerBoardView getBoardViewForPlayer(Player player) {
+  public PlayerBoard getBoardForPlayer(Player player) {
     if (this.redPlayer.equals(player)) {
-      return modelBoard.getRedPlayerBoardView();
+      return modelBoard.getRedPlayerBoard();
     } else if (this.whitePlayer.equals(player)){
-      return modelBoard.getWhitePlayerBoardView();
+      return modelBoard.getWhitePlayerBoard();
     } else {
       return null;
     }

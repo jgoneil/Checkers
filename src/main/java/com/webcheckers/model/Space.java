@@ -1,7 +1,5 @@
 package com.webcheckers.model;
 
-import com.webcheckers.model.Piece;
-
 /**
  * Class that establishes spaces on the game board
  */
@@ -143,6 +141,15 @@ public class Space {
    */ 
   public boolean isPieceKing(){
     return this.piece.getType() == Piece.Type.KING;
+  }
+
+  /**
+   * Checks to see if a space is white or not
+   *
+   * @return true/false if the space is white
+   */
+  public boolean isWhite() {
+    return color == Color.WHITE;
   }
 
   /**

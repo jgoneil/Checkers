@@ -1,8 +1,5 @@
 package com.webcheckers.model;
 
-import com.webcheckers.model.Piece.Color;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -82,43 +79,50 @@ public class CheckMove {
    *
    * @return true/false based on if the player has a piece that can jump.
    */
-  private boolean canJump(List<Piece> redPieces, List<Piece> whitePieces) {
+  private boolean canJump(Player player) {
     boolean canJump = false;
-    if (board.checkRedTurn()) {
-      for (Piece redPiece : redPieces) {
-        if (redPiece.getSpace().getxCoordinate() - 2 >= 0
-                && redPiece.getSpace().getCellIdx() - 2 >= 0) {
-          Space upperLeft = board.getSpace(redPiece.getSpace().getxCoordinate() - 2,
-                  redPiece.getSpace().getCellIdx() - 2);
+    //Checking to see if a player is red or not
+    if (player.isRed()) {
+      for (Piece redPiece : board.getRedPieces()) {
+        //checking to see if a piece is within the bounds of the board (that it is not off the left or top sides)
+        if (redPiece.getXCoordinate() - 2 >= 0
+            && redPiece.getCellIdx() - 2 >= 0) {
+          Space upperLeft = board.getSpace(redPiece.getXCoordinate() - 2,
+              redPiece.getCellIdx() - 2);
+          //checking to see if that specific piece can jump another piece
           if (pieceCanJump(redPiece.getSpace(), upperLeft)) {
             canJump = true;
           }
         }
-
-        if (redPiece.getSpace().getxCoordinate() - 2 >= 0
-                && redPiece.getSpace().getCellIdx() + 2 <= 7) {
-          Space upperRight = board.getSpace(redPiece.getSpace().getxCoordinate() - 2,
-                  redPiece.getSpace().getCellIdx() + 2);
+        //checking to see if a piece is within the bounds of the board (that it is not off the right or top sides)
+        if (redPiece.getXCoordinate() -2 >=0
+            && redPiece.getCellIdx() + 2 <= 7) {
+          Space upperRight = board.getSpace(redPiece.getXCoordinate() - 2,
+              redPiece.getCellIdx() + 2);
+          //checking to see if that specific piece can jump another piece
           if (pieceCanJump(redPiece.getSpace(), upperRight)) {
             canJump = true;
           }
         }
       }
     } else {
-      for (Piece whitePiece : whitePieces) {
-        if (whitePiece.getSpace().getxCoordinate() + 2 <= 7
-                && whitePiece.getSpace().getCellIdx() + 2 <= 7) {
-          Space upperLeft = board.getSpace(whitePiece.getSpace().getxCoordinate() + 2,
-                  whitePiece.getSpace().getCellIdx() + 2);
+      for (Piece whitePiece : board.getWhitePieces()) {
+        //checking to see if a piece is within the bounds of the board (that it is not off the right or bottom sides)
+        if (whitePiece.getXCoordinate() + 2 <= 7
+            && whitePiece.getCellIdx() + 2 <= 7) {
+          Space upperLeft = board.getSpace(whitePiece.getXCoordinate() + 2,
+              whitePiece.getCellIdx() + 2);
+          //checking to see if that specific piece can jump another piece
           if (pieceCanJump(whitePiece.getSpace(), upperLeft)) {
             canJump = true;
           }
         }
-
-        if (whitePiece.getSpace().getxCoordinate() + 2 <= 7
-                && whitePiece.getSpace().getCellIdx() - 2 >= 0) {
-          Space upperRight = board.getSpace(whitePiece.getSpace().getxCoordinate() + 2,
-                  whitePiece.getSpace().getCellIdx() - 2);
+        //checking to see if a piece is within the bounds of the board (that it is not off the left or bottom sides)
+        if (whitePiece.getXCoordinate() + 2 <= 7
+            && whitePiece.getCellIdx() - 2 >= 0) {
+          Space upperRight = board.getSpace(whitePiece.getXCoordinate() + 2,
+              whitePiece.getCellIdx() - 2);
+          //checking to see if that specific piece can jump another piece
           if (pieceCanJump(whitePiece.getSpace(), upperRight)) {
             canJump = true;
           }
@@ -167,31 +171,37 @@ public class CheckMove {
     Space current;
     Space goal;
     if (player.isRed()) {
+      //Sets the current and goal spaces for the potential move
       current = board.getSpace(start.getRow(), start.getCell());
       goal = board.getSpace(target.getRow(), target.getCell());
     } else {
+      //Sets the current and goal spaces for the potential move (flipping since it is the white player)
       current = board.getSpace(7 - start.getRow(), 7 - start.getCell());
       goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());
     }
-    if (board.checkPendingMove()) {
-      canLastJump();
+    //Checking to see if a player can preform a jump
+    if (canJump(player)) {
+      //Checking to see if the current piece is preforming a jump
+      if (pieceCanJump(current, goal)) {
+        board.isJumping(true);
+        response.put(true, "This jump is valid.");
+      } else {
+        response.put(false, "Attempted to move when jump is possible.");
+      }
     } else {
-      if (canJump(board.getRedPieces(), board.getWhitePieces())) {
-        if (pieceCanJump(current, goal)) {
-          board.isJumping(true);
-          Space middle;
-          if (current.getPiece().getColor() == Color.RED) {
-            middle = board.getSpace((current.getxCoordinate() + goal.getxCoordinate()) / 2,
-                    (current.getCellIdx() + goal.getCellIdx()) / 2);
-          } else {
-            middle = board.getSpace((current.getxCoordinate() + goal.getxCoordinate()) / 2,
-                    (current.getCellIdx() + goal.getCellIdx()) / 2);
-          }
-          board.queuePieceToBeEaten(middle.getPiece());
-          response.put(true, "This jump is valid.");
-        } else {
-          response.put(false, "Attempted to move when jump is possible.");
-        }
+      //Checking to see if the goal space is a white space
+      if (goal.isWhite()) {
+        response.put(false, "Attempted to move a piece to a white space.");
+      } else if (goal.isOccupied()) {
+        response.put(false, "Attempted to move a piece to an already occupied space");
+      } else if (!isMovingOne(start, target)) {
+        response.put(false, "Attempted to move piece too far.");
+      } else if (!isMovingDiagonal(start, target)) {
+        response.put(false, "Pieces can only move diagonally.");
+      } else if (!isMovingForward(start, target) && current.isPieceKing()) {
+        response.put(true, "This is a valid move for a King.");
+      } else if (!isMovingForward(start, target)){
+        response.put(false, "Single pieces can only move forward.");
       } else {
         if (goal.getColor().equals(Space.Color.WHITE)) {
           response.put(false, "Attempted to move a piece to a white space.");
@@ -214,40 +224,40 @@ public class CheckMove {
   public boolean canLastJump() {
     boolean canJump = false;
     Space origin = board.getSpace(board.getPendingMove().getEnd().getRow(),
-            board.getMove().getEnd().getCell());
+            board.getPendingMove().getEnd().getCell());
 
     if (board.checkRedTurn()) {
-      if (board.getMove().getEnd().getRow() - 2 >= 0
-              && board.getMove().getEnd().getCell() - 2 >= 0) {
-        Space upperLeft = board.getSpace(board.getMove().getEnd().getRow() - 2,
-                board.getMove().getEnd().getCell() - 2);
+      if (board.getPendingMove().getEnd().getRow() - 2 >= 0
+              && board.getPendingMove().getEnd().getCell() - 2 >= 0) {
+        Space upperLeft = board.getSpace(board.getPendingMove().getEnd().getRow() - 2,
+                board.getPendingMove().getEnd().getCell() - 2);
         if (pieceCanJump(origin, upperLeft)) {
           canJump = true;
         }
       }
 
-      if (board.getMove().getEnd().getRow() - 2 >= 0
-              && board.getMove().getEnd().getCell() + 2 <= 7) {
-        Space upperRight = board.getSpace(board.getMove().getEnd().getRow() - 2,
-                board.getMove().getEnd().getCell() + 2);
+      if (board.getPendingMove().getEnd().getRow() - 2 >= 0
+              && board.getPendingMove().getEnd().getCell() + 2 <= 7) {
+        Space upperRight = board.getSpace(board.getPendingMove().getEnd().getRow() - 2,
+                board.getPendingMove().getEnd().getCell() + 2);
         if (pieceCanJump(origin, upperRight)) {
           canJump = true;
         }
       }
 
     } else {
-      if (board.getMove().getEnd().getRow() - 2 >= 0
-              && board.getMove().getEnd().getCell() - 2 >= 0) {
-        Space upperLeft = board.getSpace(board.getMove().getEnd().getRow() - 2,
-                board.getMove().getEnd().getCell() - 2);
+      if (board.getPendingMove().getEnd().getRow() - 2 >= 0
+              && board.getPendingMove().getEnd().getCell() - 2 >= 0) {
+        Space upperLeft = board.getSpace(board.getPendingMove().getEnd().getRow() - 2,
+                board.getPendingMove().getEnd().getCell() - 2);
         if (pieceCanJump(origin, upperLeft)) {
           canJump = true;
         }
       }
-      if (board.getMove().getEnd().getRow() - 2 >= 0
-              && board.getMove().getEnd().getCell() + 2 <= 7) {
-        Space upperRight = board.getSpace(board.getMove().getEnd().getRow() - 2,
-                board.getMove().getEnd().getCell() + 2);
+      if (board.getPendingMove().getEnd().getRow() - 2 >= 0
+              && board.getPendingMove().getEnd().getCell() + 2 <= 7) {
+        Space upperRight = board.getSpace(board.getPendingMove().getEnd().getRow() - 2,
+                board.getPendingMove().getEnd().getCell() + 2);
         if (pieceCanJump(origin, upperRight)) {
           canJump = true;
         }
