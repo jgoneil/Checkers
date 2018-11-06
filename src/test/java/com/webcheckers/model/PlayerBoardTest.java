@@ -3,23 +3,21 @@ package com.webcheckers.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import com.webcheckers.model.Piece;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 @Tag("Application-tier")
-public class PlayerBoardViewTest {
+public class PlayerBoardTest {
 
   private Player whitePlayer;
   private Player redPLayer;
-  private PlayerBoardView playerBoardView1;
+  private PlayerBoard playerBoard1;
   private ModelBoard modelBoard;
   private Piece piece;
-  private PlayerBoardView boardViewTesting;
+  private PlayerBoard boardViewTesting;
 
   @BeforeEach
   public void setUp() throws Exception {
@@ -28,29 +26,29 @@ public class PlayerBoardViewTest {
     this.piece = new Piece("red", new Space(4, 1, Space.Color.BLACK));
     List<Piece> pieces = new ArrayList<>();
     pieces.add(piece);
-    this.boardViewTesting = new PlayerBoardView(redPLayer, whitePlayer, 8, "red", pieces);
-    this.playerBoardView1 = new PlayerBoardView(redPLayer, whitePlayer, 8, "red");
+    this.boardViewTesting = new PlayerBoard(redPLayer, whitePlayer, 8, "red", pieces);
+    this.playerBoard1 = new PlayerBoard(redPLayer, whitePlayer, 8, "red");
     this.modelBoard = new ModelBoard(redPLayer, whitePlayer, 8);
   }
 
   @Test
   void getWhitePlayer() {
-    assertEquals(whitePlayer, playerBoardView1.getWhitePlayer());
+    assertEquals(whitePlayer, playerBoard1.getWhitePlayer());
   }
 
   @Test
   void getRedPlayer() {
-    assertEquals(redPLayer, playerBoardView1.getRedPlayer());
+    assertEquals(redPLayer, playerBoard1.getRedPlayer());
   }
 
   @Test
   void getBoard() {
-    assertNotNull(playerBoardView1.getBoard());
+    assertNotNull(playerBoard1.getBoard());
   }
 
   @Test
   void getRow() {
-    assertNotNull(playerBoardView1.getRow(0));
+    assertNotNull(playerBoard1.getRow(0));
   }
 
   @Test
@@ -61,7 +59,7 @@ public class PlayerBoardViewTest {
 
   @Test
   void getIterator() {
-    assertNotNull(playerBoardView1.iterator());
+    assertNotNull(playerBoard1.iterator());
   }
 
   @Test

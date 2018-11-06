@@ -38,4 +38,40 @@ public class Move {
   public Position getEnd() {
     return this.end;
   }
+
+  /**
+   * Gets the the row of the starting position in the move
+   *
+   * @return the row of the starting position in the move
+   */
+  int getStartRow() {
+    return this.start.getRow();
+  }
+
+  /**
+   * Gets the cell of the starting position in the move
+   *
+   * @return the cell of the starting position in the move
+   */
+  int getStartCell() {
+    return this.start.getCell();
+  }
+
+  /**
+   * Gets the row of the ending position in the move
+   *
+   * @return the row of the ending position in the move
+   */
+  int getEndRow() {
+    return this.end.getRow();
+  }
+
+  /**
+   * Gets the cell of the starting position in the move
+   *
+   * @return the cell of the ending position in the move
+   */
+  int getEndCell() {
+    return this.end.getCell();
+  }
 }

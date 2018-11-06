@@ -34,13 +34,12 @@ public class Row implements Iterable {
    *
    * @param xCoordinate the xCoordinate of each space for the row of the board
    * @param length the length of the side of the board
-   * @param color the color of the player for the row being generated
    * @param pieces the list of pieces for the game
    */
-  public Row(int xCoordinate, int length, String color, List<Piece> pieces) {
+  public Row(int xCoordinate, int length, List<Piece> pieces) {
     this.row = new ArrayList<>();
     this.index = xCoordinate;
-    fillRowAndPieces(length, color, pieces);
+    fillRowAndPieces(length, pieces);
   }
 
   /**
@@ -87,10 +86,9 @@ public class Row implements Iterable {
    * Fills the arrayList of spaces for the row being created
    *
    * @param length the length of the side of the board
-   * @param color the color of the Player the row is being created for
    * @param pieces the pieces being added to the space
    */
-  private void fillRowAndPieces(int length, String color, List<Piece> pieces) {
+  private void fillRowAndPieces(int length, List<Piece> pieces) {
     for (int i = 0; i < length; i++) {
       if ((this.index + i) % 2 == 0) {
         row.add(new Space(this.index, i, Space.Color.WHITE));
