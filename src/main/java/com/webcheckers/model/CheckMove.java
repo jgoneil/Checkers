@@ -220,49 +220,4 @@ public class CheckMove {
     }
     return response;
   }
-
-  public boolean canLastJump() {
-    boolean canJump = false;
-    Space origin = board.getSpace(board.getPendingMove().getEnd().getRow(),
-            board.getPendingMove().getEnd().getCell());
-
-    if (board.checkRedTurn()) {
-      if (board.getPendingMove().getEnd().getRow() - 2 >= 0
-              && board.getPendingMove().getEnd().getCell() - 2 >= 0) {
-        Space upperLeft = board.getSpace(board.getPendingMove().getEnd().getRow() - 2,
-                board.getPendingMove().getEnd().getCell() - 2);
-        if (pieceCanJump(origin, upperLeft)) {
-          canJump = true;
-        }
-      }
-
-      if (board.getPendingMove().getEnd().getRow() - 2 >= 0
-              && board.getPendingMove().getEnd().getCell() + 2 <= 7) {
-        Space upperRight = board.getSpace(board.getPendingMove().getEnd().getRow() - 2,
-                board.getPendingMove().getEnd().getCell() + 2);
-        if (pieceCanJump(origin, upperRight)) {
-          canJump = true;
-        }
-      }
-
-    } else {
-      if (board.getPendingMove().getEnd().getRow() - 2 >= 0
-              && board.getPendingMove().getEnd().getCell() - 2 >= 0) {
-        Space upperLeft = board.getSpace(board.getPendingMove().getEnd().getRow() - 2,
-                board.getPendingMove().getEnd().getCell() - 2);
-        if (pieceCanJump(origin, upperLeft)) {
-          canJump = true;
-        }
-      }
-      if (board.getPendingMove().getEnd().getRow() - 2 >= 0
-              && board.getPendingMove().getEnd().getCell() + 2 <= 7) {
-        Space upperRight = board.getSpace(board.getPendingMove().getEnd().getRow() - 2,
-                board.getPendingMove().getEnd().getCell() + 2);
-        if (pieceCanJump(origin, upperRight)) {
-          canJump = true;
-        }
-      }
-    }
-    return canJump;
-  }
 }

@@ -92,8 +92,7 @@ public class TestPostMoveCheck {
   @Test
   void madeMove() {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
-    gameLobby.madeMove(new Move(position34, position45));
-    gameLobby.setPendingMove(true);
+    gameLobby.setMove(true);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

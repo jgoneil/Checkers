@@ -174,6 +174,14 @@ public class ModelBoard {
   }
 
   /**
+   * Clear all of the pending moves from the board
+   */
+  public void clearPendingMove() {
+    this.pendingMove = false;
+    this.pendingMoves.clear();
+  }
+
+  /**
    * Sets the system to state a move was made
    *
    * @param move the move that was made
@@ -208,7 +216,7 @@ public class ModelBoard {
     Space current;
     Space endingSpace;
     while(!this.pendingMoves.empty()) {
-      Move firstMove = this.pendingMoves.lastElement();
+      Move firstMove = this.pendingMoves.get(0);
       this.pendingMoves.remove(firstMove);
       if (redTurn) {
         current = board[firstMove.getStart().getRow()][firstMove.getStart().getCell()];
@@ -224,15 +232,17 @@ public class ModelBoard {
       if (isJumping) {
         addPieceToSpace(current.getPiece(), endingSpace);
         current.unoccupy();
-        eatPieces();
+        Space middle = board[(current.getxCoordinate() + endingSpace.getxCoordinate()) / 2][
+                (current.getCellIdx() + endingSpace.getCellIdx()) / 2];
+        eatPiece(middle.getPiece());
       } else {
         addPieceToSpace(current.getPiece(), endingSpace);
         current.unoccupy();
       }
       Move actualMove = new Move(firstMove.getStart(), firstMove.getEnd());
       Move reverseMove = new Move(
-              new Position(7 - firstMove.getStart().getRow(), 7 - firstMove.getStart().getCell()),
-              new Position(7 - firstMove.getEnd().getRow(), 7 - firstMove.getEnd().getCell()));
+              new Position(7 - firstMove.getStartRow(), 7 - firstMove.getStartCell()),
+              new Position(7 - firstMove.getEndRow(), 7 - firstMove.getEndCell()));
       if (this.redTurn) {
         redPlayerBoard.makeMove(actualMove, isKinging);
         whitePlayerBoard.makeMove(reverseMove, isKinging);
@@ -326,11 +336,9 @@ public class ModelBoard {
       if (pendingMoves.size() == 1) {
         pendingMoves.clear();
         pendingMove = false;
-        toBeEaten.clear();
       } else {
         pendingMoves.pop();
         pendingMove = true;
-        toBeEaten.remove();
       }
     }
   }

@@ -64,6 +64,10 @@ public class PostMoveCheck implements Route {
       return gson.toJson(new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
     }
 
+    if (gameLobby.checkMadeMove()) {
+      return gson.toJson(new Message(Message.Type.error, "Can only do one move per turn"));
+    }
+
     String customJson = request.body();
     Move move = gson.fromJson(customJson, Move.class);
 

@@ -197,12 +197,19 @@ public class GameLobby {
   }
 
   /**
+   * Clears the pendingMoves on the model board
+   */
+  public void clearPendingMove() {
+    this.modelBoard.clearPendingMove();
+  }
+
+  /**
    * Checks to see if a move has happened but is pending or not
    *
    * @return true/false based on if a move is pending
    */
   public boolean checkPendingMove() {
-    return this.modelBoard.checkPendingMove() && !this.checkMove.canLastJump();
+    return this.modelBoard.checkPendingMove();
   }
 
   /**
