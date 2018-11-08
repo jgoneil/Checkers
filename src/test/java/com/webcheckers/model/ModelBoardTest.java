@@ -49,7 +49,7 @@ class ModelBoardTest {
 
   @Test
   void submitMove() {
-    modelBoard.madeMove(new Move(new Position(5, 0), new Position(6, 1)));
+    modelBoard.pendingMove(new Move(new Position(5, 0), new Position(6, 1)));
     modelBoard.submitMove();
   }
 
@@ -96,7 +96,7 @@ class ModelBoardTest {
   void isBecomingKingTest(){
     Piece piece = new Piece("red", new Space(6, 1, Color.BLACK));
     Move move = (new Move(new Position(6,1), new Position(7,0)));
-    modelBoard.madeMove(move);
+    modelBoard.pendingMove(move);
     Space space = new Space(7, 0 , Color.BLACK);
     modelBoard.addPieceToSpace(piece, space);
 
@@ -131,7 +131,7 @@ class ModelBoardTest {
     Piece whitePiece = new Piece("white", new Space(4, 1, Color.BLACK));
     Move move = (new Move(new Position(5, 0), new Position(3, 2)));
     modelBoard.getWhitePieces().add(whitePiece);
-    modelBoard.madeMove(move);
+    modelBoard.pendingMove(move);
     modelBoard.eatPiece(whitePiece);
     modelBoard.addPieceToSpace(redPiece, new Space(3, 2, Color.BLACK));
 
@@ -150,7 +150,7 @@ class ModelBoardTest {
     Piece whitePiece = new Piece("white", new Space(3, 2, Color.BLACK));
     Move move = (new Move(new Position(3, 2), new Position(5, 0)));
     modelBoard.getRedPieces().add(redPiece);
-    modelBoard.madeMove(move);
+    modelBoard.pendingMove(move);
     modelBoard.eatPiece(redPiece);
     modelBoard.addPieceToSpace(whitePiece, new Space(5, 0, Color.BLACK));
 

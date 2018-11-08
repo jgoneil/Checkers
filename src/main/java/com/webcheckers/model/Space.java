@@ -140,7 +140,9 @@ public class Space {
    * @return true/false if the piece on this space is of type KING
    */ 
   public boolean isPieceKing(){
-    return this.piece.getType() == Piece.Type.KING;
+    if (this.piece != null) {
+      return this.piece.getType() == Piece.Type.KING;
+    } return false;
   }
 
   /**

@@ -23,6 +23,7 @@ public class PostMoveCheck implements Route {
 
   /**
    * Main method for POST check of a valid move
+   *
    * @param gson the gson parser for JQuery Requests/Responses
    */
   public PostMoveCheck(final Gson gson) {
@@ -50,8 +51,8 @@ public class PostMoveCheck implements Route {
       return gson.toJson(new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
     }
 
-    if(!gameLobby.verifyInGame(playerUsername)) {
-      if(this.resignedPlayer == null) {
+    if (!gameLobby.verifyInGame(playerUsername)) {
+      if (this.resignedPlayer == null) {
         if (gameLobby.checkRedPlayer(playerUsername)) {
           this.resignedPlayer = gameLobby.getWhitePlayer();
         } else {
@@ -63,27 +64,29 @@ public class PostMoveCheck implements Route {
       return gson.toJson(new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
     }
 
+    if (gameLobby.checkMadeMove()) {
+      return gson.toJson(new Message(Message.Type.error, "Can only do one move per turn"));
+    }
+
     String customJson = request.body();
     Move move = gson.fromJson(customJson, Move.class);
 
-    if (!gameLobby.checkPendingMove()) {
-      Map<Boolean, String> resultFromCheck;
-      if (gameLobby.checkRedPlayer(playerUsername)) {
-        resultFromCheck = gameLobby.validateMove(move.getStart(), move.getEnd(), gameLobby.getRedPlayer());
-      } else {
-        resultFromCheck = gameLobby.validateMove(move.getStart(), move.getEnd(), gameLobby.getWhitePlayer());
-      }
-      if (resultFromCheck.containsKey(true)) {
-        gameLobby.pendingMove(move);
-        Message message = new Message(Message.Type.info, resultFromCheck.get(true));
-        return gson.toJson(message);
-      } else {
-        Message message = new Message(Message.Type.error, resultFromCheck.get(false));
-        return gson.toJson(message);
-      }
+    Map<Boolean, String> resultFromCheck;
+    if (gameLobby.checkRedPlayer(playerUsername)) {
+      resultFromCheck = gameLobby
+          .validateMove(move.getStart(), move.getEnd(), gameLobby.getRedPlayer());
     } else {
-      Message message = new Message(Message.Type.error, "Can only do one move per turn");
+      resultFromCheck = gameLobby
+          .validateMove(move.getStart(), move.getEnd(), gameLobby.getWhitePlayer());
+    }
+    if (resultFromCheck.containsKey(true)) {
+      gameLobby.pendingMove(move);
+      Message message = new Message(Message.Type.info, resultFromCheck.get(true));
+      return gson.toJson(message);
+    } else {
+      Message message = new Message(Message.Type.error, resultFromCheck.get(false));
       return gson.toJson(message);
     }
+
   }
 }

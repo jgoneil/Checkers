@@ -25,14 +25,11 @@ class CheckMoveTest {
   private Position position23;
   private Position position50;
   private Position position32;
-  private Position position45;
-  private Position position41;
-  private Position position36;
-  private Position position52;
-  private Position position56;
 
   // White square
   private Position position44;
+
+  private Move pendingMove1;
 
   @BeforeEach
   void setUp() {
@@ -51,16 +48,10 @@ class CheckMoveTest {
     position63 = new Position(6, 3);
     position23 = new Position(2, 3);
     position44 = new Position(4, 4);
-
-    position32 = new Position(3,2);
-    position45 = new Position(4,5);
-    position36 = new Position(3,6);
-
     position50 = new Position(5, 0);
-    position41 = new Position(4, 1);
     position32 = new Position(3, 2);
-    position52 = new Position(5,2);
-    position56 = new Position(5,6);
+
+    pendingMove1 = null;
   }
 
   @AfterEach
@@ -72,30 +63,9 @@ class CheckMoveTest {
 
   @Test
   void validateMoveTest_ValidMove() {
-    //Single Valid Move
     assertTrue(checkMove.validateMove(position54, position43, redPlayerMock).containsKey(true));
+    modelBoard.setMove(true);
     assertTrue(checkMove.validateMove(position54, position43, whitePlayerMock).containsKey(true));
-  }
-  @Test
-  void validateKingMoveTest_Valid(){
-    //King pieces for move
-    Space kingSpace1 = modelBoard.getSpace(position47.getRow(), position47.getCell());
-    kingSpace1.occupy(new Piece("red", kingSpace1));
-    kingSpace1.getPiece().King();
-
-    Space kingSpace2 =  modelBoard.getSpace(position45.getRow(), position45.getCell());
-    kingSpace2.occupy(new Piece("white", kingSpace2));
-    kingSpace2.getPiece().King();
-
-    //Clear target space
-    modelBoard.eatPiece(modelBoard.getSpace(position54.getRow(), position54.getCell()).getPiece());
-    modelBoard.eatPiece(modelBoard.getSpace(position52.getRow(), position52.getCell()).getPiece());
-    modelBoard.eatPiece(modelBoard.getSpace(position50.getRow(), position50.getCell()).getPiece());
-    modelBoard.eatPiece(modelBoard.getSpace(position56.getRow(), position56.getCell()).getPiece());
-
-    //King Valid Backward Move
-    assertTrue(checkMove.validateMove(position47, position56, redPlayerMock).containsKey(true));
-    assertTrue(checkMove.validateMove(position45, position36, whitePlayerMock).containsKey(true));
   }
 
   @Test
@@ -106,8 +76,8 @@ class CheckMoveTest {
     assertTrue(checkMove.validateMove(position54, position47, redPlayerMock).containsKey(false));
     assertTrue(checkMove.validateMove(position54, position47, whitePlayerMock).containsKey(false));
 
-    // Single attempt to move backward
-    assertTrue(checkMove.validateMove(position43, position54, redPlayerMock).containsKey(false));
+    // move backward
+    assertTrue(checkMove.validateMove(position34, position43, redPlayerMock).containsKey(false));
     assertTrue(checkMove.validateMove(position54, position63, whitePlayerMock).containsKey(false));
 
     // move to white

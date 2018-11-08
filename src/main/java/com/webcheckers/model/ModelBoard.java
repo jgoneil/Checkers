@@ -3,8 +3,8 @@ package com.webcheckers.model;
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Piece.Type;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Model class that holds the main board for model configurations
@@ -15,8 +15,6 @@ public class ModelBoard {
   private Space[][] board;
   //If a move has recently been made
   private boolean madeMove;
-  //The move made
-  private Move move;
   //Holds if the redPlayer has the active move or not
   private boolean redTurn;
   //Holds all red Pieces
@@ -33,6 +31,10 @@ public class ModelBoard {
   private boolean pendingMove;
   //Checks if a jump action is being made
   private boolean isJumping;
+  //Checks if submission can happen
+  private boolean canSubmit = false;
+  //Stack of all pending moves waiting to be submitted on a player's turn
+  private Stack<Move> pendingMoves;
 
   /**
    * Constructor for the model version of the board
@@ -49,6 +51,7 @@ public class ModelBoard {
     this.redTurn = true;
     this.redPieces = new ArrayList<>();
     this.whitePieces = new ArrayList<>();
+    this.pendingMoves = new Stack<>();
     this.isKinging = true;
     this.pendingMove = false;
     this.isJumping = false;
@@ -155,7 +158,7 @@ public class ModelBoard {
    */
   public void pendingMove(Move move) {
     this.pendingMove = true;
-    this.move = move;
+    this.pendingMoves.push(move);
   }
 
   /**
@@ -168,13 +171,29 @@ public class ModelBoard {
   }
 
   /**
-   * Sets the system to state a move was made
+   * Tells the system that a move can or can't be submitted
    *
-   * @param move the move that was made
+   * @param submit true/false based on if a move can or cannot be submitted
    */
-  public void madeMove(Move move) {
-    this.madeMove = true;
-    this.move = move;
+  public void setSubmit(boolean submit) {
+    this.canSubmit = submit;
+  }
+
+  /**
+   * Checks to see if a move can be submitted
+   *
+   * @return true/false based on if a move can be submitted
+   */
+  public boolean canSubmit() {
+    return canSubmit;
+  }
+
+  /**
+   * Clear all of the pending moves from the board
+   */
+  public void clearPendingMove() {
+    this.pendingMove = false;
+    this.pendingMoves.clear();
   }
 
   /**
@@ -195,63 +214,59 @@ public class ModelBoard {
     return this.pendingMove;
   }
 
+  public void changeTurn() {
+    this.redTurn = !redTurn;
+  }
+
   /**
    * Submits a move for the game and change the active player
    */
   public void submitMove() {
     Space current;
     Space endingSpace;
-    if (redTurn) {
-      //Sets the current and ending spaces for the move
-      current = board[move.getStartRow()][move.getStartCell()];
-      endingSpace = board[move.getEndRow()][move.getEndCell()];
-    } else {
-      //Sets the current and ending spaces for the move (flipped since it is the white player making the move)
-      current = board[7 - move.getStartRow()][7 - move.getStartCell()];
-      endingSpace = board[7 - move.getEndRow()][7 - move.getEndCell()];
-    }
-    isKinging = isBecomingKing(current.getPiece(), move.getEndRow());
-    //Checking to see if the piece is becoming a key or not
-    if (isKinging){
-      current.getPiece().King();
-    }
-    //Checking to see if the piece is completing a jump
-    if (isJumping) {
-      addPieceToSpace(current.getPiece(), endingSpace);
-      current.unoccupy();
-      //Removing the piece from the space
-      if (endingSpace.pieceIsRed()) {
-        Space middle = getSpace((current.getxCoordinate() + endingSpace.getxCoordinate()) / 2,
-                (current.getCellIdx() + endingSpace.getCellIdx()) / 2);
+    while(!this.pendingMoves.empty()) {
+      Move firstMove = this.pendingMoves.get(0);
+      this.pendingMoves.remove(firstMove);
+      if (redTurn) {
+        current = board[firstMove.getStart().getRow()][firstMove.getStart().getCell()];
+        endingSpace = board[firstMove.getEnd().getRow()][firstMove.getEnd().getCell()];
+      } else {
+        current = board[7 - firstMove.getStart().getRow()][7 - firstMove.getStart().getCell()];
+        endingSpace = board[7 - firstMove.getEnd().getRow()][7 - firstMove.getEnd().getCell()];
+      }
+      isKinging = isBecomingKing(current.getPiece(), firstMove.getEnd().getRow());
+      if (isKinging) {
+        current.getPiece().King();
+      }
+      if (isJumping) {
+        addPieceToSpace(current.getPiece(), endingSpace);
+        current.unoccupy();
+        Space middle = board[(current.getxCoordinate() + endingSpace.getxCoordinate()) / 2][
+                (current.getCellIdx() + endingSpace.getCellIdx()) / 2];
         eatPiece(middle.getPiece());
       } else {
-        Space middle = getSpace((current.getxCoordinate() + endingSpace.getxCoordinate()) / 2,
-                (current.getCellIdx() + endingSpace.getCellIdx()) / 2);
-        eatPiece(middle.getPiece());
+        addPieceToSpace(current.getPiece(), endingSpace);
+        current.unoccupy();
       }
-    } else {
-      addPieceToSpace(current.getPiece(), endingSpace);
-      current.unoccupy();
-    }
-    //Setting up the reverse of the move for the opposite player's view
-    Move reverseMove = new Move(
-        new Position(7 - move.getStart().getRow(), 7 - move.getStart().getCell()),
-        new Position(7 - move.getEnd().getRow(), 7 - move.getEnd().getCell()));
-    //Checking to see if the red player is making the move
-    if (this.redTurn) {
-      redPlayerBoard.makeMove(move, isKinging);
-      whitePlayerBoard.makeMove(reverseMove, isKinging);
-    } else {
-      redPlayerBoard.makeMove(reverseMove, isKinging);
-      whitePlayerBoard.makeMove(move, isKinging);
+      Move actualMove = new Move(firstMove.getStart(), firstMove.getEnd());
+      Move reverseMove = new Move(
+              new Position(7 - firstMove.getStartRow(), 7 - firstMove.getStartCell()),
+              new Position(7 - firstMove.getEndRow(), 7 - firstMove.getEndCell()));
+      if (this.redTurn) {
+        redPlayerBoard.makeMove(actualMove, isKinging);
+        whitePlayerBoard.makeMove(reverseMove, isKinging);
+      } else {
+        redPlayerBoard.makeMove(reverseMove, isKinging);
+        whitePlayerBoard.makeMove(actualMove, isKinging);
+      }
     }
     //Resetting values and cases
     this.redTurn = !redTurn;
     this.madeMove = false;
     this.isKinging = false;
     this.pendingMove = false;
-    this.move = null;
     this.isJumping = false;
+    this.canSubmit = false;
   }
 
   /**
@@ -319,6 +334,20 @@ public class ModelBoard {
   }
 
   /**
+   * Removes a piece from a space and assigns it to a different space. Reverses an addition of a piece to a space
+   *
+   * @param currentSpace the space the piece is moving to
+   * @param endSpace the space the piece is on
+   */
+  public void removePieceFromSpace(Space currentSpace, Space endSpace) {
+    Space current = this.board[currentSpace.getxCoordinate()][currentSpace.getCellIdx()];
+    Space goal = this.board[endSpace.getxCoordinate()][endSpace.getCellIdx()];
+    Piece piece = current.getPiece();
+    goal.unoccupy();
+    piece.move(current);
+  }
+
+  /**
    * Backup a move made by the player before submitting.
    *
    * Returns the game to the state before choosing a move.
@@ -326,9 +355,15 @@ public class ModelBoard {
   public void backupMove() {
     if (pendingMove) {
       madeMove = false;
-      move = null;
-      pendingMove = false;
+      if (pendingMoves.size() == 1) {
+        pendingMoves.clear();
+        pendingMove = false;
+      } else {
+        pendingMoves.pop();
+        pendingMove = true;
+      }
     }
+    this.canSubmit = false;
   }
 
   /**
@@ -336,7 +371,7 @@ public class ModelBoard {
    *
    * @return A list of red pieces
    */
-  public List<Piece> getRedPieces(){
+  public List<Piece> getRedPieces() {
     return redPieces;
   }
 
@@ -351,6 +386,7 @@ public class ModelBoard {
 
   /**
    * Tests to see if a piece is able to King a piece
+   *
    * @param piece - Piece to be kinged
    * @param row - Row of the Piece being checked
    * @return - if the King is able to be Kinged
@@ -374,8 +410,16 @@ public class ModelBoard {
       whitePieces.remove(piece);
     }
     piece.getSpace().unoccupy();
-
     redPlayerBoard.eatPiece(piece.getXCoordinate(), piece.getCellIdx());
-    whitePlayerBoard.eatPiece(7-piece.getXCoordinate(), 7-piece.getCellIdx());
+    whitePlayerBoard.eatPiece(7 - piece.getXCoordinate(), 7 - piece.getCellIdx());
+  }
+
+  /**
+   * Checks to see what move is currently pending (gets the most recently added pending move)
+   *
+   * @return the move pending on the system
+   */
+  public Move getPendingMove(){
+    return this.pendingMoves.peek();
   }
 }

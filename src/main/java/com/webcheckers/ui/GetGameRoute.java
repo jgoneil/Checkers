@@ -161,7 +161,7 @@ public class GetGameRoute implements Route {
         return null;
       }
 
-      gameLobby.setPendingMove(false);
+      gameLobby.clearPendingMove();
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
 

@@ -50,9 +50,13 @@ public class PostSubmitTurn implements Route {
     GameLobby gameLobby = session.attribute(GetGameRoute.GAMELOBBY);
 
     if (gameLobby.checkPendingMove()) {
-      gameLobby.submitMove();
-      Message message = new Message(Message.Type.info, SUCCESS_SUBMIT_TURN);
-      return gson.toJson(message);
+      if (gameLobby.canSubmit()) {
+        gameLobby.submitMove();
+        Message message = new Message(Message.Type.info, SUCCESS_SUBMIT_TURN);
+        return gson.toJson(message);
+      } else {
+        return gson.toJson(new Message(Message.Type.error, "Multi-Jump possible. Cannot submit"));
+      }
     } else {
       return gson.toJson(new Message(Message.Type.error, ERROR_SUBMIT_TURN));
     }

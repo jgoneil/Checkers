@@ -64,7 +64,7 @@ public class PostResignGame implements Route {
       return gson.toJson(message);
     }
 
-    if(gameLobby.checkMadeMove()) {
+    if(gameLobby.checkPendingMove()) {
       Message message = new Message(Message.Type.error, ERROR_RESIGN);
       return gson.toJson(message);
     } else {
