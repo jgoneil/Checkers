@@ -214,6 +214,10 @@ public class ModelBoard {
     return this.pendingMove;
   }
 
+  public void changeTurn() {
+    this.redTurn = !redTurn;
+  }
+
   /**
    * Submits a move for the game and change the active player
    */

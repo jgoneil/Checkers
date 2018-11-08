@@ -237,6 +237,7 @@ public class CheckMove {
         response.put(false, "Pieces can only move diagonally.");
       } else if (!isMovingForward(start, target) && current.isPieceKing()) {
         response.put(true, "This is a valid move for a King.");
+        board.setSubmit(true);
       } else if (!isMovingForward(start, target)){
         response.put(false, "Single pieces can only move forward.");
       } else {

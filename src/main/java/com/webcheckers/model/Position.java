@@ -1,7 +1,5 @@
 package com.webcheckers.model;
 
-import java.util.Objects;
-
 /**
  * Model class for the position a space is at
  */

@@ -154,6 +154,10 @@ public class GameLobby {
     return redPlayer;
   }
 
+  public void changeTurn() {
+    this.modelBoard.changeTurn();
+  }
+
   /**
    * Checks to see if a specified player is the red player for the game session
    *
