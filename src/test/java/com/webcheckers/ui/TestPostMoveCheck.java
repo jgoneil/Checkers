@@ -179,4 +179,21 @@ public class TestPostMoveCheck {
       assertEquals("Attempted to move a piece to an already occupied space", respondedMessage.getText());
     }
   }
+
+  @Test
+  void nullGameCenter() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(null);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    Object info = CuT.handle(request, response);
+
+    if (info instanceof String) {
+      String temporaryInfo = (String) info;
+      Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
+      assertEquals(Message.Type.error, respondedMessage.getType());
+      assertEquals(PostResignGame.OTHER_PLAYER_RESIGN, respondedMessage.getText());
+    }
+  }
 }
