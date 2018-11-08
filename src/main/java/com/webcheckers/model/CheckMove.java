@@ -1,8 +1,6 @@
 package com.webcheckers.model;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Model class to handle checking moves for validation
@@ -150,8 +148,20 @@ public class CheckMove {
                   new Position(endingSpace.getxCoordinate(), endingSpace.getCellIdx()));
           movesMade.push(move);
           board.addPieceToSpace(startingSpace.getPiece(), endingSpace);
+          if (jumps.size() == 0) {
+            jumps.put(startingSpace, endingSpace);
+          } else {
+            if (jumps.containsValue(startingSpace)) {
+              for (Space keySpace: jumps.keySet()) {
+                if (jumps.get(keySpace).equals(startingSpace)) {
+                  jumps.remove(keySpace);
+                  break;
+                }
+              }
+            }
+            jumps.put(startingSpace, endingSpace);
+          }
         }
-        jumps = temp;
       }
     }
     while (movesMade.size() != 0) {
