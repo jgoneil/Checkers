@@ -54,7 +54,9 @@ class TestPostResignRoute {
 
   @Test
   void playerAlreadyMovedPiece() {
-    gameLobby.madeMove(new Move(new Position(5, 0), new Position(4, 1)));
+    gameLobby.pendingMove(new Move(new Position(5, 0), new Position(4, 1)));
+    playerLobby.addPlayer("Ben");
+    playerLobby.addPlayer("Steve");
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();

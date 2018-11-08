@@ -15,8 +15,6 @@ public class ModelBoard {
   private Space[][] board;
   //If a move has recently been made
   private boolean madeMove;
-  //The move made
-  private Move move;
   //Holds if the redPlayer has the active move or not
   private boolean redTurn;
   //Holds all red Pieces
@@ -33,9 +31,9 @@ public class ModelBoard {
   private boolean pendingMove;
   //Checks if a jump action is being made
   private boolean isJumping;
-  //Collection of pieces to be eaten
-  private Queue<Piece> toBeEaten;
-
+  //Checks if submission can happen
+  private boolean canSubmit = false;
+  //Stack of all pending moves waiting to be submitted on a player's turn
   private Stack<Move> pendingMoves;
 
   /**
@@ -57,7 +55,6 @@ public class ModelBoard {
     this.isKinging = true;
     this.pendingMove = false;
     this.isJumping = false;
-    this.toBeEaten = new LinkedBlockingQueue<>();
     //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
@@ -174,21 +171,29 @@ public class ModelBoard {
   }
 
   /**
+   * Tells the system that a move can or can't be submitted
+   *
+   * @param submit true/false based on if a move can or cannot be submitted
+   */
+  public void setSubmit(boolean submit) {
+    this.canSubmit = submit;
+  }
+
+  /**
+   * Checks to see if a move can be submitted
+   *
+   * @return true/false based on if a move can be submitted
+   */
+  public boolean canSubmit() {
+    return canSubmit;
+  }
+
+  /**
    * Clear all of the pending moves from the board
    */
   public void clearPendingMove() {
     this.pendingMove = false;
     this.pendingMoves.clear();
-  }
-
-  /**
-   * Sets the system to state a move was made
-   *
-   * @param move the move that was made
-   */
-  public void madeMove(Move move) {
-    this.madeMove = true;
-    this.move = move;
   }
 
   /**
@@ -256,8 +261,8 @@ public class ModelBoard {
     this.madeMove = false;
     this.isKinging = false;
     this.pendingMove = false;
-    this.move = null;
     this.isJumping = false;
+    this.canSubmit = false;
   }
 
   /**
@@ -325,6 +330,20 @@ public class ModelBoard {
   }
 
   /**
+   * Removes a piece from a space and assigns it to a different space. Reverses an addition of a piece to a space
+   *
+   * @param currentSpace the space the piece is moving to
+   * @param endSpace the space the piece is on
+   */
+  public void removePieceFromSpace(Space currentSpace, Space endSpace) {
+    Space current = this.board[currentSpace.getxCoordinate()][currentSpace.getCellIdx()];
+    Space goal = this.board[endSpace.getxCoordinate()][endSpace.getCellIdx()];
+    Piece piece = current.getPiece();
+    goal.unoccupy();
+    piece.move(current);
+  }
+
+  /**
    * Backup a move made by the player before submitting.
    *
    * Returns the game to the state before choosing a move.
@@ -332,7 +351,6 @@ public class ModelBoard {
   public void backupMove() {
     if (pendingMove) {
       madeMove = false;
-      move = null;
       if (pendingMoves.size() == 1) {
         pendingMoves.clear();
         pendingMove = false;
@@ -341,6 +359,7 @@ public class ModelBoard {
         pendingMove = true;
       }
     }
+    this.canSubmit = false;
   }
 
   /**
@@ -376,25 +395,6 @@ public class ModelBoard {
   }
 
   /**
-   * Removes all pieces to be eaten from all 3 boards after a jump occurs
-   */
-  public void eatPieces() {
-
-    for (Piece piece : toBeEaten) {
-      if (piece.isRed()) {
-        redPieces.remove(piece);
-        piece.getSpace().unoccupy();
-      } else {
-        whitePieces.remove(piece);
-        piece.getSpace().unoccupy();
-      }
-      redPlayerBoard.eatPiece(piece.getXCoordinate(), piece.getCellIdx());
-      whitePlayerBoard.eatPiece(7 - piece.getXCoordinate(), 7 - piece.getCellIdx());
-    }
-    toBeEaten.clear();
-  }
-
-  /**
    * Removes a piece from all 3 boards after a jump occurs
    *
    * @param piece The piece that is being jumped/ate
@@ -410,14 +410,11 @@ public class ModelBoard {
     whitePlayerBoard.eatPiece(7 - piece.getXCoordinate(), 7 - piece.getCellIdx());
   }
 
-  public void queuePieceToBeEaten(Piece pieceToBeEaten) {
-    this.toBeEaten.add(pieceToBeEaten);
-  }
-
-  public boolean checkIsJumping() {
-    return this.isJumping;
-  }
-
+  /**
+   * Checks to see what move is currently pending (gets the most recently added pending move)
+   *
+   * @return the move pending on the system
+   */
   public Move getPendingMove(){
     return this.pendingMoves.peek();
   }

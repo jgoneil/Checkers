@@ -39,6 +39,13 @@ public class GameLobby {
     this.checkMove = new CheckMove(this.modelBoard);
   }
 
+  /**
+   * Constructor for the game lobby that specifies the pieces being added to the board
+   *
+   * @param redPlayer the red player connected to the game lobby
+   * @param whitePlayer the white player connected to the game lobby
+   * @param pieceList the list of pieces being added to the board
+   */
   public GameLobby(Player redPlayer, Player whitePlayer, List<Piece> pieceList) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
@@ -222,12 +229,21 @@ public class GameLobby {
   }
 
   /**
-   * Sets the game to have completed a move
+   * Checks to see if a move can or cannot be submitted
    *
-   * @param move the move completed
+   * @return true/false if a move can or cannot be submitted
    */
-  public void madeMove(Move move) {
-    this.modelBoard.madeMove(move);
+  public boolean canSubmit() {
+    return this.modelBoard.canSubmit();
+  }
+
+  /**
+   * Sets if a move can be submitted or not
+   *
+   * @param submit true/false based on if a move can or cannot be submitted
+   */
+  public void setCanSubmit(boolean submit) {
+    this.modelBoard.setSubmit(submit);
   }
 
   /**

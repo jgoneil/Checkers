@@ -1,18 +1,16 @@
 package com.webcheckers.model;
 
-import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * Model class to handle checking moves for validation
  */
 public class CheckMove {
 
-  boolean lastCanJump;
   //The board holding the logic for checking if a piece is valid or not (the model board)
   private ModelBoard board;
-
 
   /**
    * Constructor for the CheckMove Class
@@ -21,7 +19,6 @@ public class CheckMove {
    */
   public CheckMove(ModelBoard board) {
     this.board = board;
-    this.lastCanJump = false;
   }
 
   /**
@@ -77,10 +74,10 @@ public class CheckMove {
   /**
    * Check to see if any piece during the players turn can jump.
    *
-   * @return true/false based on if the player has a piece that can jump.
+   * @return a map of all of the spaces (last position) that can jump for the given board
    */
-  private boolean canJump(Player player) {
-    boolean canJump = false;
+  private Map<Space, Space> canJump(Player player) {
+    Map<Space, Space> jumps = new HashMap<>();
     //Checking to see if a player is red or not
     if (player.isRed()) {
       for (Piece redPiece : board.getRedPieces()) {
@@ -91,7 +88,7 @@ public class CheckMove {
               redPiece.getCellIdx() - 2);
           //checking to see if that specific piece can jump another piece
           if (pieceCanJump(redPiece.getSpace(), upperLeft)) {
-            canJump = true;
+            jumps.put(redPiece.getSpace(), upperLeft);
           }
         }
         //checking to see if a piece is within the bounds of the board (that it is not off the right or top sides)
@@ -101,7 +98,7 @@ public class CheckMove {
               redPiece.getCellIdx() + 2);
           //checking to see if that specific piece can jump another piece
           if (pieceCanJump(redPiece.getSpace(), upperRight)) {
-            canJump = true;
+            jumps.put(redPiece.getSpace(), upperRight);
           }
         }
       }
@@ -114,7 +111,7 @@ public class CheckMove {
               whitePiece.getCellIdx() + 2);
           //checking to see if that specific piece can jump another piece
           if (pieceCanJump(whitePiece.getSpace(), upperLeft)) {
-            canJump = true;
+            jumps.put(whitePiece.getSpace(), upperLeft);
           }
         }
         //checking to see if a piece is within the bounds of the board (that it is not off the left or bottom sides)
@@ -124,12 +121,46 @@ public class CheckMove {
               whitePiece.getCellIdx() - 2);
           //checking to see if that specific piece can jump another piece
           if (pieceCanJump(whitePiece.getSpace(), upperRight)) {
-            canJump = true;
+            jumps.put(whitePiece.getSpace(), upperRight);
           }
         }
       }
     }
-    return canJump;
+    return jumps;
+  }
+
+  /**
+   * Finds all of the potential jumps on the board to see if any mulit jumps can happen
+   *
+   * @param player the player attempting to make a move
+   * @return a map containing the last move for all of the starting and ending spaces of all of the potential jumps
+   */
+  public Map<Space, Space> findJumps(Player player) {
+    Map<Space, Space> jumps = new HashMap<>();
+    Stack<Move> movesMade = new Stack<>();
+    boolean canContinueJumping = true;
+    while (canContinueJumping) {
+      Map<Space, Space> temp  = canJump(player);
+      if (temp.size() == 0) {
+        canContinueJumping = false;
+      } else {
+        for (Space startingSpace : temp.keySet()) {
+          Space endingSpace = temp.get(startingSpace);
+          Move move = new Move(new Position(startingSpace.getxCoordinate(), startingSpace.getCellIdx()),
+                  new Position(endingSpace.getxCoordinate(), endingSpace.getCellIdx()));
+          movesMade.push(move);
+          board.addPieceToSpace(startingSpace.getPiece(), endingSpace);
+        }
+        jumps = temp;
+      }
+    }
+    while (movesMade.size() != 0) {
+      Move revertMove = movesMade.pop();
+      Space startingSpace = board.getSpace(revertMove.getStartRow(), revertMove.getStartCell());
+      Space endingSpace = board.getSpace(revertMove.getEndRow(), revertMove.getEndCell());
+      board.removePieceFromSpace(startingSpace, endingSpace);
+    }
+    return jumps;
   }
 
   /**
@@ -179,12 +210,18 @@ public class CheckMove {
       current = board.getSpace(7 - start.getRow(), 7 - start.getCell());
       goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());
     }
+    Map<Space, Space> validJumps = findJumps(player);
     //Checking to see if a player can preform a jump
-    if (canJump(player)) {
+    if (validJumps.size() != 0) {
       //Checking to see if the current piece is preforming a jump
       if (pieceCanJump(current, goal)) {
         board.isJumping(true);
-        response.put(true, "This jump is valid.");
+        if (validJumps.containsKey(current)) {
+          board.setSubmit(true);
+          response.put(true, "This jump is valid.");
+        } else {
+          response.put(true, "Attempting to jump a single piece when a multi-jump is possible.");
+        }
       } else {
         response.put(false, "Attempted to move when jump is possible.");
       }
@@ -214,6 +251,7 @@ public class CheckMove {
         } else if (!isMovingForward(start, target)) {
           response.put(false, "Piece can only move forward");
         } else {
+          board.setSubmit(true);
           response.put(true, "This move is valid.");
         }
       }

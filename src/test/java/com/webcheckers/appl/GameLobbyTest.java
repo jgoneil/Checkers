@@ -52,7 +52,7 @@ public class GameLobbyTest {
     assertTrue(gameLobby.checkRedTurn());
     Map<Boolean, String> resultTrue = gameLobby.validateMove(new Position(5, 2),
             new Position(4, 3), this.redPlayer);
-    gameLobby.madeMove(new Move(new Position(5, 2), new Position(4, 3)));
+    gameLobby.pendingMove(new Move(new Position(5, 2), new Position(4, 3)));
     gameLobby.submitMove();
     assertFalse(gameLobby.checkRedTurn());
   }
@@ -71,7 +71,7 @@ public class GameLobbyTest {
   void testBackupMove() {
     Map<Boolean, String> resultTrue = gameLobby.validateMove(new Position(5, 2),
             new Position(4, 3), this.redPlayer);
-    gameLobby.madeMove(new Move(new Position(5, 2), new Position(4, 3)));
+    gameLobby.pendingMove(new Move(new Position(5, 2), new Position(4, 3)));
     gameLobby.submitMove();
     gameLobby.backupMove();
   }
