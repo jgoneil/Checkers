@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Stack;
 
-import static com.webcheckers.model.Piece.Type.KING;
-
 /**
  * Model class to handle checking moves for validation
  */
@@ -27,7 +25,7 @@ public class CheckMove {
    * Checks if the piece is moving diagonally
    *
    * @param start the starting position of the checker
-   * @param end   the ending position of the checker
+   * @param end the ending position of the checker
    * @return true/false based on whether the move is diagonal
    */
   private boolean isMovingDiagonal(Position start, Position end) {
@@ -40,7 +38,7 @@ public class CheckMove {
    * Checks to see if the distance for the column or row is too large
    *
    * @param start the starting position of the checker
-   * @param end   the ending position of the checker
+   * @param end the ending position of the checker
    * @return true/false based on if the distance is too large or not
    */
   private boolean isMovingOne(Position start, Position end) {
@@ -53,7 +51,7 @@ public class CheckMove {
    * Checks to see if the distance for the column or row is two
    *
    * @param start the starting position of the checker
-   * @param end   the ending position of the checker
+   * @param end the ending position of the checker
    * @return true/false based on if the distance is two or not
    */
   private boolean isMovingTwo(Space start, Space end) {
@@ -66,7 +64,7 @@ public class CheckMove {
    * Check to see if checker is moving forward
    *
    * @param start the starting position of the checker
-   * @param end   the ending position of the checker
+   * @param end the ending position of the checker
    * @return true/false based on whether checker is moving forward
    */
   private boolean isMovingForward(Position start, Position end) {
@@ -212,7 +210,7 @@ public class CheckMove {
   }
 
   /**
-   * Checks to see if a single piece can jump.
+   * Checks to see a single piece can jump.
    *
    * @param start Starting space that contains the piece
    * @param end   The end space that the piece could possibly jump to
@@ -220,7 +218,7 @@ public class CheckMove {
    */
   private boolean pieceCanJump(Space start, Space end) {
     Space middle = board.getSpace((start.getxCoordinate() + end.getxCoordinate()) / 2,
-            (start.getCellIdx() + end.getCellIdx()) / 2);
+        (start.getCellIdx() + end.getCellIdx()) / 2);
 
     if (isMovingTwo(start, end)) {
       if (!end.isOccupied()) {
@@ -241,7 +239,7 @@ public class CheckMove {
   /**
    * Sees if a space is valid for a piece to move onto
    *
-   * @param start  - space currently at
+   * @param start - space currently at
    * @param target - target space to move to
    * @return - validity of move to target space
    */
@@ -274,7 +272,7 @@ public class CheckMove {
         response.put(false, "Attempted to move when jump is possible.");
       }
     } else {
-      //Checking to see if the goal space is a white space
+      //Checking to see if the goal space is a white space.
       if (goal.isWhite()) {
         response.put(false, "Attempted to move a piece to a white space.");
       } else if (goal.isOccupied()) {
