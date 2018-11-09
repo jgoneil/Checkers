@@ -40,6 +40,8 @@ class CheckMoveTest {
   // White square
   private Position position44;
 
+  private Move pendingMove1;
+
   @BeforeEach
   void setUp() {
     this.redPlayerMock = new Player("Tim");
@@ -57,6 +59,9 @@ class CheckMoveTest {
     position63 = new Position(6, 3);
     position23 = new Position(2, 3);
     position44 = new Position(4, 4);
+    position52 = new Position(5, 2);
+    position56 = new Position(5, 6);
+
     position01 = new Position(0, 1);
     position41 = new Position(4, 1);
     position05 = new Position(0, 5);
@@ -69,8 +74,8 @@ class CheckMoveTest {
 
     position50 = new Position(5, 0);
     position32 = new Position(3, 2);
-    position52 = new Position(5,2);
-    position56 = new Position(5,6);
+
+    pendingMove1 = null;
   }
 
   @AfterEach
@@ -82,10 +87,11 @@ class CheckMoveTest {
 
   @Test
   void validateMoveTest_ValidMove() {
-    //Single Valid Move
     assertTrue(checkMove.validateMove(position54, position43, redPlayerMock).containsKey(true));
+    modelBoard.setMove(true);
     assertTrue(checkMove.validateMove(position54, position43, whitePlayerMock).containsKey(true));
   }
+
   @Test
   void validateKingMoveTest_Valid(){
     //King pieces for move
@@ -116,8 +122,8 @@ class CheckMoveTest {
     assertTrue(checkMove.validateMove(position54, position47, redPlayerMock).containsKey(false));
     assertTrue(checkMove.validateMove(position54, position47, whitePlayerMock).containsKey(false));
 
-    // Single attempt to move backward
-    assertTrue(checkMove.validateMove(position43, position54, redPlayerMock).containsKey(false));
+    // move backward
+    assertTrue(checkMove.validateMove(position34, position43, redPlayerMock).containsKey(false));
     assertTrue(checkMove.validateMove(position54, position63, whitePlayerMock).containsKey(false));
 
     // move to white

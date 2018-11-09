@@ -2,12 +2,10 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Player;
 import com.google.gson.Gson;
 
 import com.webcheckers.model.Message;
-import com.webcheckers.model.ModelBoard;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Position;
 import org.junit.jupiter.api.Test;
@@ -56,7 +54,9 @@ class TestPostResignRoute {
 
   @Test
   void playerAlreadyMovedPiece() {
-    gameLobby.madeMove(new Move(new Position(5, 0), new Position(4, 1)));
+    gameLobby.pendingMove(new Move(new Position(5, 0), new Position(4, 1)));
+    playerLobby.addPlayer("Ben");
+    playerLobby.addPlayer("Steve");
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();

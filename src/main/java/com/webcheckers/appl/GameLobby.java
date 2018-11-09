@@ -39,6 +39,13 @@ public class GameLobby {
     this.checkMove = new CheckMove(this.modelBoard);
   }
 
+  /**
+   * Constructor for the game lobby that specifies the pieces being added to the board
+   *
+   * @param redPlayer the red player connected to the game lobby
+   * @param whitePlayer the white player connected to the game lobby
+   * @param pieceList the list of pieces being added to the board
+   */
   public GameLobby(Player redPlayer, Player whitePlayer, List<Piece> pieceList) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
@@ -49,34 +56,34 @@ public class GameLobby {
   }
 
   /**
-   * Getter for the PlayerBoardView for the red player (board shown in the rendered HTML page)
+   * Getter for the PlayerBoard for the red player (board shown in the rendered HTML page)
    *
-   * @return the PlayerBoardView associated to the red player for the active game session
+   * @return the PlayerBoard associated to the red player for the active game session
    */
-  public PlayerBoardView getRedPlayerBoardView() {
-    return modelBoard.getRedPlayerBoardView();
+  public PlayerBoard getRedPlayerBoard() {
+    return modelBoard.getRedPlayerBoard();
   }
 
   /**
-   * Getter for the PlayerBoardView for the white player (board shown in the rendered HTML page)
+   * Getter for the PlayerBoard for the white player (board shown in the rendered HTML page)
    *
-   * @return the PlayerBoardView associated to the white player for the active game session
+   * @return the PlayerBoard associated to the white player for the active game session
    */
-  public PlayerBoardView getWhiteBoadView() {
-    return modelBoard.getWhitePlayerBoardView();
+  public PlayerBoard getWhiteBoard() {
+    return modelBoard.getWhitePlayerBoard();
   }
 
   /**
-   * Getter for the PlayerBoardView for the specified player (board shown in the rendered HTML page)
+   * Getter for the PlayerBoard for the specified player (board shown in the rendered HTML page)
    *
-   * @param player the player attempting to retrieve their PlayerBoardView
-   * @return the PlayerBoardView associated to the specified player for the active game session
+   * @param player the player attempting to retrieve their PlayerBoard
+   * @return the PlayerBoard associated to the specified player for the active game session
    */
-  public PlayerBoardView getBoardViewForPlayer(Player player) {
+  public PlayerBoard getBoardForPlayer(Player player) {
     if (this.redPlayer.equals(player)) {
-      return modelBoard.getRedPlayerBoardView();
+      return modelBoard.getRedPlayerBoard();
     } else if (this.whitePlayer.equals(player)){
-      return modelBoard.getWhitePlayerBoardView();
+      return modelBoard.getWhitePlayerBoard();
     } else {
       return null;
     }
@@ -147,6 +154,10 @@ public class GameLobby {
     return redPlayer;
   }
 
+  public void changeTurn() {
+    this.modelBoard.changeTurn();
+  }
+
   /**
    * Checks to see if a specified player is the red player for the game session
    *
@@ -197,6 +208,13 @@ public class GameLobby {
   }
 
   /**
+   * Clears the pendingMoves on the model board
+   */
+  public void clearPendingMove() {
+    this.modelBoard.clearPendingMove();
+  }
+
+  /**
    * Checks to see if a move has happened but is pending or not
    *
    * @return true/false based on if a move is pending
@@ -215,12 +233,21 @@ public class GameLobby {
   }
 
   /**
-   * Sets the game to have completed a move
+   * Checks to see if a move can or cannot be submitted
    *
-   * @param move the move completed
+   * @return true/false if a move can or cannot be submitted
    */
-  public void madeMove(Move move) {
-    this.modelBoard.madeMove(move);
+  public boolean canSubmit() {
+    return this.modelBoard.canSubmit();
+  }
+
+  /**
+   * Sets if a move can be submitted or not
+   *
+   * @param submit true/false based on if a move can or cannot be submitted
+   */
+  public void setCanSubmit(boolean submit) {
+    this.modelBoard.setSubmit(submit);
   }
 
   /**

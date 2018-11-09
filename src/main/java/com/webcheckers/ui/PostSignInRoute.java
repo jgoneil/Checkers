@@ -14,7 +14,6 @@ import spark.Session;
 import static spark.Spark.halt;
 
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Player;
 
 /**
  * This is {@code POST /signin } route handler. Handles user signin.
@@ -23,19 +22,13 @@ import com.webcheckers.model.Player;
 public class PostSignInRoute implements Route {
 
   //Static final variables (constants)
-  static final String VIEW_NAME = "home.ftl";
   static final String REVERT_VIEW = "signin.ftl";
   static final String USER_PARAM = "username";
-  static final String USERNAME_ERROR = "invalid username";
-  static final String RETRY = "Please try again";
-  static final String PLAYER = "player";
 
   //HTML template loader for freemarker pages
   private final TemplateEngine templateEngine;
   //List of playerLobby connected to the game
   private final PlayerLobby playerLobby;
-  //The player attempting to sign into the system
-  private Player player;
 
   /**
    * Constructor for class. Ensures both parameters are included in the declaration for use
@@ -70,8 +63,7 @@ public class PostSignInRoute implements Route {
       ModelAndView mv;
 
       if (playerLobby.addPlayer(username)) {
-        this.player = playerLobby.getSpecificPlayer(username);
-        httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY, username);
+        httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY, username.trim());
         response.redirect(WebServer.HOME_URL);
         return null;
       } else {

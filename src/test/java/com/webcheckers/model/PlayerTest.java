@@ -20,7 +20,7 @@ public class PlayerTest {
   private Player player3;
   private String usernamePlayer1;
   private String usernamePlayer2;
-  private PlayerBoardView playerBoardViewMock;
+  private PlayerBoard playerBoardMock;
   private ModelBoard modelBoardMock;
 
 
@@ -34,7 +34,7 @@ public class PlayerTest {
 
     player3 = new Player(usernamePlayer1);
 
-    playerBoardViewMock = mock(PlayerBoardView.class);
+    playerBoardMock = mock(PlayerBoard.class);
     modelBoardMock = mock(ModelBoard.class);
 
   }
@@ -45,7 +45,7 @@ public class PlayerTest {
     player2 = null;
     usernamePlayer1 = null;
     usernamePlayer2 = null;
-    playerBoardViewMock = null;
+    playerBoardMock = null;
 
   }
 

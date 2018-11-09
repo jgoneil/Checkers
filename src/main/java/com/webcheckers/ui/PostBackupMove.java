@@ -2,7 +2,6 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Message;
-import com.webcheckers.model.ModelBoard;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -10,8 +9,6 @@ import spark.Session;
 import com.google.gson.Gson;
 
 import java.util.Objects;
-
-import static spark.Spark.halt;
 
 /**
  * the ui controller for handling the backup of a Player move

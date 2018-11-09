@@ -6,7 +6,7 @@ import java.util.Objects;
 
 
 import com.webcheckers.appl.GameLobby;
-import com.webcheckers.model.PlayerBoardView;
+import com.webcheckers.model.PlayerBoard;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Message;
 import spark.ModelAndView;
@@ -112,14 +112,14 @@ public class GetGameRoute implements Route {
       this.gameLobby = new GameLobby(currentPlayer, player2);
       httpSession.attribute(GAMELOBBY, this.gameLobby);
 
-      PlayerBoardView playerBoardView = gameLobby.getRedPlayerBoardView();
+      PlayerBoard playerBoard = gameLobby.getRedPlayerBoard();
 
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
       vm.put("redPlayer", currentPlayer);
       vm.put("whitePlayer", player2);
       vm.put("activeColor", GameLobby.RED);
-      vm.put("board", playerBoardView);
+      vm.put("board", playerBoard);
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else if (httpSession.attribute(GAMELOBBY) == null && currentPlayer.inGame()) {
       httpSession.attribute(GAMELOBBY, this.gameLobby);
@@ -129,7 +129,7 @@ public class GetGameRoute implements Route {
       vm.put("redPlayer", gameLobby.getRedPlayer());
       vm.put("whitePlayer", gameLobby.getWhitePlayer());
       vm.put("activeColor", gameLobby.getTurn());
-      vm.put("board", gameLobby.getWhiteBoadView());
+      vm.put("board", gameLobby.getWhiteBoard());
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else if (httpSession.attribute(GAMELOBBY) != null && !currentPlayer.inGame()) {
       httpSession.attribute("message", new Message(Message.Type.info, PostResignGame.OTHER_PLAYER_RESIGN)); 
@@ -161,14 +161,14 @@ public class GetGameRoute implements Route {
         return null;
       }
 
-      gameLobby.setPendingMove(false);
+      gameLobby.clearPendingMove();
       vm.put("currentPlayer", currentPlayer);
       vm.put("viewMode", "PLAY");
 
       vm.put("redPlayer", gameLobby.getRedPlayer());
       vm.put("whitePlayer", gameLobby.getWhitePlayer());
       vm.put("activeColor", gameLobby.getTurn());
-      vm.put("board", gameLobby.getBoardViewForPlayer(currentPlayer));
+      vm.put("board", gameLobby.getBoardForPlayer(currentPlayer));
       return templateEngine.render(new ModelAndView(vm, VIEW));
     }
   }

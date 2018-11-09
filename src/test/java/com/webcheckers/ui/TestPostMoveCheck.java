@@ -90,10 +90,28 @@ public class TestPostMoveCheck {
   }
 
   @Test
-  void madeMove() {
+  void whiteResigns() {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
-    gameLobby.madeMove(new Move(position34, position45));
-    gameLobby.setPendingMove(true);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
+    redPlayer.gameEnd();
+    whitePlayer.gameEnd();
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    Object info = CuT.handle(request, response);
+
+    if (info instanceof String) {
+      String temporaryInfo = (String) info;
+      Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
+      assertEquals(Message.Type.error, respondedMessage.getType());
+      assertEquals(PostResignGame.OTHER_PLAYER_RESIGN, respondedMessage.getText());
+    }
+  }
+
+  @Test
+  void madeMoveRed() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    gameLobby.setMove(true);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -105,6 +123,24 @@ public class TestPostMoveCheck {
       Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
       assertEquals(Message.Type.error, respondedMessage.getType());
       assertEquals("Can only do one move per turn", respondedMessage.getText());
+    }
+  }
+
+  @Test
+  void makeFalseMoveWhite() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer.getName());
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
+    when(request.body()).thenReturn(gson.toJson(new Move(position45, position34)));
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    Object info = CuT.handle(request, response);
+
+    if (info instanceof String) {
+      String temporaryInfo = (String) info;
+      Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
+      assertEquals(Message.Type.error, respondedMessage.getType());
+      assertEquals("Attempted to move when jump is possible.", respondedMessage.getText());
     }
   }
 
@@ -141,6 +177,23 @@ public class TestPostMoveCheck {
       Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
       assertEquals(Message.Type.error, respondedMessage.getType());
       assertEquals("Attempted to move a piece to an already occupied space", respondedMessage.getText());
+    }
+  }
+
+  @Test
+  void nullGameCenter() {
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(null);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    Object info = CuT.handle(request, response);
+
+    if (info instanceof String) {
+      String temporaryInfo = (String) info;
+      Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
+      assertEquals(Message.Type.error, respondedMessage.getType());
+      assertEquals(PostResignGame.OTHER_PLAYER_RESIGN, respondedMessage.getText());
     }
   }
 }

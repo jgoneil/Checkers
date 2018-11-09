@@ -3,7 +3,6 @@ package com.webcheckers.ui;
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Message;
-import com.webcheckers.model.PlayerBoardView;
 import com.webcheckers.model.Player;
 import spark.*;
 
@@ -65,7 +64,7 @@ public class PostResignGame implements Route {
       return gson.toJson(message);
     }
 
-    if(gameLobby.checkMadeMove()) {
+    if(gameLobby.checkPendingMove()) {
       Message message = new Message(Message.Type.error, ERROR_RESIGN);
       return gson.toJson(message);
     } else {

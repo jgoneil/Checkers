@@ -48,9 +48,10 @@ public class TestPostSubmitTurn {
   }
 
   @Test
-  void successfulSubmit() {
-    gameLobby.madeMove(new Move(new Position(5, 0), new Position(6, 1)));
+  void successfulSubmitRed() {
+    gameLobby.pendingMove(new Move(new Position(5, 0), new Position(6, 1)));
     gameLobby.setPendingMove(true);
+    gameLobby.setCanSubmit(true);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -61,6 +62,42 @@ public class TestPostSubmitTurn {
       Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
       assertEquals(Message.Type.info, respondedMessage.getType());
       assertEquals(PostSubmitTurn.SUCCESS_SUBMIT_TURN, respondedMessage.getText());
+    }
+  }
+
+  @Test
+  void successfulSubmitWhite() {
+    gameLobby.changeTurn();
+    gameLobby.pendingMove(new Move(new Position(5, 0), new Position(6, 1)));
+    gameLobby.setPendingMove(true);
+    gameLobby.setCanSubmit(true);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    Object info = CuT.handle(request, response);
+    if (info instanceof String) {
+      String temporaryInfo = (String) info;
+      Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
+      assertEquals(Message.Type.info, respondedMessage.getType());
+      assertEquals(PostSubmitTurn.SUCCESS_SUBMIT_TURN, respondedMessage.getText());
+    }
+  }
+
+  @Test
+  void unsuccessfulSubmitJump() {
+    gameLobby.pendingMove(new Move(new Position(5, 0), new Position(6, 1)));
+    gameLobby.setPendingMove(true);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
+    final TemplateEngineTester testHelper = new TemplateEngineTester();
+    when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+    Object info = CuT.handle(request, response);
+    if (info instanceof String) {
+      String temporaryInfo = (String) info;
+      Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
+      assertEquals(Message.Type.error, respondedMessage.getType());
+      assertEquals("Multi-Jump possible. Cannot submit", respondedMessage.getText());
     }
   }
 
