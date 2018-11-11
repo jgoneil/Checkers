@@ -32,6 +32,8 @@ public class GetGameRoute implements Route {
   private PlayerLobby playerLobby;
   //The gameLobby for the active game session
   private GameLobby gameLobby;
+  //If a player has won a game or not
+  private boolean gameWon;
 
   //Static final variables (Constants)
   public static final String GAMELOBBY = "gameLobby";
@@ -96,10 +98,18 @@ public class GetGameRoute implements Route {
       if (httpSession.attribute(PostResignGame.RESIGNED_PLAYER) != null) {
         if(httpSession.attribute(PostResignGame.RESIGNED_PLAYER).equals(player2)) {
           httpSession.removeAttribute(PostResignGame.RESIGNED_PLAYER);
+          httpSession.attribute("message", new Message(Message.Type.info, "Other player resigned, you win!"));
           response.redirect(WebServer.HOME_URL);
           halt();
           return null;
         }
+      }
+
+      if (player2 == null) {
+        httpSession.attribute("message", new Message(Message.Type.info, "Player signed out. You Win!"));
+        response.redirect(WebServer.HOME_URL);
+        halt();
+        return null;
       }
 
       if (player2.inGame()) {
@@ -142,20 +152,29 @@ public class GetGameRoute implements Route {
       }
 
       if (!this.gameLobby.whiteCanPlay() || !this.gameLobby.redCanPlay()) {
-        if (this.currentPlayer.isRed()) {
-          if (!this.gameLobby.whiteCanPlay()) {
-            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
+        if (this.gameWon) {
+          httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+          this.gameWon = false;
+        }
+        else {
+          if (this.currentPlayer.isRed()) {
+            if (!this.gameLobby.whiteCanPlay()) {
+              this.gameWon = true;
+              httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
+            } else {
+              httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+            }
           } else {
-            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
-          }
-        } else {
-          if (!this.gameLobby.redCanPlay()) {
-            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
-          } else {
-            httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+            if (!this.gameLobby.redCanPlay()) {
+              this.gameWon = true;
+              httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
+            } else {
+              httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+            }
           }
         }
         this.currentPlayer.gameEnd();
+        this.gameLobby.changeTurn();
         response.redirect(WebServer.HOME_URL);
         halt();
         return null;

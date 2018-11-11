@@ -120,7 +120,13 @@ public class GameLobby {
    * @return true/false if the red player can continue to play
    */
   public boolean redCanPlay() {
-    return this.modelBoard.redCanPlay();
+    if (this.redPlayer.getColor() == null) {
+      return false;
+    }
+    if (this.checkMove.moveAvailable(redPlayer)) {
+      return this.modelBoard.redCanPlay();
+    }
+    return false;
   }
 
   /**
@@ -129,7 +135,13 @@ public class GameLobby {
    * @return true/false if the white player can continue to play
    */
   public boolean whiteCanPlay() {
-    return this.modelBoard.whiteCanPlay();
+    if (this.whitePlayer.getColor() == null) {
+      return false;
+    }
+    if (this.checkMove.moveAvailable(whitePlayer)) {
+      return this.modelBoard.redCanPlay();
+    }
+    return false;
   }
 
   /**
