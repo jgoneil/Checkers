@@ -75,4 +75,18 @@ public class GameLobbyTest {
     gameLobby.submitMove();
     gameLobby.backupMove();
   }
+
+  @Test
+  void testCanPlay() {
+    assertTrue(gameLobby.redCanPlay());
+    assertTrue(gameLobby.whiteCanPlay());
+  }
+
+  @Test
+  void testCannotPlay() {
+    redPlayer.gameEnd();
+    whitePlayer.gameEnd();
+    assertFalse(gameLobby.redCanPlay());
+    assertFalse(gameLobby.whiteCanPlay());
+  }
 }
