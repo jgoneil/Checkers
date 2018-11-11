@@ -2,6 +2,7 @@ package com.webcheckers.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.webcheckers.appl.GameLobby;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Tag("Model-tier")
 class CheckMoveTest {
@@ -96,11 +98,11 @@ class CheckMoveTest {
   void validateKingMoveTest_Valid(){
     //King pieces for move
     Space kingSpace1 = modelBoard.getSpace(position47.getRow(), position47.getCell());
-    kingSpace1.occupy(new Piece("red", kingSpace1));
+    kingSpace1.occupy(new Piece(GameLobby.RED, kingSpace1));
     kingSpace1.getPiece().King();
     modelBoard.eatPiece(modelBoard.getSpace(position50.getRow(), position50.getCell()).getPiece());
     Space kingSpace2 =  modelBoard.getSpace(position45.getRow(), position45.getCell());
-    kingSpace2.occupy(new Piece("white", kingSpace2));
+    kingSpace2.occupy(new Piece(GameLobby.WHITE, kingSpace2));
     kingSpace2.getPiece().King();
 
     //Clear target space
@@ -140,27 +142,63 @@ class CheckMoveTest {
 
   @Test
   void validateJump() {
-    modelBoard.addPieceToSpace(new Piece("white", new Space(4, 1, Space.Color.BLACK)),
+    modelBoard.addPieceToSpace(new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK)),
             new Space(4, 1, Space.Color.BLACK));
     assertTrue(checkMove.validateMove(position50, position32, redPlayerMock).containsKey(true));
   }
 
   @Test
   void CantJump() {
-    modelBoard.addPieceToSpace(new Piece("red", new Space(5, 0, Space.Color.BLACK)),
+    modelBoard.addPieceToSpace(new Piece(GameLobby.RED, new Space(5, 0, Space.Color.BLACK)),
             new Space(3, 2, Space.Color.BLACK));
-    modelBoard.addPieceToSpace(new Piece("white", new Space(4, 1, Space.Color.BLACK)),
+    modelBoard.addPieceToSpace(new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK)),
             new Space(4, 1, Space.Color.BLACK));
     assertTrue(checkMove.validateMove(position54, position43, redPlayerMock).containsKey(false));
   }
 
   @Test
+  void redCantMove() {
+    Piece redPiece = new Piece(GameLobby.RED, new Space(1, 0, Space.Color.BLACK));
+    Piece pieceUpperRight = new Piece(GameLobby.WHITE, new Space(0, 1, Space.Color.BLACK));
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(redPiece);
+    pieces.add(pieceUpperRight);
+
+    ModelBoard customModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkCustomBoard = new CheckMove(customModelBoard);
+
+    assertFalse(checkCustomBoard.moveAvailable(redPlayerMock));
+    assertTrue(checkCustomBoard.moveAvailable(whitePlayerMock));
+  }
+
+  @Test
+  void whiteCantMove() {
+    Piece whitePiece = new Piece(GameLobby.WHITE, new Space(6, 7, Space.Color.BLACK));
+    Piece pieceUpperRight = new Piece(GameLobby.RED, new Space(7, 6, Space.Color.BLACK));
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(whitePiece);
+    pieces.add(pieceUpperRight);
+
+    ModelBoard customModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkCustomBoard = new CheckMove(customModelBoard);
+
+    assertFalse(checkCustomBoard.moveAvailable(whitePlayerMock));
+    assertTrue(checkCustomBoard.moveAvailable(redPlayerMock));
+  }
+
+  @Test
+  void bothCanMove() {
+    assertTrue(checkMove.moveAvailable(redPlayerMock));
+    assertTrue(checkMove.moveAvailable(whitePlayerMock));
+  }
+
+  @Test
   void validateRedKingJump() {
     Space kingSpace1 = modelBoard.getSpace(position50.getRow(), position50.getCell());
-    kingSpace1.occupy(new Piece("red", kingSpace1));
+    kingSpace1.occupy(new Piece(GameLobby.RED, kingSpace1));
     kingSpace1.getPiece().King();
 
-    modelBoard.addPieceToSpace(new Piece("white", new Space(4, 1, Space.Color.BLACK)),
+    modelBoard.addPieceToSpace(new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK)),
             new Space(4, 1, Space.Color.BLACK));
     assertTrue(checkMove.validateMove(position50, position32, redPlayerMock).containsKey(true));
   }
@@ -211,5 +249,52 @@ class CheckMoveTest {
     assertTrue(checkCustomBoard.validateMove(position54, position72, whitePlayerMock).containsKey(true));
     assertTrue(checkCustomBoard.validateMove(position54, position36, whitePlayerMock).containsKey(true));
     assertTrue(checkCustomBoard.validateMove(position54, position32, whitePlayerMock).containsKey(true));
+  }
+
+  @Test
+  void twoMultiJumps() {
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(new Piece(GameLobby.RED, new Space(6,1, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.RED, new Space(6,5, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(5,2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(5,4, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(3,2, Space.Color.BLACK)));
+
+    ModelBoard customModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkCustomBoard = new CheckMove(customModelBoard);
+    Position middlePosition = new Position(4, 3);
+
+    Map<Boolean, String> moveSingleOne = checkCustomBoard.validateMove(new Position(6, 1),
+            middlePosition, redPlayerMock);
+    Map<Boolean, String> moveSingleTwo = checkCustomBoard.validateMove(new Position(6, 5),
+            middlePosition, redPlayerMock);
+
+    assertTrue(moveSingleOne.containsKey(true));
+    assertEquals(moveSingleOne.get(true), CheckMove.multiJumpPossible);
+    assertTrue(moveSingleTwo.containsKey(true));
+    assertEquals(moveSingleTwo.get(true), CheckMove.multiJumpPossible);
+  }
+
+  @Test
+  void kingJumpOnlyOption() {
+    List<Piece> pieces = new ArrayList<>();
+    Piece kingPieceRed = new Piece(GameLobby.RED, new Space(0, 3, Space.Color.BLACK));
+    kingPieceRed.King();
+    pieces.add(kingPieceRed);
+    pieces.add(new Piece(GameLobby.WHITE, new Space(1, 2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.RED, new Space(5, 0, Space.Color.BLACK)));
+
+    ModelBoard customModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkCustomBoard = new CheckMove(customModelBoard);
+
+    Map<Boolean, String> attemptMoveRedFalse = checkCustomBoard.validateMove(new Position(5, 0),
+            new Position(4, 1), redPlayerMock);
+    Map<Boolean, String> attemptMoveRedTrue = checkCustomBoard.validateMove(new Position(0, 3),
+            new Position(2, 1), redPlayerMock);
+    int i = 0;
+    assertTrue(attemptMoveRedFalse.containsKey(false));
+    assertEquals(attemptMoveRedFalse.get(false), "Attempted to move when jump is possible.");
+    assertTrue(attemptMoveRedTrue.containsKey(true));
+    assertEquals(attemptMoveRedTrue.get(true), "This jump is valid.");
   }
 }

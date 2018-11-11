@@ -118,4 +118,8 @@ public class Piece {
    * Kings a piece
    */
   public void King(){this.type = Type.KING;}
+
+  public boolean isKing() {
+    return this.type == Type.KING;
+  }
 }

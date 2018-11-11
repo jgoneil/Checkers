@@ -102,6 +102,13 @@ public class GetGameRoute implements Route {
         }
       }
 
+      if (player2 == null) {
+        httpSession.attribute("message", new Message(Message.Type.info, "Player signed out. You Win!"));
+        response.redirect(WebServer.HOME_URL);
+        halt();
+        return null;
+      }
+
       if (player2.inGame()) {
         httpSession.attribute("message", new Message(Message.Type.error, "Player already in game!"));
         response.redirect(WebServer.HOME_URL);
@@ -156,6 +163,7 @@ public class GetGameRoute implements Route {
           }
         }
         this.currentPlayer.gameEnd();
+        this.gameLobby.changeTurn();
         response.redirect(WebServer.HOME_URL);
         halt();
         return null;
