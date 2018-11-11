@@ -26,31 +26,35 @@ public class CheckMove {
     this.board = board;
   }
 
+  /**
+   * Checks to see if a player still has moves possible to make
+   *
+   * @param player the player checking to see if there are moves possible
+   * @return true/false if a player does/doesn't have any moves left to make
+   */
   public boolean moveAvailable(Player player) {
     if (player.isRed()) {
       for (Piece piece : board.getRedPieces()) {
         int row = piece.getXCoordinate();
         int col = piece.getCellIdx();
         Position current = new Position(row, col);
+        //Checking to see if the piece can move to the left or right forwards
         Map<Boolean, String> moveUpperLeft = validateMove(current, new Position(row - 1, col - 1), player);
         Map<Boolean, String> moveUpperRight = validateMove(current, new Position(row - 1, col + 1), player);
         if (moveUpperLeft.containsKey(true) || moveUpperRight.containsKey(true)) {
           return true;
         }
+        //If they can't move to the left or right, checking for a potential jump
         if (moveUpperLeft.containsValue(jumpPossible) || moveUpperRight.containsValue(jumpPossible)) {
           return true;
         } else if (moveUpperLeft.containsValue(multiJumpPossible) || moveUpperRight.containsValue(multiJumpPossible)) {
           return true;
         }
         if (piece.isKing()) {
+          //If the piece is a king, checking to see if it can move left or right backwards
           Map<Boolean, String> moveLowerLeft = validateMove(current, new Position(row + 1, col - 1), player);
           Map<Boolean, String> moveLowerRight = validateMove(current, new Position(row + 1, col + 1), player);
           if (moveLowerLeft.containsKey(true) || moveLowerRight.containsKey(true)) {
-            return true;
-          }
-          if (moveLowerLeft.containsValue(jumpPossible) || moveLowerRight.containsValue(jumpPossible)) {
-            return true;
-          } else if (moveLowerLeft.containsValue(multiJumpPossible) || moveLowerRight.containsValue(multiJumpPossible)) {
             return true;
           }
         }
@@ -60,26 +64,27 @@ public class CheckMove {
         int row = piece.getXCoordinate();
         int col = piece.getCellIdx();
         Position current = new Position(7 - row, 7 - col);
-        Map<Boolean, String> moveUpperLeft = validateMove(current, new Position(7 - (row + 1), 7 - (col - 1)), player);
-        Map<Boolean, String> moveUpperRight = validateMove(current, new Position(7 - (row + 1), 7 - (col + 1)), player);
+        //Checking to see if the piece can move to the left or right forwards
+        Map<Boolean, String> moveUpperLeft = validateMove(current, new Position(7 -
+                (row + 1), 7 - (col - 1)), player);
+        Map<Boolean, String> moveUpperRight = validateMove(current, new Position(7 -
+                (row + 1), 7 - (col + 1)), player);
         if (moveUpperLeft.containsKey(true) || moveUpperRight.containsKey(true)) {
           return true;
         }
-
+        //If they can't move to the left or right, checking for a potential jump
         if (moveUpperLeft.containsValue(jumpPossible) || moveUpperRight.containsValue(jumpPossible)) {
           return true;
         } else if (moveUpperLeft.containsValue(multiJumpPossible) || moveUpperRight.containsValue(multiJumpPossible)) {
           return true;
         }
         if (piece.isKing()) {
-          Map<Boolean, String> moveLowerLeft = validateMove(current, new Position(7 - (row - 1), 7 - (col - 1)), player);
-          Map<Boolean, String> moveLowerRight = validateMove(current, new Position(7 - (row - 1), 7 - (col + 1)), player);
+          //If the piece is a king, checking to see if it can move left or right backwards
+          Map<Boolean, String> moveLowerLeft = validateMove(current, new Position(7 -
+                  (row - 1), 7 - (col - 1)), player);
+          Map<Boolean, String> moveLowerRight = validateMove(current, new Position(7 -
+                  (row - 1), 7 - (col + 1)), player);
           if (moveLowerLeft.containsKey(true) || moveLowerRight.containsKey(true)) {
-            return true;
-          }
-          if (moveLowerLeft.containsValue(jumpPossible) || moveLowerRight.containsValue(jumpPossible)) {
-            return true;
-          } else if (moveLowerLeft.containsValue(multiJumpPossible) || moveLowerRight.containsValue(multiJumpPossible)) {
             return true;
           }
         }

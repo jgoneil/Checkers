@@ -119,6 +119,11 @@ public class Piece {
    */
   public void King(){this.type = Type.KING;}
 
+  /**
+   * Checks to see if a piece is of type KING
+   *
+   * @return true/false if the type of the piece is a KING or not
+   */
   public boolean isKing() {
     return this.type == Type.KING;
   }

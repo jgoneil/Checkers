@@ -297,4 +297,102 @@ class CheckMoveTest {
     assertTrue(attemptMoveRedTrue.containsKey(true));
     assertEquals(attemptMoveRedTrue.get(true), "This jump is valid.");
   }
+
+  @Test
+  void moveRedKingSingleAvailable() {
+    List<Piece> pieces = new ArrayList<>();
+    Piece kingRed = new Piece(GameLobby.RED, new Space(2, 3, Space.Color.BLACK));
+    kingRed.King();
+    pieces.add(kingRed);
+    pieces.add(new Piece(GameLobby.RED, new Space(1, 2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.RED, new Space(1, 4, Space.Color.BLACK)));
+
+    ModelBoard cusomModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkMove = new CheckMove(cusomModelBoard);
+
+    assertTrue(checkMove.moveAvailable(redPlayerMock));
+  }
+
+  @Test
+  void moveWhiteKingSingleAvailable() {
+    List<Piece> pieces = new ArrayList<>();
+    Piece kingRed = new Piece(GameLobby.WHITE, new Space(2, 3, Space.Color.BLACK));
+    kingRed.King();
+    pieces.add(kingRed);
+    pieces.add(new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(3, 4, Space.Color.BLACK)));
+
+    ModelBoard cusomModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkMove = new CheckMove(cusomModelBoard);
+
+    assertTrue(checkMove.moveAvailable(whitePlayerMock));
+  }
+
+  @Test
+  void moveRedKingJumpAvailable() {
+    List<Piece> pieces = new ArrayList<>();
+    Piece kingRed = new Piece(GameLobby.RED, new Space(2, 3, Space.Color.BLACK));
+    kingRed.King();
+    pieces.add(kingRed);
+    pieces.add(new Piece(GameLobby.RED, new Space(1, 2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.RED, new Space(1, 4, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(3, 4, Space.Color.BLACK)));
+
+    ModelBoard cusomModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkMove = new CheckMove(cusomModelBoard);
+
+    assertTrue(checkMove.moveAvailable(redPlayerMock));
+  }
+
+  @Test
+  void moveWhiteKingJumpAvailable() {
+    List<Piece> pieces = new ArrayList<>();
+    Piece kingRed = new Piece(GameLobby.WHITE,  new Space(2, 3, Space.Color.BLACK));
+    kingRed.King();
+    pieces.add(kingRed);
+    pieces.add(new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(3, 4, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.RED, new Space(1, 2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.RED, new Space(1, 4, Space.Color.BLACK)));
+
+    ModelBoard cusomModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkMove = new CheckMove(cusomModelBoard);
+
+    assertTrue(checkMove.moveAvailable(whitePlayerMock));
+  }
+
+  @Test
+  void moveRedKingMultiJumpAvailable() {
+    List<Piece> pieces = new ArrayList<>();
+    Piece kingRed = new Piece(GameLobby.RED,  new Space(2, 3, Space.Color.BLACK));
+    kingRed.King();
+    pieces.add(kingRed);
+    pieces.add(new Piece(GameLobby.RED, new Space(1, 2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.RED, new Space(1, 4, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(3, 4, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(3, 6, Space.Color.BLACK)));
+
+    ModelBoard cusomModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkMove = new CheckMove(cusomModelBoard);
+
+    assertTrue(checkMove.moveAvailable(redPlayerMock));
+  }
+
+  @Test
+  void moveWhiteKingMultiJumpAvailable() {
+    List<Piece> pieces = new ArrayList<>();
+    Piece kingRed = new Piece(GameLobby.WHITE,  new Space(4, 3, Space.Color.BLACK));
+    kingRed.King();
+    pieces.add(kingRed);
+    pieces.add(new Piece(GameLobby.WHITE, new Space(5, 2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(5, 4, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.RED, new Space(3, 2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.RED, new Space(3, 4, Space.Color.BLACK)));
+
+    ModelBoard cusomModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
+    CheckMove checkMove = new CheckMove(cusomModelBoard);
+
+    assertTrue(checkMove.moveAvailable(whitePlayerMock));
+  }
 }
