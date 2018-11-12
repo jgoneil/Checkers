@@ -74,6 +74,7 @@ public class PostResignGame implements Route {
       this.resignedPlayer = player;
       httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
       Message message = new Message(Message.Type.info, SUCCESS_RESIGN);
+      httpSession.attribute(RESIGNED_PLAYER, resignedPlayer);
       httpSession.attribute("message", message);
       return gson.toJson(message);
     }

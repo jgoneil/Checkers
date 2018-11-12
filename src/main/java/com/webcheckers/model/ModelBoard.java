@@ -39,9 +39,9 @@ public class ModelBoard {
   /**
    * Constructor for the model version of the board
    *
-   * @param redPlayer the player associated to the color red for the game
+   * @param redPlayer   the player associated to the color red for the game
    * @param whitePlayer the player associated to the color white for the game
-   * @param length the length of the sides of the board (assuming its a square)
+   * @param length      the length of the sides of the board (assuming its a square)
    */
   public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
     //Setting constants
@@ -83,10 +83,10 @@ public class ModelBoard {
   /**
    * Constructor for the model version of the board
    *
-   * @param redPlayer the player associated to the color red for the game
+   * @param redPlayer   the player associated to the color red for the game
    * @param whitePlayer the player associated to the color white for the game
-   * @param length the length of the sides of the board (assuming square)
-   * @param pieces the pieces being added to the board
+   * @param length      the length of the sides of the board (assuming square)
+   * @param pieces      the pieces being added to the board
    */
   public ModelBoard(Player redPlayer, Player whitePlayer, int length, List<Piece> pieces) {
     //Setting constants
@@ -99,25 +99,22 @@ public class ModelBoard {
     this.isKinging = true;
     //Preforming a loop to generate all of the spaces for the board
     for (int i = 0; i < length; i++) {
-      for (int j = 0; j < length; j ++) {
+      for (int j = 0; j < length; j++) {
         if ((i + j) % 2 == 0) {
           board[i][j] = new Space(i, j, Space.Color.WHITE);
         } else {
-          Space space = new Space(i, j, Space.Color.BLACK);
-          for (Piece p: pieces) {
-            if (p.getSpace().equals(space)) {
-              if (p.getColor() == Piece.Color.RED) {
-                this.redPieces.add(p);
-              } else {
-                this.whitePieces.add(p);
-              }
-              space.occupy(p);
-              pieces.remove(p);
-              break;
-            }
-          }
-          board[i][j] = space;
+          board[i][j] = new Space(i, j, Space.Color.BLACK);
         }
+      }
+    }
+    for (Piece p : pieces) {
+      Space space = board[p.getXCoordinate()][p.getCellIdx()];
+      p.move(space);
+      space.occupy(p);
+      if (p.isRed()) {
+        this.redPieces.add(p);
+      } else {
+        this.whitePieces.add(p);
       }
     }
   }
@@ -214,6 +211,9 @@ public class ModelBoard {
     return this.pendingMove;
   }
 
+  /**
+   * Change whos turn it is for the game
+   */
   public void changeTurn() {
     this.redTurn = !redTurn;
   }
@@ -224,7 +224,7 @@ public class ModelBoard {
   public void submitMove() {
     Space current;
     Space endingSpace;
-    while(!this.pendingMoves.empty()) {
+    while (!this.pendingMoves.empty()) {
       Move firstMove = this.pendingMoves.get(0);
       this.pendingMoves.remove(firstMove);
       if (redTurn) {
@@ -305,7 +305,7 @@ public class ModelBoard {
   public boolean redCanPlay() {
     if (this.redPieces.size() == 0) {
       return false;
-    } 
+    }
     return true;
   }
 
@@ -337,7 +337,7 @@ public class ModelBoard {
    * Removes a piece from a space and assigns it to a different space. Reverses an addition of a piece to a space
    *
    * @param currentSpace the space the piece is moving to
-   * @param endSpace the space the piece is on
+   * @param endSpace     the space the piece is on
    */
   public void removePieceFromSpace(Space currentSpace, Space endSpace) {
     Space current = this.board[currentSpace.getxCoordinate()][currentSpace.getCellIdx()];
@@ -349,7 +349,7 @@ public class ModelBoard {
 
   /**
    * Backup a move made by the player before submitting.
-   *
+   * <p>
    * Returns the game to the state before choosing a move.
    */
   public void backupMove() {
@@ -388,7 +388,7 @@ public class ModelBoard {
    * Tests to see if a piece is able to King a piece
    *
    * @param piece - Piece to be kinged
-   * @param row - Row of the Piece being checked
+   * @param row   - Row of the Piece being checked
    * @return - if the King is able to be Kinged
    */
   public boolean isBecomingKing(Piece piece, int row) {
@@ -403,8 +403,8 @@ public class ModelBoard {
    *
    * @param piece The piece that is being jumped/ate
    */
-  public void eatPiece(Piece piece){
-    if (piece.isRed()){
+  public void eatPiece(Piece piece) {
+    if (piece.isRed()) {
       redPieces.remove(piece);
     } else {
       whitePieces.remove(piece);
@@ -419,7 +419,7 @@ public class ModelBoard {
    *
    * @return the move pending on the system
    */
-  public Move getPendingMove(){
+  public Move getPendingMove() {
     return this.pendingMoves.peek();
   }
 }

@@ -29,6 +29,7 @@ public class TestPostMoveCheck {
   private Player notInGame;
   private Position position34;
   private Position position45;
+  private Position position56;
 
   //attributes holding mock objects (non-friendly)
   private Request request;
@@ -50,6 +51,7 @@ public class TestPostMoveCheck {
     templateEngine = mock(TemplateEngine.class);
     position34 = new Position(4, 3);
     position45 = new Position(5, 4);
+    position56 = new Position(5, 6);
 
 
     CuT = new PostMoveCheck(gson);
@@ -130,7 +132,7 @@ public class TestPostMoveCheck {
   void makeFalseMoveWhite() {
     when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
-    when(request.body()).thenReturn(gson.toJson(new Move(position45, position34)));
+    when(request.body()).thenReturn(gson.toJson(new Move(position45, position56)));
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -140,7 +142,7 @@ public class TestPostMoveCheck {
       String temporaryInfo = (String) info;
       Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
       assertEquals(Message.Type.error, respondedMessage.getType());
-      assertEquals("Attempted to move when jump is possible.", respondedMessage.getText());
+      assertEquals("Attempted to move a piece to an already occupied space", respondedMessage.getText());
     }
   }
 
