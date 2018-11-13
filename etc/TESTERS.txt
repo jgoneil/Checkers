@@ -1,0 +1,11 @@
+Hello and thank you for testing our game! Below are instructions on how to run the system:
+
+1) The file should be found on the desktop of your computer. Please open up the command prompt and cd onto the desktop
+2) Unzip the files either through the windows file system or from the command line. You should now have a folder with the system on the desktop.
+3) cd into the folder and type the command dir. You should see a file called 'pom.xml'. This is needed for execution. 
+  a) If you do not see this file, please ask for assistance otherwise, continue to step 4.
+4) type the following command into the command prompt: mvn compile exec:java
+  a) This should start the game and the system will begin listening for connections
+5) Open a web browser and go to the following address: localhost:4567
+  a) You should see webcheckers now running in the web browser
+6) To play the game, either open another web browser or open a tab in incognito mode to have a second session available for use. The address again for the second browser is: localhost:4567
