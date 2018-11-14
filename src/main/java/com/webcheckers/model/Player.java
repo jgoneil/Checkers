@@ -12,6 +12,12 @@ public class Player {
   //The color on the game board that the player is
   private String color;
 
+  private Type type;
+
+  private enum Type{
+    AI, USER
+  }
+
   /**
    * Constructor for player class
    *
