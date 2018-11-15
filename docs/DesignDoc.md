@@ -3,10 +3,10 @@ geometry: margin=1in
 ---
 # PROJECT Design Documentation
 
-> _The following template provides the headings for your Design
-> Documentation.  As you edit each section make sure you remove these
-> commentary 'blockquotes'; the lines that start with a > character
-> and appear in the generated PDF in italics._
+<!-- _The following template provides the headings for your Design
+ Documentation.  As you edit each section make sure you remove these
+ commentary 'blockquotes'; the lines that start with a > character
+ and appear in the generated PDF in italics._) -->
 
 ## Team Information
 * Team name: Team C
@@ -20,7 +20,7 @@ geometry: margin=1in
 ## Executive Summary
 
 This project focuses on the design, development, and maintenance of Software Applications. In order to do this, an online version of the popular board game checkers was created.
-For this application, players are required to sign into the system and then can select from a lobby of players an opponent for a match.
+For this application, players are required to sign into the system and then can select an opponent from a lobby of players for a match.
 When a match starts, the game is played using the American rules with the red player going first. Players can forefit the game at any point along with signout from the system at any point.
 
 ### Purpose
@@ -138,6 +138,48 @@ Throughout the game, the system is constantly updating to validate moves, comple
 > will also discuss the resutling metric measurements.  Indicate the
 > hot spots the metrics identified in your code base, and your
 > suggested design improvements to address those hot spots._
+We found large complexity issues surrounding out check move class, our javadoc coverage metrics
+, and some of our UI class tiers. However, we did a lot of good things in our system.
+A breakdown of each can be found below.
+
+For the UI class tiers, we found issues in the complexity metric
+analysis in the number of potential outcomes from the system. We believe this cannot
+be fixed, as the cyclomatic complexity of this class is needed for execution in the system.
+Without this cyclomatic system, each one of the potential system handles would not be able 
+to be met, and we may fail to redirect the system in cases that the user attempts to visit the 
+route when a game is not in session.
+
+For our check move class, we found high complexity metrics, specificially in our cyclomatic
+complexity check, as the system requires lots of conditional statements for execution. This
+issue can be resolved by the implementation of a state machine to check our move validations.
+This system would limit the number of conditional statements needed for completion and the 
+system would run after every move, making it less time complex overall. Our team decided not
+to implement this improvement due to time constraints however, this should be a top priority
+for the system if we had more time.
+
+For our javadoc coverage metrics, we found some classes that missed javadoc coverage. 
+For this, we found the locations that the javadoc coverage was missing and made the proper
+changes to the system to ensure all points of the javadoc coverage was met in the system.
+
+For our lines of code metrics, we found no issues with the system, and the number of lines
+for our system did not add any complexity to the system. No changes were made due to the system
+not needing any improvements. The system alrerted us that we have approximately 4,000 lines of 
+active code on our system, with approximately 1,000 lines of comments.
+
+For our Martin package metrics, we found no issues with the system. Our fan-in connections were
+highest in our model class however, this makes sense as the model class reaches to other 
+classes in our model tier for execution. For each one of the other tiers, their fan-in 
+connections were relaively small, as our UI tier and our Application Tier classes did not 
+communicate very often with inside themselves. For our fan-out connections, we found the 
+highest number of connections needed in our UI Tier. This makes sense as the UI tier relied 
+hevily upon all of the classes in our system for functionality and to send all of the 
+information to the frontend so it could be displayed properly for the user.
+
+The overall coupling factor of our system was 20.32%, meaning that we did a good job of 
+eliminating coupling in our system. Our attribute hiding factor was 85.15%, meaning that we 
+did a good job hiding our attribues in private fields to ensure they were only being 
+accessed through getters and setters, rather than other classes having direct contact with 
+our attributes. 
 
 ## Testing
 > _This section will provide information about the testing performed
