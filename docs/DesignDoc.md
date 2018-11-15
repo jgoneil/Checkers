@@ -130,14 +130,6 @@ Throughout the game, the system is constantly updating to validate moves, comple
 > Tier above._
 
 ### Design Improvements
-> _Discuss design improvements that you would make if the project were
-> to continue. These improvement should be based on your direct
-> analysis of where there are problems in the code base which could be
-> addressed with design changes, and describe those suggested design
-> improvements. After completion of the Code metrics exercise, you
-> will also discuss the resutling metric measurements.  Indicate the
-> hot spots the metrics identified in your code base, and your
-> suggested design improvements to address those hot spots._
 We found large complexity issues surrounding out check move class, our javadoc coverage metrics
 , and some of our UI class tiers. However, we did a lot of good things in our system.
 A breakdown of each can be found below.
