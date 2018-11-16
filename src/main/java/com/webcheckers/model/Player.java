@@ -11,7 +11,7 @@ public class Player {
   private String username;
   //The color on the game board that the player is
   private String color;
-
+  //Whether the player is an AI or a USER
   private Type type;
 
   private enum Type{
@@ -25,8 +25,16 @@ public class Player {
    */
   public Player(String username) {
     this.username = username;
+    this.type = Type.USER;
   }
 
+  /**
+   * Alternate constructor for player in case of AI player
+   */
+  public Player(){
+    this.username = "F@ke";
+    this.type = Type.AI;
+  }
   /**
    * Getter for the player's username
    *
