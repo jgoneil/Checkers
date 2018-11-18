@@ -56,16 +56,29 @@ public class FindBestMove {
     }
 
     Random r = new Random();
-    int random = r.nextInt(moves.size() - 1);
+    int random;
+    if (moves.size() == 1) {
+      random = 0;
+    } else {
+      random = r.nextInt(moves.size());
+    }
     Set<Space> results = this.moves.keySet();
-    Space[] spaces = (Space[]) results.toArray();
-    Space bestMoveStart = spaces[random];
-    Space bestMoveEnd = this.moves.get(bestMoveStart);
-    Position startPosition = new Position(bestMoveStart.getxCoordinate(),
-            bestMoveStart.getCellIdx());
-    Position endPositon = new Position(bestMoveEnd.getxCoordinate(),
-            bestMoveEnd.getCellIdx());
-    return new Move(startPosition, endPositon);
+    Object[] objectSpaces = results.toArray();
+    Object objectSpace = objectSpaces[random];
+    if (objectSpace instanceof Space) {
+      try {
+        Space bestMoveStart = (Space) objectSpace;
+        Space bestMoveEnd = this.moves.get(bestMoveStart);
+        Position startPosition = new Position(bestMoveStart.getxCoordinate(),
+                bestMoveStart.getCellIdx());
+        Position endPositon = new Position(bestMoveEnd.getxCoordinate(),
+                bestMoveEnd.getCellIdx());
+        return new Move(startPosition, endPositon);
+      } catch (ClassCastException e) {
+        System.out.println(e);
+      }
+    }
+    return null;
   }
 
   private void canJumpMulti() {
@@ -128,9 +141,9 @@ public class FindBestMove {
     }
     else {
       for (Piece whitePiece: board.getWhitePieces()) {
-        Position start = new Position(whitePiece.getXCoordinate(), whitePiece.getCellIdx());
-        Position right = new Position(whitePiece.getXCoordinate() + 1, whitePiece.getCellIdx() + 1);
-        Position left = new Position(whitePiece.getXCoordinate() + 1, whitePiece.getCellIdx() - 1);
+        Position start = new Position(7 - whitePiece.getXCoordinate(), 7 - whitePiece.getCellIdx());
+        Position right = new Position(7 - (whitePiece.getXCoordinate() + 1), 7 - (whitePiece.getCellIdx() + 1));
+        Position left = new Position(7 - (whitePiece.getXCoordinate() + 1), 7 - (whitePiece.getCellIdx() - 1));
         if (checkMove.validateMove(start, right, player).containsKey(true)) {
           moves.put(whitePiece.getSpace(), board.getSpace(whitePiece.getXCoordinate() + 1, whitePiece.getCellIdx() + 1));
         }
@@ -147,9 +160,10 @@ public class FindBestMove {
     if (jumps.size() == 0) {
       findMoves();
       this.STATE = MOVE;
+    } else {
+      this.moves = jumps;
+      this.STATE = JUMP;
     }
-    this.moves = jumps;
-    this.STATE = JUMP;
   }
 
   private boolean willBeEaten(Piece piece) {

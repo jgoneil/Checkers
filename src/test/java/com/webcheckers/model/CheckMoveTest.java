@@ -2,7 +2,6 @@ package com.webcheckers.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.webcheckers.appl.GameLobby;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
