@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Tag("Model-tier")
-public class FindBestMoveTest {
+class FindBestMoveTest {
 
   private Player redPlayer;
   private Player whitePlayer;
@@ -135,22 +135,76 @@ public class FindBestMoveTest {
 
   @Test
   void testSingleJumpAndKingRed() {
-
+    Piece redPiece = new Piece(GameLobby.RED, new Space(2, 1, Space.Color.BLACK));
+    Piece redPieceTwo = new Piece(GameLobby.RED, new Space(5, 0, Space.Color.BLACK));
+    Piece whitePiece = new Piece(GameLobby.WHITE, new Space(1, 2, Space.Color.BLACK));
+    Piece whitePieceTwo = new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK));
+    pieceList.add(redPiece);
+    pieceList.add(whitePiece);
+    pieceList.add(redPieceTwo);
+    pieceList.add(whitePieceTwo);
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(board, redPlayer);
+    Move move = findBestMove.findMove();
+    assertEquals(0, move.getEndRow());
+    assertEquals(3, move.getEndCell());
   }
 
   @Test
   void testMultiJumpAndKingRed() {
-
+    Piece redPiece = new Piece(GameLobby.RED, new Space(4, 5, Space.Color.BLACK));
+    Piece redPieceTwo = new Piece(GameLobby.RED, new Space(7, 0, Space.Color.BLACK));
+    Piece whitePiece = new Piece(GameLobby.WHITE, new Space(3, 4, Space.Color.BLACK));
+    Piece whitePieceTwo = new Piece(GameLobby.WHITE, new Space(1, 2, Space.Color.BLACK));
+    Piece redPieceThree = new Piece(GameLobby.RED, new Space(2, 1, Space.Color.BLACK));
+    pieceList.add(redPiece);
+    pieceList.add(whitePiece);
+    pieceList.add(redPieceTwo);
+    pieceList.add(whitePieceTwo);
+    pieceList.add(redPieceThree);
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(board, redPlayer);
+    Move move = findBestMove.findMove();
+    assertEquals(0, move.getEndRow());
+    assertEquals(1, move.getEndCell());
   }
 
   @Test
   void testSingleJumpAndEatenRed() {
-
+    Piece redPieceOne = new Piece(GameLobby.RED, new Space(5, 2, Space.Color.BLACK));
+    Piece redPieceTwo = new Piece(GameLobby.RED, new Space(5, 4, Space.Color.BLACK));
+    Piece whitePieceOne = new Piece(GameLobby.WHITE, new Space(4, 3, Space.Color.BLACK));
+    Piece whitePieceTwo = new Piece(GameLobby.WHITE, new Space(2, 5, Space.Color.BLACK));
+    Piece whitePieceThree = new Piece(GameLobby.WHITE, new Space(1, 6, Space.Color.BLACK));
+    pieceList.add(redPieceOne);
+    pieceList.add(redPieceTwo);
+    pieceList.add(whitePieceOne);
+    pieceList.add(whitePieceTwo);
+    pieceList.add(whitePieceThree);
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(board, redPlayer);
+    Move move = findBestMove.findMove();
+    assertEquals(3, move.getEndRow());
+    assertEquals(2, move.getEndCell());
   }
 
   @Test
   void testMultiJumpAndEatenRed() {
-
+    Piece redPiece = new Piece(GameLobby.RED, new Space(4, 5, Space.Color.BLACK));
+    Piece redPieceTwo = new Piece(GameLobby.RED, new Space(7, 0, Space.Color.BLACK));
+    Piece whitePiece = new Piece(GameLobby.WHITE, new Space(3, 4, Space.Color.BLACK));
+    Piece whitePieceTwo = new Piece(GameLobby.WHITE, new Space(1, 2, Space.Color.BLACK));
+    Piece redPieceThree = new Piece(GameLobby.RED, new Space(2, 1, Space.Color.BLACK));
+    pieceList.add(redPiece);
+    pieceList.add(whitePiece);
+    pieceList.add(redPieceTwo);
+    pieceList.add(whitePieceTwo);
+    pieceList.add(redPieceThree);
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(board, redPlayer);
+    Move move = findBestMove.findMove();
+    assertEquals(0, move.getEndRow());
+    assertEquals(1, move.getEndCell());
   }
 
   @Test
@@ -263,22 +317,76 @@ public class FindBestMoveTest {
 
   @Test
   void testSingleJumpAndKingWhite() {
-
+    Piece whitePiece = new Piece(GameLobby.WHITE, new Space(5, 0, Space.Color.BLACK));
+    Piece whitePieceTwo = new Piece(GameLobby.WHITE, new Space(0, 1, Space.Color.BLACK));
+    Piece redPiece = new Piece(GameLobby.RED, new Space(6, 1, Space.Color.BLACK));
+    Piece redPieceTwo = new Piece(GameLobby.RED, new Space(1, 2, Space.Color.BLACK));
+    pieceList.add(redPiece);
+    pieceList.add(whitePiece);
+    pieceList.add(redPieceTwo);
+    pieceList.add(whitePieceTwo);
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
+    Move move = findBestMove.findMove();
+    assertEquals(7, move.getEndRow());
+    assertEquals(2, move.getEndCell());
   }
 
   @Test
   void testMultiJumpAndKingWhite() {
-
+    Piece whitePiece = new Piece(GameLobby.WHITE, new Space(3, 4, Space.Color.BLACK));
+    Piece whitePieceTwo = new Piece(GameLobby.WHITE, new Space(0, 1, Space.Color.BLACK));
+    Piece redPiece = new Piece(GameLobby.RED, new Space(4, 3, Space.Color.BLACK));
+    Piece redPieceTwo = new Piece(GameLobby.RED, new Space(6, 1, Space.Color.BLACK));
+    Piece whitePieceThree = new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK));
+    pieceList.add(redPiece);
+    pieceList.add(whitePiece);
+    pieceList.add(redPieceTwo);
+    pieceList.add(whitePieceTwo);
+    pieceList.add(whitePieceThree);
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
+    Move move = findBestMove.findMove();
+    assertEquals(7, move.getEndRow());
+    assertEquals(0, move.getEndCell());
   }
 
   @Test
   void testSingleJumpAndEatenWhite() {
-
+    Piece redPieceOne = new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK));
+    Piece redPieceTwo = new Piece(GameLobby.WHITE, new Space(3, 4, Space.Color.BLACK));
+    Piece whitePieceOne = new Piece(GameLobby.RED, new Space(4, 3, Space.Color.BLACK));
+    Piece whitePieceTwo = new Piece(GameLobby.RED, new Space(6, 5, Space.Color.BLACK));
+    Piece whitePieceThree = new Piece(GameLobby.RED, new Space(7, 6, Space.Color.BLACK));
+    pieceList.add(redPieceOne);
+    pieceList.add(redPieceTwo);
+    pieceList.add(whitePieceOne);
+    pieceList.add(whitePieceTwo);
+    pieceList.add(whitePieceThree);
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
+    Move move = findBestMove.findMove();
+    assertEquals(5, move.getEndRow());
+    assertEquals(2, move.getEndCell());
   }
 
   @Test
   void testMultiJumpAndEatenWhite() {
-
+    Piece whitePiece = new Piece(GameLobby.WHITE, new Space(2, 1, Space.Color.BLACK));
+    Piece whitePieceTwo = new Piece(GameLobby.WHITE, new Space(2, 3, Space.Color.BLACK));
+    Piece redPiece = new Piece(GameLobby.RED, new Space(3, 2, Space.Color.BLACK));
+    Piece redPieceTwo = new Piece(GameLobby.RED, new Space(5, 2, Space.Color.BLACK));
+    Piece redPieceThree = new Piece(GameLobby.RED, new Space(7, 4, Space.Color.BLACK));
+    pieceList.add(redPiece);
+    pieceList.add(whitePiece);
+    pieceList.add(redPieceTwo);
+    pieceList.add(whitePieceTwo);
+    pieceList.add(redPieceThree);
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
+    Move move = findBestMove.findMove();
+    assertEquals(6, move.getEndRow());
+    assertEquals(1, move.getEndCell());
   }
 
 }
