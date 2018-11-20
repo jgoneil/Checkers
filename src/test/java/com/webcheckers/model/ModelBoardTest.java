@@ -93,6 +93,16 @@ class ModelBoardTest {
   }
 
   @Test
+  void getInvalidSpace() {
+    assertNull(modelBoard.getSpace(3, 18));
+    assertNull(modelBoard.getSpace(821, 6));
+    assertNull(modelBoard.getSpace(23, 18));
+    assertEquals(3, modelBoard.getSpace(3, 6).getxCoordinate());
+    assertEquals(6, modelBoard.getSpace(3, 6).getCellIdx());
+
+  }
+
+  @Test
   void isBecomingKingTest(){
     Piece piece = new Piece("red", new Space(6, 1, Color.BLACK));
     Move move = (new Move(new Position(6,1), new Position(7,0)));

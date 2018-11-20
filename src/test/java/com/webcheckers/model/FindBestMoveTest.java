@@ -389,4 +389,100 @@ class FindBestMoveTest {
     assertEquals(1, move.getEndCell());
   }
 
+  @Test
+  void eatUpperRight() {
+    Space startingSpaceRed = new Space(4, 3, Space.Color.BLACK);
+    Piece redPiece = new Piece(GameLobby.RED, startingSpaceRed);
+    Space startingSpaceWhite = new Space(2, 3, Space.Color.BLACK);
+    Piece whitePiece = new Piece(GameLobby.WHITE, startingSpaceWhite);
+    Space endingSpace = new Space(3, 2, Space.Color.BLACK);
+    pieceList.add(redPiece);
+    pieceList.add(whitePiece);
+
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMoveRed = new FindBestMove(board, redPlayer);
+    FindBestMove findBestMoveWhite = new FindBestMove(board, whitePlayer);
+    assertTrue(findBestMoveRed.willBeEaten(startingSpaceRed, endingSpace));
+    assertTrue(findBestMoveWhite.willBeEaten(startingSpaceWhite, endingSpace));
+  }
+
+  @Test
+  void eatUpperLeft() {
+    Space startingSpaceRed = new Space(4, 1, Space.Color.BLACK);
+    Piece redPiece = new Piece(GameLobby.RED, startingSpaceRed);
+    Space startingSpaceWhite = new Space(2, 1, Space.Color.BLACK);
+    Piece whitePiece = new Piece(GameLobby.WHITE, startingSpaceWhite);
+    Space endingSpace = new Space(3, 2, Space.Color.BLACK);
+    pieceList.add(redPiece);
+    pieceList.add(whitePiece);
+
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMoveRed = new FindBestMove(board, redPlayer);
+    FindBestMove findBestMoveWhite = new FindBestMove(board, whitePlayer);
+    assertTrue(findBestMoveRed.willBeEaten(startingSpaceRed, endingSpace));
+    assertTrue(findBestMoveWhite.willBeEaten(startingSpaceWhite, endingSpace));
+  }
+
+  @Test
+  void eatBottomLeft() {
+    Space startingSpaceRed = new Space(2, 3, Space.Color.BLACK);
+    Piece redPiece = new Piece(GameLobby.RED, startingSpaceRed);
+    redPiece.King();
+    startingSpaceRed.occupy(redPiece);
+    Space startingSpaceWhite = new Space(4, 3, Space.Color.BLACK);
+    Piece whitePiece = new Piece(GameLobby.WHITE, startingSpaceWhite);
+    whitePiece.King();
+    startingSpaceRed.occupy(whitePiece);
+    Space endingSpace = new Space(3, 2, Space.Color.BLACK);
+    pieceList.add(redPiece);
+    pieceList.add(whitePiece);
+
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMoveRed = new FindBestMove(board, redPlayer);
+    FindBestMove findBestMoveWhite = new FindBestMove(board, whitePlayer);
+    assertTrue(findBestMoveRed.willBeEaten(startingSpaceRed, endingSpace));
+    assertTrue(findBestMoveWhite.willBeEaten(startingSpaceWhite, endingSpace));
+  }
+
+  @Test
+  void eatBottomRight() {
+    Space startingSpaceRed = new Space(2, 1, Space.Color.BLACK);
+    Piece redPiece = new Piece(GameLobby.RED, startingSpaceRed);
+    redPiece.King();
+    startingSpaceRed.occupy(redPiece);
+    Space startingSpaceWhite = new Space(4, 1, Space.Color.BLACK);
+    Piece whitePiece = new Piece(GameLobby.WHITE, startingSpaceWhite);
+    whitePiece.King();
+    startingSpaceRed.occupy(whitePiece);
+    Space endingSpace = new Space(3, 2, Space.Color.BLACK);
+    pieceList.add(redPiece);
+    pieceList.add(whitePiece);
+
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMoveRed = new FindBestMove(board, redPlayer);
+    FindBestMove findBestMoveWhite = new FindBestMove(board, whitePlayer);
+    assertTrue(findBestMoveRed.willBeEaten(startingSpaceRed, endingSpace));
+    assertTrue(findBestMoveWhite.willBeEaten(startingSpaceWhite, endingSpace));
+  }
+
+  @Test
+  void eatUpperRightFromJump() {
+    Space startingSpaceRed = new Space(6, 1, Space.Color.BLACK);
+    Piece redPiece = new Piece(GameLobby.RED, startingSpaceRed);
+    Space startingSpaceWhite = new Space(0, 7, Space.Color.BLACK);
+    Piece whitePiece = new Piece(GameLobby.WHITE, startingSpaceWhite);
+    Space endingSpace = new Space(3, 2, Space.Color.BLACK);
+    Piece redJump = new Piece(GameLobby.RED, new Space(1, 6, Space.Color.BLACK));
+    Piece whiteJump = new Piece(GameLobby.WHITE, new Space(5,2, Space.Color.BLACK));
+    pieceList.add(redPiece);
+    pieceList.add(whitePiece);
+    pieceList.add(redJump);
+    pieceList.add(whiteJump);
+
+    ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMoveRed = new FindBestMove(board, redPlayer);
+    FindBestMove findBestMoveWhite = new FindBestMove(board, whitePlayer);
+    assertTrue(findBestMoveRed.willBeEaten(startingSpaceRed, endingSpace));
+    assertTrue(findBestMoveWhite.willBeEaten(startingSpaceWhite, endingSpace));
+  }
 }

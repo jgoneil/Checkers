@@ -194,24 +194,7 @@ public class FindBestMove {
     }
   }
 
-  private boolean jumped(Space startingSpace, Space endingSpace, Space potentialJumped, Piece piece) {
-    if (endingSpace.getxCoordinate() - startingSpace.getxCoordinate() == 2 ||
-            endingSpace.getxCoordinate() - startingSpace.getxCoordinate() == -2) {
-      if (endingSpace.getCellIdx() - startingSpace.getCellIdx() == 2 ||
-              endingSpace.getCellIdx() - startingSpace.getCellIdx() == -2) {
-        if (startingSpace.getxCoordinate() + 1 == potentialJumped.getxCoordinate() ||
-                startingSpace.getxCoordinate() - 1 == potentialJumped.getxCoordinate()) {
-          if (startingSpace.getCellIdx() - 1 == potentialJumped.getCellIdx() ||
-                  startingSpace.getCellIdx() + 1 == potentialJumped.getCellIdx()) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
-
-  private boolean willBeEaten(Space startingSpace, Space endingSpace) {
+  boolean willBeEaten(Space startingSpace, Space endingSpace) {
     int xCoordinate = endingSpace.getxCoordinate();
     int cellIdx = endingSpace.getCellIdx();
     if (xCoordinate - 1 >= 0 && cellIdx + 1 <= 7) {
@@ -223,10 +206,6 @@ public class FindBestMove {
               Space bottomLeft = board.getSpace(xCoordinate + 1, cellIdx - 1);
               if (!bottomLeft.isOccupied()) {
                 return true;
-              } else {
-                if (jumped(startingSpace, endingSpace, bottomLeft, startingSpace.getPiece())) {
-                  return true;
-                }
               }
             }
           }
@@ -236,10 +215,6 @@ public class FindBestMove {
               Space bottomLeft = board.getSpace(xCoordinate + 1, cellIdx - 1);
               if (!bottomLeft.isOccupied()) {
                 return true;
-              } else {
-                if (jumped(startingSpace, endingSpace, bottomLeft, startingSpace.getPiece())) {
-                  return true;
-                }
               }
             }
           }
@@ -257,10 +232,6 @@ public class FindBestMove {
               Space bottomRight = board.getSpace(xCoordinate + 1, cellIdx + 1);
               if (!bottomRight.isOccupied()) {
                 return true;
-              } else {
-                if (jumped(startingSpace, endingSpace, bottomRight, startingSpace.getPiece())) {
-                  return true;
-                }
               }
             }
           }
@@ -270,10 +241,6 @@ public class FindBestMove {
               Space bottomRight = board.getSpace(xCoordinate + 1, cellIdx + 1);
               if (!bottomRight.isOccupied()) {
                 return true;
-              } else {
-                if (jumped(startingSpace, endingSpace, bottomRight, startingSpace.getPiece())) {
-                  return true;
-                }
               }
             }
           }
@@ -288,26 +255,18 @@ public class FindBestMove {
         if (player.isRed()) {
           if (bottomRight.pieceIsWhite() && bottomRight.getPiece().isKing()) {
             if (xCoordinate - 1 >= 0 && cellIdx - 1 >= 0) {
-              Space upperLeft = board.getSpace(xCoordinate - 1, cellIdx + 1);
+              Space upperLeft = board.getSpace(xCoordinate - 1, cellIdx - 1);
               if (!upperLeft.isOccupied()) {
                 return true;
-              } else {
-                if (jumped(startingSpace, endingSpace, upperLeft, startingSpace.getPiece())) {
-                  return true;
-                }
               }
             }
           }
         } else {
           if (bottomRight.pieceIsRed()) {
             if (xCoordinate - 1 >= 0 && cellIdx - 1 >= 0) {
-              Space upperLeft = board.getSpace(xCoordinate - 1, cellIdx + 1);
+              Space upperLeft = board.getSpace(xCoordinate - 1, cellIdx - 1);
               if (!upperLeft.isOccupied()) {
                 return true;
-              } else {
-                if (jumped(startingSpace, endingSpace, upperLeft, startingSpace.getPiece())) {
-                  return true;
-                }
               }
             }
           }
@@ -324,22 +283,14 @@ public class FindBestMove {
               Space upperRight = board.getSpace(xCoordinate - 1, cellIdx + 1);
               if (!upperRight.isOccupied()) {
                 return true;
-              } else {
-                if (jumped(startingSpace, endingSpace, upperRight, startingSpace.getPiece())) {
-                  return true;
-                }
               }
             }
           }
-        }
-      } else {
-        if (bottomLeft.pieceIsRed()) {
-          if (xCoordinate - 1 >= 0 && cellIdx + 1 <= 7) {
-            Space upperRight = board.getSpace(xCoordinate - 1, cellIdx + 1);
-            if (!upperRight.isOccupied()) {
-              return true;
-            } else {
-              if (jumped(startingSpace, endingSpace, upperRight, startingSpace.getPiece())) {
+        } else {
+          if (bottomLeft.pieceIsRed()) {
+            if (xCoordinate - 1 >= 0 && cellIdx + 1 <= 7) {
+              Space upperRight = board.getSpace(xCoordinate - 1, cellIdx + 1);
+              if (!upperRight.isOccupied()) {
                 return true;
               }
             }
