@@ -12,6 +12,7 @@ import java.util.List;
 @Tag("Model-tier")
 class FindBestMoveTest {
 
+  //Safe objects used for testing
   private Player redPlayer;
   private Player whitePlayer;
   private List<Piece> pieceList;
