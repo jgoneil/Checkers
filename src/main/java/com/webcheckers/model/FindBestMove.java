@@ -360,10 +360,13 @@ public class FindBestMove {
 
   private void canJumpAndEaten() {
     Map<Space, Space> nonEaten = wontBeEaten();
-    if (nonEaten.size() != 0) {
+    if (nonEaten.size() > 1) {
       this.moves = nonEaten;
-      this.STATE = JUMP_NO_EAT;
+      this.STATE = JUMP_KING;
     } else {
+      if (nonEaten.size() != 0) {
+        this.moves = nonEaten;
+      }
       this.STATE = FINAL_STATE;
     }
   }
