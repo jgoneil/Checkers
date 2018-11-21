@@ -194,6 +194,21 @@ public class FindBestMove {
     }
   }
 
+  private boolean jumped(Space startingSpace, Space endingSpace, Space potentialJumped, Piece piece) {
+    if (Math.abs(endingSpace.getxCoordinate() - startingSpace.getxCoordinate()) % 2 == 0) {
+      if (Math.abs(endingSpace.getCellIdx() - startingSpace.getCellIdx()) % 2 == 0) {
+        if (endingSpace.getxCoordinate() + 1 == potentialJumped.getxCoordinate() ||
+                endingSpace.getxCoordinate() - 1 == potentialJumped.getxCoordinate()) {
+          if (endingSpace.getCellIdx() - 1 == potentialJumped.getCellIdx() ||
+                  endingSpace.getCellIdx() + 1 == potentialJumped.getCellIdx()) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
   boolean willBeEaten(Space startingSpace, Space endingSpace) {
     int xCoordinate = endingSpace.getxCoordinate();
     int cellIdx = endingSpace.getCellIdx();
@@ -206,6 +221,10 @@ public class FindBestMove {
               Space bottomLeft = board.getSpace(xCoordinate + 1, cellIdx - 1);
               if (!bottomLeft.isOccupied()) {
                 return true;
+              } else {
+                if (jumped(startingSpace, endingSpace, bottomLeft, startingSpace.getPiece())) {
+                  return true;
+                }
               }
             }
           }
@@ -215,6 +234,10 @@ public class FindBestMove {
               Space bottomLeft = board.getSpace(xCoordinate + 1, cellIdx - 1);
               if (!bottomLeft.isOccupied()) {
                 return true;
+              } else {
+                if (jumped(startingSpace, endingSpace, upperRight, startingSpace.getPiece())) {
+                  return true;
+                }
               }
             }
           }
@@ -232,6 +255,10 @@ public class FindBestMove {
               Space bottomRight = board.getSpace(xCoordinate + 1, cellIdx + 1);
               if (!bottomRight.isOccupied()) {
                 return true;
+              } else {
+                if (jumped(startingSpace, endingSpace, bottomRight, startingSpace.getPiece())) {
+                  return true;
+                }
               }
             }
           }
@@ -241,6 +268,10 @@ public class FindBestMove {
               Space bottomRight = board.getSpace(xCoordinate + 1, cellIdx + 1);
               if (!bottomRight.isOccupied()) {
                 return true;
+              } else {
+                if (jumped(startingSpace, endingSpace, upperLeft, startingSpace.getPiece())) {
+                  return true;
+                }
               }
             }
           }
@@ -258,6 +289,10 @@ public class FindBestMove {
               Space upperLeft = board.getSpace(xCoordinate - 1, cellIdx - 1);
               if (!upperLeft.isOccupied()) {
                 return true;
+              } else {
+                if (jumped(startingSpace, endingSpace, bottomRight, startingSpace.getPiece())) {
+                  return true;
+                }
               }
             }
           }
@@ -267,6 +302,10 @@ public class FindBestMove {
               Space upperLeft = board.getSpace(xCoordinate - 1, cellIdx - 1);
               if (!upperLeft.isOccupied()) {
                 return true;
+              } else {
+                if (jumped(startingSpace, endingSpace, upperLeft, startingSpace.getPiece())) {
+                  return true;
+                }
               }
             }
           }
@@ -283,6 +322,10 @@ public class FindBestMove {
               Space upperRight = board.getSpace(xCoordinate - 1, cellIdx + 1);
               if (!upperRight.isOccupied()) {
                 return true;
+              } else {
+                if (jumped(startingSpace, endingSpace, bottomLeft, startingSpace.getPiece())) {
+                  return true;
+                }
               }
             }
           }
@@ -292,6 +335,10 @@ public class FindBestMove {
               Space upperRight = board.getSpace(xCoordinate - 1, cellIdx + 1);
               if (!upperRight.isOccupied()) {
                 return true;
+              } else {
+                if (jumped(startingSpace, endingSpace, upperRight, startingSpace.getPiece())) {
+                  return true;
+                }
               }
             }
           }
