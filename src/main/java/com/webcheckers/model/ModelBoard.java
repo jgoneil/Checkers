@@ -127,6 +127,11 @@ public class ModelBoard {
    * @return the space located at the location provided by the coordinates
    */
   public Space getSpace(int xCoordinate, int yCoordinate) {
+    if (xCoordinate > 7 || xCoordinate < 0) {
+      return null;
+    } else if (yCoordinate > 7 || yCoordinate < 0) {
+      return null;
+    }
     return board[xCoordinate][yCoordinate];
   }
 

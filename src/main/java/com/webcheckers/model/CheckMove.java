@@ -422,6 +422,8 @@ public class CheckMove {
         board.setSubmit(true);
       } else if (!isMovingForward(start, target)) {
         response.put(false, "Single pieces can only move forward.");
+      } else if (board.checkPendingMove()) {
+          response.put(false, "Already made a move");
       } else {
         board.setSubmit(true);
         response.put(true, "This move is valid.");
