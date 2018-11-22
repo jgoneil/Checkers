@@ -60,6 +60,7 @@ public class WebServer {
   public static final String RESIGN_GAME = "/resignGame";
   public static final String SUBMIT_TURN = "/submitTurn";
   public static final String BACKUP_MOVE = "/backupMove";
+  public static final String REQUEST_HELP = "/requestHelp";
   private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
 
   //
@@ -162,6 +163,8 @@ public class WebServer {
     post(SUBMIT_TURN, new PostSubmitTurn(gson));
 
     post(BACKUP_MOVE, new PostBackupMove(gson));
+
+    post(REQUEST_HELP, new PostRequestHelp(gson, playerLobby));
 
     //
     LOG.config("WebServer is initialized.");

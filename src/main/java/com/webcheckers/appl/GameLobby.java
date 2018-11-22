@@ -18,6 +18,10 @@ public class GameLobby {
   private ModelBoard modelBoard;
   //The check Move class to check if a move is valid or not
   private CheckMove checkMove;
+  //The find best move class to find the best potential move for help requests for the red player
+  private FindBestMove findBestMoveRed;
+  //The find best move class to find the best potential move for help requests for the white player and for the ai player
+  private FindBestMove findBestMoveWhite;
 
   //Static final (constant) variables
   static final int BOARD_SIZE = 8;
@@ -37,6 +41,8 @@ public class GameLobby {
     whitePlayer.setColor(WHITE);
     this.modelBoard = new ModelBoard(redPlayer, whitePlayer, BOARD_SIZE);
     this.checkMove = new CheckMove(this.modelBoard);
+    this.findBestMoveRed = new FindBestMove(modelBoard, redPlayer);
+    this.findBestMoveWhite = new FindBestMove(modelBoard, whitePlayer);
   }
 
   /**
@@ -53,6 +59,8 @@ public class GameLobby {
     whitePlayer.setColor(WHITE);
     this.modelBoard = new ModelBoard(redPlayer, whitePlayer, BOARD_SIZE, pieceList);
     this.checkMove = new CheckMove(this.modelBoard);
+    this.findBestMoveRed = new FindBestMove(modelBoard, redPlayer);
+    this.findBestMoveWhite = new FindBestMove(modelBoard, whitePlayer);
   }
 
   /**
@@ -295,5 +303,18 @@ public class GameLobby {
    */
   public void setMove(boolean moved) {
     modelBoard.setMove(moved);
+  }
+
+  /**
+   * Gets the best move for a specified player
+   *
+   * @return the best move a player can make
+   */
+  public Move findBestMove(Player player) {
+    if (player.isRed()) {
+      return findBestMoveRed.findMove();
+    } else {
+      return findBestMoveWhite.findMove();
+    }
   }
 }
