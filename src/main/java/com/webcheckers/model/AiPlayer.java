@@ -9,4 +9,5 @@ public class AiPlayer extends AbstractPlayer {
   public AiPlayer(){
     super("F@ke");
   }
+  
 }
