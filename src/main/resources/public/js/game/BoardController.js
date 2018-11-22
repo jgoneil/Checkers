@@ -25,6 +25,8 @@ define(function(require){
   var VALID_CLASS = 'valid';
   var PIECE_CLASS = 'Piece';
   var SPACE_CLASS = 'Space';
+  var BEST_MOVE = 'best';
+  var POTENTIAL_MOVE = 'potential';
 
   /**
    * Constructor function.
@@ -107,6 +109,38 @@ define(function(require){
   BoardController.prototype.setSpacePending = function setSpacePending(position) {
     var $space = this.getSpace$(position);
     if ($space !== null) $space.addClass(PENDING_CLASS);
+  }
+
+  /**
+   * Sets all potential moves to be displayed for the user
+   * @param positions the array of positions the player can move to
+   */
+  BoardController.prototype.setPotentialMoves = function setPotentialMoves(positions) {
+    for (let i = 0; i < positions.length; i++) {
+      var $space = this.getSpace$(positions[i].end);
+      if (i === 0) {
+        $space.addClass(BEST_MOVE);
+      } else {
+        $space.addClass(POTENTIAL_MOVE);
+      }
+    }
+  }
+
+  /**
+   * Removes all of the highlights for potential moves a player can make
+   * @param positions the array of position the player can move to
+   */
+  BoardController.prototype.removePotentialMoves = function removePotentialMoves(positions) {
+    if (positions !== null) {
+      for (let i = 0; i < positions.length; i++) {
+        var $space = this.getSpace$(positions[i].end);
+        if (i === 0) {
+          $space.removeClass(BEST_MOVE);
+        } else {
+          $space.removeClass(POTENTIAL_MOVE);
+        }
+      }
+    }
   }
 
   /**

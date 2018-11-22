@@ -59,7 +59,9 @@ public class PostRequestHelp implements Route {
     }
 
     Move bestMove = gameLobby.findBestMove(currentPlayer);
-    return gson.toJson(bestMove);
+    Move[] tempHold = new Move[1];
+    tempHold[0] = bestMove;
+    return gson.toJson(tempHold);
   }
 
 }
