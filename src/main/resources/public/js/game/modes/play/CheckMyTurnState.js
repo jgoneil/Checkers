@@ -40,6 +40,7 @@ define(function (require) {
    */
   CheckMyTurnState.prototype.onEntry = function onEntry() {
     this._controller.disableButton(PlayModeConstants.RESIGN_BUTTON_ID);
+    this._controller.disableButton(PlayModeConstants.HELP_BUTTON_ID);
     // query the server if it's my turn
     AjaxUtils.callServer(
         // the action takes no data
