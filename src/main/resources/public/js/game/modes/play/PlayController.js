@@ -23,7 +23,7 @@ define(function(require){
   const RequestingBackupMove = require('./RequestingBackupMove');
   const WaitForTurnState = require('./WaitForTurnState');
   const CheckMyTurnState = require('./CheckMyTurnState');
-  
+
   //
   // Constructor
   //
@@ -72,6 +72,8 @@ define(function(require){
             PlayModeConstants.SUBMIT_BUTTON_TOOLTIP, this.submitTurn);
     this.addButton(PlayModeConstants.RESIGN_BUTTON_ID, 'Resign', true,
             PlayModeConstants.RESIGN_BUTTON_TOOLTIP, this.resignGame);
+    this.addButton(PlayModeConstants.HELP_BUTTON_ID, 'Help', true,
+            PlayModeConstants.HELP_BUTTON_TOOLTIP, this.requestHelp);
 
     // Public (internal) methods
 
@@ -162,6 +164,19 @@ define(function(require){
       else {
         this.displayMessage(message);
       }
+    }
+  };
+
+  /**
+   * Sets up the ability to request help during a game
+   */
+  PlayController.prototype.requestHelp = function requestHelp() {
+    AjaxUtils.callServer(
+        '/requestHelp', '',
+        handleResponse, this);
+
+    function handleResponse(message) {
+      console.log('click');
     }
   };
 

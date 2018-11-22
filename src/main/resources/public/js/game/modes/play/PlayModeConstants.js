@@ -32,6 +32,8 @@ define(function(){
       ,SUBMIT_BUTTON_TOOLTIP: 'Commit your current turn to the server.'
       ,RESIGN_BUTTON_ID: 'resignBtn'
       ,RESIGN_BUTTON_TOOLTIP: 'Resign from the game.'
+      ,HELP_BUTTON_ID: 'helpBtn'
+      ,HELP_BUTTON_TOOLTIP: 'Request help in game.'
 
     };
 });
