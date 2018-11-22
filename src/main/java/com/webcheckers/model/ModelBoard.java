@@ -4,7 +4,6 @@ import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Piece.Type;
 
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Model class that holds the main board for model configurations
