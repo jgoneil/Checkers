@@ -2,13 +2,14 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameLobby;
-import com.webcheckers.model.Player;
-import com.webcheckers.model.Message;
-import com.webcheckers.model.Move;
-import com.webcheckers.model.Position;
+import com.webcheckers.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -86,9 +87,15 @@ public class TestPostSubmitTurn {
 
   @Test
   void unsuccessfulSubmitJump() {
-    gameLobby.pendingMove(new Move(new Position(5, 0), new Position(6, 1)));
+    List<Piece> pieces = new ArrayList<>();
+    pieces.add(new Piece(GameLobby.RED, new Space(7, 0, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(6, 1, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK)));
+
+    GameLobby fixedGameLobby = new GameLobby(redPlayer, whitePlayer, pieces);
+    fixedGameLobby.pendingMove(new Move(new Position(7, 0), new Position(5, 2)));
     gameLobby.setPendingMove(true);
-    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
+    when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(fixedGameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 

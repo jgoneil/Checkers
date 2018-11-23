@@ -33,6 +33,9 @@ public class CheckMove {
    * @return true/false if a player does/doesn't have any moves left to make
    */
   public boolean moveAvailable(Player player) {
+    if (this.board.checkPendingMove()) {
+      return true;
+    }
     if (player.isRed()) {
       for (Piece piece : board.getRedPieces()) {
         int row = piece.getXCoordinate();

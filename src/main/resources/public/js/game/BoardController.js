@@ -1,17 +1,17 @@
 /**
  * This module exports the BoardController class constructor.
- * 
+ *
  * This component controls the Checkers board in the Game View.
  * It provides an API to enable/disable Pieces and register for
  * Piece movement events.
  */
 define(function(require){
   'use strict';
-  
+
   //
   // Imports
   //
-  
+
   const Move = require('./model/Move');
   const Position = require('./model/Position');
   const PieceMoveEvent = require('./PieceMoveEvent');
@@ -25,6 +25,7 @@ define(function(require){
   var VALID_CLASS = 'valid';
   var PIECE_CLASS = 'Piece';
   var SPACE_CLASS = 'Space';
+  var BEST_MOVE = 'best';
 
   /**
    * Constructor function.
@@ -33,7 +34,7 @@ define(function(require){
     // private data
     var _listeners = []; // empty array of Piece movement event listeners
     var _pieces = [];
-    
+
     // private attributes
     this._gameState = gameState;
 
@@ -41,12 +42,12 @@ define(function(require){
     this.addPieceMoveListener = function addPieceMoveListener(listenerFunction) {
       _listeners.push(listenerFunction);
     };
-    
+
     // private methods
     this._triggerListeners = function _triggerListeners(event) {
       _listeners.forEach(listenerFunction => listenerFunction(event));
     };
-    
+
     // UI Controls
 
     this.enableAllMyPieces = function enableAllMyPieces() {
@@ -69,13 +70,13 @@ define(function(require){
         currentPlayersColor = 'WHITE';
         opponentsColor = 'RED';
       }
-      
+
       // create a list of my Piece elements
       jQuery(makePieceSelector(currentPlayersColor)).each(function(idx) {
         // record each Piece element
         _pieces.push(this);
       });
-      
+
       // force no drag support for the opponent pieces
       jQuery(makePieceSelector(opponentsColor))
       // disable dragging behavior
@@ -107,6 +108,30 @@ define(function(require){
   BoardController.prototype.setSpacePending = function setSpacePending(position) {
     var $space = this.getSpace$(position);
     if ($space !== null) $space.addClass(PENDING_CLASS);
+  }
+
+  /**
+   * Displays the best move for the player
+   * @param position the best move for a player
+   */
+  BoardController.prototype.setBestMove = function setBestMoves(position) {
+    var $startSpace = this.getSpace$(position.start);
+    var $endSpace = this.getSpace$(position.end);
+    $startSpace.addClass(BEST_MOVE);
+    $endSpace.addClass(BEST_MOVE);
+  }
+
+  /**
+   * Removes the display of the best move for the player
+   * @param position of the best move for a player
+   */
+  BoardController.prototype.removeBestMove = function removeBestMoves(position) {
+    if (position !== null) {
+      var $startSpace = this.getSpace$(position.start);
+      var $endSpace = this.getSpace$(position.end);
+      $startSpace.removeClass(BEST_MOVE);
+      $endSpace.removeClass(BEST_MOVE);
+    }
   }
 
   /**
@@ -270,5 +295,5 @@ define(function(require){
 
   // export class constructor
   return BoardController;
-  
+
 });
