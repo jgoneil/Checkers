@@ -60,7 +60,7 @@ public class PostRequestHelp implements Route {
 
     Move bestMove = gameLobby.getBestMove();
     boolean onlyOneMove = gameLobby.onlyOne();
-    Object temp[] = new Object[2];
+    Object[] temp = new Object[2];
     temp[0] = bestMove;
     temp[1] = onlyOneMove;
     return gson.toJson(temp);

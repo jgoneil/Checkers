@@ -178,14 +178,27 @@ public class GameLobby {
     return redPlayer;
   }
 
+  /**
+   * Changes the turn for the game
+   */
   public void changeTurn() {
     this.modelBoard.changeTurn();
   }
 
+  /**
+   * Gets the best move possible for a player to make
+   *
+   * @return the move that would be the best for the player to make
+   */
   public Move getBestMove() {
     return this.bestMove;
   }
 
+  /**
+   * Checks to see if there is only one move possible for a player to make
+   *
+   * @return true/false based on if there is only one move possible for the player to make
+   */
   public boolean onlyOne() {
     if (this.modelBoard.checkRedTurn()) {
       return findBestMoveRed.onlyOneMove();
