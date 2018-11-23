@@ -115,8 +115,10 @@ define(function(require){
    * @param position the best move for a player
    */
   BoardController.prototype.setBestMove = function setBestMoves(position) {
-    var $space = this.getSpace$(position.end);
-    $space.addClass(BEST_MOVE);
+    var $startSpace = this.getSpace$(position.start);
+    var $endSpace = this.getSpace$(position.end);
+    $startSpace.addClass(BEST_MOVE);
+    $endSpace.addClass(BEST_MOVE);
   }
 
   /**
@@ -125,8 +127,10 @@ define(function(require){
    */
   BoardController.prototype.removeBestMove = function removeBestMoves(position) {
     if (position !== null) {
-      var $space = this.getSpace$(position.end);
-      $space.removeClass(BEST_MOVE);
+      var $startSpace = this.getSpace$(position.start);
+      var $endSpace = this.getSpace$(position.end);
+      $startSpace.removeClass(BEST_MOVE);
+      $endSpace.removeClass(BEST_MOVE);
     }
   }
 
