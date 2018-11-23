@@ -1,6 +1,9 @@
 package com.webcheckers.appl;
 
 import java.util.*;
+
+import com.webcheckers.model.AbstractPlayer;
+import com.webcheckers.model.AiPlayer;
 import com.webcheckers.model.CheckSignin;
 import com.webcheckers.model.Player;
 
@@ -12,7 +15,7 @@ public class PlayerLobby {
   //The function for checking if user input for a username is valid
   private final CheckSignin checkSignin;
   //The list of players currently in the game
-  private List<Player> users;
+  private List<AbstractPlayer> users;
   //The list of usernames for the players signed into the game
   private List<String> usernames;
 
@@ -24,6 +27,7 @@ public class PlayerLobby {
     this.checkSignin = new CheckSignin();
     this.users = new ArrayList<>();
     this.usernames = new ArrayList<>();
+    this.users.add(new AiPlayer());
   }
 
   /**
@@ -49,9 +53,9 @@ public class PlayerLobby {
    * @param username the username of the player the system wants to obtain
    * @return Player Either null or the player requested
    */
-  public Player getSpecificPlayer(String username) {
+  public AbstractPlayer getSpecificPlayer(String username) {
     if (usernames.contains(username)) {
-      for (Player p : users) {
+      for (AbstractPlayer p : users) {
         if (p.getName().equals(username)) {
           return p;
         }
@@ -73,6 +77,8 @@ public class PlayerLobby {
    * Getter for the list of all usernames of players except a specified player (used for display of
    * potential opponents)
    *
+   * Also will not display the AI player
+   *
    * @param username the username that is excluded from the list
    * @return the lsit of usernames currently signed into the game without the specified player
    */
@@ -83,7 +89,9 @@ public class PlayerLobby {
     List<String> playerNames = new ArrayList<>();
     for (String u : this.usernames) {
       if (!u.equals(username)) {
-        playerNames.add(u);
+        if (!u.equals("F@ke")){
+          playerNames.add(u);
+        }
       }
     }
     return playerNames;
