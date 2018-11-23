@@ -14,6 +14,8 @@ define(function(require){
   const ControlsToolbarMixin = require('../../util/ControlsToolbarMixin');
   const AjaxUtils = require('../../util/AjaxUtils');
   const PlayModeConstants = require('./PlayModeConstants');
+  const Move = require('../../model/Move');
+  const Position = require('../../model/Position');
 
   // import PLAY mode states
   const PlayModeStartState = require('./PlayModeStartState');
@@ -179,12 +181,15 @@ define(function(require){
       console.log(response);
       if (response[0].hasOwnProperty("end")) {
         this._boardController.removeBestMove(this._bestMove);
-        this._bestMove = response[0];
+        const start = new Position(response[0].start.row, response[0].start.cell);
+        const end = new Position(response[0].end.row, response[0].end.cell);
+        const move = new Move(start, end);
+        this._bestMove = move;
         if (response[1] === true) {
-          this.setPendingMove(response[0]);
+          this.setPendingMove(move);
           this.setState(PlayModeConstants.VALIDATING_MOVE);
         }
-        return this._boardController.setBestMove(response[0]);
+        return this._boardController.setBestMove(move);
       } else {
         this.displayMessage(response);
       }
@@ -302,6 +307,7 @@ define(function(require){
     if ($piece === null) {
       throw new Error('No Piece found at: ' + move.end);
     }
+    console.log(move);
     this._boardController.movePiece($piece, move.reverse());
   };
 
