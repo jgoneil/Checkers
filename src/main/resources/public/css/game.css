@@ -39,18 +39,6 @@
   }
 }
 
-@keyframes background-potential {
-  0% {
-    background-color: rgba(255, 204, 102, 0.6);
-  }
-  50% {
-    background-color: rgba(255, 221, 153, 0.7);
-  }
-  100% {
-    background-color: rgba(255, 204, 102, 0.6);
-  }
-}
-
 /*
 * Generic Game Controls style
 */
@@ -186,13 +174,6 @@ table#game-board td.valid {
 
 table#game-board td.best {
   animation: background-best;
-  animation-duration: 3s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-}
-
-table#game-board td.potential {
-  animation: background-potential;
   animation-duration: 3s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;

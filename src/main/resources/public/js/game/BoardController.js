@@ -1,17 +1,17 @@
 /**
  * This module exports the BoardController class constructor.
- * 
+ *
  * This component controls the Checkers board in the Game View.
  * It provides an API to enable/disable Pieces and register for
  * Piece movement events.
  */
 define(function(require){
   'use strict';
-  
+
   //
   // Imports
   //
-  
+
   const Move = require('./model/Move');
   const Position = require('./model/Position');
   const PieceMoveEvent = require('./PieceMoveEvent');
@@ -26,7 +26,6 @@ define(function(require){
   var PIECE_CLASS = 'Piece';
   var SPACE_CLASS = 'Space';
   var BEST_MOVE = 'best';
-  var POTENTIAL_MOVE = 'potential';
 
   /**
    * Constructor function.
@@ -35,7 +34,7 @@ define(function(require){
     // private data
     var _listeners = []; // empty array of Piece movement event listeners
     var _pieces = [];
-    
+
     // private attributes
     this._gameState = gameState;
 
@@ -43,12 +42,12 @@ define(function(require){
     this.addPieceMoveListener = function addPieceMoveListener(listenerFunction) {
       _listeners.push(listenerFunction);
     };
-    
+
     // private methods
     this._triggerListeners = function _triggerListeners(event) {
       _listeners.forEach(listenerFunction => listenerFunction(event));
     };
-    
+
     // UI Controls
 
     this.enableAllMyPieces = function enableAllMyPieces() {
@@ -71,13 +70,13 @@ define(function(require){
         currentPlayersColor = 'WHITE';
         opponentsColor = 'RED';
       }
-      
+
       // create a list of my Piece elements
       jQuery(makePieceSelector(currentPlayersColor)).each(function(idx) {
         // record each Piece element
         _pieces.push(this);
       });
-      
+
       // force no drag support for the opponent pieces
       jQuery(makePieceSelector(opponentsColor))
       // disable dragging behavior
@@ -112,34 +111,22 @@ define(function(require){
   }
 
   /**
-   * Sets all potential moves to be displayed for the user
-   * @param positions the array of positions the player can move to
+   * Displays the best move for the player
+   * @param position the best move for a player
    */
-  BoardController.prototype.setPotentialMoves = function setPotentialMoves(positions) {
-    for (let i = 0; i < positions.length; i++) {
-      var $space = this.getSpace$(positions[i].end);
-      if (i === 0) {
-        $space.addClass(BEST_MOVE);
-      } else {
-        $space.addClass(POTENTIAL_MOVE);
-      }
-    }
+  BoardController.prototype.setBestMove = function setBestMoves(position) {
+    var $space = this.getSpace$(position.end);
+    $space.addClass(BEST_MOVE);
   }
 
   /**
-   * Removes all of the highlights for potential moves a player can make
-   * @param positions the array of position the player can move to
+   * Removes the display of the best move for the player
+   * @param position of the best move for a player
    */
-  BoardController.prototype.removePotentialMoves = function removePotentialMoves(positions) {
-    if (positions !== null) {
-      for (let i = 0; i < positions.length; i++) {
-        var $space = this.getSpace$(positions[i].end);
-        if (i === 0) {
-          $space.removeClass(BEST_MOVE);
-        } else {
-          $space.removeClass(POTENTIAL_MOVE);
-        }
-      }
+  BoardController.prototype.removeBestMove = function removeBestMoves(position) {
+    if (position !== null) {
+      var $space = this.getSpace$(position.end);
+      $space.removeClass(BEST_MOVE);
     }
   }
 
@@ -304,5 +291,5 @@ define(function(require){
 
   // export class constructor
   return BoardController;
-  
+
 });

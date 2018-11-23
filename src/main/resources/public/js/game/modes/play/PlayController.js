@@ -44,7 +44,7 @@ define(function(require){
     this._pendingMove = null;
     this.$activePiece = null;
     this._boardController = boardController;
-    this._potentialMoves = null;
+    this._bestMove = null;
     
     // Add the State Pattern mixin
     StatePatternMixin.call(this);
@@ -178,9 +178,13 @@ define(function(require){
     function handleResponse(response) {
       console.log(response);
       if (response[0].hasOwnProperty("end")) {
-        this._boardController.removePotentialMoves(this._potentialMoves);
-        this._potentialMoves = response;
-        return this._boardController.setPotentialMoves(response);
+        this._boardController.removeBestMove(this._bestMove);
+        this._bestMove = response[0];
+        if (response[1] === true) {
+          this.setPendingMove(response[0]);
+          this.setState(PlayModeConstants.VALIDATING_MOVE);
+        }
+        return this._boardController.setBestMove(response[0]);
       } else {
         this.displayMessage(response);
       }
@@ -216,9 +220,9 @@ define(function(require){
       throw new Error('pendingMove must not be null');
     }
 
-    if (this._potentialMoves !== null) {
-      this._boardController.removePotentialMoves(this._potentialMoves);
-      this._potentialMoves = null;
+    if (this._bestMove !== null) {
+      this._boardController.removeBestMove(this._bestMove);
+      this._bestMove = null;
     }
     //
     this._pendingMove = pendingMove;
