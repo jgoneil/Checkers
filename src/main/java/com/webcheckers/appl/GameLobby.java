@@ -167,7 +167,7 @@ public class GameLobby {
    * @param player the player who is trying to find the opponent
    * @return the player that is the specified player's opponent
    */
-  public AbstractPlayer getOpponent(Player player) {
+  public AbstractPlayer getOpponent(AbstractPlayer player) {
     if(redPlayer.equals(player)) {
       return whitePlayer;
     }
@@ -278,7 +278,7 @@ public class GameLobby {
    * @param player the player making the move
    * @return true/false based on if the player can make the move or not
    */
-  public Map<Boolean, String> validateMove(Position start, Position target, Player player) {
+  public Map<Boolean, String> validateMove(Position start, Position target, AbstractPlayer player) {
     return this.checkMove.validateMove(start, target, player);
   }
 

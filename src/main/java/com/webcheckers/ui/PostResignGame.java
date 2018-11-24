@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.AbstractPlayer;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -24,7 +25,7 @@ public class PostResignGame implements Route {
   //Gson controller for reading and sending JSON information
   private final Gson gson;
   //Player that disconnected from the system
-  private Player resignedPlayer;
+  private AbstractPlayer resignedPlayer;
   //Player lobby for the current session
   private PlayerLobby playerLobby;
   
@@ -54,7 +55,7 @@ public class PostResignGame implements Route {
     Session httpSession = request.session();
 
     String playerUsername = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
-    Player player = playerLobby.getSpecificPlayer(playerUsername);
+    AbstractPlayer player = playerLobby.getSpecificPlayer(playerUsername);
     GameLobby gameLobby = httpSession.attribute(GetGameRoute.GAMELOBBY);
 
     if (gameLobby == null) {
@@ -68,7 +69,7 @@ public class PostResignGame implements Route {
       Message message = new Message(Message.Type.error, ERROR_RESIGN);
       return gson.toJson(message);
     } else {
-      Player player2 = gameLobby.getOpponent(player);
+      AbstractPlayer player2 = gameLobby.getOpponent(player);
       player.gameEnd();
       player2.gameEnd();
       this.resignedPlayer = player;

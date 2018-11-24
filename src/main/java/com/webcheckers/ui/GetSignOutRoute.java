@@ -5,6 +5,7 @@ import com.webcheckers.appl.GameLobby;
 import java.util.Objects;
 
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.AbstractPlayer;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -49,12 +50,12 @@ public class GetSignOutRoute implements Route {
 
     if (httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY) != null) {
       String playerUsername = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
-      Player player = playerLobby.getSpecificPlayer(playerUsername);
+      AbstractPlayer player = playerLobby.getSpecificPlayer(playerUsername);
 
       if (player.inGame()) {
         GameLobby gameLobby = httpSession.attribute(GetGameRoute.GAMELOBBY);
         if(gameLobby != null) {
-          Player player2 = gameLobby.getOpponent(player);
+          AbstractPlayer player2 = gameLobby.getOpponent(player);
 
           player2.gameEnd();
           httpSession.removeAttribute(GetGameRoute.GAMELOBBY);
