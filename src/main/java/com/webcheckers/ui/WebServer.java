@@ -167,7 +167,7 @@ public class WebServer {
 
     post(REQUEST_HELP, new PostRequestHelp(gson, playerLobby));
 
-    get(PLAY_AI, new GetPlayAIRoute(templateEngine, playerLobby));
+    get(PLAY_AI, new GetPlayAIRoute(playerLobby));
 
     //
     LOG.config("WebServer is initialized.");

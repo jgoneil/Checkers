@@ -3,6 +3,7 @@ package com.webcheckers.appl;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+import com.webcheckers.model.AiPlayer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -95,11 +96,21 @@ public class PlayerLobbyTest {
   }
 
   @Test
-  void removePlayer() {
+  void removePlayerTest() {
     playerLobby.addPlayer(validPlayerString1);
     playerLobby.addPlayer(validPlayerString2);
     playerLobby.addPlayer(validPlayerString3);
     playerLobby.removeUser(validPlayerString1);
     assertEquals(2, playerLobby.getAllPlayers().size());
+  }
+
+  @Test
+  void  addPlayerTest(){
+    AiPlayer aiPlayer = new AiPlayer();
+    playerLobby.addPlayer(aiPlayer);
+
+    assertNotNull(playerLobby.getSpecificPlayer(aiPlayer.getName()));
+    assertEquals(playerLobby.getAllPlayers().size(), 0);
+    assertEquals(playerLobby.getNumberOfPlayers(), 0);
   }
 }
