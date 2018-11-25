@@ -1,5 +1,7 @@
 package com.webcheckers.appl;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.*;
 
 import com.webcheckers.model.AbstractPlayer;
@@ -47,6 +49,18 @@ public class PlayerLobby {
   }
 
   /**
+   * Class that facilitates the addition of new ai players
+   * before player creation
+   *
+   * @param aiPlayer the username input from the signin page
+   * @return boolean true/false based on if the player was added to the system or not
+   */
+  public void addPlayer(AiPlayer aiPlayer) {
+      this.users.add(aiPlayer);
+      this.usernames.add(aiPlayer.getName());
+  }
+
+  /**
    * Getter for a specified player in the list of currently signed in users
    *
    * @param username the username of the player the system wants to obtain
@@ -69,7 +83,7 @@ public class PlayerLobby {
    * @return the list of all usernames associated to players currently signed into the game
    */
   public List<String> getAllPlayers() {
-    return this.usernames;
+    return this.usernames.stream().filter(username -> !username.contains("F@ke")).collect(toList());
   }
 
   /**
@@ -88,7 +102,7 @@ public class PlayerLobby {
     List<String> playerNames = new ArrayList<>();
     for (String u : this.usernames) {
       if (!u.equals(username)) {
-        if (!u.equals("F@ke")){
+        if (!u.contains("F@ke")){
           playerNames.add(u);
         }
       }
@@ -112,6 +126,6 @@ public class PlayerLobby {
    * @return the number of players connected to the system
    */
   public int getNumberOfPlayers() {
-    return this.users.size();
+    return this.users.stream().filter(user -> !(user instanceof AiPlayer)).collect(toList()).size();
   }
 }
