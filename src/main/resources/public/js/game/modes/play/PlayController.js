@@ -14,6 +14,8 @@ define(function(require){
   const ControlsToolbarMixin = require('../../util/ControlsToolbarMixin');
   const AjaxUtils = require('../../util/AjaxUtils');
   const PlayModeConstants = require('./PlayModeConstants');
+  const Move = require('../../model/Move');
+  const Position = require('../../model/Position');
 
   // import PLAY mode states
   const PlayModeStartState = require('./PlayModeStartState');
@@ -44,6 +46,7 @@ define(function(require){
     this._pendingMove = null;
     this.$activePiece = null;
     this._boardController = boardController;
+    this._bestMove = null;
     
     // Add the State Pattern mixin
     StatePatternMixin.call(this);
@@ -174,9 +177,22 @@ define(function(require){
     AjaxUtils.callServer(
         '/requestHelp', '',
         handleResponse, this);
-
-    function handleResponse(message) {
-      console.log('click');
+    function handleResponse(response) {
+      console.log(response);
+      if (response[0].hasOwnProperty("end")) {
+        this._boardController.removeBestMove(this._bestMove);
+        const start = new Position(response[0].start.row, response[0].start.cell);
+        const end = new Position(response[0].end.row, response[0].end.cell);
+        const move = new Move(start, end);
+        this._bestMove = move;
+        if (response[1] === true) {
+          this.setPendingMove(move);
+          this.setState(PlayModeConstants.VALIDATING_MOVE);
+        }
+        return this._boardController.setBestMove(move);
+      } else {
+        this.displayMessage(response);
+      }
     }
   };
 
@@ -207,6 +223,11 @@ define(function(require){
   PlayController.prototype.setPendingMove = function setPendingMove(pendingMove) {
     if (pendingMove === undefined || pendingMove === null) {
       throw new Error('pendingMove must not be null');
+    }
+
+    if (this._bestMove !== null) {
+      this._boardController.removeBestMove(this._bestMove);
+      this._bestMove = null;
     }
     //
     this._pendingMove = pendingMove;
@@ -286,6 +307,7 @@ define(function(require){
     if ($piece === null) {
       throw new Error('No Piece found at: ' + move.end);
     }
+    console.log(move);
     this._boardController.movePiece($piece, move.reverse());
   };
 

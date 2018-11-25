@@ -215,8 +215,8 @@ class FindBestMoveTest {
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
     Move move = findBestMove.findMove();
-    assertEquals(4, move.getEndRow());
-    assertEquals(1, move.getEndCell());
+    assertEquals(3, move.getEndRow());
+    assertEquals(6, move.getEndCell());
   }
 
   @Test
@@ -238,8 +238,8 @@ class FindBestMoveTest {
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
     Move move = findBestMove.findMove();
-    assertEquals(5, move.getEndRow());
-    assertEquals(4, move.getEndCell());
+    assertEquals(2, move.getEndRow());
+    assertEquals(3, move.getEndCell());
   }
 
   @Test
@@ -257,8 +257,8 @@ class FindBestMoveTest {
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
     Move move = findBestMove.findMove();
-    assertEquals(5, move.getEndRow());
-    assertEquals(6, move.getEndCell());
+    assertEquals(2, move.getEndRow());
+    assertEquals(1, move.getEndCell());
   }
 
   @Test
@@ -270,8 +270,8 @@ class FindBestMoveTest {
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
     Move move = findBestMove.findMove();
-    assertEquals(3, move.getEndRow());
-    if (move.getEndCell() != 0 && move.getEndCell() != 2) {
+    assertEquals(4, move.getEndRow());
+    if (move.getEndCell() != 7 && move.getEndCell() != 5) {
       fail();
     }
   }
@@ -289,8 +289,8 @@ class FindBestMoveTest {
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
     Move move = findBestMove.findMove();
-    assertEquals(4, move.getEndRow());
-    if (move.getEndCell() != 3 && move.getEndCell() != 7) {
+    assertEquals(3, move.getEndRow());
+    if (move.getEndCell() != 4 && move.getEndCell() != 0) {
       fail();
     }
   }
@@ -310,8 +310,8 @@ class FindBestMoveTest {
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
     Move move = findBestMove.findMove();
-    assertEquals(6, move.getEndRow());
-    if (move.getEndCell() != 1 && move.getEndCell() != 7) {
+    assertEquals(1, move.getEndRow());
+    if (move.getEndCell() != 6 && move.getEndCell() != 0) {
       fail();
     }
   }
@@ -329,8 +329,8 @@ class FindBestMoveTest {
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
     Move move = findBestMove.findMove();
-    assertEquals(7, move.getEndRow());
-    assertEquals(2, move.getEndCell());
+    assertEquals(0, move.getEndRow());
+    assertEquals(5, move.getEndCell());
   }
 
   @Test
@@ -348,8 +348,8 @@ class FindBestMoveTest {
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
     Move move = findBestMove.findMove();
-    assertEquals(7, move.getEndRow());
-    assertEquals(0, move.getEndCell());
+    assertEquals(0, move.getEndRow());
+    assertEquals(7, move.getEndCell());
   }
 
   @Test
@@ -367,8 +367,8 @@ class FindBestMoveTest {
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
     Move move = findBestMove.findMove();
-    assertEquals(5, move.getEndRow());
-    assertEquals(2, move.getEndCell());
+    assertEquals(2, move.getEndRow());
+    assertEquals(5, move.getEndCell());
   }
 
   @Test
@@ -386,8 +386,8 @@ class FindBestMoveTest {
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
     Move move = findBestMove.findMove();
-    assertEquals(6, move.getEndRow());
-    assertEquals(1, move.getEndCell());
+    assertEquals(1, move.getEndRow());
+    assertEquals(6, move.getEndCell());
   }
 
   @Test

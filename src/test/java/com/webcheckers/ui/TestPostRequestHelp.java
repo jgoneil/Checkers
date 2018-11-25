@@ -100,9 +100,9 @@ public class TestPostRequestHelp {
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
     Object info = CuT.handle(request, response);
-    if (info instanceof String) {
-      String temporaryInfo = (String) info;
-      Move move = gson.fromJson(temporaryInfo, Move.class);
+    if (info instanceof String[]) {
+      String[] temporaryInfo = (String[]) info;
+      Move move = gson.fromJson(temporaryInfo[0], Move.class);
       assertEquals(1, move.getEnd().getRow());
       assertEquals(6, move.getEnd().getCell());
     }
@@ -123,9 +123,9 @@ public class TestPostRequestHelp {
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
     Object info = CuT.handle(request, response);
-    if (info instanceof String) {
-      String temporaryInfo = (String) info;
-      Move move = gson.fromJson(temporaryInfo, Move.class);
+    if (info instanceof String[]) {
+      String[] temporaryInfo = (String[]) info;
+      Move move = gson.fromJson(temporaryInfo[0], Move.class);
       assertEquals(6, move.getEnd().getRow());
       assertEquals(1, move.getEnd().getCell());
     }
