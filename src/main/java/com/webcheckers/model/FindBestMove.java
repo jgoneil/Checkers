@@ -20,6 +20,7 @@ public class FindBestMove {
   private Map<Space, Space> bestMoves;
   //The state the game is currently in (for state machine)
   private String STATE;
+  private boolean onlyOne = false;
 
   //Static final (constant) variables
   private static final String INITIAL_STATE = "START";
@@ -50,6 +51,7 @@ public class FindBestMove {
    * @return the best move for the player to make
    */
   public Move findMove() {
+    this.onlyOne = false;
     while (!this.STATE.equals(FINAL_STATE)) {
       switch (this.STATE) {
         case INITIAL_STATE:
@@ -92,16 +94,35 @@ public class FindBestMove {
       try {
         Space bestMoveStart = (Space) objectSpace;
         Space bestMoveEnd = this.bestMoves.get(bestMoveStart);
-        Position startPosition = new Position(bestMoveStart.getxCoordinate(),
-                bestMoveStart.getCellIdx());
-        Position endPositon = new Position(bestMoveEnd.getxCoordinate(),
-                bestMoveEnd.getCellIdx());
+        Position startPosition;
+        Position endPositon;
+        if (player.isRed()) {
+          startPosition = new Position(bestMoveStart.getxCoordinate(),
+                  bestMoveStart.getCellIdx());
+          endPositon = new Position( bestMoveEnd.getxCoordinate(),
+                  bestMoveEnd.getCellIdx());
+        } else {
+          startPosition = new Position(7 - bestMoveStart.getxCoordinate(),
+                  7 - bestMoveStart.getCellIdx());
+          endPositon = new Position( 7 - bestMoveEnd.getxCoordinate(),
+                  7 - bestMoveEnd.getCellIdx());
+        }
+        this.STATE = INITIAL_STATE;
         return new Move(startPosition, endPositon);
       } catch (ClassCastException e) {
         System.out.println(e);
       }
     }
     return null;
+  }
+
+  /**
+   * Getter to find if there is only one move possible or not
+   *
+   * @return true/false based on if there is only one move possible
+   */
+  public boolean onlyOneMove() {
+    return this.onlyOne;
   }
 
   /**
@@ -231,10 +252,16 @@ public class FindBestMove {
     Map<Space, Space> jumps = checkMove.findJumps(player);
     if (jumps.size() == 0) {
       findMoves();
+      if (this.bestMoves.size() == 1) {
+        this.onlyOne = true;
+      }
       this.STATE = MOVE;
     } else {
       this.bestMoves = jumps;
       this.STATE = JUMP;
+      if (jumps.size() == 1) {
+        this.onlyOne = true;
+      }
     }
   }
 

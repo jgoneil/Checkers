@@ -54,6 +54,7 @@ public class ModelBoard {
     this.isKinging = true;
     this.pendingMove = false;
     this.isJumping = false;
+    this.pendingMoves = new Stack<>();
     //Preforming a loop to generate all of the spaces for the rows and columns of the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {
@@ -95,6 +96,7 @@ public class ModelBoard {
     this.redPieces = new ArrayList<>();
     this.whitePieces = new ArrayList<>();
     this.isKinging = true;
+    this.pendingMoves = new Stack<>();
     //Preforming a loop to generate all of the spaces for the board
     for (int i = 0; i < length; i++) {
       for (int j = 0; j < length; j++) {

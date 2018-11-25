@@ -27,6 +27,18 @@
   }
 }
 
+@keyframes background-best {
+  0% {
+    background-color: rgba(102, 255, 51, 0.4);
+  }
+  50% {
+    background-color: rgba(140, 255, 102, 0.7);
+  }
+  100% {
+    background-color: rgba(102, 255, 51, 0.4);
+  }
+}
+
 /*
 * Generic Game Controls style
 */
@@ -158,6 +170,13 @@ table#game-board td.pending {
 
 table#game-board td.valid {
   background-color: rgba(0, 255, 0, 0.4);
+}
+
+table#game-board td.best {
+  animation: background-best;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
 }
 
 /* Prevent the text contents of draggable elements from being selectable. */

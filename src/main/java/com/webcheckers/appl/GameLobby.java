@@ -23,6 +23,8 @@ public class GameLobby {
   //The find best move class to find the best potential move for help requests for the white player and for the ai player
   private FindBestMove findBestMoveWhite;
 
+  private Move bestMove;
+
   //Static final (constant) variables
   static final int BOARD_SIZE = 8;
   public static final String RED = "RED";
@@ -43,6 +45,7 @@ public class GameLobby {
     this.checkMove = new CheckMove(this.modelBoard);
     this.findBestMoveRed = new FindBestMove(modelBoard, redPlayer);
     this.findBestMoveWhite = new FindBestMove(modelBoard, whitePlayer);
+    this.bestMove = findBestMoveRed.findMove();
   }
 
   /**
@@ -60,6 +63,7 @@ public class GameLobby {
     this.checkMove = new CheckMove(this.modelBoard);
     this.findBestMoveRed = new FindBestMove(modelBoard, redPlayer);
     this.findBestMoveWhite = new FindBestMove(modelBoard, whitePlayer);
+    this.bestMove = findBestMoveRed.findMove();
   }
 
   /**
@@ -173,8 +177,33 @@ public class GameLobby {
     return redPlayer;
   }
 
+  /**
+   * Changes the turn for the game
+   */
   public void changeTurn() {
     this.modelBoard.changeTurn();
+  }
+
+  /**
+   * Gets the best move possible for a player to make
+   *
+   * @return the move that would be the best for the player to make
+   */
+  public Move getBestMove() {
+    return this.bestMove;
+  }
+
+  /**
+   * Checks to see if there is only one move possible for a player to make
+   *
+   * @return true/false based on if there is only one move possible for the player to make
+   */
+  public boolean onlyOne() {
+    if (this.modelBoard.checkRedTurn()) {
+      return findBestMoveRed.onlyOneMove();
+    } else {
+      return findBestMoveWhite.onlyOneMove();
+    }
   }
 
   /**
@@ -286,6 +315,11 @@ public class GameLobby {
    */
   public void submitMove() {
     this.modelBoard.submitMove();
+    if (this.modelBoard.checkRedTurn()) {
+      this.bestMove = findBestMoveRed.findMove();
+    } else {
+      this.bestMove = findBestMoveWhite.findMove();
+    }
   }
 
   /**

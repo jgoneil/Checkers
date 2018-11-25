@@ -59,8 +59,12 @@ public class PostRequestHelp implements Route {
       return gson.toJson(new Message(Message.Type.error, PostResignGame.OTHER_PLAYER_RESIGN));
     }
 
-    Move bestMove = gameLobby.findBestMove(currentPlayer);
-    return gson.toJson(bestMove);
+    Move bestMove = gameLobby.getBestMove();
+    boolean onlyOneMove = gameLobby.onlyOne();
+    Object[] temp = new Object[2];
+    temp[0] = bestMove;
+    temp[1] = onlyOneMove;
+    return gson.toJson(temp);
   }
 
 }
