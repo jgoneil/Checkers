@@ -267,17 +267,12 @@ public class ModelBoard {
       }
     }
     //Resetting values and cases
-    if(!whitePlayerBoard.isAI()) {
       this.redTurn = !redTurn;
       this.madeMove = false;
       this.isKinging = false;
       this.pendingMove = false;
       this.isJumping = false;
       this.canSubmit = false;
-    }
-    else {
-      AbstractPlayer AI = whitePlayerBoard.getWhitePlayer();
-    }
   }
 
   /**

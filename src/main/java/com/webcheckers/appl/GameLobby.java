@@ -318,6 +318,11 @@ public class GameLobby {
     this.modelBoard.submitMove();
     if (this.modelBoard.checkRedTurn()) {
       this.bestMove = findBestMoveRed.findMove();
+    } else if (whitePlayer.getName().equals("F@ke")) {
+      this.bestMove = findBestMoveWhite.findMove();
+      modelBoard.pendingMove(bestMove);
+      this.submitMove();
+      this.bestMove = findBestMoveRed.findMove();
     } else {
       this.bestMove = findBestMoveWhite.findMove();
     }
