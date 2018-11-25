@@ -22,7 +22,6 @@ public class TestGetPlayAIRoute {
 
   //friendly objects
   private PlayerLobby playerLobby;
-  private Player redPlayer;
 
   //attributes holding mock objects (non-friendly)
   private Request request;
@@ -36,8 +35,6 @@ public class TestGetPlayAIRoute {
     session = mock(Session.class);
     when(request.session()).thenReturn(session);
 
-    redPlayer = new Player("nameA");
-
 
     playerLobby = new PlayerLobby();
 
@@ -45,10 +42,9 @@ public class TestGetPlayAIRoute {
     CuT = new GetPlayAIRoute(playerLobby);
   }
 
+
   @Test
   void newAIGame(){
-    final TemplateEngineTester testHelper = new TemplateEngineTester();
-
     //Invoke Testing
     CuT.handle(request, response);
     assertNotNull(playerLobby.getSpecificPlayer("F@ke 1"));
