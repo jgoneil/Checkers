@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.AbstractPlayer;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.Move;
 import spark.*;
@@ -19,7 +20,7 @@ public class PostMoveCheck implements Route {
   //Gson controller for reading and sending JSON information
   private final Gson gson;
   //The player that resigned for the game
-  private Player resignedPlayer;
+  private AbstractPlayer resignedPlayer;
 
   /**
    * Main method for POST check of a valid move

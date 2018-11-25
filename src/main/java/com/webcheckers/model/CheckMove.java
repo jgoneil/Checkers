@@ -32,7 +32,7 @@ public class CheckMove {
    * @param player the player checking to see if there are moves possible
    * @return true/false if a player does/doesn't have any moves left to make
    */
-  public boolean moveAvailable(Player player) {
+  public boolean moveAvailable(AbstractPlayer player) {
     if (this.board.checkPendingMove()) {
       return true;
     }
@@ -153,7 +153,7 @@ public class CheckMove {
    * @param player the player attempting to make a jump
    * @return a map of moves that a king piece can make
    */
-  private Map<Space, Space> kingCanJump(Piece piece, Player player) {
+  private Map<Space, Space> kingCanJump(Piece piece, AbstractPlayer player) {
     Map<Space, Space> kingJumps = new HashMap<>();
 
     if (player.isRed() && piece.isKing()) {
@@ -199,7 +199,7 @@ public class CheckMove {
    *
    * @return a map of all of the spaces (last position) that can jump for the given board
    */
-  private Map<Space, Space> canJump(Player player) {
+  private Map<Space, Space> canJump(AbstractPlayer player) {
     Map<Space, Space> jumps = new HashMap<>();
     //Checking to see if a player is red or not
     if (player.isRed()) {
@@ -275,7 +275,7 @@ public class CheckMove {
    * @param player the player attempting to make a move
    * @return a map containing the last move for all of the starting and ending spaces of all of the potential jumps
    */
-  public Map<Space, Space> findJumps(Player player) {
+  public Map<Space, Space> findJumps(AbstractPlayer player) {
     Map<Space, Space> jumps = new HashMap<>();
     Stack<Move> movesMade = new Stack<>();
     boolean canContinueJumping = true;
@@ -323,7 +323,7 @@ public class CheckMove {
    * @param end   The end space that the piece could possibly jump to
    * @return true/false based on if the piece can jump or not.
    */
-  private boolean pieceCanJump(Space start, Space end, Player player, Piece piece) {
+  private boolean pieceCanJump(Space start, Space end, AbstractPlayer player, Piece piece) {
     Space middle = board.getSpace((start.getxCoordinate() + end.getxCoordinate()) / 2,
             (start.getCellIdx() + end.getCellIdx()) / 2);
 
@@ -365,7 +365,7 @@ public class CheckMove {
    * @param target - target space to move to
    * @return - validity of move to target space
    */
-  public Map<Boolean, String> validateMove(Position start, Position target, Player player) {
+  public Map<Boolean, String> validateMove(Position start, Position target, AbstractPlayer player) {
     Map<Boolean, String> response = new HashMap<>();
     Space current;
     Space goal;

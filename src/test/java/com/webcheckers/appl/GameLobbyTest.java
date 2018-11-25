@@ -1,5 +1,6 @@
 package com.webcheckers.appl;
 
+import com.webcheckers.model.AiPlayer;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Position;
@@ -20,6 +21,9 @@ public class GameLobbyTest {
 
   //Game lobby for the test
   private GameLobby gameLobby;
+
+  //AI lobby for the test
+  private GameLobby gameLobby1;
 
   @BeforeEach
   void setUp() throws Exception {
@@ -95,5 +99,13 @@ public class GameLobbyTest {
     assertFalse(gameLobby.onlyOne());
     gameLobby.changeTurn();
     assertFalse(gameLobby.onlyOne());
+  }
+
+  @Test
+  void testAICanPlay(){
+    AiPlayer whitePlayer = new AiPlayer();
+    gameLobby1 = new GameLobby(redPlayer, whitePlayer);
+    gameLobby1.pendingMove(new Move(new Position(5, 2), new Position(4, 3)));
+    assertTrue(gameLobby1.checkRedTurn());
   }
 }

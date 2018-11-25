@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.AbstractPlayer;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -68,7 +69,7 @@ public class PostResignGame implements Route {
       Message message = new Message(Message.Type.error, ERROR_RESIGN);
       return gson.toJson(message);
     } else {
-      Player player2 = gameLobby.getOpponent(player);
+      AbstractPlayer player2 = gameLobby.getOpponent(player);
       player.gameEnd();
       player2.gameEnd();
       this.resignedPlayer = player;

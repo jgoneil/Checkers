@@ -10,8 +10,8 @@ import java.util.List;
 public class PlayerBoard implements Iterable {
 
   //Players for the current game view
-  private Player redPlayer;
-  private Player whitePlayer;
+  private AbstractPlayer redPlayer;
+  private AbstractPlayer whitePlayer;
   //The list of rows for the board view
   private ArrayList<Row> board;
 
@@ -24,7 +24,7 @@ public class PlayerBoard implements Iterable {
    * square)
    * @param color the color of the player
    */
-  public PlayerBoard(Player redPlayer, Player whitePlayer, int length, String color) {
+  public PlayerBoard(AbstractPlayer redPlayer, AbstractPlayer whitePlayer, int length, String color) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();
@@ -59,7 +59,7 @@ public class PlayerBoard implements Iterable {
    *
    * @return the player associated to the white checkers for the checkers game
    */
-  public Player getWhitePlayer() {
+  public AbstractPlayer getWhitePlayer() {
     return this.whitePlayer;
   }
 
@@ -68,7 +68,7 @@ public class PlayerBoard implements Iterable {
    *
    * @return the player associated to the red checkers for the checkers game
    */
-  public Player getRedPlayer() {
+  public AbstractPlayer getRedPlayer() {
     return this.redPlayer;
   }
 

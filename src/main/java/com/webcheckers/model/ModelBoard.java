@@ -42,7 +42,7 @@ public class ModelBoard {
    * @param whitePlayer the player associated to the color white for the game
    * @param length      the length of the sides of the board (assuming its a square)
    */
-  public ModelBoard(Player redPlayer, Player whitePlayer, int length) {
+  public ModelBoard(AbstractPlayer redPlayer, AbstractPlayer whitePlayer, int length) {
     //Setting constants
     this.redPlayerBoard = new PlayerBoard(redPlayer, whitePlayer, length, GameLobby.RED);
     this.whitePlayerBoard = new PlayerBoard(redPlayer, whitePlayer, length, GameLobby.WHITE);
@@ -88,7 +88,7 @@ public class ModelBoard {
    * @param length      the length of the sides of the board (assuming square)
    * @param pieces      the pieces being added to the board
    */
-  public ModelBoard(Player redPlayer, Player whitePlayer, int length, List<Piece> pieces) {
+  public ModelBoard(AbstractPlayer redPlayer, AbstractPlayer whitePlayer, int length, List<Piece> pieces) {
     //Setting constants
     this.board = new Space[length][length];
     this.redTurn = true;
