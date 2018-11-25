@@ -27,7 +27,6 @@ public class PlayerLobby {
     this.checkSignin = new CheckSignin();
     this.users = new ArrayList<>();
     this.usernames = new ArrayList<>();
-    this.users.add(new AiPlayer());
   }
 
   /**

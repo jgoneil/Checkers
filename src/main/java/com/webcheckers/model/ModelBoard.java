@@ -81,13 +81,12 @@ public class ModelBoard {
 
   /**
    * Constructor for the model version of the board
-   *
-   * @param redPlayer   the player associated to the color red for the game
+   *  @param redPlayer   the player associated to the color red for the game
    * @param whitePlayer the player associated to the color white for the game
    * @param length      the length of the sides of the board (assuming square)
    * @param pieces      the pieces being added to the board
    */
-  public ModelBoard(Player redPlayer, Player whitePlayer, int length, List<Piece> pieces) {
+  public ModelBoard(AbstractPlayer redPlayer, AbstractPlayer whitePlayer, int length, List<Piece> pieces) {
     //Setting constants
     this.board = new Space[length][length];
     this.redTurn = true;

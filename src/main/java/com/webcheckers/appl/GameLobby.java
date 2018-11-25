@@ -47,12 +47,11 @@ public class GameLobby {
 
   /**
    * Constructor for the game lobby that specifies the pieces being added to the board
-   *
-   * @param redPlayer the red player connected to the game lobby
+   *  @param redPlayer the red player connected to the game lobby
    * @param whitePlayer the white player connected to the game lobby
    * @param pieceList the list of pieces being added to the board
    */
-  public GameLobby(Player redPlayer, Player whitePlayer, List<Piece> pieceList) {
+  public GameLobby(AbstractPlayer redPlayer, AbstractPlayer whitePlayer, List<Piece> pieceList) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     redPlayer.setColor(RED);
