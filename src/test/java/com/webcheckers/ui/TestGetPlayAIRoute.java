@@ -43,11 +43,11 @@ public class TestGetPlayAIRoute {
   }
 
 
-  @Test
-  void newAIGame(){
-    //Invoke Testing
-    CuT.handle(request, response);
-    assertNotNull(playerLobby.getSpecificPlayer("F@ke 1"));
-
-  }
+//  @Test
+//  void newAIGame(){
+//    //Invoke Testing
+//    CuT.handle(request, response);
+//    assertNotNull(playerLobby.getSpecificPlayer("F@ke 1"));
+//
+//  }
 }
