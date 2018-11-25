@@ -125,4 +125,12 @@ public class PlayerBoard implements Iterable {
   public void eatPiece(int row, int column) {
     board.get(row).removePieceFromSpace(column);
   }
+
+  /**
+   * Checks to see if the player is an AI
+   * @return true/false based on if the white player is an AI
+   */
+  public boolean isAI() {
+    return whitePlayer.getName().equals("F@ke");
+  }
 }

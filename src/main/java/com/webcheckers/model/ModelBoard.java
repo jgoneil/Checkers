@@ -265,12 +265,17 @@ public class ModelBoard {
       }
     }
     //Resetting values and cases
-    this.redTurn = !redTurn;
-    this.madeMove = false;
-    this.isKinging = false;
-    this.pendingMove = false;
-    this.isJumping = false;
-    this.canSubmit = false;
+    if(!whitePlayerBoard.isAI()) {
+      this.redTurn = !redTurn;
+      this.madeMove = false;
+      this.isKinging = false;
+      this.pendingMove = false;
+      this.isJumping = false;
+      this.canSubmit = false;
+    }
+    else {
+      AbstractPlayer AI = whitePlayerBoard.getWhitePlayer();
+    }
   }
 
   /**
@@ -316,7 +321,7 @@ public class ModelBoard {
   /**
    * Checks to see if a whitePlayer can still play the game or not
    *
-   * @return true/false based on if the aount of pieces a white player has equals 0
+   * @return true/false based on if the amount of pieces a white player has equals 0
    */
   public boolean whiteCanPlay() {
     if (this.whitePieces.size() == 0) {
