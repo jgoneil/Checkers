@@ -13,7 +13,7 @@ public class FindBestMove {
   //The model board for the game
   private ModelBoard board;
   //The player looking for the best move
-  private Player player;
+  private AbstractPlayer player;
   //Check move to ensure bestMoves are valid for the system
   private CheckMove checkMove;
   //The list of best bestMoves possible for the player to make
@@ -38,7 +38,7 @@ public class FindBestMove {
    * @param board the model board for the game being played
    * @param player the player looking for their best move
    */
-  public FindBestMove(ModelBoard board, Player player) {
+  public FindBestMove(ModelBoard board, AbstractPlayer player) {
     this.board = board;
     this.player = player;
     this.checkMove = new CheckMove(board);

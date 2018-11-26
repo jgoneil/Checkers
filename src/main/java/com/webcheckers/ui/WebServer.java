@@ -61,6 +61,7 @@ public class WebServer {
   public static final String SUBMIT_TURN = "/submitTurn";
   public static final String BACKUP_MOVE = "/backupMove";
   public static final String REQUEST_HELP = "/requestHelp";
+  public static final String PLAY_AI = "/playAI";
   private static final Logger LOG = Logger.getLogger(WebServer.class.getName());
 
   //
@@ -165,6 +166,8 @@ public class WebServer {
     post(BACKUP_MOVE, new PostBackupMove(gson));
 
     post(REQUEST_HELP, new PostRequestHelp(gson, playerLobby));
+
+    get(PLAY_AI, new GetPlayAIRoute(playerLobby));
 
     //
     LOG.config("WebServer is initialized.");

@@ -15,7 +15,10 @@
       <#if !signedin>
         <a href="/signin" class="tab">Sign in</a>
       <#else>
-        <a href="./signout">sign out[${user}]</a>
+        <a href="./playAI">play AI</a>
+
+        <a href="./signout" style="float: right">sign out[${user}]</a>
+
       </#if>
     </div>
     

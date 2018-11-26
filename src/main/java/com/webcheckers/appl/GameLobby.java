@@ -11,9 +11,9 @@ import java.util.List;
 public class GameLobby {
 
   //The red player connected to the game
-  private final Player redPlayer;
+  private final AbstractPlayer redPlayer;
   //The white player connected to the game
-  private final Player whitePlayer;
+  private final AbstractPlayer whitePlayer;
   //The model board being created for the game logic
   private ModelBoard modelBoard;
   //The check Move class to check if a move is valid or not
@@ -36,7 +36,7 @@ public class GameLobby {
    * @param redPlayer the red player connected to the game lobby
    * @param whitePlayer the white player connected to the game lobby
    */
-  public GameLobby(Player redPlayer, Player whitePlayer) {
+  public GameLobby(AbstractPlayer redPlayer, AbstractPlayer whitePlayer) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     redPlayer.setColor(RED);
@@ -50,12 +50,11 @@ public class GameLobby {
 
   /**
    * Constructor for the game lobby that specifies the pieces being added to the board
-   *
-   * @param redPlayer the red player connected to the game lobby
+   *  @param redPlayer the red player connected to the game lobby
    * @param whitePlayer the white player connected to the game lobby
    * @param pieceList the list of pieces being added to the board
    */
-  public GameLobby(Player redPlayer, Player whitePlayer, List<Piece> pieceList) {
+  public GameLobby(AbstractPlayer redPlayer, AbstractPlayer whitePlayer, List<Piece> pieceList) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     redPlayer.setColor(RED);
@@ -91,7 +90,7 @@ public class GameLobby {
    * @param player the player attempting to retrieve their PlayerBoard
    * @return the PlayerBoard associated to the specified player for the active game session
    */
-  public PlayerBoard getBoardForPlayer(Player player) {
+  public PlayerBoard getBoardForPlayer(AbstractPlayer player) {
     if (this.redPlayer.equals(player)) {
       return modelBoard.getRedPlayerBoard();
     } else if (this.whitePlayer.equals(player)){
@@ -122,7 +121,7 @@ public class GameLobby {
    *
    * @return the player associated to the red side of the board
    */
-  public Player getRedPlayer() {
+  public AbstractPlayer getRedPlayer() {
     return this.redPlayer;
   }
 
@@ -161,7 +160,7 @@ public class GameLobby {
    *
    * @return the player associated to the white side of the board
    */
-  public Player getWhitePlayer() {
+  public AbstractPlayer getWhitePlayer() {
     return this.whitePlayer;
   }
 
@@ -171,7 +170,7 @@ public class GameLobby {
    * @param player the player who is trying to find the opponent
    * @return the player that is the specified player's opponent
    */
-  public Player getOpponent(Player player) {
+  public AbstractPlayer getOpponent(AbstractPlayer player) {
     if(redPlayer.equals(player)) {
       return whitePlayer;
     }
@@ -307,7 +306,7 @@ public class GameLobby {
    * @param player the player making the move
    * @return true/false based on if the player can make the move or not
    */
-  public Map<Boolean, String> validateMove(Position start, Position target, Player player) {
+  public Map<Boolean, String> validateMove(Position start, Position target, AbstractPlayer player) {
     return this.checkMove.validateMove(start, target, player);
   }
 
@@ -337,5 +336,18 @@ public class GameLobby {
    */
   public void setMove(boolean moved) {
     modelBoard.setMove(moved);
+  }
+
+  /**
+   * Gets the best move for a specified player
+   *
+   * @return the best move a player can make
+   */
+  public Move findBestMove(AbstractPlayer player) {
+    if (player.isRed()) {
+      return findBestMoveRed.findMove();
+    } else {
+      return findBestMoveWhite.findMove();
+    }
   }
 }

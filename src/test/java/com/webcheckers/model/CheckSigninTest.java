@@ -32,7 +32,7 @@ public class CheckSigninTest {
   final String tab = "\t";
   final String newLine = "\n";
 
-  List<Player> users;
+  List<AbstractPlayer> users;
   CheckSignin checkSignin;
 
   @BeforeEach

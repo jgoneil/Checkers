@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import com.webcheckers.model.AbstractPlayer;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -38,7 +39,7 @@ public class GetHomeRoute implements Route {
   //The playerLobby connected to the system
   private final PlayerLobby playerLobby;
   //The player signed into the game
-  private Player player;
+  private AbstractPlayer player;
 
   /**
    * Create the Spark Route (UI controller) for the {@code GET /} HTTP request.
