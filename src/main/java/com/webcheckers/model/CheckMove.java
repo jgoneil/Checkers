@@ -382,7 +382,7 @@ public class CheckMove {
       //Sets the current and goal spaces for the potential move
       current = board.getSpace(start.getRow(), start.getCell());
       goal = board.getSpace(target.getRow(), target.getCell());
-    } else {
+    } else{
       //Sets the current and goal spaces for the potential move (flipping since it is the white player)
       current = board.getSpace(7 - start.getRow(), 7 - start.getCell());
       goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());

@@ -319,9 +319,14 @@ public class GameLobby {
       this.bestMove = findBestMoveRed.findMove();
     } else if (whitePlayer.isAI()) {
       this.bestMove = findBestMoveWhite.findMove();
-      modelBoard.pendingMove(bestMove);
-      this.submitMove();
-      this.bestMove = findBestMoveRed.findMove();
+      if (bestMove != null) {
+        Position start = new Position(bestMove.getStart().getRow(), bestMove.getStart().getCell());
+        Position end = new Position(bestMove.getEnd().getRow(), bestMove.getEnd().getCell());
+        checkMove.validateMove(start, end, whitePlayer);
+        modelBoard.pendingMove(bestMove);
+        this.submitMove();
+        this.bestMove = findBestMoveRed.findMove();
+      }
     } else {
       this.bestMove = findBestMoveWhite.findMove();
     }
@@ -341,18 +346,5 @@ public class GameLobby {
    */
   public void setMove(boolean moved) {
     modelBoard.setMove(moved);
-  }
-
-  /**
-   * Gets the best move for a specified player
-   *
-   * @return the best move a player can make
-   */
-  public Move findBestMove(AbstractPlayer player) {
-    if (player.isRed()) {
-      return findBestMoveRed.findMove();
-    } else {
-      return findBestMoveWhite.findMove();
-    }
   }
 }
