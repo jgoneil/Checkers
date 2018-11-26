@@ -15,10 +15,10 @@ public class CheckSignin {
    * @param users the list of users already signed into the game
    * @return boolean true/false based on if the player entered information is valid or not
    */
-  public boolean validateUser(String input, List<Player> users) {
+  public boolean validateUser(String input, List<AbstractPlayer> users) {
     String username = input.toLowerCase().trim();
     //Checking to make sure the username is not already in the system
-    for (Player user : users) {
+    for (AbstractPlayer user : users) {
       if (username.equals(user.getName().toLowerCase())) {
         return false;
       }

@@ -50,8 +50,7 @@ public class GameLobby {
 
   /**
    * Constructor for the game lobby that specifies the pieces being added to the board
-   *
-   * @param redPlayer the red player connected to the game lobby
+   *  @param redPlayer the red player connected to the game lobby
    * @param whitePlayer the white player connected to the game lobby
    * @param pieceList the list of pieces being added to the board
    */
@@ -91,7 +90,7 @@ public class GameLobby {
    * @param player the player attempting to retrieve their PlayerBoard
    * @return the PlayerBoard associated to the specified player for the active game session
    */
-  public PlayerBoard getBoardForPlayer(Player player) {
+  public PlayerBoard getBoardForPlayer(AbstractPlayer player) {
     if (this.redPlayer.equals(player)) {
       return modelBoard.getRedPlayerBoard();
     } else if (this.whitePlayer.equals(player)){
@@ -342,5 +341,18 @@ public class GameLobby {
    */
   public void setMove(boolean moved) {
     modelBoard.setMove(moved);
+  }
+
+  /**
+   * Gets the best move for a specified player
+   *
+   * @return the best move a player can make
+   */
+  public Move findBestMove(AbstractPlayer player) {
+    if (player.isRed()) {
+      return findBestMoveRed.findMove();
+    } else {
+      return findBestMoveWhite.findMove();
+    }
   }
 }

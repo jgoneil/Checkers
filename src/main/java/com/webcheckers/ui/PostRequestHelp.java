@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.AbstractPlayer;
 import com.webcheckers.model.Message;
 import com.webcheckers.model.Move;
 import com.webcheckers.model.Player;
@@ -49,7 +50,7 @@ public class PostRequestHelp implements Route {
 
     String playerUsername = HTTPSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
     GameLobby gameLobby = HTTPSession.attribute(GetGameRoute.GAMELOBBY);
-    Player currentPlayer = playerLobby.getSpecificPlayer(playerUsername);
+    AbstractPlayer currentPlayer = playerLobby.getSpecificPlayer(playerUsername);
     if (currentPlayer == null) {
       return gson.toJson(new Message(Message.Type.error, "Current Player Signed Out"));
     }

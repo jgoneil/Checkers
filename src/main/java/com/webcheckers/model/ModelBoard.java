@@ -82,8 +82,7 @@ public class ModelBoard {
 
   /**
    * Constructor for the model version of the board
-   *
-   * @param redPlayer   the player associated to the color red for the game
+   *  @param redPlayer   the player associated to the color red for the game
    * @param whitePlayer the player associated to the color white for the game
    * @param length      the length of the sides of the board (assuming square)
    * @param pieces      the pieces being added to the board

@@ -6,6 +6,7 @@ import java.util.Objects;
 
 
 import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.AbstractPlayer;
 import com.webcheckers.model.PlayerBoard;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Message;
@@ -27,7 +28,7 @@ public class GetGameRoute implements Route {
   //The template engine for rendering the freemarker html page
   private TemplateEngine templateEngine;
   //The player currently interacting with the game backend
-  private Player currentPlayer;
+  private AbstractPlayer currentPlayer;
   //The playerLobby connected to the system
   private PlayerLobby playerLobby;
   //The gameLobby for the active game session
@@ -93,7 +94,7 @@ public class GetGameRoute implements Route {
       }
 
       Object[] playerTwo = request.queryParams().toArray();
-      Player player2 = playerLobby.getSpecificPlayer(playerTwo[0].toString());
+      AbstractPlayer player2 = playerLobby.getSpecificPlayer(playerTwo[0].toString());
 
       if (httpSession.attribute(PostResignGame.RESIGNED_PLAYER) != null) {
         if(httpSession.attribute(PostResignGame.RESIGNED_PLAYER).equals(player2)) {

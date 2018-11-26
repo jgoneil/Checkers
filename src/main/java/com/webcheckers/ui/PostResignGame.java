@@ -25,7 +25,7 @@ public class PostResignGame implements Route {
   //Gson controller for reading and sending JSON information
   private final Gson gson;
   //Player that disconnected from the system
-  private Player resignedPlayer;
+  private AbstractPlayer resignedPlayer;
   //Player lobby for the current session
   private PlayerLobby playerLobby;
   
@@ -55,7 +55,7 @@ public class PostResignGame implements Route {
     Session httpSession = request.session();
 
     String playerUsername = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);
-    Player player = playerLobby.getSpecificPlayer(playerUsername);
+    AbstractPlayer player = playerLobby.getSpecificPlayer(playerUsername);
     GameLobby gameLobby = httpSession.attribute(GetGameRoute.GAMELOBBY);
 
     if (gameLobby == null) {
