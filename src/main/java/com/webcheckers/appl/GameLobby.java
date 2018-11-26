@@ -317,7 +317,7 @@ public class GameLobby {
     this.modelBoard.submitMove();
     if (this.modelBoard.checkRedTurn()) {
       this.bestMove = findBestMoveRed.findMove();
-    } else if (whitePlayer.getName().equals("F@ke")) {
+    } else if (whitePlayer.isAI()) {
       this.bestMove = findBestMoveWhite.findMove();
       modelBoard.pendingMove(bestMove);
       this.submitMove();
