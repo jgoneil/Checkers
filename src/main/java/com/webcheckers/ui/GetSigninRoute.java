@@ -43,7 +43,7 @@ public class GetSigninRoute implements Route {
 
   /**
    * Handle method for signin connections
-   * Preforms error handling for users already signed into the system (need to implement)
+   * Preforms error handling for users already signed into the system
    *
    * @param request the information being passed from the frontend
    * @param response the information being sent from the backend (this class)`
