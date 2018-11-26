@@ -16,13 +16,13 @@ geometry: margin=1in
 
 This project focuses on the design, development, and maintenance of Software Applications. In order to do this, an online version of the popular board game checkers was created.
 For this application, players are required to sign into the system and then can select an opponent from a lobby of players for a match.
-When a match starts, the game is played using the American rules with the red player going first. Players can forefit the game at any point along with signout from the system at any point.
+When a match starts, the game is played using the American rules with the red player going first. Players can forfeit the game at any point along with signout from the system at any point.
 
 ### Purpose
 The purpose of this project is to allow users to play the game of checkers against one another over the internet. 
 The game is focused on being accessible for anyone who has internet and would like to play the game.
 The goals of the project is to allow players to sign into the game and select another user to 
-play against from the lobby of players. Their new goal is to now play the game following the American Rules and hopefully win against their opponent. The user may also elect to log out or forfiet the game at any point.
+play against from the lobby of players. Their new goal is to now play the game following the American Rules and hopefully win against their opponent. The user may also elect to logout or forfeit the game at any point.
 
 ### Glossary and Acronyms
 
@@ -47,15 +47,15 @@ The MVP (or Minimal Viable Product) is made up of a few standard components. The
 * Resign: Players are able to resign from the game at any point and the game ends.
 
 ### MVP Features
-The MVP Features were broken down into multiple different stories for competion. For our team we broke them down in the following fashion:
+The MVP Features were broken down into multiple different stories for completion. For our team we broke them down in the following fashion:
 
 * Sign in/out: The ability for users to be able to sign into and sign out of the game.
-* Piece Movement: The ability for pieces to be able to move forwards or preform a jump. The jump can either be a single jump or a multi-jump.
+* Piece Movement: The ability for pieces to be able to move forwards or perform a jump. The jump can either be a single jump or a multi-jump.
 * King Movement: The ability for pieces that are of the king type to move forwards or backwards along with preform single and multi jumps forwards and backwards. 
 * Resign: The ability for the player to resign the game at any point in time and the game ends once a player resigns. 
 
 ### Roadmap of Enhancements
-* AI Player: Allows a user to connect to a game and play against the computer (or AI Player) rather than another human being. The AI Player for the system attemtps to make the best move possible based upon the following factors:
+* AI Player: Allows a user to connect to a game and play against the computer (or AI Player) rather than another human being. The AI Player for the system attempts to make the best move possible based upon the following factors:
   * If the move makes a jump or not
   * If a jump is possible, ensure it is the longest one possible
   * If the move results in the player's piece being eaten
@@ -78,7 +78,7 @@ This section describes the application architecture.
 
 ### Summary
 
-The following Tiers/Layers model shows a high-level view of the webapp's architecture.
+The following Tiers/Layers model shows a high-level view of the web app's architecture.
 
 ![The Tiers & Layers of the Architecture](architecture-tiers-and-layers.png)
 
@@ -88,6 +88,7 @@ some minimal CSS for styling the page. There is also some JavaScript
 that has been provided to the team by the architect.
 
 The server-side tiers include the UI Tier that is composed of UI Controllers and Views.
+
 Controllers are built using the Spark framework and View are built using the FreeMarker framework.  The Application and Model tiers are built using plain-old Java objects (POJOs).
 
 Details of the components within these tiers are supplied below.
@@ -152,7 +153,7 @@ Without this cyclomatic system, each one of the potential system handles would n
 to be met, and we may fail to redirect the system in cases that the user attempts to visit the 
 route when a game is not in session.
 
-For our check move class, we found high complexity metrics, specificially in our cyclomatic
+For our check move class, we found high complexity metrics, specifically in our cyclomatic
 complexity check, as the system requires lots of conditional statements for execution. This
 issue can be resolved by the implementation of a state machine to check our move validations.
 This system would limit the number of conditional statements needed for completion and the 
@@ -166,21 +167,21 @@ changes to the system to ensure all points of the javadoc coverage was met in th
 
 For our lines of code metrics, we found no issues with the system, and the number of lines
 for our system did not add any complexity to the system. No changes were made due to the system
-not needing any improvements. The system alrerted us that we have approximately 4,000 lines of 
+not needing any improvements. The system alerted us that we have approximately 4,000 lines of 
 active code on our system, with approximately 1,000 lines of comments.
 
 For our Martin package metrics, we found no issues with the system. Our fan-in connections were
 highest in our model class however, this makes sense as the model class reaches to other 
 classes in our model tier for execution. For each one of the other tiers, their fan-in 
-connections were relaively small, as our UI tier and our Application Tier classes did not 
+connections were relatively small, as our UI tier and our Application Tier classes did not 
 communicate very often with inside themselves. For our fan-out connections, we found the 
 highest number of connections needed in our UI Tier. This makes sense as the UI tier relied 
-hevily upon all of the classes in our system for functionality and to send all of the 
+heavily upon all of the classes in our system for functionality and to send all of the 
 information to the frontend so it could be displayed properly for the user.
 
 The overall coupling factor of our system was 20.32%, meaning that we did a good job of 
 eliminating coupling in our system. Our attribute hiding factor was 85.15%, meaning that we 
-did a good job hiding our attribues in private fields to ensure they were only being 
+did a good job hiding our attributes in private fields to ensure they were only being 
 accessed through getters and setters, rather than other classes having direct contact with 
 our attributes. 
 
