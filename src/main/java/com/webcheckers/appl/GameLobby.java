@@ -135,7 +135,7 @@ public class GameLobby {
       return false;
     }
     if (this.checkMove.moveAvailable(redPlayer)) {
-      return this.modelBoard.redCanPlay();
+      return this.modelBoard.whiteCanPlay();
     }
     return false;
   }
