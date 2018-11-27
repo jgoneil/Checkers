@@ -90,10 +90,4 @@ public class GameLobbyTest {
     assertFalse(gameLobby.whiteCanPlay());
   }
 
-  @Test
-  void notOnlyOne() {
-    assertFalse(gameLobby.onlyOne());
-    gameLobby.changeTurn();
-    assertFalse(gameLobby.onlyOne());
-  }
 }
