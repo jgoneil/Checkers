@@ -1,7 +1,5 @@
 package com.webcheckers.model;
 
-import java.util.Comparator;
-
 /**
  * Model class for the position a space is at
  */
@@ -41,6 +39,12 @@ public class Position {
     return this.cell;
   }
 
+  /**
+   * Equals method for checking if two positions are equivalent to one another
+   *
+   * @param obj the potential position being checked for equivalence
+   * @return true/false based on if the positions are equal to one another or not
+   */
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof Position) {

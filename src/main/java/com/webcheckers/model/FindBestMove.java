@@ -499,6 +499,13 @@ public class FindBestMove {
     }
   }
 
+  /**
+   * Finds all of the potential jumps a player can make given a starting position
+   *
+   * @param start the position the jump starts at
+   * @param player the player attempting to make the jump
+   * @return a list of all of the ending positions of the jump
+   */
   private List<Position> findAllJumps(Position start, AbstractPlayer player) {
     List<Position> moves = new ArrayList<>();
     if (player.isWhite()) {
@@ -539,6 +546,14 @@ public class FindBestMove {
     return moves;
   }
 
+  /**
+   * Finds the path to the end of a multi-jump that a player is making
+   *
+   * @param start the starting position of the multi-jump
+   * @param end the ending position of the multi-jump
+   * @param player the player making the multi-jump
+   * @return a map of all of the positions a jump moves to as the key and the list of positions that move can move to
+   */
   private Map<Position, List<Position>> findEnd(Position start, Position end, AbstractPlayer player) {
     Map<Position, List<Position>> moves = new HashMap<>();
     List<Position> endingJumps = findAllJumps(start, player);
@@ -552,6 +567,7 @@ public class FindBestMove {
           found = true;
           break;
         }
+        //Attempting to find, for the current position in the loop, if there are more jumps possible
         Space startingSpace = board.getSpace(start.getRow(), start.getCell());
         Space movingSpace = board.getSpace(endOfJump.getRow(), endOfJump.getCell());
         board.addPieceToSpace(startingSpace.getPiece(), movingSpace);
@@ -573,6 +589,14 @@ public class FindBestMove {
     return moves;
   }
 
+  /**
+   * Using a backtracking system, finds the start of a multi-jump. This finds the complete path for a multi-jump
+   *
+   * @param positions the map of positions visited during a jump along with a list of positions the key position can move to
+   * @param start the start position of the multi-jump
+   * @param end the end position of the multi-jump
+   * @return the list of positions a player visits during a mulit-jump (unordered)
+   */
   private List<Position> findStart(Map<Position, List<Position>> positions, Position start, Position end) {
     List<Position> moves = new ArrayList<>();
     moves.add(end);
@@ -599,6 +623,13 @@ public class FindBestMove {
     return moves;
   }
 
+  /**
+   * System for finding the complete path of a multi-jump
+   *
+   * @param start the starting position of the multi-jump
+   * @param end the ending position of the multi-jump
+   * @return a ordered list of all of the positions a piece visits during a multi-jump
+   */
   public List<Position> findMiddle(Space start, Space end) {
     Position startingPosition = new Position(start.getxCoordinate(), start.getCellIdx());
     Position endingPosition = new Position(end.getxCoordinate(), end.getCellIdx());

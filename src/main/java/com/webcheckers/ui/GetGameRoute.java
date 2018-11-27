@@ -16,7 +16,6 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 import spark.TemplateEngine;
-import com.webcheckers.model.Player;
 
 import static spark.Spark.halt;
 

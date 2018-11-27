@@ -44,7 +44,7 @@ public class Move {
    *
    * @return the row of the starting position in the move
    */
-  int getStartRow() {
+  public int getStartRow() {
     return this.start.getRow();
   }
 
@@ -53,7 +53,7 @@ public class Move {
    *
    * @return the cell of the starting position in the move
    */
-  int getStartCell() {
+  public int getStartCell() {
     return this.start.getCell();
   }
 
@@ -62,7 +62,7 @@ public class Move {
    *
    * @return the row of the ending position in the move
    */
-  int getEndRow() {
+  public int getEndRow() {
     return this.end.getRow();
   }
 
@@ -71,7 +71,7 @@ public class Move {
    *
    * @return the cell of the ending position in the move
    */
-  int getEndCell() {
+  public int getEndCell() {
     return this.end.getCell();
   }
 }

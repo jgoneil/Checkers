@@ -2,7 +2,6 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.*;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
@@ -23,11 +22,11 @@ public class GameLobby {
   private FindBestMove findBestMoveRed;
   //The find best move class to find the best potential move for help requests for the white player and for the ai player
   private FindBestMove findBestMoveWhite;
-
+  //The best move a player can make
   private Move bestMove;
 
   //Static final (constant) variables
-  static final int BOARD_SIZE = 8;
+  private static final int BOARD_SIZE = 8;
   public static final String RED = "RED";
   public static final String WHITE = "WHITE";
 
@@ -321,8 +320,8 @@ public class GameLobby {
     } else if (whitePlayer.isAI()) {
       this.bestMove = findBestMoveWhite.findMove();
       if (bestMove != null) {
-        Position start = new Position(bestMove.getStart().getRow(), bestMove.getStart().getCell());
-        Position end = new Position(bestMove.getEnd().getRow(), bestMove.getEnd().getCell());
+        Position start = new Position(bestMove.getStartRow(), bestMove.getStartCell());
+        Position end = new Position(bestMove.getEndRow(), bestMove.getEndCell());
         List<Position> moves = findBestMoveWhite.findMiddle(modelBoard.getSpace(7 - start.getRow(), 7 - start.getCell()),
                 modelBoard.getSpace(7 - end.getRow(), 7 - end.getCell()));
         if (moves != null) {

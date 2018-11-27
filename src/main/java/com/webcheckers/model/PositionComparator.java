@@ -2,8 +2,12 @@ package com.webcheckers.model;
 
 import java.util.Comparator;
 
+/**
+ * Comparator class used for sorting positions in order of the direction the move goes in
+ */
 public class PositionComparator implements Comparator<Position> {
 
+  //Static final constants used for state
   private static final String LEFT = "MOVE TO LEFT";
   private static final String RIGHT = "MOVE TO RIGHT";
   private static final String UP = "MOVE UPWARDS";
@@ -11,10 +15,24 @@ public class PositionComparator implements Comparator<Position> {
 
   String direction;
 
+  /**
+   * Constructor for the Position Comparator. Takes in the starting and ending positions to figure out the direction
+   * of the move.
+   *
+   * @param start the starting position of the move
+   * @param end the ending position of the move
+   */
   public PositionComparator(Position start, Position end) {
     this.direction = findDirection(start, end);
   }
 
+  /**
+   * Finds the direction for the given move
+   *
+   * @param start the starting position for the move
+   * @param end the ending position for the move
+   * @return a string representing the type of move made
+   */
   private String findDirection(Position start, Position end) {
     if (start.getCell() - end.getCell() > 0) {
       return LEFT;
@@ -29,6 +47,13 @@ public class PositionComparator implements Comparator<Position> {
     }
   }
 
+  /**
+   * Comparision function for ordering positions. Based on the direction of the move
+   *
+   * @param first the first position for comparison
+   * @param second the second position for comparison
+   * @return an integer representing if the first position is greater than, less than, or equal to the second position
+   */
   @Override
   public int compare(Position first, Position second) {
     if (direction.equals(RIGHT)) {
