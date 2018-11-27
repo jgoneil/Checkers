@@ -24,7 +24,8 @@ public class PlayerBoard implements Iterable {
    * square)
    * @param color the color of the player
    */
-  public PlayerBoard(AbstractPlayer redPlayer, AbstractPlayer whitePlayer, int length, String color) {
+  public PlayerBoard(AbstractPlayer redPlayer, AbstractPlayer whitePlayer, int length,
+      String color) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();
@@ -36,7 +37,8 @@ public class PlayerBoard implements Iterable {
   }
 
   /**
-   * Main constructor for class that establishes the two players, size of board, and the pieces on the board
+   * Main constructor for class that establishes the two players, size of board, and the pieces on
+   * the board
    *
    * @param redPlayer the player associated to the red checkers for the checkers game
    * @param whitePlayer the player associated to the white checkers for the checkers game
@@ -44,7 +46,8 @@ public class PlayerBoard implements Iterable {
    * @param color the color of the player
    * @param pieces the pieces being added to the board
    */
-  public PlayerBoard(Player redPlayer, Player whitePlayer, int length, String color, List<Piece> pieces) {
+  public PlayerBoard(Player redPlayer, Player whitePlayer, int length, String color,
+      List<Piece> pieces) {
     this.redPlayer = redPlayer;
     this.whitePlayer = whitePlayer;
     this.board = new ArrayList<>();
@@ -99,7 +102,7 @@ public class PlayerBoard implements Iterable {
   public void makeMove(Move move, boolean isKinging) {
     Row startingRow = board.get(move.getStart().getRow());
     Piece piece = startingRow.removePieceFromSpace(move.getStart().getCell());
-    if (isKinging){
+    if (isKinging) {
       piece.King();
     }
     Row endingRow = board.get(move.getEnd().getRow());

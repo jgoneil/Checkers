@@ -41,7 +41,7 @@ class SpaceTest {
     assertEquals(space2.getColor(), Space.Color.WHITE);
   }
 
-  @Test 
+  @Test
   void pieceColorTest() {
     Piece piece = new Piece(GameLobby.RED, space1);
     space1.occupy(piece);

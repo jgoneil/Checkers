@@ -6,7 +6,9 @@ import static org.mockito.Mockito.when;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.PlayerBoard;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -35,13 +37,10 @@ public class TestGetPlayAIRoute {
     session = mock(Session.class);
     when(request.session()).thenReturn(session);
 
-
     playerLobby = new PlayerLobby();
-
 
     CuT = new GetPlayAIRoute(playerLobby);
   }
-
 
 //  @Test
 //  void newAIGame(){

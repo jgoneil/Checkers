@@ -9,13 +9,12 @@ import java.util.Stack;
  */
 public class CheckMove {
 
+  public static final String multiJumpPossible = "Attempting to jump a single piece when a multi-jump is possible.";
+  //Static (constant) variables for response
+  private static final String jumpPossible = "Attempted to move when jump is possible.";
   //The board holding the logic for checking if a piece is valid or not (the model board)
   private ModelBoard board;
   private Piece piece;
-
-  //Static (constant) variables for response
-  private static final String jumpPossible = "Attempted to move when jump is possible.";
-  public static final String multiJumpPossible = "Attempting to jump a single piece when a multi-jump is possible.";
 
   /**
    * Constructor for the CheckMove Class
@@ -32,7 +31,7 @@ public class CheckMove {
    * @param player the player checking to see if there are moves possible
    * @return true/false if a player does/doesn't have any moves left to make
    */
-  
+
   public boolean moveAvailable(AbstractPlayer player) {
     if (this.board.checkPendingMove()) {
       return true;
@@ -43,21 +42,27 @@ public class CheckMove {
         int col = piece.getCellIdx();
         Position current = new Position(row, col);
         //Checking to see if the piece can move to the left or right forwards
-        Map<Boolean, String> moveUpperLeft = validateMove(current, new Position(row - 1, col - 1), player);
-        Map<Boolean, String> moveUpperRight = validateMove(current, new Position(row - 1, col + 1), player);
+        Map<Boolean, String> moveUpperLeft = validateMove(current, new Position(row - 1, col - 1),
+            player);
+        Map<Boolean, String> moveUpperRight = validateMove(current, new Position(row - 1, col + 1),
+            player);
         if (moveUpperLeft.containsKey(true) || moveUpperRight.containsKey(true)) {
           return true;
         }
         //If they can't move to the left or right, checking for a potential jump
-        if (moveUpperLeft.containsValue(jumpPossible) || moveUpperRight.containsValue(jumpPossible)) {
+        if (moveUpperLeft.containsValue(jumpPossible) || moveUpperRight
+            .containsValue(jumpPossible)) {
           return true;
-        } else if (moveUpperLeft.containsValue(multiJumpPossible) || moveUpperRight.containsValue(multiJumpPossible)) {
+        } else if (moveUpperLeft.containsValue(multiJumpPossible) || moveUpperRight
+            .containsValue(multiJumpPossible)) {
           return true;
         }
         if (piece.isKing()) {
           //If the piece is a king, checking to see if it can move left or right backwards
-          Map<Boolean, String> moveLowerLeft = validateMove(current, new Position(row + 1, col - 1), player);
-          Map<Boolean, String> moveLowerRight = validateMove(current, new Position(row + 1, col + 1), player);
+          Map<Boolean, String> moveLowerLeft = validateMove(current, new Position(row + 1, col - 1),
+              player);
+          Map<Boolean, String> moveLowerRight = validateMove(current,
+              new Position(row + 1, col + 1), player);
           if (moveLowerLeft.containsKey(true) || moveLowerRight.containsKey(true)) {
             return true;
           }
@@ -70,24 +75,26 @@ public class CheckMove {
         Position current = new Position(7 - row, 7 - col);
         //Checking to see if the piece can move to the left or right forwards
         Map<Boolean, String> moveUpperLeft = validateMove(current, new Position(7 -
-                (row + 1), 7 - (col - 1)), player);
+            (row + 1), 7 - (col - 1)), player);
         Map<Boolean, String> moveUpperRight = validateMove(current, new Position(7 -
-                (row + 1), 7 - (col + 1)), player);
+            (row + 1), 7 - (col + 1)), player);
         if (moveUpperLeft.containsKey(true) || moveUpperRight.containsKey(true)) {
           return true;
         }
         //If they can't move to the left or right, checking for a potential jump
-        if (moveUpperLeft.containsValue(jumpPossible) || moveUpperRight.containsValue(jumpPossible)) {
+        if (moveUpperLeft.containsValue(jumpPossible) || moveUpperRight
+            .containsValue(jumpPossible)) {
           return true;
-        } else if (moveUpperLeft.containsValue(multiJumpPossible) || moveUpperRight.containsValue(multiJumpPossible)) {
+        } else if (moveUpperLeft.containsValue(multiJumpPossible) || moveUpperRight
+            .containsValue(multiJumpPossible)) {
           return true;
         }
         if (piece.isKing()) {
           //If the piece is a king, checking to see if it can move left or right backwards
           Map<Boolean, String> moveLowerLeft = validateMove(current, new Position(7 -
-                  (row - 1), 7 - (col - 1)), player);
+              (row - 1), 7 - (col - 1)), player);
           Map<Boolean, String> moveLowerRight = validateMove(current, new Position(7 -
-                  (row - 1), 7 - (col + 1)), player);
+              (row - 1), 7 - (col + 1)), player);
           if (moveLowerLeft.containsKey(true) || moveLowerRight.containsKey(true)) {
             return true;
           }
@@ -101,7 +108,7 @@ public class CheckMove {
    * Checks if the piece is moving diagonally
    *
    * @param start the starting position of the checker
-   * @param end   the ending position of the checker
+   * @param end the ending position of the checker
    * @return true/false based on whether the move is diagonal
    */
   private boolean isMovingDiagonal(Position start, Position end) {
@@ -114,7 +121,7 @@ public class CheckMove {
    * Checks to see if the distance for the column or row is too large
    *
    * @param start the starting position of the checker
-   * @param end   the ending position of the checker
+   * @param end the ending position of the checker
    * @return true/false based on if the distance is too large or not
    */
   private boolean isMovingOne(Position start, Position end) {
@@ -127,7 +134,7 @@ public class CheckMove {
    * Checks to see if the distance for the column or row is two
    *
    * @param start the starting position of the checker
-   * @param end   the ending position of the checker
+   * @param end the ending position of the checker
    * @return true/false based on if the distance is two or not
    */
   private boolean isMovingTwo(Space start, Space end) {
@@ -140,7 +147,7 @@ public class CheckMove {
    * Check to see if checker is moving forward
    *
    * @param start the starting position of the checker
-   * @param end   the ending position of the checker
+   * @param end the ending position of the checker
    * @return true/false based on whether checker is moving forward
    */
   private boolean isMovingForward(Position start, Position end) {
@@ -159,34 +166,34 @@ public class CheckMove {
 
     if (player.isRed() && piece.isKing()) {
       if (piece.getSpace().getxCoordinate() + 2 <= 7
-              && piece.getSpace().getCellIdx() - 2 >= 0) {
+          && piece.getSpace().getCellIdx() - 2 >= 0) {
         Space bottomLeft = board.getSpace(piece.getSpace().getxCoordinate() + 2,
-                piece.getSpace().getCellIdx() - 2);
+            piece.getSpace().getCellIdx() - 2);
         if (pieceCanJump(piece.getSpace(), bottomLeft, player, piece)) {
           kingJumps.put(bottomLeft, piece.getSpace());
         }
       }
       if (piece.getSpace().getxCoordinate() + 2 <= 7
-              && piece.getSpace().getCellIdx() + 2 <= 7) {
+          && piece.getSpace().getCellIdx() + 2 <= 7) {
         Space bottomRight = board.getSpace(piece.getSpace().getxCoordinate() + 2,
-                piece.getSpace().getCellIdx() + 2);
+            piece.getSpace().getCellIdx() + 2);
         if (pieceCanJump(piece.getSpace(), bottomRight, player, piece)) {
           kingJumps.put(bottomRight, piece.getSpace());
         }
       }
-    } else if (player.isWhite() && piece.isKing()){
+    } else if (player.isWhite() && piece.isKing()) {
       if (piece.getSpace().getxCoordinate() - 2 >= 0
-              && piece.getSpace().getCellIdx() + 2 <= 7) {
+          && piece.getSpace().getCellIdx() + 2 <= 7) {
         Space bottomLeft = board.getSpace(piece.getSpace().getxCoordinate() - 2,
-                piece.getSpace().getCellIdx() + 2);
+            piece.getSpace().getCellIdx() + 2);
         if (pieceCanJump(piece.getSpace(), bottomLeft, player, piece)) {
           kingJumps.put(bottomLeft, piece.getSpace());
         }
       }
       if (piece.getSpace().getxCoordinate() - 2 >= 0
-              && piece.getSpace().getCellIdx() - 2 >= 0) {
+          && piece.getSpace().getCellIdx() - 2 >= 0) {
         Space bottomRight = board.getSpace(piece.getSpace().getxCoordinate() - 2,
-                piece.getSpace().getCellIdx() - 2);
+            piece.getSpace().getCellIdx() - 2);
         if (pieceCanJump(piece.getSpace(), bottomRight, player, piece)) {
           kingJumps.put(bottomRight, piece.getSpace());
         }
@@ -207,9 +214,9 @@ public class CheckMove {
       for (Piece redPiece : board.getRedPieces()) {
         //checking to see if a piece is within the bounds of the board (that it is not off the left or top sides)
         if (redPiece.getXCoordinate() - 2 >= 0
-                && redPiece.getCellIdx() - 2 >= 0) {
+            && redPiece.getCellIdx() - 2 >= 0) {
           Space upperLeft = board.getSpace(redPiece.getXCoordinate() - 2,
-                  redPiece.getCellIdx() - 2);
+              redPiece.getCellIdx() - 2);
           //checking to see if that specific piece can jump another piece
           if (pieceCanJump(redPiece.getSpace(), upperLeft, player, redPiece)) {
             jumps.put(redPiece.getSpace(), upperLeft);
@@ -217,9 +224,9 @@ public class CheckMove {
         }
         //checking to see if a piece is within the bounds of the board (that it is not off the right or top sides)
         if (redPiece.getXCoordinate() - 2 >= 0
-                && redPiece.getCellIdx() + 2 <= 7) {
+            && redPiece.getCellIdx() + 2 <= 7) {
           Space upperRight = board.getSpace(redPiece.getXCoordinate() - 2,
-                  redPiece.getCellIdx() + 2);
+              redPiece.getCellIdx() + 2);
           //checking to see if that specific piece can jump another piece
           if (pieceCanJump(redPiece.getSpace(), upperRight, player, redPiece)) {
             jumps.put(redPiece.getSpace(), upperRight);
@@ -238,9 +245,9 @@ public class CheckMove {
       for (Piece whitePiece : board.getWhitePieces()) {
         //checking to see if a piece is within the bounds of the board (that it is not off the right or bottom sides)
         if (whitePiece.getXCoordinate() + 2 <= 7
-                && whitePiece.getCellIdx() + 2 <= 7) {
+            && whitePiece.getCellIdx() + 2 <= 7) {
           Space upperLeft = board.getSpace(whitePiece.getXCoordinate() + 2,
-                  whitePiece.getCellIdx() + 2);
+              whitePiece.getCellIdx() + 2);
           //checking to see if that specific piece can jump another piece
 
           if (pieceCanJump(whitePiece.getSpace(), upperLeft, player, whitePiece)) {
@@ -249,9 +256,9 @@ public class CheckMove {
         }
         //checking to see if a piece is within the bounds of the board (that it is not off the left or bottom sides)
         if (whitePiece.getXCoordinate() + 2 <= 7
-                && whitePiece.getCellIdx() - 2 >= 0) {
+            && whitePiece.getCellIdx() - 2 >= 0) {
           Space upperRight = board.getSpace(whitePiece.getXCoordinate() + 2,
-                  whitePiece.getCellIdx() - 2);
+              whitePiece.getCellIdx() - 2);
           //checking to see if that specific piece can jump another piece
           if (pieceCanJump(whitePiece.getSpace(), upperRight, player, whitePiece)) {
             jumps.put(whitePiece.getSpace(), upperRight);
@@ -274,7 +281,8 @@ public class CheckMove {
    * Finds all of the potential jumps on the board to see if any mulit jumps can happen
    *
    * @param player the player attempting to make a move
-   * @return a map containing the last move for all of the starting and ending spaces of all of the potential jumps
+   * @return a map containing the last move for all of the starting and ending spaces of all of the
+   * potential jumps
    */
   public Map<Space, Space> findJumps(AbstractPlayer player) {
     Map<Space, Space> jumps = new HashMap<>();
@@ -287,8 +295,9 @@ public class CheckMove {
       } else {
         for (Space startingSpace : temp.keySet()) {
           Space endingSpace = temp.get(startingSpace);
-          Move move = new Move(new Position(startingSpace.getxCoordinate(), startingSpace.getCellIdx()),
-                  new Position(endingSpace.getxCoordinate(), endingSpace.getCellIdx()));
+          Move move = new Move(
+              new Position(startingSpace.getxCoordinate(), startingSpace.getCellIdx()),
+              new Position(endingSpace.getxCoordinate(), endingSpace.getCellIdx()));
           movesMade.push(move);
           board.addPieceToSpace(startingSpace.getPiece(), endingSpace);
           if (jumps.size() == 0) {
@@ -321,12 +330,12 @@ public class CheckMove {
    * Checks to see a single piece can jump.
    *
    * @param start Starting space that contains the piece
-   * @param end   The end space that the piece could possibly jump to
+   * @param end The end space that the piece could possibly jump to
    * @return true/false based on if the piece can jump or not.
    */
   private boolean pieceCanJump(Space start, Space end, AbstractPlayer player, Piece piece) {
     Space middle = board.getSpace((start.getxCoordinate() + end.getxCoordinate()) / 2,
-            (start.getCellIdx() + end.getCellIdx()) / 2);
+        (start.getCellIdx() + end.getCellIdx()) / 2);
 
     if (player.isWhite()) {
       if (start.getxCoordinate() - end.getxCoordinate() > 0) {
@@ -362,7 +371,7 @@ public class CheckMove {
   /**
    * Sees if a space is valid for a piece to move onto
    *
-   * @param start  - space currently at
+   * @param start - space currently at
    * @param target - target space to move to
    * @return - validity of move to target space
    */
@@ -427,7 +436,7 @@ public class CheckMove {
       } else if (!isMovingForward(start, target)) {
         response.put(false, "Single pieces can only move forward.");
       } else if (board.checkPendingMove()) {
-          response.put(false, "Already made a move");
+        response.put(false, "Already made a move");
       } else {
         board.setSubmit(true);
         response.put(true, "This move is valid.");
