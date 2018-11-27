@@ -12,8 +12,8 @@ import spark.Route;
 import spark.TemplateEngine;
 
 /**
- * {@code get /signin} Class that controls main connection to signin page.
- * Completes error checking based on if the session already has a player attribute or not
+ * {@code get /signin} Class that controls main connection to signin page. Completes error checking
+ * based on if the session already has a player attribute or not
  */
 public class GetSigninRoute implements Route {
 
@@ -32,8 +32,8 @@ public class GetSigninRoute implements Route {
   /**
    * Constructor for class
    *
-   * @param templateEngine the template in which all messages for the system are handled
-   * between spark and the java backend
+   * @param templateEngine the template in which all messages for the system are handled between
+   * spark and the java backend
    */
   public GetSigninRoute(final TemplateEngine templateEngine) {
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
@@ -42,8 +42,8 @@ public class GetSigninRoute implements Route {
   }
 
   /**
-   * Handle method for signin connections
-   * Preforms error handling for users already signed into the system (need to implement)
+   * Handle method for signin connections Preforms error handling for users already signed into the
+   * system (need to implement)
    *
    * @param request the information being passed from the frontend
    * @param response the information being sent from the backend (this class)`

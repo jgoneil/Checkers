@@ -7,6 +7,7 @@ import com.webcheckers.model.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.when;
  * Tests to make sure that PostTurnCheck is working as intended
  */
 public class TestPostTurnCheck {
+
   //Instance of PostTurnCheck
   PostTurnCheck check;
   //Created friendly objects
@@ -31,11 +33,11 @@ public class TestPostTurnCheck {
   private Session session;
   private TemplateEngine templateEngine;
 
-    /**
-     * Sets up each attribute as needed
-     */
+  /**
+   * Sets up each attribute as needed
+   */
   @BeforeEach
-  void setup(){
+  void setup() {
     request = mock(Request.class);
     response = mock(Response.class);
     session = mock(Session.class);
@@ -53,12 +55,12 @@ public class TestPostTurnCheck {
    * Tests if a Player with a null ModelBoard is handled properly
    */
   @Test
-  void nullPlayerTest(){
+  void nullPlayerTest() {
     when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(badPlayer.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
-    if(result instanceof String){
+    if (result instanceof String) {
       String temp = (String) result;
       Message fakeResponse = gson.fromJson(temp, Message.class);
       assertEquals(Message.Type.info, fakeResponse.getType());
@@ -67,15 +69,15 @@ public class TestPostTurnCheck {
   }
 
   /**
-  * Tests instance of Red Player on the Red Turn
-  */
+   * Tests instance of Red Player on the Red Turn
+   */
   @Test
-  void redsTurnTest(){
+  void redsTurnTest() {
     when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodRedPlayer.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
-    if(result instanceof String){
+    if (result instanceof String) {
       String temp = (String) result;
       Message fakeResponse = gson.fromJson(temp, Message.class);
       assertEquals(Message.Type.info, fakeResponse.getType());
@@ -87,12 +89,12 @@ public class TestPostTurnCheck {
    * Tests instance of the White player on the Red turn
    */
   @Test
-  void notWhitesTurnTest(){
+  void notWhitesTurnTest() {
     when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodWhitePlayer.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
-    if(result instanceof String){
+    if (result instanceof String) {
       String temp = (String) result;
       Message fakeResponse = gson.fromJson(temp, Message.class);
       assertEquals(Message.Type.info, fakeResponse.getType());
@@ -101,16 +103,16 @@ public class TestPostTurnCheck {
   }
 
   /**
-   *  Tests the instance of the Red player on the White turn
+   * Tests the instance of the Red player on the White turn
    */
   @Test
-  void notRedsTurnTest(){
+  void notRedsTurnTest() {
     when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodRedPlayer.getName());
     gameLobby.setMove(true);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
-    if(result instanceof String){
+    if (result instanceof String) {
       String temp = (String) result;
       Message fakeResponse = gson.fromJson(temp, Message.class);
       assertEquals(Message.Type.info, fakeResponse.getType());
@@ -122,13 +124,13 @@ public class TestPostTurnCheck {
    * Tests the instance of the White player on the White turn
    */
   @Test
-  void whitesTurnTest(){
+  void whitesTurnTest() {
     when(session.attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(goodWhitePlayer.getName());
     gameLobby.setMove(true);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
     Object result = check.handle(request, response);
-    if(result instanceof String){
+    if (result instanceof String) {
       String temp = (String) result;
       Message fakeResponse = gson.fromJson(temp, Message.class);
       assertEquals(Message.Type.info, fakeResponse.getType());

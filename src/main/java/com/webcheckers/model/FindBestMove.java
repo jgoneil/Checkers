@@ -10,6 +10,15 @@ import java.util.HashMap;
  */
 public class FindBestMove {
 
+  //Static final (constant) variables
+  private static final String INITIAL_STATE = "START";
+  private static final String JUMP = "JUMP";
+  private static final String MULTI_JUMP = "MULTI_JUMP";
+  private static final String JUMP_NO_EAT = "JUMP_NO_EAT";
+  private static final String JUMP_KING = "JUMP_KING";
+  private static final String MOVE = "MOVE";
+  private static final String MOVE_NO_EAT = "MOVE_NO_EAT";
+  private static final String FINAL_STATE = "END";
   //The model board for the game
   private ModelBoard board;
   //The player looking for the best move
@@ -20,17 +29,6 @@ public class FindBestMove {
   private Map<Space, Space> bestMoves;
   //The state the game is currently in (for state machine)
   private String STATE;
-  private boolean onlyOne = false;
-
-  //Static final (constant) variables
-  private static final String INITIAL_STATE = "START";
-  private static final String JUMP = "JUMP";
-  private static final String MULTI_JUMP = "MULTI_JUMP";
-  private static final String JUMP_NO_EAT = "JUMP_NO_EAT";
-  private static final String JUMP_KING = "JUMP_KING";
-  private static final String MOVE = "MOVE";
-  private static final String MOVE_NO_EAT = "MOVE_NO_EAT";
-  private static final String FINAL_STATE = "END";
 
   /**
    * Constructor for finding the best move possible in the system
@@ -46,12 +44,12 @@ public class FindBestMove {
   }
 
   /**
-   * Main state controller for finding the best move in the system given the different states the move can be in
+   * Main state controller for finding the best move in the system given the different states the
+   * move can be in
    *
    * @return the best move for the player to make
    */
   public Move findMove() {
-    this.onlyOne = false;
     while (!this.STATE.equals(FINAL_STATE)) {
       switch (this.STATE) {
         case INITIAL_STATE:
@@ -98,14 +96,14 @@ public class FindBestMove {
         Position endPositon;
         if (player.isRed()) {
           startPosition = new Position(bestMoveStart.getxCoordinate(),
-                  bestMoveStart.getCellIdx());
-          endPositon = new Position( bestMoveEnd.getxCoordinate(),
-                  bestMoveEnd.getCellIdx());
+              bestMoveStart.getCellIdx());
+          endPositon = new Position(bestMoveEnd.getxCoordinate(),
+              bestMoveEnd.getCellIdx());
         } else {
           startPosition = new Position(7 - bestMoveStart.getxCoordinate(),
-                  7 - bestMoveStart.getCellIdx());
-          endPositon = new Position( 7 - bestMoveEnd.getxCoordinate(),
-                  7 - bestMoveEnd.getCellIdx());
+              7 - bestMoveStart.getCellIdx());
+          endPositon = new Position(7 - bestMoveEnd.getxCoordinate(),
+              7 - bestMoveEnd.getCellIdx());
         }
         this.STATE = INITIAL_STATE;
         return new Move(startPosition, endPositon);
@@ -116,14 +114,6 @@ public class FindBestMove {
     return null;
   }
 
-  /**
-   * Getter to find if there is only one move possible or not
-   *
-   * @return true/false based on if there is only one move possible
-   */
-  public boolean onlyOneMove() {
-    return this.onlyOne;
-  }
 
   /**
    * Gathers all of the multi-jumps a player can make
@@ -220,25 +210,27 @@ public class FindBestMove {
         Position left = new Position(redPiece.getXCoordinate() - 1, redPiece.getCellIdx() - 1);
         if (checkMove.validateMove(start, right, player).containsKey(true)) {
           moves.put(redPiece.getSpace(), board.getSpace(redPiece.getXCoordinate() - 1,
-                  redPiece.getCellIdx() + 1));
+              redPiece.getCellIdx() + 1));
         }
         if (checkMove.validateMove(start, left, player).containsKey(true)) {
           moves.put(redPiece.getSpace(), board.getSpace(redPiece.getXCoordinate() - 1,
-                  redPiece.getCellIdx() - 1));
+              redPiece.getCellIdx() - 1));
         }
       }
     } else {
       for (Piece whitePiece : board.getWhitePieces()) {
         Position start = new Position(7 - whitePiece.getXCoordinate(), 7 - whitePiece.getCellIdx());
-        Position right = new Position(7 - (whitePiece.getXCoordinate() + 1), 7 - (whitePiece.getCellIdx() + 1));
-        Position left = new Position(7 - (whitePiece.getXCoordinate() + 1), 7 - (whitePiece.getCellIdx() - 1));
+        Position right = new Position(7 - (whitePiece.getXCoordinate() + 1),
+            7 - (whitePiece.getCellIdx() + 1));
+        Position left = new Position(7 - (whitePiece.getXCoordinate() + 1),
+            7 - (whitePiece.getCellIdx() - 1));
         if (checkMove.validateMove(start, right, player).containsKey(true)) {
           moves.put(whitePiece.getSpace(), board.getSpace(whitePiece.getXCoordinate() + 1,
-                  whitePiece.getCellIdx() + 1));
+              whitePiece.getCellIdx() + 1));
         }
         if (checkMove.validateMove(start, left, player).containsKey(true)) {
           moves.put(whitePiece.getSpace(), board.getSpace(whitePiece.getXCoordinate() + 1,
-                  whitePiece.getCellIdx() - 1));
+              whitePiece.getCellIdx() - 1));
         }
       }
     }
@@ -252,21 +244,16 @@ public class FindBestMove {
     Map<Space, Space> jumps = checkMove.findJumps(player);
     if (jumps.size() == 0) {
       findMoves();
-      if (this.bestMoves.size() == 1) {
-        this.onlyOne = true;
-      }
       this.STATE = MOVE;
     } else {
       this.bestMoves = jumps;
       this.STATE = JUMP;
-      if (jumps.size() == 1) {
-        this.onlyOne = true;
-      }
     }
   }
 
   /**
-   * Checks to see if a piece is removed by a jump. Used to ensure a future jump can or cannot happen over a piece
+   * Checks to see if a piece is removed by a jump. Used to ensure a future jump can or cannot
+   * happen over a piece
    *
    * @param startingSpace the space the move starts at
    * @param endingSpace the space the move ends at
@@ -274,13 +261,14 @@ public class FindBestMove {
    * @param piece the piece making the move
    * @return true/false based on if the piece was jumped by the move or not
    */
-  private boolean jumped(Space startingSpace, Space endingSpace, Space potentialJumped, Piece piece) {
+  private boolean jumped(Space startingSpace, Space endingSpace, Space potentialJumped,
+      Piece piece) {
     if (Math.abs(endingSpace.getxCoordinate() - startingSpace.getxCoordinate()) % 2 == 0) {
       if (Math.abs(endingSpace.getCellIdx() - startingSpace.getCellIdx()) % 2 == 0) {
         if (endingSpace.getxCoordinate() + 1 == potentialJumped.getxCoordinate() ||
-                endingSpace.getxCoordinate() - 1 == potentialJumped.getxCoordinate()) {
+            endingSpace.getxCoordinate() - 1 == potentialJumped.getxCoordinate()) {
           if (endingSpace.getCellIdx() - 1 == potentialJumped.getCellIdx() ||
-                  endingSpace.getCellIdx() + 1 == potentialJumped.getCellIdx()) {
+              endingSpace.getCellIdx() + 1 == potentialJumped.getCellIdx()) {
             return true;
           }
         }
@@ -441,7 +429,8 @@ public class FindBestMove {
   /**
    * Checks to see if there are any pieces that wont be eaten as a result of a move
    *
-   * @return the map of all of the pieces not eaten as a result of the move they are attempting to make
+   * @return the map of all of the pieces not eaten as a result of the move they are attempting to
+   * make
    */
   private Map<Space, Space> wontBeEaten() {
     Map<Space, Space> nonEaten = new HashMap<>();
@@ -454,7 +443,8 @@ public class FindBestMove {
   }
 
   /**
-   * Checks to see if a jump happens and if the result ends in the piece moved being eaten by another piece
+   * Checks to see if a jump happens and if the result ends in the piece moved being eaten by
+   * another piece
    */
   private void canJumpAndEaten() {
     Map<Space, Space> nonEaten = wontBeEaten();
@@ -470,7 +460,8 @@ public class FindBestMove {
   }
 
   /**
-   * Checks to see if a move happens and if the result ends in the piece moved being eaten by another piece
+   * Checks to see if a move happens and if the result ends in the piece moved being eaten by
+   * another piece
    */
   private void canMoveAndEaten() {
     Map<Space, Space> nonEaten = wontBeEaten();

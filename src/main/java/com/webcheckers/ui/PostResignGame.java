@@ -28,14 +28,14 @@ public class PostResignGame implements Route {
   private AbstractPlayer resignedPlayer;
   //Player lobby for the current session
   private PlayerLobby playerLobby;
-  
+
   /**
    * Main method for POST resign game
    *
    * @param gson the gson parser for JQuery Requests/Responses
    */
   public PostResignGame(final Gson gson, final PlayerLobby playerLobby) {
-    
+
     Objects.requireNonNull(gson, "Gson cannot be null.");
     Objects.requireNonNull(playerLobby, "Player lobby cannot be null");
 
@@ -65,7 +65,7 @@ public class PostResignGame implements Route {
       return gson.toJson(message);
     }
 
-    if(gameLobby.checkPendingMove()) {
+    if (gameLobby.checkPendingMove()) {
       Message message = new Message(Message.Type.error, ERROR_RESIGN);
       return gson.toJson(message);
     } else {

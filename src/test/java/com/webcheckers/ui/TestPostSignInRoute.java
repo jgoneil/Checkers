@@ -18,6 +18,7 @@ import static org.mockito.Mockito.when;
  * Test for PostSignInRoute functionality
  */
 public class TestPostSignInRoute {
+
   PostSignInRoute route;
 
   private Response response;
@@ -32,7 +33,7 @@ public class TestPostSignInRoute {
    * Setup for tests
    */
   @BeforeEach
-  void setup(){
+  void setup() {
     response = mock(Response.class);
     request = mock(Request.class);
     session = mock(Session.class);
@@ -48,14 +49,13 @@ public class TestPostSignInRoute {
    * Test where username is null
    */
   @Test
-  void nullUsernameTest(){
+  void nullUsernameTest() {
     when(request.queryParams(USER_PARAM)).thenReturn(null);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-    try{
+    try {
       route.handle(request, response);
-    }
-    catch(HaltException ex){
+    } catch (HaltException ex) {
       assertNotNull(ex);
     }
   }
@@ -64,7 +64,7 @@ public class TestPostSignInRoute {
    * Test where username is already in use
    */
   @Test
-  void badUsernameTest(){
+  void badUsernameTest() {
     when(request.queryParams(USER_PARAM)).thenReturn("Example");
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -75,7 +75,7 @@ public class TestPostSignInRoute {
    * Test where user should be added properly
    */
   @Test
-  void goodTest(){
+  void goodTest() {
     when(request.queryParams(USER_PARAM)).thenReturn("NoName");
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

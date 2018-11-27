@@ -20,15 +20,14 @@ import spark.*;
 @Tag("UI-tier")
 public class TestGetSignOutRoute {
 
-  //Instance of GetSignOutRoute
-  private GetSignOutRoute CuT;
   private static final Player NO_PLAYER = null;
   private static final Player LEGIT_PLAYER = new Player("bob");
   private static final String TEMP_USERNAME = "Joe";
   private static final GameLobby gamelobby = new GameLobby(LEGIT_PLAYER, new Player("Joe"));
-
   //Friendly Objects
   Player player1;
+  //Instance of GetSignOutRoute
+  private GetSignOutRoute CuT;
   private PlayerLobby users;
 
   //Mock Objects
@@ -74,7 +73,8 @@ public class TestGetSignOutRoute {
   void playerNotInGameSignOut() {
     player1 = LEGIT_PLAYER;
     users.addPlayer(player1.getName());
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(player1.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -87,7 +87,8 @@ public class TestGetSignOutRoute {
     users.addPlayer(LEGIT_PLAYER.getName());
     users.addPlayer(TEMP_USERNAME);
     users.getSpecificPlayer(LEGIT_PLAYER.getName()).setColor(GameLobby.RED);
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(player1.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gamelobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -102,7 +103,8 @@ public class TestGetSignOutRoute {
     users.addPlayer(LEGIT_PLAYER.getName());
     users.addPlayer(TEMP_USERNAME);
     users.getSpecificPlayer(LEGIT_PLAYER.getName()).setColor(GameLobby.WHITE);
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(player1.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gamelobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -117,7 +119,8 @@ public class TestGetSignOutRoute {
     users.addPlayer(LEGIT_PLAYER.getName());
     users.addPlayer(TEMP_USERNAME);
     users.getSpecificPlayer(LEGIT_PLAYER.getName()).setColor(GameLobby.WHITE);
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(player1.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(player1.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(null);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

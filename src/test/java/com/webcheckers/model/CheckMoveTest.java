@@ -69,9 +69,9 @@ class CheckMoveTest {
     position76 = new Position(7, 6);
     position72 = new Position(7, 2);
 
-    position32 = new Position(3,2);
-    position45 = new Position(4,5);
-    position36 = new Position(3,6);
+    position32 = new Position(3, 2);
+    position45 = new Position(4, 5);
+    position36 = new Position(3, 6);
 
     position50 = new Position(5, 0);
     position32 = new Position(3, 2);
@@ -94,13 +94,13 @@ class CheckMoveTest {
   }
 
   @Test
-  void validateKingMoveTest_Valid(){
+  void validateKingMoveTest_Valid() {
     //King pieces for move
     Space kingSpace1 = modelBoard.getSpace(position47.getRow(), position47.getCell());
     kingSpace1.occupy(new Piece(GameLobby.RED, kingSpace1));
     kingSpace1.getPiece().King();
     modelBoard.eatPiece(modelBoard.getSpace(position50.getRow(), position50.getCell()).getPiece());
-    Space kingSpace2 =  modelBoard.getSpace(position45.getRow(), position45.getCell());
+    Space kingSpace2 = modelBoard.getSpace(position45.getRow(), position45.getCell());
     kingSpace2.occupy(new Piece(GameLobby.WHITE, kingSpace2));
     kingSpace2.getPiece().King();
 
@@ -142,16 +142,16 @@ class CheckMoveTest {
   @Test
   void validateJump() {
     modelBoard.addPieceToSpace(new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK)),
-            new Space(4, 1, Space.Color.BLACK));
+        new Space(4, 1, Space.Color.BLACK));
     assertTrue(checkMove.validateMove(position50, position32, redPlayerMock).containsKey(true));
   }
 
   @Test
   void CantJump() {
     modelBoard.addPieceToSpace(new Piece(GameLobby.RED, new Space(5, 0, Space.Color.BLACK)),
-            new Space(3, 2, Space.Color.BLACK));
+        new Space(3, 2, Space.Color.BLACK));
     modelBoard.addPieceToSpace(new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK)),
-            new Space(4, 1, Space.Color.BLACK));
+        new Space(4, 1, Space.Color.BLACK));
     assertTrue(checkMove.validateMove(position54, position43, redPlayerMock).containsKey(false));
   }
 
@@ -198,7 +198,7 @@ class CheckMoveTest {
     kingSpace1.getPiece().King();
 
     modelBoard.addPieceToSpace(new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK)),
-            new Space(4, 1, Space.Color.BLACK));
+        new Space(4, 1, Space.Color.BLACK));
     assertTrue(checkMove.validateMove(position50, position32, redPlayerMock).containsKey(true));
   }
 
@@ -220,10 +220,14 @@ class CheckMoveTest {
     ModelBoard customModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
     CheckMove checkCustomBoard = new CheckMove(customModelBoard);
 
-    assertTrue(checkCustomBoard.validateMove(position23, position01, redPlayerMock).containsKey(true));
-    assertTrue(checkCustomBoard.validateMove(position23, position05, redPlayerMock).containsKey(true));
-    assertTrue(checkCustomBoard.validateMove(position23, position41, redPlayerMock).containsKey(true));
-    assertTrue(checkCustomBoard.validateMove(position23, position45, redPlayerMock).containsKey(true));
+    assertTrue(
+        checkCustomBoard.validateMove(position23, position01, redPlayerMock).containsKey(true));
+    assertTrue(
+        checkCustomBoard.validateMove(position23, position05, redPlayerMock).containsKey(true));
+    assertTrue(
+        checkCustomBoard.validateMove(position23, position41, redPlayerMock).containsKey(true));
+    assertTrue(
+        checkCustomBoard.validateMove(position23, position45, redPlayerMock).containsKey(true));
   }
 
   @Test
@@ -244,29 +248,33 @@ class CheckMoveTest {
     ModelBoard customModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
     CheckMove checkCustomBoard = new CheckMove(customModelBoard);
 
-    assertTrue(checkCustomBoard.validateMove(position54, position76, whitePlayerMock).containsKey(true));
-    assertTrue(checkCustomBoard.validateMove(position54, position72, whitePlayerMock).containsKey(true));
-    assertTrue(checkCustomBoard.validateMove(position54, position36, whitePlayerMock).containsKey(true));
-    assertTrue(checkCustomBoard.validateMove(position54, position32, whitePlayerMock).containsKey(true));
+    assertTrue(
+        checkCustomBoard.validateMove(position54, position76, whitePlayerMock).containsKey(true));
+    assertTrue(
+        checkCustomBoard.validateMove(position54, position72, whitePlayerMock).containsKey(true));
+    assertTrue(
+        checkCustomBoard.validateMove(position54, position36, whitePlayerMock).containsKey(true));
+    assertTrue(
+        checkCustomBoard.validateMove(position54, position32, whitePlayerMock).containsKey(true));
   }
 
   @Test
   void twoMultiJumps() {
     List<Piece> pieces = new ArrayList<>();
-    pieces.add(new Piece(GameLobby.RED, new Space(6,1, Space.Color.BLACK)));
-    pieces.add(new Piece(GameLobby.RED, new Space(6,5, Space.Color.BLACK)));
-    pieces.add(new Piece(GameLobby.WHITE, new Space(5,2, Space.Color.BLACK)));
-    pieces.add(new Piece(GameLobby.WHITE, new Space(5,4, Space.Color.BLACK)));
-    pieces.add(new Piece(GameLobby.WHITE, new Space(3,2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.RED, new Space(6, 1, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.RED, new Space(6, 5, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(5, 2, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(5, 4, Space.Color.BLACK)));
+    pieces.add(new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK)));
 
     ModelBoard customModelBoard = new ModelBoard(redPlayerMock, whitePlayerMock, 8, pieces);
     CheckMove checkCustomBoard = new CheckMove(customModelBoard);
     Position middlePosition = new Position(4, 3);
 
     Map<Boolean, String> moveSingleOne = checkCustomBoard.validateMove(new Position(6, 1),
-            middlePosition, redPlayerMock);
+        middlePosition, redPlayerMock);
     Map<Boolean, String> moveSingleTwo = checkCustomBoard.validateMove(new Position(6, 5),
-            middlePosition, redPlayerMock);
+        middlePosition, redPlayerMock);
 
     assertTrue(moveSingleOne.containsKey(true));
     assertEquals(moveSingleOne.get(true), CheckMove.multiJumpPossible);
@@ -287,9 +295,9 @@ class CheckMoveTest {
     CheckMove checkCustomBoard = new CheckMove(customModelBoard);
 
     Map<Boolean, String> attemptMoveRedFalse = checkCustomBoard.validateMove(new Position(5, 0),
-            new Position(4, 1), redPlayerMock);
+        new Position(4, 1), redPlayerMock);
     Map<Boolean, String> attemptMoveRedTrue = checkCustomBoard.validateMove(new Position(0, 3),
-            new Position(2, 1), redPlayerMock);
+        new Position(2, 1), redPlayerMock);
     int i = 0;
     assertTrue(attemptMoveRedFalse.containsKey(false));
     assertEquals(attemptMoveRedFalse.get(false), "Attempted to move when jump is possible.");
@@ -347,7 +355,7 @@ class CheckMoveTest {
   @Test
   void moveWhiteKingJumpAvailable() {
     List<Piece> pieces = new ArrayList<>();
-    Piece kingRed = new Piece(GameLobby.WHITE,  new Space(2, 3, Space.Color.BLACK));
+    Piece kingRed = new Piece(GameLobby.WHITE, new Space(2, 3, Space.Color.BLACK));
     kingRed.King();
     pieces.add(kingRed);
     pieces.add(new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK)));
@@ -364,7 +372,7 @@ class CheckMoveTest {
   @Test
   void moveRedKingMultiJumpAvailable() {
     List<Piece> pieces = new ArrayList<>();
-    Piece kingRed = new Piece(GameLobby.RED,  new Space(2, 3, Space.Color.BLACK));
+    Piece kingRed = new Piece(GameLobby.RED, new Space(2, 3, Space.Color.BLACK));
     kingRed.King();
     pieces.add(kingRed);
     pieces.add(new Piece(GameLobby.RED, new Space(1, 2, Space.Color.BLACK)));
@@ -381,7 +389,7 @@ class CheckMoveTest {
   @Test
   void moveWhiteKingMultiJumpAvailable() {
     List<Piece> pieces = new ArrayList<>();
-    Piece kingRed = new Piece(GameLobby.WHITE,  new Space(4, 3, Space.Color.BLACK));
+    Piece kingRed = new Piece(GameLobby.WHITE, new Space(4, 3, Space.Color.BLACK));
     kingRed.King();
     pieces.add(kingRed);
     pieces.add(new Piece(GameLobby.WHITE, new Space(5, 2, Space.Color.BLACK)));

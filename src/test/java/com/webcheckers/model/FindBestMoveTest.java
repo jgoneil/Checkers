@@ -4,6 +4,7 @@ import com.webcheckers.appl.GameLobby;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ class FindBestMoveTest {
 
   @Test
   void testSingleMoveRed() {
-    Piece redPiece = new Piece(GameLobby.RED, new Space(3,2, Space.Color.BLACK));
+    Piece redPiece = new Piece(GameLobby.RED, new Space(3, 2, Space.Color.BLACK));
     pieceList.add(redPiece);
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, redPlayer);
@@ -210,7 +211,7 @@ class FindBestMoveTest {
 
   @Test
   void testSingleMoveWhite() {
-    Piece whitePiece = new Piece(GameLobby.WHITE, new Space(3,2, Space.Color.BLACK));
+    Piece whitePiece = new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK));
     pieceList.add(whitePiece);
     ModelBoard board = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
     FindBestMove findBestMove = new FindBestMove(board, whitePlayer);
@@ -471,11 +472,11 @@ class FindBestMoveTest {
     Space startingSpaceRed = new Space(5, 0, Space.Color.BLACK);
     Space startingSpaceWhite = new Space(0, 7, Space.Color.BLACK);
     Space endingRed = new Space(3, 2, Space.Color.BLACK);
-    Space endingWhite = new Space(2, 5 , Space.Color.BLACK);
+    Space endingWhite = new Space(2, 5, Space.Color.BLACK);
 
     pieceList.add(new Piece(GameLobby.RED, startingSpaceRed));
     pieceList.add(new Piece(GameLobby.WHITE, startingSpaceWhite));
-    pieceList.add(new Piece(GameLobby.RED, new Space(1,6, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.RED, new Space(1, 6, Space.Color.BLACK)));
     pieceList.add(new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK)));
     pieceList.add(new Piece(GameLobby.RED, new Space(3, 4, Space.Color.BLACK)));
     pieceList.add(new Piece(GameLobby.WHITE, new Space(2, 3, Space.Color.BLACK)));
@@ -492,11 +493,11 @@ class FindBestMoveTest {
     Space startingSpaceRed = new Space(5, 0, Space.Color.BLACK);
     Space startingSpaceWhite = new Space(0, 7, Space.Color.BLACK);
     Space endingRed = new Space(3, 2, Space.Color.BLACK);
-    Space endingWhite = new Space(2, 5 , Space.Color.BLACK);
+    Space endingWhite = new Space(2, 5, Space.Color.BLACK);
 
     pieceList.add(new Piece(GameLobby.RED, startingSpaceRed));
     pieceList.add(new Piece(GameLobby.WHITE, startingSpaceWhite));
-    pieceList.add(new Piece(GameLobby.RED, new Space(1,6, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.RED, new Space(1, 6, Space.Color.BLACK)));
     pieceList.add(new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK)));
     pieceList.add(new Piece(GameLobby.RED, new Space(3, 6, Space.Color.BLACK)));
     pieceList.add(new Piece(GameLobby.WHITE, new Space(2, 1, Space.Color.BLACK)));
@@ -513,11 +514,11 @@ class FindBestMoveTest {
     Space startingSpaceRed = new Space(5, 0, Space.Color.BLACK);
     Space startingSpaceWhite = new Space(0, 7, Space.Color.BLACK);
     Space endingRed = new Space(3, 2, Space.Color.BLACK);
-    Space endingWhite = new Space(2, 5 , Space.Color.BLACK);
+    Space endingWhite = new Space(2, 5, Space.Color.BLACK);
 
     pieceList.add(new Piece(GameLobby.RED, startingSpaceRed));
     pieceList.add(new Piece(GameLobby.WHITE, startingSpaceWhite));
-    pieceList.add(new Piece(GameLobby.RED, new Space(1,6, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.RED, new Space(1, 6, Space.Color.BLACK)));
     pieceList.add(new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK)));
     Piece redBlock = new Piece(GameLobby.RED, new Space(1, 4, Space.Color.BLACK));
     Piece whiteBlock = new Piece(GameLobby.WHITE, new Space(4, 3, Space.Color.BLACK));
@@ -538,11 +539,11 @@ class FindBestMoveTest {
     Space startingSpaceRed = new Space(5, 4, Space.Color.BLACK);
     Space startingSpaceWhite = new Space(0, 3, Space.Color.BLACK);
     Space endingRed = new Space(3, 2, Space.Color.BLACK);
-    Space endingWhite = new Space(2, 5 , Space.Color.BLACK);
+    Space endingWhite = new Space(2, 5, Space.Color.BLACK);
 
     pieceList.add(new Piece(GameLobby.RED, startingSpaceRed));
     pieceList.add(new Piece(GameLobby.WHITE, startingSpaceWhite));
-    pieceList.add(new Piece(GameLobby.RED, new Space(1,4, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.RED, new Space(1, 4, Space.Color.BLACK)));
     pieceList.add(new Piece(GameLobby.WHITE, new Space(4, 3, Space.Color.BLACK)));
     Piece redBlock = new Piece(GameLobby.RED, new Space(1, 6, Space.Color.BLACK));
     Piece whiteBlock = new Piece(GameLobby.WHITE, new Space(4, 1, Space.Color.BLACK));

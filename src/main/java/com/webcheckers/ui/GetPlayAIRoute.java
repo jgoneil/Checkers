@@ -16,6 +16,7 @@ import spark.TemplateEngine;
  * UI class that handles all HTTP request for the /playAI route
  */
 public class GetPlayAIRoute implements Route {
+
   //The playerLobby connected to the system
   private PlayerLobby playerLobby;
 
@@ -35,7 +36,7 @@ public class GetPlayAIRoute implements Route {
     AiPlayer aiPlayer = new AiPlayer();
     playerLobby.addPlayer(aiPlayer);
 
-    response.redirect(String.format("%s?%s",WebServer.GAME_URL, aiPlayer.getName()));
+    response.redirect(String.format("%s?%s", WebServer.GAME_URL, aiPlayer.getName()));
     return null;
   }
 }

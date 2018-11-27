@@ -10,6 +10,10 @@ import java.util.*;
  */
 public class ModelBoard {
 
+  //Holds the information about the redPlayerBoard
+  private final PlayerBoard redPlayerBoard;
+  //Holds the information about the whitePlayerBoard
+  private final PlayerBoard whitePlayerBoard;
   //The 2-D array holding the spaces on the board
   private Space[][] board;
   //If a move has recently been made
@@ -22,10 +26,6 @@ public class ModelBoard {
   private List<Piece> whitePieces;
   //Checks if a Piece is being Kinged in a given move
   private boolean isKinging;
-  //Holds the information about the redPlayerBoard
-  private final PlayerBoard redPlayerBoard;
-  //Holds the information about the whitePlayerBoard
-  private final PlayerBoard whitePlayerBoard;
   //If a player has found a valid move to make
   private boolean pendingMove;
   //Checks if a jump action is being made
@@ -38,9 +38,9 @@ public class ModelBoard {
   /**
    * Constructor for the model version of the board
    *
-   * @param redPlayer   the player associated to the color red for the game
+   * @param redPlayer the player associated to the color red for the game
    * @param whitePlayer the player associated to the color white for the game
-   * @param length      the length of the sides of the board (assuming its a square)
+   * @param length the length of the sides of the board (assuming its a square)
    */
   public ModelBoard(AbstractPlayer redPlayer, AbstractPlayer whitePlayer, int length) {
     //Setting constants
@@ -82,12 +82,14 @@ public class ModelBoard {
 
   /**
    * Constructor for the model version of the board
-   *  @param redPlayer   the player associated to the color red for the game
+   *
+   * @param redPlayer the player associated to the color red for the game
    * @param whitePlayer the player associated to the color white for the game
-   * @param length      the length of the sides of the board (assuming square)
-   * @param pieces      the pieces being added to the board
+   * @param length the length of the sides of the board (assuming square)
+   * @param pieces the pieces being added to the board
    */
-  public ModelBoard(AbstractPlayer redPlayer, AbstractPlayer whitePlayer, int length, List<Piece> pieces) {
+  public ModelBoard(AbstractPlayer redPlayer, AbstractPlayer whitePlayer, int length,
+      List<Piece> pieces) {
     //Setting constants
     this.board = new Space[length][length];
     this.redTurn = true;
@@ -161,15 +163,6 @@ public class ModelBoard {
   public void pendingMove(Move move) {
     this.pendingMove = true;
     this.pendingMoves.push(move);
-  }
-
-  /**
-   * Sets the pendingMove boolean to the parameter value (used for testing)
-   *
-   * @param madeMove true/false based on what pendingMove should be set to
-   */
-  public void setPendingMove(boolean madeMove) {
-    this.pendingMove = madeMove;
   }
 
   /**
@@ -247,7 +240,7 @@ public class ModelBoard {
         addPieceToSpace(current.getPiece(), endingSpace);
         current.unoccupy();
         Space middle = board[(current.getxCoordinate() + endingSpace.getxCoordinate()) / 2][
-                (current.getCellIdx() + endingSpace.getCellIdx()) / 2];
+            (current.getCellIdx() + endingSpace.getCellIdx()) / 2];
         eatPiece(middle.getPiece());
       } else {
         addPieceToSpace(current.getPiece(), endingSpace);
@@ -255,8 +248,8 @@ public class ModelBoard {
       }
       Move actualMove = new Move(firstMove.getStart(), firstMove.getEnd());
       Move reverseMove = new Move(
-              new Position(7 - firstMove.getStartRow(), 7 - firstMove.getStartCell()),
-              new Position(7 - firstMove.getEndRow(), 7 - firstMove.getEndCell()));
+          new Position(7 - firstMove.getStartRow(), 7 - firstMove.getStartCell()),
+          new Position(7 - firstMove.getEndRow(), 7 - firstMove.getEndCell()));
       if (this.redTurn) {
         redPlayerBoard.makeMove(actualMove, isKinging);
         whitePlayerBoard.makeMove(reverseMove, isKinging);
@@ -339,10 +332,11 @@ public class ModelBoard {
   }
 
   /**
-   * Removes a piece from a space and assigns it to a different space. Reverses an addition of a piece to a space
+   * Removes a piece from a space and assigns it to a different space. Reverses an addition of a
+   * piece to a space
    *
    * @param currentSpace the space the piece is moving to
-   * @param endSpace     the space the piece is on
+   * @param endSpace the space the piece is on
    */
   public void removePieceFromSpace(Space currentSpace, Space endSpace) {
     Space current = this.board[currentSpace.getxCoordinate()][currentSpace.getCellIdx()];
@@ -393,7 +387,7 @@ public class ModelBoard {
    * Tests to see if a piece is able to King a piece
    *
    * @param piece - Piece to be kinged
-   * @param row   - Row of the Piece being checked
+   * @param row - Row of the Piece being checked
    * @return - if the King is able to be Kinged
    */
   public boolean isBecomingKing(Piece piece, int row) {
@@ -426,5 +420,14 @@ public class ModelBoard {
    */
   public Move getPendingMove() {
     return this.pendingMoves.peek();
+  }
+
+  /**
+   * Sets the pendingMove boolean to the parameter value (used for testing)
+   *
+   * @param madeMove true/false based on what pendingMove should be set to
+   */
+  public void setPendingMove(boolean madeMove) {
+    this.pendingMove = madeMove;
   }
 }

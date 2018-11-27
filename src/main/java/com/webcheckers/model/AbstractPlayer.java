@@ -15,7 +15,7 @@ public abstract class AbstractPlayer {
    *
    * @param username the String value entered by the user upon signin for recognition in the game
    */
-  AbstractPlayer(String username){
+  AbstractPlayer(String username) {
     this.username = username;
   }
 
@@ -38,21 +38,21 @@ public abstract class AbstractPlayer {
   }
 
   /**
-   * Sets the color for the player for the game they are in
-   *
-   * @param color the color the player is associated to in the game
-   */
-  public void setColor(String color) {
-    this.color = color;
-  }
-
-  /**
    * The getter for the color the player is associated to
    *
    * @return the color the player is associated to or null if the player is not in the game
    */
   public String getColor() {
     return this.color;
+  }
+
+  /**
+   * Sets the color for the player for the game they are in
+   *
+   * @param color the color the player is associated to in the game
+   */
+  public void setColor(String color) {
+    this.color = color;
   }
 
   /**

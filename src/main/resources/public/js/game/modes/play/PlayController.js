@@ -179,16 +179,13 @@ define(function(require){
         handleResponse, this);
     function handleResponse(response) {
       console.log(response);
-      if (response[0].hasOwnProperty("end")) {
+      if (response.hasOwnProperty("end")) {
         this._boardController.removeBestMove(this._bestMove);
-        const start = new Position(response[0].start.row, response[0].start.cell);
-        const end = new Position(response[0].end.row, response[0].end.cell);
+        const start = new Position(response.start.row, response.start.cell);
+        const end = new Position(response.end.row, response.end.cell);
         const move = new Move(start, end);
         this._bestMove = move;
-        if (response[1] === true) {
-          this.setPendingMove(move);
-          this.setState(PlayModeConstants.VALIDATING_MOVE);
-        }
+
         return this._boardController.setBestMove(move);
       } else {
         this.displayMessage(response);

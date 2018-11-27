@@ -10,6 +10,7 @@ import com.webcheckers.model.Space;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.Mockito.mock;
@@ -26,9 +27,8 @@ import java.util.Set;
 @Tag("UI-tier")
 class TestGetGameRoute {
 
-  private GetGameRoute CuT;
   private static final PlayerBoard NO_LOBBY = null;
-  
+  private GetGameRoute CuT;
   //friendly objects
   private PlayerLobby playerLobby;
   private Player redPlayer;
@@ -60,7 +60,8 @@ class TestGetGameRoute {
 
   @Test
   void notInGame() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redPlayer.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -72,9 +73,10 @@ class TestGetGameRoute {
     }
   }
 
-  @Test 
+  @Test
   void newGame() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redPlayer.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(NO_LOBBY);
     Set<String> players = new HashSet<>();
     players.add(redPlayer.getName());
@@ -90,7 +92,7 @@ class TestGetGameRoute {
     //Ensure results
     testHelper.assertViewModelExists();
     testHelper.assertViewModelIsaMap();
-    
+
     testHelper.assertViewModelAttribute("title", "Welcome!");
     testHelper.assertViewModelAttribute("currentPlayer", redPlayer);
     testHelper.assertViewModelAttribute("viewMode", "PLAY");
@@ -100,11 +102,12 @@ class TestGetGameRoute {
 
   @Test
   void secondPlayerConnect() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(whitePlayer.getName());
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     GameLobby gameLobby = new GameLobby(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()));
+        playerLobby.getSpecificPlayer(whitePlayer.getName()));
     CuT.setGameLobby(gameLobby);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(NO_LOBBY);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -123,13 +126,14 @@ class TestGetGameRoute {
     testHelper.assertViewModelAttribute("activeColor", "RED");
   }
 
-  @Test 
+  @Test
   void reloadSameGameRedPlayer() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redPlayer.getName());
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     GameLobby gameLobby = new GameLobby(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()));
+        playerLobby.getSpecificPlayer(whitePlayer.getName()));
 
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -150,11 +154,12 @@ class TestGetGameRoute {
 
   @Test
   void reloadSameGameWhitePlayer() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(whitePlayer.getName());
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     GameLobby gameLobby = new GameLobby(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()));
+        playerLobby.getSpecificPlayer(whitePlayer.getName()));
     gameLobby.setMove(true);
 
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
@@ -176,7 +181,8 @@ class TestGetGameRoute {
 
   @Test
   void otherPlayerResigned() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redPlayer.getName());
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     GameLobby gameLobby = new GameLobby(redPlayer, whitePlayer);
@@ -188,16 +194,17 @@ class TestGetGameRoute {
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
     //Invoking Test
-    try{
+    try {
       CuT.handle(request, response);
-    } catch(HaltException e) {
+    } catch (HaltException e) {
       assertNotNull(e);
     }
   }
 
-  @Test 
+  @Test
   void playerAlreadyInGame() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(lonelyPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(lonelyPlayer.getName());
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     GameLobby gameLobby = new GameLobby(redPlayer, whitePlayer);
@@ -218,7 +225,8 @@ class TestGetGameRoute {
 
   @Test
   void playerResigned() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(whitePlayer.getName());
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     Set<String> players = new HashSet<>();
@@ -239,13 +247,14 @@ class TestGetGameRoute {
 
   @Test
   void redPlayerWon() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redPlayer.getName());
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     List<Piece> pieces = new ArrayList<>();
     pieces.add(new Piece(GameLobby.RED, new Space(7, 0, Space.Color.BLACK)));
     GameLobby gameLobby = new GameLobby(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()), pieces);
+        playerLobby.getSpecificPlayer(whitePlayer.getName()), pieces);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -260,13 +269,14 @@ class TestGetGameRoute {
 
   @Test
   void whitePlayerLost() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(whitePlayer.getName());
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     List<Piece> pieces = new ArrayList<>();
     pieces.add(new Piece(GameLobby.RED, new Space(7, 0, Space.Color.BLACK)));
     GameLobby gameLobby = new GameLobby(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()), pieces);
+        playerLobby.getSpecificPlayer(whitePlayer.getName()), pieces);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -281,13 +291,14 @@ class TestGetGameRoute {
 
   @Test
   void whitePlayerWin() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(whitePlayer.getName());
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     List<Piece> pieces = new ArrayList<>();
     pieces.add(new Piece(GameLobby.WHITE, new Space(0, 1, Space.Color.BLACK)));
     GameLobby gameLobby = new GameLobby(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()), pieces);
+        playerLobby.getSpecificPlayer(whitePlayer.getName()), pieces);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -302,13 +313,14 @@ class TestGetGameRoute {
 
   @Test
   void redPlayerLost() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redPlayer.getName());
     playerLobby.addPlayer(whitePlayer.getName());
     playerLobby.addPlayer(redPlayer.getName());
     List<Piece> pieces = new ArrayList<>();
     pieces.add(new Piece(GameLobby.WHITE, new Space(0, 1, Space.Color.BLACK)));
     GameLobby gameLobby = new GameLobby(playerLobby.getSpecificPlayer(redPlayer.getName()),
-            playerLobby.getSpecificPlayer(whitePlayer.getName()), pieces);
+        playerLobby.getSpecificPlayer(whitePlayer.getName()), pieces);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

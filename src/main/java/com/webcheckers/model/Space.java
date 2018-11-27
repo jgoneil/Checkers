@@ -17,13 +17,6 @@ public class Space {
   private Piece piece;
 
   /**
-   * Enum for the color of the space (white/black)
-   */
-  public enum Color {
-    BLACK, WHITE
-  }
-
-  /**
    * Constructor for the space on the game board
    *
    * @param xCoordinate the row of the space on the board (the y-coordinate of the space)
@@ -64,16 +57,15 @@ public class Space {
     this.piece = null;
   }
 
-
   /**
-  * Checks to see if the piece is white
-  *
-  * @return true/false if a piece on the space is white;
-  */ 
+   * Checks to see if the piece is white
+   *
+   * @return true/false if a piece on the space is white;
+   */
   public boolean pieceIsRed() {
     if (this.piece != null) {
       return piece.isRed();
-    } 
+    }
     return false;
   }
 
@@ -81,9 +73,9 @@ public class Space {
    * Checks to see if the piece is white
    *
    * @return true/false if a piece on the space is white;
-   */ 
+   */
   public boolean pieceIsWhite() {
-    if (this.piece != null) { 
+    if (this.piece != null) {
       return piece.isWhite();
     }
     return false;
@@ -138,11 +130,12 @@ public class Space {
    * Checks to see if the piece on the space is of type KING or not
    *
    * @return true/false if the piece on this space is of type KING
-   */ 
-  public boolean isPieceKing(){
+   */
+  public boolean isPieceKing() {
     if (this.piece != null) {
       return this.piece.getType() == Piece.Type.KING;
-    } return false;
+    }
+    return false;
   }
 
   /**
@@ -164,12 +157,19 @@ public class Space {
   public boolean equals(Object space) {
     if (space instanceof Space) {
       Space checkSpace = (Space) space;
-      if (checkSpace.getCellIdx() == this.cellIdx 
+      if (checkSpace.getCellIdx() == this.cellIdx
           && checkSpace.getxCoordinate() == this.xCoordinate
           && checkSpace.getColor().equals(this.color)) {
         return true;
       }
     }
     return false;
+  }
+
+  /**
+   * Enum for the color of the space (white/black)
+   */
+  public enum Color {
+    BLACK, WHITE
   }
 }

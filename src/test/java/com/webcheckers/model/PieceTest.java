@@ -50,7 +50,7 @@ class PieceTest {
     assertEquals(piece1.getColor(), Piece.Color.RED);
   }
 
-  @Test 
+  @Test
   void checkColor() {
     assertTrue(piece1.isRed());
     assertFalse(piece1.isWhite());
