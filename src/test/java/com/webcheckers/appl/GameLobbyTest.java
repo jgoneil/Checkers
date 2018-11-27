@@ -1,13 +1,12 @@
 package com.webcheckers.appl;
 
-import com.webcheckers.model.AiPlayer;
-import com.webcheckers.model.Move;
-import com.webcheckers.model.Player;
-import com.webcheckers.model.Position;
+import com.webcheckers.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,7 +54,7 @@ public class GameLobbyTest {
   void testCheckRedTurn() {
     assertTrue(gameLobby.checkRedTurn());
     Map<Boolean, String> resultTrue = gameLobby.validateMove(new Position(5, 2),
-            new Position(4, 3), this.redPlayer);
+        new Position(4, 3), this.redPlayer);
     gameLobby.pendingMove(new Move(new Position(5, 2), new Position(4, 3)));
     gameLobby.submitMove();
     assertFalse(gameLobby.checkRedTurn());
@@ -64,9 +63,9 @@ public class GameLobbyTest {
   @Test
   void testValidateMove() {
     Map<Boolean, String> resultTrue = gameLobby.validateMove(new Position(5, 2),
-            new Position(4, 3), this.redPlayer);
+        new Position(4, 3), this.redPlayer);
     Map<Boolean, String> resultFalse = gameLobby.validateMove(new Position(1, 1),
-            new Position(7, 7), this.redPlayer);
+        new Position(7, 7), this.redPlayer);
     assertTrue(resultTrue.containsKey(true));
     assertTrue(resultFalse.containsKey(false));
   }
@@ -74,7 +73,7 @@ public class GameLobbyTest {
   @Test
   void testBackupMove() {
     Map<Boolean, String> resultTrue = gameLobby.validateMove(new Position(5, 2),
-            new Position(4, 3), this.redPlayer);
+        new Position(4, 3), this.redPlayer);
     gameLobby.pendingMove(new Move(new Position(5, 2), new Position(4, 3)));
     gameLobby.submitMove();
     gameLobby.backupMove();
@@ -95,17 +94,35 @@ public class GameLobbyTest {
   }
 
   @Test
-  void notOnlyOne() {
-    assertFalse(gameLobby.onlyOne());
-    gameLobby.changeTurn();
-    assertFalse(gameLobby.onlyOne());
-  }
-
-  @Test
   void testAICanPlay(){
     AiPlayer whitePlayer = new AiPlayer();
     gameLobby1 = new GameLobby(redPlayer, whitePlayer);
     gameLobby1.pendingMove(new Move(new Position(5, 2), new Position(4, 3)));
     assertTrue(gameLobby1.checkRedTurn());
+  }
+
+  @Test
+  void testAISubmitRegular() {
+    List<Piece> pieceList  = new ArrayList<>();
+    AiPlayer aiPlayer = new AiPlayer();
+    pieceList.add(new Piece(GameLobby.RED, new Space(7, 0, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(0, 1, Space.Color.BLACK)));
+    GameLobby customGameLobby = new GameLobby(redPlayer, aiPlayer, pieceList);
+    customGameLobby.pendingMove(new Move(new Position(7, 0), new Position(6, 1)));
+    customGameLobby.submitMove();
+    assertTrue(gameLobby.checkRedTurn());
+  }
+
+  @Test
+  void testAISubmitJump() {
+    List<Piece> pieceList  = new ArrayList<>();
+    AiPlayer aiPlayer = new AiPlayer();
+    pieceList.add(new Piece(GameLobby.RED, new Space(7, 0, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(0, 1, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.RED, new Space(1, 2, Space.Color.BLACK)));
+    GameLobby customGameLobby = new GameLobby(redPlayer, aiPlayer, pieceList);
+    customGameLobby.pendingMove(new Move(new Position(7, 0), new Position(6, 1)));
+    customGameLobby.submitMove();
+    assertTrue(gameLobby.checkRedTurn());
   }
 }

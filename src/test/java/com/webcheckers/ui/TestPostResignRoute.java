@@ -11,6 +11,7 @@ import com.webcheckers.model.Position;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.Mockito.mock;
@@ -23,14 +24,14 @@ import spark.*;
 class TestPostResignRoute {
 
   private PostResignGame CuT;
-  
+
   //friendly objects
   private Player playerOne;
   private Player playerTwo;
   private Gson gson = new Gson();
   private GameLobby gameLobby;
   private PlayerLobby playerLobby;
-  
+
   //attributes holding mock objects (non-friendly)
   private Request request;
   private Response response;
@@ -48,7 +49,7 @@ class TestPostResignRoute {
     when(request.session()).thenReturn(session);
     templateEngine = mock(TemplateEngine.class);
     playerLobby = new PlayerLobby();
-    
+
     CuT = new PostResignGame(gson, playerLobby);
   }
 
@@ -58,10 +59,11 @@ class TestPostResignRoute {
     playerLobby.addPlayer("Ben");
     playerLobby.addPlayer("Steve");
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(playerOne.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-    
+
     //Invoke Testing and checking result
     Object handleResponse = CuT.handle(request, response);
     if (handleResponse instanceof String) {
@@ -76,7 +78,8 @@ class TestPostResignRoute {
 
   @Test
   void otherPlayerResignedAndSessionNull() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(playerOne.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -95,7 +98,8 @@ class TestPostResignRoute {
   @Test
   void playerIsRedPlayer() {
     playerOne.setColor("Red");
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(playerOne.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     playerLobby.addPlayer(playerOne.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -116,7 +120,8 @@ class TestPostResignRoute {
   @Test
   void playerIsWhitePlayer() {
     playerOne.setColor("White");
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(playerOne.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(playerOne.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     playerLobby.addPlayer(playerOne.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();

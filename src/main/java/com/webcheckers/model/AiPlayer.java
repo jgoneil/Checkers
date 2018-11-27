@@ -8,8 +8,8 @@ public class AiPlayer extends AbstractPlayer {
   /**
    * Constructor for player class
    */
-  public AiPlayer(){
-    super(String.format("F@ke %d",fakePlayerID++));
+  public AiPlayer() {
+    super(String.format("F@ke %d", fakePlayerID++));
   }
-  
+
 }

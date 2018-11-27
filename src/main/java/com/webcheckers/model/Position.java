@@ -38,4 +38,23 @@ public class Position {
   public int getCell() {
     return this.cell;
   }
+
+  /**
+   * Equals method for checking if two positions are equivalent to one another
+   *
+   * @param obj the potential position being checked for equivalence
+   * @return true/false based on if the positions are equal to one another or not
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Position) {
+      Position check = (Position) obj;
+      if (check.getRow() == this.getRow()) {
+        if (check.getCell() == this.getCell()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }

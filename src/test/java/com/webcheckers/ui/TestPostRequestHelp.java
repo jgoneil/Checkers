@@ -55,7 +55,8 @@ public class TestPostRequestHelp {
 
   @Test
   void playerNotInLobby() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redplayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redplayer.getName());
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
@@ -71,7 +72,8 @@ public class TestPostRequestHelp {
   @Test
   void otherPlayerResigned() {
     playerLobby.addPlayer(redplayer.getName());
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redplayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redplayer.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(null);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -94,7 +96,8 @@ public class TestPostRequestHelp {
     List<Piece> pieceList = new ArrayList<>();
     pieceList.add(new Piece(GameLobby.WHITE, new Space(0, 7, Space.Color.BLACK)));
     gameLobby = new GameLobby(redplayer, whitePlayer, pieceList);
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(whitePlayer.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -117,7 +120,8 @@ public class TestPostRequestHelp {
     List<Piece> pieceList = new ArrayList<>();
     pieceList.add(new Piece(GameLobby.RED, new Space(7, 0, Space.Color.BLACK)));
     gameLobby = new GameLobby(redplayer, whitePlayer, pieceList);
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redplayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redplayer.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

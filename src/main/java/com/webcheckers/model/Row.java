@@ -94,7 +94,7 @@ public class Row implements Iterable {
         row.add(new Space(this.index, i, Space.Color.WHITE));
       } else {
         Space space = new Space(this.index, i, Space.Color.BLACK);
-        for (Piece p: pieces) {
+        for (Piece p : pieces) {
           if (p.getSpace().equals(space)) {
             space.occupy(p);
             pieces.remove(p);

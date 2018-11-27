@@ -22,11 +22,11 @@ public class GameLobby {
   private FindBestMove findBestMoveRed;
   //The find best move class to find the best potential move for help requests for the white player and for the ai player
   private FindBestMove findBestMoveWhite;
-
+  //The best move a player can make
   private Move bestMove;
 
   //Static final (constant) variables
-  static final int BOARD_SIZE = 8;
+  private static final int BOARD_SIZE = 8;
   public static final String RED = "RED";
   public static final String WHITE = "WHITE";
 
@@ -50,7 +50,8 @@ public class GameLobby {
 
   /**
    * Constructor for the game lobby that specifies the pieces being added to the board
-   *  @param redPlayer the red player connected to the game lobby
+   *
+   * @param redPlayer the red player connected to the game lobby
    * @param whitePlayer the white player connected to the game lobby
    * @param pieceList the list of pieces being added to the board
    */
@@ -93,7 +94,7 @@ public class GameLobby {
   public PlayerBoard getBoardForPlayer(AbstractPlayer player) {
     if (this.redPlayer.equals(player)) {
       return modelBoard.getRedPlayerBoard();
-    } else if (this.whitePlayer.equals(player)){
+    } else if (this.whitePlayer.equals(player)) {
       return modelBoard.getWhitePlayerBoard();
     } else {
       return null;
@@ -109,8 +110,7 @@ public class GameLobby {
   public boolean verifyInGame(String username) {
     if (username.equals(redPlayer.getName())) {
       return redPlayer.inGame();
-    }
-    else if( username.equals(whitePlayer.getName())) {
+    } else if (username.equals(whitePlayer.getName())) {
       return whitePlayer.inGame();
     }
     return false;
@@ -171,7 +171,7 @@ public class GameLobby {
    * @return the player that is the specified player's opponent
    */
   public AbstractPlayer getOpponent(AbstractPlayer player) {
-    if(redPlayer.equals(player)) {
+    if (redPlayer.equals(player)) {
       return whitePlayer;
     }
     return redPlayer;
@@ -193,18 +193,6 @@ public class GameLobby {
     return this.bestMove;
   }
 
-  /**
-   * Checks to see if there is only one move possible for a player to make
-   *
-   * @return true/false based on if there is only one move possible for the player to make
-   */
-  public boolean onlyOne() {
-    if (this.modelBoard.checkRedTurn()) {
-      return findBestMoveRed.onlyOneMove();
-    } else {
-      return findBestMoveWhite.onlyOneMove();
-    }
-  }
 
   /**
    * Checks to see if a specified player is the red player for the game session
@@ -320,10 +308,23 @@ public class GameLobby {
     } else if (whitePlayer.isAI()) {
       this.bestMove = findBestMoveWhite.findMove();
       if (bestMove != null) {
-        Position start = new Position(bestMove.getStart().getRow(), bestMove.getStart().getCell());
-        Position end = new Position(bestMove.getEnd().getRow(), bestMove.getEnd().getCell());
-        checkMove.validateMove(start, end, whitePlayer);
-        modelBoard.pendingMove(bestMove);
+        Position start = new Position(bestMove.getStartRow(), bestMove.getStartCell());
+        Position end = new Position(bestMove.getEndRow(), bestMove.getEndCell());
+        List<Position> moves = findBestMoveWhite.findMiddle(modelBoard.getSpace(7 - start.getRow(), 7 - start.getCell()),
+                modelBoard.getSpace(7 - end.getRow(), 7 - end.getCell()));
+        if (moves != null) {
+          for (int i = 0; i < moves.size() - 1; i++) {
+            Position startingPosition = moves.get(i);
+            Position movingPosition = moves.get(i + 1);
+            Position fixedStartingPosition = new Position(7 - startingPosition.getRow(), 7 - startingPosition.getCell());
+            Position fixedEndingPosition = new Position(7 - movingPosition.getRow(), 7 - movingPosition.getCell());
+            checkMove.validateMove(fixedStartingPosition, fixedEndingPosition, whitePlayer);
+            modelBoard.pendingMove(new Move(fixedStartingPosition, fixedEndingPosition));
+          }
+        } else {
+          checkMove.validateMove(start, end, whitePlayer);
+          modelBoard.pendingMove(bestMove);
+        }
         this.submitMove();
         this.bestMove = findBestMoveRed.findMove();
       }

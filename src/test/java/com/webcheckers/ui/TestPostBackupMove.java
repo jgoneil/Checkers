@@ -8,6 +8,7 @@ import com.webcheckers.model.Move;
 import com.webcheckers.model.Position;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.Mockito.mock;

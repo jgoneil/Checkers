@@ -16,7 +16,6 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 import spark.TemplateEngine;
-import com.webcheckers.model.Player;
 
 import static spark.Spark.halt;
 
@@ -25,6 +24,9 @@ import static spark.Spark.halt;
  */
 public class GetGameRoute implements Route {
 
+  //Static final variables (Constants)
+  public static final String GAMELOBBY = "gameLobby";
+  public static final String VIEW = "game.ftl";
   //The template engine for rendering the freemarker html page
   private TemplateEngine templateEngine;
   //The player currently interacting with the game backend
@@ -35,10 +37,6 @@ public class GetGameRoute implements Route {
   private GameLobby gameLobby;
   //If a player has won a game or not
   private boolean gameWon;
-
-  //Static final variables (Constants)
-  public static final String GAMELOBBY = "gameLobby";
-  public static final String VIEW = "game.ftl";
 
   /**
    * Creates a spark route that handles all {@code Get /game} HTTP requests
@@ -97,9 +95,10 @@ public class GetGameRoute implements Route {
       AbstractPlayer player2 = playerLobby.getSpecificPlayer(playerTwo[0].toString());
 
       if (httpSession.attribute(PostResignGame.RESIGNED_PLAYER) != null) {
-        if(httpSession.attribute(PostResignGame.RESIGNED_PLAYER).equals(player2)) {
+        if (httpSession.attribute(PostResignGame.RESIGNED_PLAYER).equals(player2)) {
           httpSession.removeAttribute(PostResignGame.RESIGNED_PLAYER);
-          httpSession.attribute("message", new Message(Message.Type.info, "Other player resigned, you win!"));
+          httpSession.attribute("message",
+              new Message(Message.Type.info, "Other player resigned, you win!"));
           response.redirect(WebServer.HOME_URL);
           halt();
           return null;
@@ -107,14 +106,16 @@ public class GetGameRoute implements Route {
       }
 
       if (player2 == null) {
-        httpSession.attribute("message", new Message(Message.Type.info, "Player signed out. You Win!"));
+        httpSession
+            .attribute("message", new Message(Message.Type.info, "Player signed out. You Win!"));
         response.redirect(WebServer.HOME_URL);
         halt();
         return null;
       }
 
       if (player2.inGame()) {
-        httpSession.attribute("message", new Message(Message.Type.error, "Player already in game!"));
+        httpSession
+            .attribute("message", new Message(Message.Type.error, "Player already in game!"));
         response.redirect(WebServer.HOME_URL);
         halt();
         return null;
@@ -143,7 +144,8 @@ public class GetGameRoute implements Route {
       vm.put("board", gameLobby.getWhiteBoard());
       return templateEngine.render(new ModelAndView(vm, VIEW));
     } else if (httpSession.attribute(GAMELOBBY) != null && !currentPlayer.inGame()) {
-      httpSession.attribute("message", new Message(Message.Type.info, PostResignGame.OTHER_PLAYER_RESIGN)); 
+      httpSession
+          .attribute("message", new Message(Message.Type.info, PostResignGame.OTHER_PLAYER_RESIGN));
       response.redirect(WebServer.HOME_URL);
       halt();
       return null;
@@ -154,23 +156,27 @@ public class GetGameRoute implements Route {
 
       if (!this.gameLobby.whiteCanPlay() || !this.gameLobby.redCanPlay()) {
         if (this.gameWon) {
-          httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+          httpSession
+              .attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
           this.gameWon = false;
-        }
-        else {
+        } else {
           if (this.currentPlayer.isRed()) {
             if (!this.gameLobby.whiteCanPlay()) {
               this.gameWon = true;
-              httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
+              httpSession
+                  .attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
             } else {
-              httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+              httpSession
+                  .attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
             }
           } else {
             if (!this.gameLobby.redCanPlay()) {
               this.gameWon = true;
-              httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
+              httpSession
+                  .attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));
             } else {
-              httpSession.attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
+              httpSession
+                  .attribute("message", new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));
             }
           }
         }
