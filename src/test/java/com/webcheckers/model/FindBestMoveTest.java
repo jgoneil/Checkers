@@ -558,4 +558,205 @@ class FindBestMoveTest {
     assertTrue(findBestMoveRed.willBeEaten(startingSpaceRed, endingRed));
     assertTrue(findBestMoveWhite.willBeEaten(startingSpaceWhite, endingWhite));
   }
+
+  @Test
+  void testRedKingMoveBack() {
+    Space startingSpace = new Space(0, 7, Space.Color.BLACK);
+    Piece piece = new Piece(GameLobby.RED, startingSpace);
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(3, 0, Space.Color.BLACK)));
+    piece.King();
+    pieceList.add(piece);
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, redPlayer);
+    Move bestMove = findBestMove.findMove();
+    assertEquals(1, bestMove.getEndRow());
+    assertEquals(6, bestMove.getEndCell());
+  }
+
+  @Test
+  void testWhiteKingMoveBack() {
+    Space startingSpace = new Space(7, 0, Space.Color.BLACK);
+    Piece piece = new Piece(GameLobby.WHITE, startingSpace);
+    pieceList.add(new Piece(GameLobby.RED, new Space(3, 0, Space.Color.BLACK)));
+    piece.King();
+    pieceList.add(piece);
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, whitePlayer);
+    Move bestMove = findBestMove.findMove();
+    assertEquals(1, bestMove.getEndRow());
+    assertEquals(6, bestMove.getEndCell());
+  }
+
+  @Test
+  void findMiddleSingleRedRight() {
+    Space start = new Space(6, 1, Space.Color.BLACK);
+    Space end = new Space(2, 5, Space.Color.BLACK);
+    pieceList.add(new Piece(GameLobby.RED, start));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(5, 2, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(3, 4, Space.Color.BLACK)));
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, redPlayer);
+    List<Position> moves = findBestMove.findMiddle(start, end);
+    assertEquals(new Position(6, 1), moves.get(0));
+    assertEquals(new Position(4, 3), moves.get(1));
+    assertEquals(new Position(2, 5), moves.get(2));
+  }
+
+  @Test
+  void findMiddleSingleRedLeft() {
+    Space start = new Space(6, 5, Space.Color.BLACK);
+    Space end = new Space(2, 1, Space.Color.BLACK);
+    pieceList.add(new Piece(GameLobby.RED, start));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(5, 4, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK)));
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, redPlayer);
+    List<Position> moves = findBestMove.findMiddle(start, end);
+    assertEquals(new Position(6, 5), moves.get(0));
+    assertEquals(new Position(4, 3), moves.get(1));
+    assertEquals(new Position(2, 1), moves.get(2));
+  }
+
+  @Test
+  void findMiddleSingleRedUp() {
+    Space start = new Space(6, 1, Space.Color.BLACK);
+    Space end = new Space(2, 1, Space.Color.BLACK);
+    Piece piece = new Piece(GameLobby.RED, start);
+    piece.King();
+    pieceList.add(piece);
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(5, 2, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK)));
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, redPlayer);
+    List<Position> moves = findBestMove.findMiddle(start, end);
+    assertEquals(new Position(6, 1), moves.get(0));
+    assertEquals(new Position(4, 3), moves.get(1));
+    assertEquals(new Position(2, 1), moves.get(2));
+  }
+
+  @Test
+  void findMiddleSingleRedDown() {
+    Space start = new Space(2, 1, Space.Color.BLACK);
+    Space end = new Space(6, 1, Space.Color.BLACK);
+    Piece piece = new Piece(GameLobby.RED, start);
+    piece.King();
+    pieceList.add(piece);
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(5, 2, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(3, 2, Space.Color.BLACK)));
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, redPlayer);
+    List<Position> moves = findBestMove.findMiddle(start, end);
+    assertEquals(new Position(2, 1), moves.get(0));
+    assertEquals(new Position(4, 3), moves.get(1));
+    assertEquals(new Position(6, 1), moves.get(2));
+  }
+
+  @Test
+  void findMiddleSingleWhiteRight() {
+    Space start = new Space(0, 1, Space.Color.BLACK);
+    Space end = new Space(4, 5, Space.Color.BLACK);
+    pieceList.add(new Piece(GameLobby.WHITE, start));
+    pieceList.add(new Piece(GameLobby.RED, new Space(1, 2, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.RED, new Space(3, 4, Space.Color.BLACK)));
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, whitePlayer);
+    List<Position> moves = findBestMove.findMiddle(start, end);
+    assertEquals(new Position(0, 1), moves.get(0));
+    assertEquals(new Position(2, 3), moves.get(1));
+    assertEquals(new Position(4, 5), moves.get(2));
+  }
+
+  @Test
+  void findMiddleSingleWhiteLeft() {
+    Space start = new Space(0, 5, Space.Color.BLACK);
+    Space end = new Space(4, 1, Space.Color.BLACK);
+    pieceList.add(new Piece(GameLobby.WHITE, start));
+    pieceList.add(new Piece(GameLobby.RED, new Space(1, 4, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.RED, new Space(3, 2, Space.Color.BLACK)));
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, whitePlayer);
+    List<Position> moves = findBestMove.findMiddle(start, end);
+    assertEquals(new Position(0, 5), moves.get(0));
+    assertEquals(new Position(2, 3), moves.get(1));
+    assertEquals(new Position(4, 1), moves.get(2));
+  }
+
+  @Test
+  void findMiddleMultiRed() {
+    Space start = new Space(6, 1, Space.Color.BLACK);
+    Space end = new Space(0, 7, Space.Color.BLACK);
+    pieceList.add(new Piece(GameLobby.RED, start));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(5, 2, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(3, 4, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(1, 6, Space.Color.BLACK)));
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, redPlayer);
+    List<Position> moves = findBestMove.findMiddle(start, end);
+    assertEquals(new Position(6, 1), moves.get(0));
+    assertEquals(new Position(4, 3), moves.get(1));
+    assertEquals(new Position(2, 5), moves.get(2));
+  }
+
+  @Test
+  void findMiddleMultiWhite() {
+    Space start = new Space(0, 1, Space.Color.BLACK);
+    Space end = new Space(6, 7, Space.Color.BLACK);
+    pieceList.add(new Piece(GameLobby.WHITE, start));
+    pieceList.add(new Piece(GameLobby.RED, new Space(1, 2, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.RED, new Space(3, 4, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.RED, new Space(5, 6, Space.Color.BLACK)));
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, whitePlayer);
+    List<Position> moves = findBestMove.findMiddle(start, end);
+    assertEquals(new Position(0, 1), moves.get(0));
+    assertEquals(new Position(2, 3), moves.get(1));
+    assertEquals(new Position(4, 5), moves.get(2));
+    assertEquals(new Position(6, 7), moves.get(3));
+  }
+
+  @Test
+  void findMiddleSingleWeirdRed() {
+    Space start = new Space(6, 1, Space.Color.BLACK);
+    Space end = new Space(6, 5, Space.Color.BLACK);
+    Piece piece = new Piece(GameLobby.RED, start);
+    piece.King();
+    pieceList.add(piece);
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(5, 2, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.WHITE, new Space(5, 4, Space.Color.BLACK)));
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, redPlayer);
+    List<Position> moves = findBestMove.findMiddle(start, end);
+    assertEquals(new Position(6, 1), moves.get(0));
+    assertEquals(new Position(4, 3), moves.get(1));
+    assertEquals(new Position(6, 5), moves.get(2));
+  }
+
+  @Test
+  void findMiddleSingleWeirdWhite() {
+    Space start = new Space(0, 1, Space.Color.BLACK);
+    Space end = new Space(0, 5, Space.Color.BLACK);
+    Piece piece = new Piece(GameLobby.WHITE, start);
+    piece.King();
+    pieceList.add(piece);
+    pieceList.add(new Piece(GameLobby.RED, new Space(1, 2, Space.Color.BLACK)));
+    pieceList.add(new Piece(GameLobby.RED, new Space(1, 4, Space.Color.BLACK)));
+
+    ModelBoard modelBoard = new ModelBoard(redPlayer, whitePlayer, 8, pieceList);
+    FindBestMove findBestMove = new FindBestMove(modelBoard, whitePlayer);
+    List<Position> moves = findBestMove.findMiddle(start, end);
+    assertEquals(new Position(0, 1), moves.get(0));
+    assertEquals(new Position(2, 3), moves.get(1));
+    assertEquals(new Position(0, 5), moves.get(2));
+  }
 }

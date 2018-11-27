@@ -10,10 +10,6 @@ import java.util.List;
  */
 public class GameLobby {
 
-  public static final String RED = "RED";
-  public static final String WHITE = "WHITE";
-  //Static final (constant) variables
-  static final int BOARD_SIZE = 8;
   //The red player connected to the game
   private final AbstractPlayer redPlayer;
   //The white player connected to the game
@@ -26,7 +22,13 @@ public class GameLobby {
   private FindBestMove findBestMoveRed;
   //The find best move class to find the best potential move for help requests for the white player and for the ai player
   private FindBestMove findBestMoveWhite;
+  //The best move a player can make
   private Move bestMove;
+
+  //Static final (constant) variables
+  private static final int BOARD_SIZE = 8;
+  public static final String RED = "RED";
+  public static final String WHITE = "WHITE";
 
   /**
    * Constructor for the Game Lobby. Establishes all of the boards for the game
@@ -297,12 +299,35 @@ public class GameLobby {
   }
 
   /**
-   * Submits the pending move for the player and ends the player's turn
+   * Submits the pending move for the player and ends the player's turn, if Ai is in the game makes their move
    */
   public void submitMove() {
     this.modelBoard.submitMove();
     if (this.modelBoard.checkRedTurn()) {
       this.bestMove = findBestMoveRed.findMove();
+    } else if (whitePlayer.isAI()) {
+      this.bestMove = findBestMoveWhite.findMove();
+      if (bestMove != null) {
+        Position start = new Position(bestMove.getStartRow(), bestMove.getStartCell());
+        Position end = new Position(bestMove.getEndRow(), bestMove.getEndCell());
+        List<Position> moves = findBestMoveWhite.findMiddle(modelBoard.getSpace(7 - start.getRow(), 7 - start.getCell()),
+                modelBoard.getSpace(7 - end.getRow(), 7 - end.getCell()));
+        if (moves != null) {
+          for (int i = 0; i < moves.size() - 1; i++) {
+            Position startingPosition = moves.get(i);
+            Position movingPosition = moves.get(i + 1);
+            Position fixedStartingPosition = new Position(7 - startingPosition.getRow(), 7 - startingPosition.getCell());
+            Position fixedEndingPosition = new Position(7 - movingPosition.getRow(), 7 - movingPosition.getCell());
+            checkMove.validateMove(fixedStartingPosition, fixedEndingPosition, whitePlayer);
+            modelBoard.pendingMove(new Move(fixedStartingPosition, fixedEndingPosition));
+          }
+        } else {
+          checkMove.validateMove(start, end, whitePlayer);
+          modelBoard.pendingMove(bestMove);
+        }
+        this.submitMove();
+        this.bestMove = findBestMoveRed.findMove();
+      }
     } else {
       this.bestMove = findBestMoveWhite.findMove();
     }
@@ -322,18 +347,5 @@ public class GameLobby {
    */
   public void setMove(boolean moved) {
     modelBoard.setMove(moved);
-  }
-
-  /**
-   * Gets the best move for a specified player
-   *
-   * @return the best move a player can make
-   */
-  public Move findBestMove(AbstractPlayer player) {
-    if (player.isRed()) {
-      return findBestMoveRed.findMove();
-    } else {
-      return findBestMoveWhite.findMove();
-    }
   }
 }

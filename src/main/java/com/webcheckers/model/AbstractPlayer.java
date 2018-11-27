@@ -94,5 +94,13 @@ public abstract class AbstractPlayer {
     }
     return false;
   }
+
+  /**
+   * Checks to see if a player is an AI.
+   * @return true/false based on if the player name has an @ symbol in it.
+   */
+  public boolean isAI() {
+    return getName().contains("@");
+  }
 }
 
