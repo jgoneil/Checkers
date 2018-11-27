@@ -3,11 +3,6 @@ geometry: margin=1in
 ---
 # PROJECT Design Documentation
 
-<!-- _The following template provides the headings for your Design
- Documentation.  As you edit each section make sure you remove these
- commentary 'blockquotes'; the lines that start with a > character
- and appear in the generated PDF in italics._) -->
-
 ## Team Information
 * Team name: Team C
 * Team members
@@ -21,36 +16,51 @@ geometry: margin=1in
 
 This project focuses on the design, development, and maintenance of Software Applications. In order to do this, an online version of the popular board game checkers was created.
 For this application, players are required to sign into the system and then can select an opponent from a lobby of players for a match.
-When a match starts, the game is played using the American rules with the red player going first. Players can forefit the game at any point along with signout from the system at any point.
+When a match starts, the game is played using the American rules with the red player going first. Players can forfeit the game at any point along with signout from the system at any point.
 
 ### Purpose
-> _Provide a very brief statement about the project and the most
-> important user group and user goals._
+The purpose of this project is to allow users to play the game of checkers against one another over the internet. 
+The game is focused on being accessible for anyone who has internet and would like to play the game.
+The goals of the project is to allow players to sign into the game and select another user to 
+play against from the lobby of players. Their new goal is to now play the game following the American Rules and hopefully win against their opponent. The user may also elect to logout or forfeit the game at any point.
 
 ### Glossary and Acronyms
-> _Provide a table of terms and acronyms._
 
 | Term | Definition |
 |------|------------|
 | VO | Value Object |
+| MVP | Minimal Viable Product |
 
 
 ## Requirements
 
 This section describes the features of the application.
 
-> _In this section you do not need to be exhaustive and list every
-> story.  Focus on top-level features from the Vision document and
-> maybe Epics and critical Stories._
-
 ### Definition of MVP
-> _Provide a simple description of the Minimum Viable Product._
+The MVP (or Minimal Viable Product) is made up of a few standard components. These are outlined below: 
+
+* Sign in/out: Players must be able to sign into and sign out of the system in order for a game to be played.
+* Checkers Game: Players must be able to play the game of checkers according to the American Rulebook. The game is made up of the following components:
+  * Piece movement: Being able to move a piece during a player's turn
+  * Jumping: Players are able to jump opponent's pieces
+  * Kinging: Players are able to king their piece by making it to the opposite end of the game board.
+* Resign: Players are able to resign from the game at any point and the game ends.
 
 ### MVP Features
-> _Provide a list of top-level Epics and/or Stories of the MVP._
+The MVP Features were broken down into multiple different stories for completion. For our team we broke them down in the following fashion:
+
+* Sign in/out: The ability for users to be able to sign into and sign out of the game.
+* Piece Movement: The ability for pieces to be able to move forwards or perform a jump. The jump can either be a single jump or a multi-jump.
+* King Movement: The ability for pieces that are of the king type to move forwards or backwards along with preform single and multi jumps forwards and backwards. 
+* Resign: The ability for the player to resign the game at any point in time and the game ends once a player resigns. 
 
 ### Roadmap of Enhancements
-> _Provide a list of top-level features in the order you plan to consider them._
+* AI Player: Allows a user to connect to a game and play against the computer (or AI Player) rather than another human being. The AI Player for the system attempts to make the best move possible based upon the following factors:
+  * If the move makes a jump or not
+  * If a jump is possible, ensure it is the longest one possible
+  * If the move results in the player's piece being eaten
+  * If the move results in a piece turning into a king piece
+* Player Help: Allows a user to request help during their turn. The player, once they have requested help by clicking a button, sees a space highlighted in green. This move is the best move the player can make. The best move is determined by the factors above.
 
 
 ## Application Domain
@@ -59,7 +69,7 @@ This section describes the application domain.
 
 ![The WebCheckers Domain Model](SWEN-261 Domain Model Diagram.png)
 
-The domain model for this project centers around players who sign into the application to play games of checkers against one another. 
+The domain model for this project centers around players who sign into the application to play games of checkers against one another. As noted in the diagram, the player can be a regular user or an AI player that the user selects in the game lobby. Once selected, the game is played on a board made up of checkers pieces for each players. At any time during a players turn they can ask for help. The pieces are assigned a color matching the color the player is assigned to for the game. Pieces are either single or king pieces based upon their movement during the game.
 Each game of checkers is played on a board complete with two different colored spaces and pieces. 
 
 ## Architecture and Design
@@ -68,16 +78,17 @@ This section describes the application architecture.
 
 ### Summary
 
-The following Tiers/Layers model shows a high-level view of the webapp's architecture.
+The following Tiers/Layers model shows a high-level view of the web app's architecture.
 
 ![The Tiers & Layers of the Architecture](architecture-tiers-and-layers.png)
 
 As a web application, the user interacts with the system using a
-browser.  The client-side of the UI is composed of HTML pages with
-some minimal CSS for styling the page.  There is also some JavaScript
+browser. The client-side of the UI is composed of HTML pages with
+some minimal CSS for styling the page. There is also some JavaScript
 that has been provided to the team by the architect.
 
 The server-side tiers include the UI Tier that is composed of UI Controllers and Views.
+
 Controllers are built using the Spark framework and View are built using the FreeMarker framework.  The Application and Model tiers are built using plain-old Java objects (POJOs).
 
 Details of the components within these tiers are supplied below.
@@ -93,6 +104,7 @@ with the WebCheckers application.
 The Web Interface Statechart defines the connection routes for the system. Players connect to the game and are directed to the home screen to begin.
 Players then have the option to sign into the system and play games of checkers against other signed in players.
 Throughout the game, the system is constantly updating to validate moves, complete piece movements, and switch turns until a pair of players complete the game via forfeit or win/loss.
+Players have the option to request help during their turn and the system will return the best move possible for them to make.
 
 ### UI Tier
 > _Provide a summary of the Server-side UI tier of your architecture.
@@ -141,7 +153,7 @@ Without this cyclomatic system, each one of the potential system handles would n
 to be met, and we may fail to redirect the system in cases that the user attempts to visit the 
 route when a game is not in session.
 
-For our check move class, we found high complexity metrics, specificially in our cyclomatic
+For our check move class, we found high complexity metrics, specifically in our cyclomatic
 complexity check, as the system requires lots of conditional statements for execution. This
 issue can be resolved by the implementation of a state machine to check our move validations.
 This system would limit the number of conditional statements needed for completion and the 
@@ -155,21 +167,21 @@ changes to the system to ensure all points of the javadoc coverage was met in th
 
 For our lines of code metrics, we found no issues with the system, and the number of lines
 for our system did not add any complexity to the system. No changes were made due to the system
-not needing any improvements. The system alrerted us that we have approximately 4,000 lines of 
+not needing any improvements. The system alerted us that we have approximately 4,000 lines of 
 active code on our system, with approximately 1,000 lines of comments.
 
 For our Martin package metrics, we found no issues with the system. Our fan-in connections were
 highest in our model class however, this makes sense as the model class reaches to other 
 classes in our model tier for execution. For each one of the other tiers, their fan-in 
-connections were relaively small, as our UI tier and our Application Tier classes did not 
+connections were relatively small, as our UI tier and our Application Tier classes did not 
 communicate very often with inside themselves. For our fan-out connections, we found the 
 highest number of connections needed in our UI Tier. This makes sense as the UI tier relied 
-hevily upon all of the classes in our system for functionality and to send all of the 
+heavily upon all of the classes in our system for functionality and to send all of the 
 information to the frontend so it could be displayed properly for the user.
 
 The overall coupling factor of our system was 20.32%, meaning that we did a good job of 
 eliminating coupling in our system. Our attribute hiding factor was 85.15%, meaning that we 
-did a good job hiding our attribues in private fields to ensure they were only being 
+did a good job hiding our attributes in private fields to ensure they were only being 
 accessed through getters and setters, rather than other classes having direct contact with 
 our attributes. 
 
