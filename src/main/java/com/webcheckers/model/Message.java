@@ -11,13 +11,6 @@ public class Message {
   private Type type;
 
   /**
-   * Enum for the message type
-   */
-  public enum Type {
-    error, info
-  }
-
-  /**
    * Constructor to create a new message for the game
    *
    * @param message the message going to the system
@@ -44,5 +37,12 @@ public class Message {
    */
   public String getText() {
     return this.text;
+  }
+
+  /**
+   * Enum for the message type
+   */
+  public enum Type {
+    error, info
   }
 }

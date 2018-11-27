@@ -49,15 +49,14 @@ public class PlayerLobby {
   }
 
   /**
-   * Class that facilitates the addition of new ai players
-   * before player creation
+   * Class that facilitates the addition of new ai players before player creation
    *
    * @param aiPlayer the username input from the signin page
    * @return boolean true/false based on if the player was added to the system or not
    */
   public void addPlayer(AiPlayer aiPlayer) {
-      this.users.add(aiPlayer);
-      this.usernames.add(aiPlayer.getName());
+    this.users.add(aiPlayer);
+    this.usernames.add(aiPlayer.getName());
   }
 
   /**
@@ -102,7 +101,7 @@ public class PlayerLobby {
     List<String> playerNames = new ArrayList<>();
     for (String u : this.usernames) {
       if (!u.equals(username)) {
-        if (!u.contains("F@ke")){
+        if (!u.contains("F@ke")) {
           playerNames.add(u);
         }
       }
@@ -115,7 +114,7 @@ public class PlayerLobby {
    *
    * @param username the username of the player being removed
    */
-  public void removeUser(String username){
+  public void removeUser(String username) {
     users.remove(getSpecificPlayer(username));
     usernames.remove(username);
   }

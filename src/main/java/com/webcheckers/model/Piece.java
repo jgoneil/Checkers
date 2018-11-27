@@ -15,20 +15,6 @@ public class Piece {
   private Type type;
 
   /**
-   * Enum for the color of the piece (red/white)
-   */
-  public enum Color {
-    RED, WHITE
-  }
-
-  /**
-   * Enum for the type of the piece (King/Single)
-   */
-  public enum Type {
-    SINGLE, KING
-  }
-
-  /**
    * Constructor for the piece class
    *
    * @param tempColor the color passed in for the piece
@@ -100,7 +86,7 @@ public class Piece {
    * Checks to see if the piece is red
    *
    * @return true/false to see if a piece is red or not
-   */ 
+   */
   public boolean isRed() {
     return this.color == Color.RED;
   }
@@ -117,7 +103,9 @@ public class Piece {
   /**
    * Kings a piece
    */
-  public void King(){this.type = Type.KING;}
+  public void King() {
+    this.type = Type.KING;
+  }
 
   /**
    * Checks to see if a piece is of type KING
@@ -126,5 +114,19 @@ public class Piece {
    */
   public boolean isKing() {
     return this.type == Type.KING;
+  }
+
+  /**
+   * Enum for the color of the piece (red/white)
+   */
+  public enum Color {
+    RED, WHITE
+  }
+
+  /**
+   * Enum for the type of the piece (King/Single)
+   */
+  public enum Type {
+    SINGLE, KING
   }
 }

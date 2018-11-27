@@ -53,13 +53,13 @@ public class TestPostMoveCheck {
     position45 = new Position(5, 4);
     position56 = new Position(5, 6);
 
-
     CuT = new PostMoveCheck(gson);
   }
 
   @Test
   void redNotInGameMove() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(notInGame.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(notInGame.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -76,7 +76,8 @@ public class TestPostMoveCheck {
 
   @Test
   void whiteNotInGameMove() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(notInGame.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(notInGame.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
@@ -93,7 +94,8 @@ public class TestPostMoveCheck {
 
   @Test
   void whiteResigns() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redPlayer.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     redPlayer.gameEnd();
     whitePlayer.gameEnd();
@@ -112,7 +114,8 @@ public class TestPostMoveCheck {
 
   @Test
   void madeMoveRed() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redPlayer.getName());
     gameLobby.setMove(true);
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -130,7 +133,8 @@ public class TestPostMoveCheck {
 
   @Test
   void makeFalseMoveWhite() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(whitePlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(whitePlayer.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     when(request.body()).thenReturn(gson.toJson(new Move(position45, position56)));
     final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -142,13 +146,15 @@ public class TestPostMoveCheck {
       String temporaryInfo = (String) info;
       Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
       assertEquals(Message.Type.error, respondedMessage.getType());
-      assertEquals("Attempted to move a piece to an already occupied space", respondedMessage.getText());
+      assertEquals("Attempted to move a piece to an already occupied space",
+          respondedMessage.getText());
     }
   }
 
   @Test
   void MakingMoveForward() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redPlayer.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     when(request.body()).thenReturn(gson.toJson(new Move(position45, position34)));
     final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -166,7 +172,8 @@ public class TestPostMoveCheck {
 
   @Test
   void MakingWrongMove() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redPlayer.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(gameLobby);
     when(request.body()).thenReturn(gson.toJson(new Move(position34, position45)));
     final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -178,13 +185,15 @@ public class TestPostMoveCheck {
       String temporaryInfo = (String) info;
       Message respondedMessage = gson.fromJson(temporaryInfo, Message.class);
       assertEquals(Message.Type.error, respondedMessage.getType());
-      assertEquals("Attempted to move a piece to an already occupied space", respondedMessage.getText());
+      assertEquals("Attempted to move a piece to an already occupied space",
+          respondedMessage.getText());
     }
   }
 
   @Test
   void nullGameCenter() {
-    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY)).thenReturn(redPlayer.getName());
+    when(request.session().attribute(GetHomeRoute.PLAYERSERVICES_KEY))
+        .thenReturn(redPlayer.getName());
     when(request.session().attribute(GetGameRoute.GAMELOBBY)).thenReturn(null);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

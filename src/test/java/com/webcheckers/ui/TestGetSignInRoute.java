@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.Mockito.mock;
@@ -40,10 +41,12 @@ public class TestGetSignInRoute {
   }
 
   @Test
-  void loggerTest() {assertNotNull(logger);}
+  void loggerTest() {
+    assertNotNull(logger);
+  }
 
   @Test
-  void signIn(){
+  void signIn() {
     when(request.session().attribute(GetSigninRoute.VIEW_NAME)).thenReturn(null);
     final TemplateEngineTester testHelper = new TemplateEngineTester();
     when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());

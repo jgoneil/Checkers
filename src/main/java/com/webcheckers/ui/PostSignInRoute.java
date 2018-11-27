@@ -16,8 +16,8 @@ import static spark.Spark.halt;
 import com.webcheckers.appl.PlayerLobby;
 
 /**
- * This is {@code POST /signin } route handler. Handles user signin.
- * Checks user input to ensure the username is not already in use
+ * This is {@code POST /signin } route handler. Handles user signin. Checks user input to ensure the
+ * username is not already in use
  */
 public class PostSignInRoute implements Route {
 
@@ -46,8 +46,8 @@ public class PostSignInRoute implements Route {
   }
 
   /**
-   * Main connection for playerLobby attempting to sign in
-   * Handles error checking on input to ensure validity and that the input follows guidelines
+   * Main connection for playerLobby attempting to sign in Handles error checking on input to ensure
+   * validity and that the input follows guidelines
    *
    * @param request the messages coming from the from the frontend
    * @param response the messages the backend (this class) are responding with

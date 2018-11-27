@@ -105,7 +105,7 @@ public class PlayerLobbyTest {
   }
 
   @Test
-  void  addPlayerTest(){
+  void addPlayerTest() {
     AiPlayer aiPlayer = new AiPlayer();
     playerLobby.addPlayer(aiPlayer);
 

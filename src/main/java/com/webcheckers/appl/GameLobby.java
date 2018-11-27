@@ -50,7 +50,8 @@ public class GameLobby {
 
   /**
    * Constructor for the game lobby that specifies the pieces being added to the board
-   *  @param redPlayer the red player connected to the game lobby
+   *
+   * @param redPlayer the red player connected to the game lobby
    * @param whitePlayer the white player connected to the game lobby
    * @param pieceList the list of pieces being added to the board
    */
@@ -93,7 +94,7 @@ public class GameLobby {
   public PlayerBoard getBoardForPlayer(AbstractPlayer player) {
     if (this.redPlayer.equals(player)) {
       return modelBoard.getRedPlayerBoard();
-    } else if (this.whitePlayer.equals(player)){
+    } else if (this.whitePlayer.equals(player)) {
       return modelBoard.getWhitePlayerBoard();
     } else {
       return null;
@@ -109,8 +110,7 @@ public class GameLobby {
   public boolean verifyInGame(String username) {
     if (username.equals(redPlayer.getName())) {
       return redPlayer.inGame();
-    }
-    else if( username.equals(whitePlayer.getName())) {
+    } else if (username.equals(whitePlayer.getName())) {
       return whitePlayer.inGame();
     }
     return false;
@@ -171,7 +171,7 @@ public class GameLobby {
    * @return the player that is the specified player's opponent
    */
   public AbstractPlayer getOpponent(AbstractPlayer player) {
-    if(redPlayer.equals(player)) {
+    if (redPlayer.equals(player)) {
       return whitePlayer;
     }
     return redPlayer;
@@ -193,18 +193,6 @@ public class GameLobby {
     return this.bestMove;
   }
 
-  /**
-   * Checks to see if there is only one move possible for a player to make
-   *
-   * @return true/false based on if there is only one move possible for the player to make
-   */
-  public boolean onlyOne() {
-    if (this.modelBoard.checkRedTurn()) {
-      return findBestMoveRed.onlyOneMove();
-    } else {
-      return findBestMoveWhite.onlyOneMove();
-    }
-  }
 
   /**
    * Checks to see if a specified player is the red player for the game session

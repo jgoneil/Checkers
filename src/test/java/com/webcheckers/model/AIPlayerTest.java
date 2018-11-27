@@ -1,4 +1,5 @@
 package com.webcheckers.model;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.webcheckers.appl.GameLobby;
@@ -9,15 +10,16 @@ import org.junit.jupiter.api.Test;
 
 @Tag("Model-tier")
 public class AIPlayerTest {
+
   private AiPlayer aiPlayer;
 
   @BeforeEach
-  void setUp(){
+  void setUp() {
     aiPlayer = new AiPlayer();
   }
 
   @AfterEach
-  void tearDown(){
+  void tearDown() {
     aiPlayer = null;
   }
 
