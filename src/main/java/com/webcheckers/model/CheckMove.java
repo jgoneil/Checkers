@@ -31,10 +31,6 @@ public class CheckMove {
    * @param player the player checking to see if there are moves possible
    * @return true/false if a player does/doesn't have any moves left to make
    */
-<<<<<<< HEAD
-=======
-
->>>>>>> 917042d52bf0faee537cd8dc6709aa3dcd85f6c6
   public boolean moveAvailable(AbstractPlayer player) {
     if (this.board.checkPendingMove()) {
       return true;
