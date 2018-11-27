@@ -2,6 +2,7 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
@@ -322,8 +323,21 @@ public class GameLobby {
       if (bestMove != null) {
         Position start = new Position(bestMove.getStart().getRow(), bestMove.getStart().getCell());
         Position end = new Position(bestMove.getEnd().getRow(), bestMove.getEnd().getCell());
-        checkMove.validateMove(start, end, whitePlayer);
-        modelBoard.pendingMove(bestMove);
+        List<Position> moves = findBestMoveWhite.findMiddle(modelBoard.getSpace(7 - start.getRow(), 7 - start.getCell()),
+                modelBoard.getSpace(7 - end.getRow(), 7 - end.getCell()));
+        if (moves != null) {
+          for (int i = 0; i < moves.size() - 1; i++) {
+            Position startingPosition = moves.get(i);
+            Position movingPosition = moves.get(i + 1);
+            Position fixedStartingPosition = new Position(7 - startingPosition.getRow(), 7 - startingPosition.getCell());
+            Position fixedEndingPosition = new Position(7 - movingPosition.getRow(), 7 - movingPosition.getCell());
+            checkMove.validateMove(fixedStartingPosition, fixedEndingPosition, whitePlayer);
+            modelBoard.pendingMove(new Move(fixedStartingPosition, fixedEndingPosition));
+          }
+        } else {
+          checkMove.validateMove(start, end, whitePlayer);
+          modelBoard.pendingMove(bestMove);
+        }
         this.submitMove();
         this.bestMove = findBestMoveRed.findMove();
       }
