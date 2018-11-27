@@ -299,7 +299,7 @@ public class GameLobby {
   }
 
   /**
-   * Submits the pending move for the player and ends the player's turn
+   * Submits the pending move for the player and ends the player's turn, if Ai is in the game makes their move
    */
   public void submitMove() {
     this.modelBoard.submitMove();
