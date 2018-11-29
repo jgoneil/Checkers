@@ -30,6 +30,7 @@ play against from the lobby of players. Their new goal is to now play the game f
 |------|------------|
 | VO | Value Object |
 | MVP | Minimal Viable Product |
+| UI | User Interface |
 
 
 ## Requirements
@@ -131,10 +132,21 @@ Players have the option to request help during their turn and the system will re
 
 
 ### Application Tier
-> _Provide a summary of the Application tier of your architecture. This
-> section will follow the same instructions that are given for the UI
-> Tier above._
+This tier acts as the mediator of logic and visibility. In charge of holding onto all of the players and games going on in the system, this tier instantiates new users and new game boards for use and whenever something requiring logic happens in the UI tier, this class calls all of the needed information and passes the results back for the user to see. 
 
+There are only two classes that makeup this tier: GameLobby and PlayerLobby. Here is the class diagram for the system:
+
+![Webcheckers Application Class Diagram](Class Diagrams - Application.png)
+
+As you can see, these classes do not directly communicate with one another in any fashion. Thisis due to each having their own separate functionality for connecting the UI tier to the Model tier. Also, a lot of these methods are getters due to the need to gather information from the model tier, rather than storing logic themselves. 
+
+Probably the most imporant of the two classes is the GameLobby class. It handles all of the connections needed for two players to successfully complete the game. Here is a sequence diagram for setting up a gameboard for the players: 
+
+![Webcheckers Application Tier Statechart](Sequence Diagram Application Tier.png)
+
+This represents a high level overview for how a new gameLobby is created. The GetGameRoute instantiates the new class and inside the constructor a new ModelBoard, CheckMove, and two FindBestMoves (one for each player) are created. Finally, the construtor ends by finding the best move for the redPlayer (this starts the state machine and this function is then further called each time a player starts their turn). 
+
+Overall, this tier completes the connection between the UI and Model tiers, connecting all of the calculations to the views and keeps track of all of the games going on and all of the players connected to the system.
 
 ### Model Tier
 > _Provide a summary of the Application tier of your architecture. This
@@ -184,6 +196,13 @@ eliminating coupling in our system. Our attribute hiding factor was 85.15%, mean
 did a good job hiding our attributes in private fields to ensure they were only being 
 accessed through getters and setters, rather than other classes having direct contact with 
 our attributes. 
+
+For further implementation of fixes to the system, addressing the following areas for usability may  be benefitial for users. These areas include:
+* Bigger test for all of the elements in the UI
+* More color contrast between the red checker and the black background
+* Have a message popup when a user attempts to sign out to ensure they meant to click the signout button
+* Have a message popup allowing a user to decline a game request by another player
+* Revisit the checkMove class and change the if statement checks into a state machine to increase preformance and clarity
 
 ## Testing
 > _This section will provide information about the testing performed
