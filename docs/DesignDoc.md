@@ -197,6 +197,8 @@ did a good job hiding our attributes in private fields to ensure they were only 
 accessed through getters and setters, rather than other classes having direct contact with 
 our attributes. 
 
+![Webcheckers Code Metrics Report](code_metrics.JPG)
+
 For further implementation of fixes to the system, addressing the following areas for usability may  be benefitial for users. These areas include:
 * Bigger test for all of the elements in the UI
 * More color contrast between the red checker and the black background
