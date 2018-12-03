@@ -142,7 +142,7 @@ public class GameLobby {
 
   /**
    * Checks to see if a white player can keep playing the game
-   *
+   *q
    * @return true/false if the white player can continue to play
    */
   public boolean whiteCanPlay() {

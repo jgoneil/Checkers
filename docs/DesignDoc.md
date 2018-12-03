@@ -211,6 +211,8 @@ did a good job hiding our attributes in private fields to ensure they were only 
 accessed through getters and setters, rather than other classes having direct contact with 
 our attributes. 
 
+![Webcheckers Code Metrics Report](code_metrics.JPG)
+
 For further implementation of fixes to the system, addressing the following areas for usability may  be benefitial for users. These areas include:
 * Bigger test for all of the elements in the UI
 * More color contrast between the red checker and the black background
@@ -220,6 +222,16 @@ For further implementation of fixes to the system, addressing the following area
 
 ## Testing
 
+To ensure the quality of our project we did created a comprehensive set of tests.
+Our test suite consisted mainly of unit tests which was complemented by manual testing done by
+our team members and beta testing done by our peers from other SWEN-251 sections and the students of
+SWEN-101.
+
+Our unit test were created using junit5 framework along with mockito to mock our dependencies.
+Through are suit of unit test we were looking to ensure the correctness of our implementation. As
+this was one of our main goals writing thorough unit test was one of the acceptance criteria for
+every story. Our success can be reflected by our overall code coverage of 92% and the package 
+coverage of 82%, 96% and 100% for the ui, model and application tiers respectively.
 ### Acceptance Testing
 > _Report on the number of user stories that have passed all their
 > acceptance criteria tests, the number that have some acceptance
@@ -228,8 +240,11 @@ For further implementation of fixes to the system, addressing the following area
 > acceptance testing and if there are any concerns._
 
 ### Unit Testing and Code Coverage
-> _Discuss your unit testing strategy. Report on the code coverage
-> achieved from unit testing of the code base. Discuss the team's
-> coverage targets, why you selected those values, and how well your
-> code coverage met your targets. If there are any anomalies, discuss
-> those._
+Our unit testing strategy was to test one part of the code first to make sure it ran and then to move onto the next once
+we got the first part to pass. Our coverage targets for the project were 80% for both the application tier and the Ui tier and 95% for the model tier.
+We selected these values as they were recommended to be around these percentages. We did not want to go any lower than
+95% for the model tier as it is a core tier that needs to be functioning at 100% all the time so having sufficient tests
+to confirm that it is running correctly is necessary. Our code coverage is above all target values. The application tier
+is at  100%, the model tier is at 97%, and the ui tier is at 82%. There are no currently know anomalies.
+
+![Webcheckers Code Metrics Report](Code Coverage.PNG)
