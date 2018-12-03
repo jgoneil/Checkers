@@ -210,6 +210,16 @@ For further implementation of fixes to the system, addressing the following area
 > _This section will provide information about the testing performed
 > and the results of the testing._
 
+To ensure the quality of our project we did created a comprehensive set of tests.
+Our test suite consisted mainly of unit tests which was complemented by manual testing done by
+our team members and beta testing done by our peers from other SWEN-251 sections and the students of
+SWEN-101.
+
+Our unit test were created using junit5 framework along with mockito to mock our dependencies.
+Through are suit of unit test we were looking to ensure the correctness of our implementation. As
+this was one of our main goals writing thorough unit test was one of the acceptance criteria for
+every story. Our success can be reflected by our overall code coverage of 92% and the package 
+coverage of 82%, 96% and 100% for the ui, model and application tiers respectively.
 ### Acceptance Testing
 > _Report on the number of user stories that have passed all their
 > acceptance criteria tests, the number that have some acceptance
