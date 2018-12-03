@@ -145,13 +145,27 @@ Probably the most imporant of the two classes is the GameLobby class. It handles
 ![Webcheckers Application Tier Statechart](Sequence Diagram Application Tier.png)
 
 This represents a high level overview for how a new gameLobby is created. The GetGameRoute instantiates the new class and inside the constructor a new ModelBoard, CheckMove, and two FindBestMoves (one for each player) are created. Finally, the construtor ends by finding the best move for the redPlayer (this starts the state machine and this function is then further called each time a player starts their turn). 
-
+ 
 Overall, this tier completes the connection between the UI and Model tiers, connecting all of the calculations to the views and keeps track of all of the games going on and all of the players connected to the system.
 
 ### Model Tier
-> _Provide a summary of the Application tier of your architecture. This
-> section will follow the same instructions that are given for the UI
-> Tier above._
+This tier handles all of the logic for the game system. This tier holds the main logic board, the logic boards used for display for the players, all of the classes that define the pieces, spaces, rows, and the classes that handle calculating the best move a player can make and to verify if a move is possible. 
+
+All of the classes and their connections to one another can be seen in the class diagram below.
+
+![Webcheckers Model Class Diagram](Class Diagrams - Model.png)
+
+Although there are lots of classes in this tier, all follow the OO principles of single resposibility, low coupling, high cohesion, and use the model board as a main source of connection between this tier and the application tier. 
+
+One of the most important classes in this tier is the findBestMove class. It handles finding the best move that a player can make and relies upon a state machine for finding the deemed 'best move'. Here is a state diagram for the system.
+
+![Webcheckers Model Tier Statechart](State Chart Application Tier.png)
+
+As seen in the document above, the system always begins in a start state. Dependent on the outcome, the system then moves into a jumping or non-jumping state. If the state is jumping, the system checks to see which of the jumps is then the longest. After this both the non-jumping state and the longest jump state check to see if the jump results in a piece being eaten. Then the system checks to see if the move provided results in a piece becoming a king. If a single best move is not found at the end of all of these checks, one is selected at random. If a single best move has been found, that move is returned.
+
+The criteria for the 'best move' is defined in the enhancements section of this document.
+
+Overall, this tier handles all of the needed calculations and logic needed for a player to complete a game of checkers. Some of the methods defined in the system are used in compiance with the front end's needs (like position and move) while some were created purely to handle backend logic calcuations. This tier is vital, as without it, a player would be unable to complete any moves in the system, let alone be a player in the game or have a board to play on.
 
 ### Design Improvements
 We found large complexity issues surrounding out check move class, our javadoc coverage metrics
@@ -205,8 +219,6 @@ For further implementation of fixes to the system, addressing the following area
 * Revisit the checkMove class and change the if statement checks into a state machine to increase preformance and clarity
 
 ## Testing
-> _This section will provide information about the testing performed
-> and the results of the testing._
 
 ### Acceptance Testing
 > _Report on the number of user stories that have passed all their
