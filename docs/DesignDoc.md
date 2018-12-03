@@ -16,7 +16,7 @@ geometry: margin=1in
 
 This project focuses on the design, development, and maintenance of Software Applications. In order to do this, an online version of the popular board game checkers was created.
 For this application, players are required to sign into the system and then can select an opponent from a lobby of players for a match.
-When a match starts, the game is played using the American rules with the red player going first. Players can forfeit the game at any point along with signout from the system at any point.
+When a match starts, the game is played using the American rules with the red player going first. Players can forfeit the game at any point along with sign out from the system at any point.
 
 ### Purpose
 The purpose of this project is to allow users to play the game of checkers against one another over the internet. 
@@ -109,13 +109,13 @@ Players have the option to request help during their turn and the system will re
 ### UI Tier
 This tier acts as the central hub for all user interactions with the backend of the application. All of the routes a player can visit during a game are created and handled here. Any information needed for the views, such as the boards, players, and pieces, are returned when specific routes are visited. Overall, the UI tier returns any of the information needed for the freemarker pages to render the game.
 
-There are two different types of routes created for the system. The first are the get routes. These routes return logic to the frontend and are in charge of getting the board objects and players for the system. These routes are the only routes able to preform redirects. The other type of routes used are post routes. This route expects information to be passed in from the frontend and returns messages to the frontend verifying or denying the statements made by the frontned. 
+There are two different types of routes created for the system. The first are the get routes. These routes return logic to the frontend and are in charge of getting the board objects and players for the system. These routes are the only routes able to perform redirects. The other type of routes used are post routes. This route expects information to be passed in from the frontend and returns messages to the frontend verifying or denying the statements made by the frontend.
 
 All of the classes for the system are defined below.
 
 ![Webcheckers UI Class Diagram](Class Diagrams - UI.png)
 
-One of the most important classes in the system is the GetGameRoute class. This class renders the game board for both of the players and rereders the board for the player as they complete turns. A sequence diagram for the system is below.
+One of the most important classes in the system is the GetGameRoute class. This class renders the game board for both of the players and rereads the board for the player as they complete turns. A sequence diagram for the system is below.
 
 ![Webcheckers UI Sequence Diagram](Sequence Diagram - New.png)
 
@@ -130,13 +130,13 @@ There are only two classes that makeup this tier: GameLobby and PlayerLobby. Her
 
 ![Webcheckers Application Class Diagram](Class Diagrams - Application.png)
 
-As you can see, these classes do not directly communicate with one another in any fashion. Thisis due to each having their own separate functionality for connecting the UI tier to the Model tier. Also, a lot of these methods are getters due to the need to gather information from the model tier, rather than storing logic themselves. 
+As you can see, these classes do not directly communicate with one another in any fashion. This is due to each having their own separate functionality for connecting the UI tier to the Model tier. Also, a lot of these methods are getters due to the need to gather information from the model tier, rather than storing logic themselves.
 
-Probably the most imporant of the two classes is the GameLobby class. It handles all of the connections needed for two players to successfully complete the game. Here is a sequence diagram for setting up a gameboard for the players: 
+Probably the most important of the two classes is the GameLobby class. It handles all of the connections needed for two players to successfully complete the game. Here is a sequence diagram for setting up a gameboard for the players:
 
 ![Webcheckers Application Tier Statechart](Sequence Diagram Application Tier.png)
 
-This represents a high level overview for how a new gameLobby is created. The GetGameRoute instantiates the new class and inside the constructor a new ModelBoard, CheckMove, and two FindBestMoves (one for each player) are created. Finally, the construtor ends by finding the best move for the redPlayer (this starts the state machine and this function is then further called each time a player starts their turn). 
+This represents a high-level overview for how a new gameLobby is created. The GetGameRoute instantiates the new class and inside the constructor a new ModelBoard, CheckMove, and two FindBestMoves (one for each player) are created. Finally, the constructor ends by finding the best move for the redPlayer (this starts the state machine and this function is then further called each time a player starts their turn).
  
 Overall, this tier completes the connection between the UI and Model tiers, connecting all of the calculations to the views and keeps track of all of the games going on and all of the players connected to the system.
 
@@ -147,7 +147,7 @@ All of the classes and their connections to one another can be seen in the class
 
 ![Webcheckers Model Class Diagram](Class Diagrams - Model.png)
 
-Although there are lots of classes in this tier, all follow the OO principles of single resposibility, low coupling, high cohesion, and use the model board as a main source of connection between this tier and the application tier. 
+Although there are lots of classes in this tier, all follow the OO principles of single responsibility, low coupling, high cohesion, and use the model board as a main source of connection between this tier and the application tier.
 
 One of the most important classes in this tier is the findBestMove class. It handles finding the best move that a player can make and relies upon a state machine for finding the deemed 'best move'. Here is a state diagram for the system.
 
@@ -157,11 +157,10 @@ As seen in the document above, the system always begins in a start state. Depend
 
 The criteria for the 'best move' is defined in the enhancements section of this document.
 
-Overall, this tier handles all of the needed calculations and logic needed for a player to complete a game of checkers. Some of the methods defined in the system are used in compiance with the front end's needs (like position and move) while some were created purely to handle backend logic calcuations. This tier is vital, as without it, a player would be unable to complete any moves in the system, let alone be a player in the game or have a board to play on.
+Overall, this tier handles all of the needed calculations and logic needed for a player to complete a game of checkers. Some of the methods defined in the system are used in compliance with the front end's needs (like position and move) while some were created purely to handle backend logic calculations. This tier is vital, as without it, a player would be unable to complete any moves in the system, let alone be a player in the game or have a board to play on.
 
 ### Design Improvements
-We found large complexity issues surrounding out check move class, our javadoc coverage metrics
-, and some of our UI class tiers. However, we did a lot of good things in our system.
+We found large complexity issues surrounding out check move class, our Javadoc coverage metrics, and some of our UI class tiers. However, we did a lot of good things in our system.
 A breakdown of each can be found below.
 
 For the UI class tiers, we found issues in the complexity metric
@@ -179,9 +178,9 @@ system would run after every move, making it less time complex overall. Our team
 to implement this improvement due to time constraints however, this should be a top priority
 for the system if we had more time.
 
-For our javadoc coverage metrics, we found some classes that missed javadoc coverage. 
-For this, we found the locations that the javadoc coverage was missing and made the proper
-changes to the system to ensure all points of the javadoc coverage was met in the system.
+For our Javadoc coverage metrics, we found some classes that missed Javadoc coverage.
+For this, we found the locations that the Javadoc coverage was missing and made the proper
+changes to the system to ensure all points of the Javadoc coverage was met in the system.
 
 For our lines of code metrics, we found no issues with the system, and the number of lines
 for our system did not add any complexity to the system. No changes were made due to the system
@@ -195,7 +194,7 @@ connections were relatively small, as our UI tier and our Application Tier class
 communicate very often with inside themselves. For our fan-out connections, we found the 
 highest number of connections needed in our UI Tier. This makes sense as the UI tier relied 
 heavily upon all of the classes in our system for functionality and to send all of the 
-information to the frontend so it could be displayed properly for the user.
+information to the frontend, so it could be displayed properly for the user.
 
 The overall coupling factor of our system was 20.32%, meaning that we did a good job of 
 eliminating coupling in our system. Our attribute hiding factor was 85.15%, meaning that we 
@@ -205,12 +204,12 @@ our attributes.
 
 ![Webcheckers Code Metrics Report](code_metrics.JPG)
 
-For further implementation of fixes to the system, addressing the following areas for usability may  be benefitial for users. These areas include:
+For further implementation of fixes to the system, addressing the following areas for usability may  be beneficial for users. These areas include:
 * Bigger test for all of the elements in the UI
 * More color contrast between the red checker and the black background
-* Have a message popup when a user attempts to sign out to ensure they meant to click the signout button
+* Have a message popup when a user attempts to sign out to ensure they meant to click the sign out button
 * Have a message popup allowing a user to decline a game request by another player
-* Revisit the checkMove class and change the if statement checks into a state machine to increase preformance and clarity
+* Revisit the checkMove class and change the if statement checks into a state machine to increase performance and clarity
 
 ## Testing
 
@@ -219,7 +218,7 @@ Our test suite consisted mainly of unit tests which was complemented by manual t
 our team members and beta testing done by our peers from other SWEN-251 sections and the students of
 SWEN-101.
 
-Our unit test were created using junit5 framework along with mockito to mock our dependencies.
+Our unit test were created using junit5 framework along with Mockito to mock our dependencies.
 Through are suit of unit test we were looking to ensure the correctness of our implementation. As
 this was one of our main goals writing thorough unit test was one of the acceptance criteria for
 every story. Our success can be reflected by our overall code coverage of 92% and the package 
