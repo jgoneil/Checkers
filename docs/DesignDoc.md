@@ -218,8 +218,11 @@ For further implementation of fixes to the system, addressing the following area
 > acceptance testing and if there are any concerns._
 
 ### Unit Testing and Code Coverage
-> _Discuss your unit testing strategy. Report on the code coverage
-> achieved from unit testing of the code base. Discuss the team's
-> coverage targets, why you selected those values, and how well your
-> code coverage met your targets. If there are any anomalies, discuss
-> those._
+Our unit testing strategy was to test one part of the code first to make sure it ran and then to move onto the next once
+we got the first part to pass. Our coverage targets for the project were 80% for both the application tier and the Ui tier and 95% for the model tier.
+We selected these values as they were recommended to be around these percentages. We did not want to go any lower than
+95% for the model tier as it is a core tier that needs to be functioning at 100% all the time so having sufficient tests
+to confirm that it is running correctly is necessary. Our code coverage is above all target values. The application tier
+is at  100%, the model tier is at 97%, and the ui tier is at 82%. There are no currently know anomalies.
+
+![Webcheckers Code Metrics Report](Code Coverage.PNG)
