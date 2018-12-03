@@ -107,28 +107,21 @@ Throughout the game, the system is constantly updating to validate moves, comple
 Players have the option to request help during their turn and the system will return the best move possible for them to make.
 
 ### UI Tier
-> _Provide a summary of the Server-side UI tier of your architecture.
-> Describe the types of components in the tier and describe their
-> responsibilities.  This should be a narrative description, i.e. it has
-> a flow or "story line" that the reader can follow._
+This tier acts as the central hub for all user interactions with the backend of the application. All of the routes a player can visit during a game are created and handled here. Any information needed for the views, such as the boards, players, and pieces, are returned when specific routes are visited. Overall, the UI tier returns any of the information needed for the freemarker pages to render the game.
 
-> _At appropriate places as part of this narrative provide one or more
-> static models (UML class structure or object diagrams) with some
-> details such as critical attributes and methods._
+There are two different types of routes created for the system. The first are the get routes. These routes return logic to the frontend and are in charge of getting the board objects and players for the system. These routes are the only routes able to preform redirects. The other type of routes used are post routes. This route expects information to be passed in from the frontend and returns messages to the frontend verifying or denying the statements made by the frontned. 
 
-> _You must also provide any dynamic models, such as statechart and
-> sequence diagrams, as is relevant to a particular aspect of the design
-> that you are describing.  For example, in WebCheckers you might create
-> a sequence diagram of the `POST /validateMove` HTTP request processing
-> or you might show a statechart diagram if the Game component uses a
-> state machine to manage the game._
+All of the classes for the system are defined below.
 
-> _If a dynamic model, such as a statechart describes a feature that is
-> not mostly in this tier and cuts across multiple tiers, you can
-> consider placing the narrative description of that feature in a
-> separate section for describing significant features. Place this after
-> you describe the design of the three tiers._
+![Webcheckers UI Class Diagram](Class Diagrams - UI.png)
 
+One of the most important classes in the system is the GetGameRoute class. This class renders the game board for both of the players and rereders the board for the player as they complete turns. A sequence diagram for the system is below.
+
+![Webcheckers UI Sequence Diagram](Sequence Diagram - New.png)
+
+The system starts by retrieving the player from the session and then gets the player from the player lobby. From there the GameRoute class calls upon the game lobby to generate a new model board and, in turn, two new Player Boards that they players will see as the game loads. Finally, the redPlayer player board is returned from the gameLobby and then is returned to the frontend from the route request. The second player follows a similar suite however, they only get the player board for the white player rather than creating new boards. This process of retrieving boards continues until the game is over.
+
+Overall, this tier handles all of the actions a player completes that requires logic from the backend. Anytime a player makes a move or clicks a button a different route is called. 
 
 ### Application Tier
 This tier acts as the mediator of logic and visibility. In charge of holding onto all of the players and games going on in the system, this tier instantiates new users and new game boards for use and whenever something requiring logic happens in the UI tier, this class calls all of the needed information and passes the results back for the user to see. 
