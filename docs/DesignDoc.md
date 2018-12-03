@@ -224,12 +224,16 @@ Through are suit of unit test we were looking to ensure the correctness of our i
 this was one of our main goals writing thorough unit test was one of the acceptance criteria for
 every story. Our success can be reflected by our overall code coverage of 92% and the package 
 coverage of 82%, 96% and 100% for the ui, model and application tiers respectively.
+
 ### Acceptance Testing
-> _Report on the number of user stories that have passed all their
-> acceptance criteria tests, the number that have some acceptance
-> criteria tests failing, and the number of user stories that
-> have not had any testing yet. Highlight the issues found during
-> acceptance testing and if there are any concerns._
+All story's acceptance criteria was maintained in the Trello board. Each story contained multiple acceptances test
+that were imperative to the functionality of each story. As the project progressed the user stories changed
+in functionality multiple times. For example the win loss story used to contain acceptance criteria that
+required score to be maintained. This was phased out as the project progressed and the stories were updated
+to reflect that. Upon the completion of the project all acceptance criteria that remained was met and tested
+for functionality.
+
+
 
 ### Unit Testing and Code Coverage
 Our unit testing strategy was to test one part of the code first to make sure it ran and then to move onto the next once
