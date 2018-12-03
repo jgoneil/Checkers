@@ -32,7 +32,6 @@ play against from the lobby of players. Their new goal is to now play the game f
 | MVP | Minimal Viable Product |
 | UI | User Interface |
 
-
 ## Requirements
 
 This section describes the features of the application.
@@ -159,7 +158,7 @@ Although there are lots of classes in this tier, all follow the OO principles of
 
 One of the most important classes in this tier is the findBestMove class. It handles finding the best move that a player can make and relies upon a state machine for finding the deemed 'best move'. Here is a state diagram for the system.
 
-![Webcheckers Model Tier Statechart](State Chart Application Tier.png)
+![Webcheckers Model Tier Statechart](State Chart FindBestMove .png)
 
 As seen in the document above, the system always begins in a start state. Dependent on the outcome, the system then moves into a jumping or non-jumping state. If the state is jumping, the system checks to see which of the jumps is then the longest. After this both the non-jumping state and the longest jump state check to see if the jump results in a piece being eaten. Then the system checks to see if the move provided results in a piece becoming a king. If a single best move is not found at the end of all of these checks, one is selected at random. If a single best move has been found, that move is returned.
 
