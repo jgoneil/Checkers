@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameLobby.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.appl</a> &gt; <span class="el_source">GameLobby.java</span></div><h1>GameLobby.java</h1><pre class="source lang-java linenums">package com.webcheckers.appl;
+
+import com.webcheckers.model.*;
+
+import java.util.Map;
+import java.util.List;
+
+/**
+ * Class to construct a new game lobby
+ */
+public class GameLobby {
+
+  //The red player connected to the game
+  private final Player redPlayer;
+  //The white player connected to the game
+  private final Player whitePlayer;
+  //The model board being created for the game logic
+  private ModelBoard modelBoard;
+  //The check Move class to check if a move is valid or not
+  private CheckMove checkMove;
+
+  //Static final (constant) variables
+  static final int BOARD_SIZE = 8;
+  public static final String RED = &quot;RED&quot;;
+  public static final String WHITE = &quot;WHITE&quot;;
+
+  /**
+   * Constructor for the Game Lobby. Establishes all of the boards for the game
+   *
+   * @param redPlayer the red player connected to the game lobby
+   * @param whitePlayer the white player connected to the game lobby
+   */
+<span class="fc" id="L33">  public GameLobby(Player redPlayer, Player whitePlayer) {</span>
+<span class="fc" id="L34">    this.redPlayer = redPlayer;</span>
+<span class="fc" id="L35">    this.whitePlayer = whitePlayer;</span>
+<span class="fc" id="L36">    redPlayer.setColor(RED);</span>
+<span class="fc" id="L37">    whitePlayer.setColor(WHITE);</span>
+<span class="fc" id="L38">    this.modelBoard = new ModelBoard(redPlayer, whitePlayer, BOARD_SIZE);</span>
+<span class="fc" id="L39">    this.checkMove = new CheckMove(this.modelBoard);</span>
+<span class="fc" id="L40">  }</span>
+
+  /**
+   * Constructor for the game lobby that specifies the pieces being added to the board
+   *
+   * @param redPlayer the red player connected to the game lobby
+   * @param whitePlayer the white player connected to the game lobby
+   * @param pieceList the list of pieces being added to the board
+   */
+<span class="fc" id="L49">  public GameLobby(Player redPlayer, Player whitePlayer, List&lt;Piece&gt; pieceList) {</span>
+<span class="fc" id="L50">    this.redPlayer = redPlayer;</span>
+<span class="fc" id="L51">    this.whitePlayer = whitePlayer;</span>
+<span class="fc" id="L52">    redPlayer.setColor(RED);</span>
+<span class="fc" id="L53">    whitePlayer.setColor(WHITE);</span>
+<span class="fc" id="L54">    this.modelBoard = new ModelBoard(redPlayer, whitePlayer, BOARD_SIZE, pieceList);</span>
+<span class="fc" id="L55">    this.checkMove = new CheckMove(this.modelBoard);</span>
+<span class="fc" id="L56">  }</span>
+
+  /**
+   * Getter for the PlayerBoard for the red player (board shown in the rendered HTML page)
+   *
+   * @return the PlayerBoard associated to the red player for the active game session
+   */
+  public PlayerBoard getRedPlayerBoard() {
+<span class="fc" id="L64">    return modelBoard.getRedPlayerBoard();</span>
+  }
+
+  /**
+   * Getter for the PlayerBoard for the white player (board shown in the rendered HTML page)
+   *
+   * @return the PlayerBoard associated to the white player for the active game session
+   */
+  public PlayerBoard getWhiteBoard() {
+<span class="fc" id="L73">    return modelBoard.getWhitePlayerBoard();</span>
+  }
+
+  /**
+   * Getter for the PlayerBoard for the specified player (board shown in the rendered HTML page)
+   *
+   * @param player the player attempting to retrieve their PlayerBoard
+   * @return the PlayerBoard associated to the specified player for the active game session
+   */
+  public PlayerBoard getBoardForPlayer(Player player) {
+<span class="fc bfc" id="L83" title="All 2 branches covered.">    if (this.redPlayer.equals(player)) {</span>
+<span class="fc" id="L84">      return modelBoard.getRedPlayerBoard();</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">    } else if (this.whitePlayer.equals(player)){</span>
+<span class="fc" id="L86">      return modelBoard.getWhitePlayerBoard();</span>
+    } else {
+<span class="fc" id="L88">      return null;</span>
+    }
+  }
+
+  /**
+   * Checks to see if a current player is in the game session or not
+   *
+   * @param username the username of the potential player
+   * @return true/false based on if the username entered matches the red or white player's username
+   */
+  public boolean verifyInGame(String username) {
+<span class="fc bfc" id="L99" title="All 2 branches covered.">    if (username.equals(redPlayer.getName())) {</span>
+<span class="fc" id="L100">      return redPlayer.inGame();</span>
+    }
+<span class="fc bfc" id="L102" title="All 2 branches covered.">    else if( username.equals(whitePlayer.getName())) {</span>
+<span class="fc" id="L103">      return whitePlayer.inGame();</span>
+    }
+<span class="fc" id="L105">    return false;</span>
+  }
+
+  /**
+   * Getter for the Player associated to the red side of the board
+   *
+   * @return the player associated to the red side of the board
+   */
+  public Player getRedPlayer() {
+<span class="fc" id="L114">    return this.redPlayer;</span>
+  }
+
+  /**
+   * Checks to see if a red player can keep playing the game
+   *
+   * @return true/false if the red player can continue to play
+   */
+  public boolean redCanPlay() {
+<span class="fc bfc" id="L123" title="All 2 branches covered.">    if (this.redPlayer.getColor() == null) {</span>
+<span class="fc" id="L124">      return false;</span>
+    }
+<span class="fc bfc" id="L126" title="All 2 branches covered.">    if (this.checkMove.moveAvailable(redPlayer)) {</span>
+<span class="fc" id="L127">      return this.modelBoard.redCanPlay();</span>
+    }
+<span class="fc" id="L129">    return false;</span>
+  }
+
+  /**
+   * Checks to see if a white player can keep playing the game
+   *
+   * @return true/false if the white player can continue to play
+   */
+  public boolean whiteCanPlay() {
+<span class="fc bfc" id="L138" title="All 2 branches covered.">    if (this.whitePlayer.getColor() == null) {</span>
+<span class="fc" id="L139">      return false;</span>
+    }
+<span class="fc bfc" id="L141" title="All 2 branches covered.">    if (this.checkMove.moveAvailable(whitePlayer)) {</span>
+<span class="fc" id="L142">      return this.modelBoard.redCanPlay();</span>
+    }
+<span class="fc" id="L144">    return false;</span>
+  }
+
+  /**
+   * Getter for the Player associated to the white side of the board
+   *
+   * @return the player associated to the white side of the board
+   */
+  public Player getWhitePlayer() {
+<span class="fc" id="L153">    return this.whitePlayer;</span>
+  }
+
+  /**
+   * Gets the opponent of a specified player for the game session
+   *
+   * @param player the player who is trying to find the opponent
+   * @return the player that is the specified player's opponent
+   */
+  public Player getOpponent(Player player) {
+<span class="fc bfc" id="L163" title="All 2 branches covered.">    if(redPlayer.equals(player)) {</span>
+<span class="fc" id="L164">      return whitePlayer;</span>
+    }
+<span class="fc" id="L166">    return redPlayer;</span>
+  }
+
+  public void changeTurn() {
+<span class="fc" id="L170">    this.modelBoard.changeTurn();</span>
+<span class="fc" id="L171">  }</span>
+
+  /**
+   * Checks to see if a specified player is the red player for the game session
+   *
+   * @param player the player being checked
+   * @return true/false if the red player is the specified player
+   */
+  public boolean checkRedPlayer(String player) {
+<span class="fc" id="L180">    return player.equals(redPlayer.getName());</span>
+  }
+
+  /**
+   * Getter for who's turn it currently is
+   *
+   * @return the string representing who's turn it currently is in the game
+   */
+  public String getTurn() {
+<span class="fc bfc" id="L189" title="All 2 branches covered.">    if (modelBoard.checkRedTurn()) {</span>
+<span class="fc" id="L190">      return RED;</span>
+    }
+<span class="fc" id="L192">    return WHITE;</span>
+  }
+
+  /**
+   * Checks to see if the turn is currently the red player's turn or not
+   *
+   * @return true/false based on if the turn is the red player's or not
+   */
+  public boolean checkRedTurn() {
+<span class="fc" id="L201">    return modelBoard.checkRedTurn();</span>
+  }
+
+  /**
+   * Checks to see if a move has been made on the board or not
+   *
+   * @return true/false based on if a move has been submitted or not
+   */
+  public boolean checkMadeMove() {
+<span class="fc" id="L210">    return this.modelBoard.checkMadeMove();</span>
+  }
+
+  /**
+   * Sets the pendingMove variable to an inputted value
+   *
+   * @param movePending true/false depending on what the pendingMove variable should be set to
+   */
+  public void setPendingMove(boolean movePending) {
+<span class="fc" id="L219">    this.modelBoard.setPendingMove(movePending);</span>
+<span class="fc" id="L220">  }</span>
+
+  /**
+   * Clears the pendingMoves on the model board
+   */
+  public void clearPendingMove() {
+<span class="fc" id="L226">    this.modelBoard.clearPendingMove();</span>
+<span class="fc" id="L227">  }</span>
+
+  /**
+   * Checks to see if a move has happened but is pending or not
+   *
+   * @return true/false based on if a move is pending
+   */
+  public boolean checkPendingMove() {
+<span class="fc" id="L235">    return this.modelBoard.checkPendingMove();</span>
+  }
+
+  /**
+   * Sets a move to be pending for the board til the player submits or backs up the move
+   *
+   * @param move the move that is waiting to be backed up or submitted
+   */
+  public void pendingMove(Move move) {
+<span class="fc" id="L244">    this.modelBoard.pendingMove(move);</span>
+<span class="fc" id="L245">  }</span>
+
+  /**
+   * Checks to see if a move can or cannot be submitted
+   *
+   * @return true/false if a move can or cannot be submitted
+   */
+  public boolean canSubmit() {
+<span class="fc" id="L253">    return this.modelBoard.canSubmit();</span>
+  }
+
+  /**
+   * Sets if a move can be submitted or not
+   *
+   * @param submit true/false based on if a move can or cannot be submitted
+   */
+  public void setCanSubmit(boolean submit) {
+<span class="fc" id="L262">    this.modelBoard.setSubmit(submit);</span>
+<span class="fc" id="L263">  }</span>
+
+  /**
+   * Validates the move a player is attempting to make
+   *
+   * @param start the starting position for the move
+   * @param target the ending position for the move
+   * @param player the player making the move
+   * @return true/false based on if the player can make the move or not
+   */
+  public Map&lt;Boolean, String&gt; validateMove(Position start, Position target, Player player) {
+<span class="fc" id="L274">    return this.checkMove.validateMove(start, target, player);</span>
+  }
+
+  /**
+   * Submits the pending move for the player and ends the player's turn
+   */
+  public void submitMove() {
+<span class="fc" id="L281">    this.modelBoard.submitMove();</span>
+<span class="fc" id="L282">  }</span>
+
+  /**
+   * Revers the pending move on the board
+   */
+  public void backupMove() {
+<span class="fc" id="L288">    this.modelBoard.backupMove();</span>
+<span class="fc" id="L289">  }</span>
+
+  /**
+   * Sets a move to true/false based on the parameter
+   *
+   * @param moved true/false based on if a move has occurred or not
+   */
+  public void setMove(boolean moved) {
+<span class="fc" id="L297">    modelBoard.setMove(moved);</span>
+<span class="fc" id="L298">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

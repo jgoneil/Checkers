@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetGameRoute.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.ui</a> &gt; <span class="el_source">GetGameRoute.java</span></div><h1>GetGameRoute.java</h1><pre class="source lang-java linenums">package com.webcheckers.ui;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.PlayerBoard;
+import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Message;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.Session;
+import spark.TemplateEngine;
+import com.webcheckers.model.Player;
+
+import static spark.Spark.halt;
+
+/**
+ * UI class that handles all HTTP requests for the /game page
+ */
+public class GetGameRoute implements Route {
+
+  //The template engine for rendering the freemarker html page
+  private TemplateEngine templateEngine;
+  //The player currently interacting with the game backend
+  private Player currentPlayer;
+  //The playerLobby connected to the system
+  private PlayerLobby playerLobby;
+  //The gameLobby for the active game session
+  private GameLobby gameLobby;
+  //If a player has won a game or not
+  private boolean gameWon;
+
+  //Static final variables (Constants)
+  public static final String GAMELOBBY = &quot;gameLobby&quot;;
+  public static final String VIEW = &quot;game.ftl&quot;;
+
+  /**
+   * Creates a spark route that handles all {@code Get /game} HTTP requests
+   *
+   * @param templateEngine the html template engine
+   */
+<span class="fc" id="L47">  public GetGameRoute(TemplateEngine templateEngine, PlayerLobby playerLobby) {</span>
+
+<span class="fc" id="L49">    Objects.requireNonNull(templateEngine, &quot;templateEngine cannot be null&quot;);</span>
+<span class="fc" id="L50">    Objects.requireNonNull(playerLobby, &quot;playerLobby cannot be null&quot;);</span>
+
+<span class="fc" id="L52">    this.templateEngine = templateEngine;</span>
+<span class="fc" id="L53">    this.playerLobby = playerLobby;</span>
+<span class="fc" id="L54">  }</span>
+
+  /**
+   * Setter for the game lobby for testing purposes
+   *
+   * @param gameLobby the game lobby being added to the game route class
+   */
+  public void setGameLobby(GameLobby gameLobby) {
+<span class="fc" id="L62">    this.gameLobby = gameLobby;</span>
+<span class="fc" id="L63">  }</span>
+
+  /**
+   * Render the Game page for the WebCheckers Application
+   *
+   * @param request the HTTP request
+   * @param response the HTTP response
+   * @return the rendered HTML page
+   */
+  @Override
+  public Object handle(Request request, Response response) {
+<span class="fc" id="L74">    Session httpSession = request.session();</span>
+<span class="fc" id="L75">    String player = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);</span>
+<span class="fc" id="L76">    this.currentPlayer = playerLobby.getSpecificPlayer(player);</span>
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">    if (this.currentPlayer == null) {</span>
+<span class="fc" id="L79">      response.redirect(WebServer.HOME_URL);</span>
+<span class="nc" id="L80">      halt();</span>
+<span class="nc" id="L81">      return null;</span>
+    }
+
+<span class="fc" id="L84">    Map&lt;String, Object&gt; vm = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L85">    vm.put(&quot;title&quot;, &quot;Welcome!&quot;);</span>
+
+<span class="fc bfc" id="L87" title="All 4 branches covered.">    if (httpSession.attribute(GAMELOBBY) == null &amp;&amp; !currentPlayer.inGame()) {</span>
+
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">      if (request.queryParams().size() == 0) {</span>
+<span class="nc" id="L90">        response.redirect(WebServer.HOME_URL);</span>
+<span class="nc" id="L91">        halt();</span>
+<span class="nc" id="L92">        return null;</span>
+      }
+
+<span class="fc" id="L95">      Object[] playerTwo = request.queryParams().toArray();</span>
+<span class="fc" id="L96">      Player player2 = playerLobby.getSpecificPlayer(playerTwo[0].toString());</span>
+
+<span class="fc bfc" id="L98" title="All 2 branches covered.">      if (httpSession.attribute(PostResignGame.RESIGNED_PLAYER) != null) {</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if(httpSession.attribute(PostResignGame.RESIGNED_PLAYER).equals(player2)) {</span>
+<span class="fc" id="L100">          httpSession.removeAttribute(PostResignGame.RESIGNED_PLAYER);</span>
+<span class="fc" id="L101">          httpSession.attribute(&quot;message&quot;, new Message(Message.Type.info, &quot;Other player resigned, you win!&quot;));</span>
+<span class="fc" id="L102">          response.redirect(WebServer.HOME_URL);</span>
+<span class="nc" id="L103">          halt();</span>
+<span class="nc" id="L104">          return null;</span>
+        }
+      }
+
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">      if (player2 == null) {</span>
+<span class="nc" id="L109">        httpSession.attribute(&quot;message&quot;, new Message(Message.Type.info, &quot;Player signed out. You Win!&quot;));</span>
+<span class="nc" id="L110">        response.redirect(WebServer.HOME_URL);</span>
+<span class="nc" id="L111">        halt();</span>
+<span class="nc" id="L112">        return null;</span>
+      }
+
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">      if (player2.inGame()) {</span>
+<span class="nc" id="L116">        httpSession.attribute(&quot;message&quot;, new Message(Message.Type.error, &quot;Player already in game!&quot;));</span>
+<span class="nc" id="L117">        response.redirect(WebServer.HOME_URL);</span>
+<span class="nc" id="L118">        halt();</span>
+<span class="nc" id="L119">        return null;</span>
+      }
+
+<span class="fc" id="L122">      this.gameLobby = new GameLobby(currentPlayer, player2);</span>
+<span class="fc" id="L123">      httpSession.attribute(GAMELOBBY, this.gameLobby);</span>
+
+<span class="fc" id="L125">      PlayerBoard playerBoard = gameLobby.getRedPlayerBoard();</span>
+
+<span class="fc" id="L127">      vm.put(&quot;currentPlayer&quot;, currentPlayer);</span>
+<span class="fc" id="L128">      vm.put(&quot;viewMode&quot;, &quot;PLAY&quot;);</span>
+<span class="fc" id="L129">      vm.put(&quot;redPlayer&quot;, currentPlayer);</span>
+<span class="fc" id="L130">      vm.put(&quot;whitePlayer&quot;, player2);</span>
+<span class="fc" id="L131">      vm.put(&quot;activeColor&quot;, GameLobby.RED);</span>
+<span class="fc" id="L132">      vm.put(&quot;board&quot;, playerBoard);</span>
+<span class="fc" id="L133">      return templateEngine.render(new ModelAndView(vm, VIEW));</span>
+<span class="pc bpc" id="L134" title="1 of 4 branches missed.">    } else if (httpSession.attribute(GAMELOBBY) == null &amp;&amp; currentPlayer.inGame()) {</span>
+<span class="fc" id="L135">      httpSession.attribute(GAMELOBBY, this.gameLobby);</span>
+
+<span class="fc" id="L137">      vm.put(&quot;currentPlayer&quot;, currentPlayer);</span>
+<span class="fc" id="L138">      vm.put(&quot;viewMode&quot;, &quot;PLAY&quot;);</span>
+<span class="fc" id="L139">      vm.put(&quot;redPlayer&quot;, gameLobby.getRedPlayer());</span>
+<span class="fc" id="L140">      vm.put(&quot;whitePlayer&quot;, gameLobby.getWhitePlayer());</span>
+<span class="fc" id="L141">      vm.put(&quot;activeColor&quot;, gameLobby.getTurn());</span>
+<span class="fc" id="L142">      vm.put(&quot;board&quot;, gameLobby.getWhiteBoard());</span>
+<span class="fc" id="L143">      return templateEngine.render(new ModelAndView(vm, VIEW));</span>
+<span class="pc bpc" id="L144" title="1 of 4 branches missed.">    } else if (httpSession.attribute(GAMELOBBY) != null &amp;&amp; !currentPlayer.inGame()) {</span>
+<span class="fc" id="L145">      httpSession.attribute(&quot;message&quot;, new Message(Message.Type.info, PostResignGame.OTHER_PLAYER_RESIGN)); </span>
+<span class="fc" id="L146">      response.redirect(WebServer.HOME_URL);</span>
+<span class="nc" id="L147">      halt();</span>
+<span class="nc" id="L148">      return null;</span>
+    } else {
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">      if (this.gameLobby != httpSession.attribute(GAMELOBBY)) {</span>
+<span class="fc" id="L151">        this.gameLobby = httpSession.attribute(GAMELOBBY);</span>
+      }
+
+<span class="pc bpc" id="L154" title="1 of 4 branches missed.">      if (!this.gameLobby.whiteCanPlay() || !this.gameLobby.redCanPlay()) {</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">        if (this.gameWon) {</span>
+<span class="nc" id="L156">          httpSession.attribute(&quot;message&quot;, new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));</span>
+<span class="nc" id="L157">          this.gameWon = false;</span>
+        }
+        else {
+<span class="fc bfc" id="L160" title="All 2 branches covered.">          if (this.currentPlayer.isRed()) {</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            if (!this.gameLobby.whiteCanPlay()) {</span>
+<span class="fc" id="L162">              this.gameWon = true;</span>
+<span class="fc" id="L163">              httpSession.attribute(&quot;message&quot;, new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));</span>
+            } else {
+<span class="nc" id="L165">              httpSession.attribute(&quot;message&quot;, new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));</span>
+            }
+          } else {
+<span class="fc bfc" id="L168" title="All 2 branches covered.">            if (!this.gameLobby.redCanPlay()) {</span>
+<span class="fc" id="L169">              this.gameWon = true;</span>
+<span class="fc" id="L170">              httpSession.attribute(&quot;message&quot;, new Message(Message.Type.info, PostSubmitTurn.PLAYER_WON));</span>
+            } else {
+<span class="fc" id="L172">              httpSession.attribute(&quot;message&quot;, new Message(Message.Type.info, PostSubmitTurn.PLAYER_LOSS));</span>
+            }
+          }
+        }
+<span class="fc" id="L176">        this.currentPlayer.gameEnd();</span>
+<span class="fc" id="L177">        this.gameLobby.changeTurn();</span>
+<span class="fc" id="L178">        response.redirect(WebServer.HOME_URL);</span>
+<span class="nc" id="L179">        halt();</span>
+<span class="nc" id="L180">        return null;</span>
+      }
+
+<span class="fc" id="L183">      gameLobby.clearPendingMove();</span>
+<span class="fc" id="L184">      vm.put(&quot;currentPlayer&quot;, currentPlayer);</span>
+<span class="fc" id="L185">      vm.put(&quot;viewMode&quot;, &quot;PLAY&quot;);</span>
+
+<span class="fc" id="L187">      vm.put(&quot;redPlayer&quot;, gameLobby.getRedPlayer());</span>
+<span class="fc" id="L188">      vm.put(&quot;whitePlayer&quot;, gameLobby.getWhitePlayer());</span>
+<span class="fc" id="L189">      vm.put(&quot;activeColor&quot;, gameLobby.getTurn());</span>
+<span class="fc" id="L190">      vm.put(&quot;board&quot;, gameLobby.getBoardForPlayer(currentPlayer));</span>
+<span class="fc" id="L191">      return templateEngine.render(new ModelAndView(vm, VIEW));</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

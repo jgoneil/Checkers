@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetSigninRoute.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.ui</a> &gt; <span class="el_source">GetSigninRoute.java</span></div><h1>GetSigninRoute.java</h1><pre class="source lang-java linenums">package com.webcheckers.ui;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Logger;
+
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.TemplateEngine;
+
+/**
+ * {@code get /signin} Class that controls main connection to signin page.
+ * Completes error checking based on if the session already has a player attribute or not
+ */
+public class GetSigninRoute implements Route {
+
+  //Static final variables (Constants)
+  static final String TITLE = &quot;Welcome!&quot;;
+  static final String HEADER = &quot;Please Sign In Below.&quot;;
+  static final String VIEW_NAME = &quot;signin.ftl&quot;;
+  static final String ATTEMPT_FAILED = &quot;attemptFailed&quot;;
+
+  //Logger for recording events
+<span class="fc" id="L27">  private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());</span>
+
+  //HTML template loader for the freemarker pages
+  private TemplateEngine templateEngine;
+
+  /**
+   * Constructor for class
+   *
+   * @param templateEngine the template in which all messages for the system are handled
+   * between spark and the java backend
+   */
+<span class="fc" id="L38">  public GetSigninRoute(final TemplateEngine templateEngine) {</span>
+<span class="fc" id="L39">    Objects.requireNonNull(templateEngine, &quot;templateEngine must not be null&quot;);</span>
+
+<span class="fc" id="L41">    this.templateEngine = templateEngine;</span>
+<span class="fc" id="L42">  }</span>
+
+  /**
+   * Handle method for signin connections
+   * Preforms error handling for users already signed into the system (need to implement)
+   *
+   * @param request the information being passed from the frontend
+   * @param response the information being sent from the backend (this class)`
+   */
+  @Override
+  public String handle(Request request, Response response) {
+<span class="fc" id="L53">    LOG.finer(&quot;GetSigninRoute is invoked.&quot;);</span>
+
+<span class="fc" id="L55">    final Map&lt;String, Object&gt; vm = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L56">    vm.put(&quot;title&quot;, TITLE);</span>
+<span class="fc" id="L57">    vm.put(&quot;header&quot;, HEADER);</span>
+<span class="fc" id="L58">    vm.put(ATTEMPT_FAILED, false);</span>
+<span class="fc" id="L59">    return templateEngine.render(new ModelAndView(vm, VIEW_NAME));</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

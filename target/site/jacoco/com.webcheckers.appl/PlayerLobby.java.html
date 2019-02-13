@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerLobby.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.appl</a> &gt; <span class="el_source">PlayerLobby.java</span></div><h1>PlayerLobby.java</h1><pre class="source lang-java linenums">package com.webcheckers.appl;
+
+import java.util.*;
+import com.webcheckers.model.CheckSignin;
+import com.webcheckers.model.Player;
+
+/**
+ * Class that stores and controls all users signed into the game
+ */
+public class PlayerLobby {
+
+  //The function for checking if user input for a username is valid
+  private final CheckSignin checkSignin;
+  //The list of players currently in the game
+  private List&lt;Player&gt; users;
+  //The list of usernames for the players signed into the game
+  private List&lt;String&gt; usernames;
+
+  /**
+   * Constructor for the class that establishes sign in checks and the list of currently signed in
+   * users
+   */
+<span class="fc" id="L23">  public PlayerLobby() {</span>
+<span class="fc" id="L24">    this.checkSignin = new CheckSignin();</span>
+<span class="fc" id="L25">    this.users = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L26">    this.usernames = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L27">  }</span>
+
+  /**
+   * Class that facilitates the creation of new players and ensures usernames are created properly
+   * before player creation
+   *
+   * @param username the username input from the signin page
+   * @return boolean true/false based on if the player was added to the system or not
+   */
+  public boolean addPlayer(String username) {
+<span class="fc bfc" id="L37" title="All 2 branches covered.">    if (this.checkSignin.validateUser(username, this.users)) {</span>
+<span class="fc" id="L38">      Player player = new Player(username.trim());</span>
+<span class="fc" id="L39">      this.users.add(player);</span>
+<span class="fc" id="L40">      this.usernames.add(username.trim());</span>
+<span class="fc" id="L41">      return true;</span>
+    }
+<span class="fc" id="L43">    return false;</span>
+  }
+
+  /**
+   * Getter for a specified player in the list of currently signed in users
+   *
+   * @param username the username of the player the system wants to obtain
+   * @return Player Either null or the player requested
+   */
+  public Player getSpecificPlayer(String username) {
+<span class="fc bfc" id="L53" title="All 2 branches covered.">    if (usernames.contains(username)) {</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">      for (Player p : users) {</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (p.getName().equals(username)) {</span>
+<span class="fc" id="L56">          return p;</span>
+        }
+<span class="fc" id="L58">      }</span>
+    }
+<span class="fc" id="L60">    return null;</span>
+  }
+
+  /**
+   * Getter for the list of all players currently signed into the game
+   *
+   * @return the list of all usernames associated to players currently signed into the game
+   */
+  public List&lt;String&gt; getAllPlayers() {
+<span class="fc" id="L69">    return this.usernames;</span>
+  }
+
+  /**
+   * Getter for the list of all usernames of players except a specified player (used for display of
+   * potential opponents)
+   *
+   * @param username the username that is excluded from the list
+   * @return the lsit of usernames currently signed into the game without the specified player
+   */
+  public List&lt;String&gt; getAllPlayersExceptUser(String username) {
+<span class="fc bfc" id="L80" title="All 2 branches covered.">    if (!this.usernames.contains(username)) {</span>
+<span class="fc" id="L81">      return this.usernames;</span>
+    }
+<span class="fc" id="L83">    List&lt;String&gt; playerNames = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">    for (String u : this.usernames) {</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">      if (!u.equals(username)) {</span>
+<span class="fc" id="L86">        playerNames.add(u);</span>
+      }
+<span class="fc" id="L88">    }</span>
+<span class="fc" id="L89">    return playerNames;</span>
+  }
+
+  /**
+   * Removes a user from the list of users connected to the system
+   *
+   * @param username the username of the player being removed
+   */
+  public void removeUser(String username){
+<span class="fc" id="L98">    users.remove(getSpecificPlayer(username));</span>
+<span class="fc" id="L99">    usernames.remove(username);</span>
+<span class="fc" id="L100">  }</span>
+
+  /**
+   * Gets the number of users currently logged into the system
+   *
+   * @return the number of players connected to the system
+   */
+  public int getNumberOfPlayers() {
+<span class="fc" id="L108">    return this.users.size();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

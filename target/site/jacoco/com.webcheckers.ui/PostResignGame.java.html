@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostResignGame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.ui</a> &gt; <span class="el_source">PostResignGame.java</span></div><h1>PostResignGame.java</h1><pre class="source lang-java linenums">package com.webcheckers.ui;
+
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Message;
+import com.webcheckers.model.Player;
+import spark.*;
+
+import java.util.Objects;
+
+import com.google.gson.Gson;
+
+/**
+ * Class for resigning a game {@code postResign}
+ */
+public class PostResignGame implements Route {
+
+  //Static final variables (constants)
+  static final String ERROR_RESIGN = &quot;Cannot resign due a move being made. Reverse the move if you would like to truly resign.&quot;;
+  static final String SUCCESS_RESIGN = &quot;You have successfully resigned from the game. You lost.&quot;;
+  static final String OTHER_PLAYER_RESIGN = &quot;Your opponent resigned from the game. You win!&quot;;
+  static final String RESIGNED_PLAYER = &quot;resignedPlayer&quot;;
+
+  //Gson controller for reading and sending JSON information
+  private final Gson gson;
+  //Player that disconnected from the system
+  private Player resignedPlayer;
+  //Player lobby for the current session
+  private PlayerLobby playerLobby;
+  
+  /**
+   * Main method for POST resign game
+   *
+   * @param gson the gson parser for JQuery Requests/Responses
+   */
+<span class="fc" id="L36">  public PostResignGame(final Gson gson, final PlayerLobby playerLobby) {</span>
+    
+<span class="fc" id="L38">    Objects.requireNonNull(gson, &quot;Gson cannot be null.&quot;);</span>
+<span class="fc" id="L39">    Objects.requireNonNull(playerLobby, &quot;Player lobby cannot be null&quot;);</span>
+
+<span class="fc" id="L41">    this.gson = gson;</span>
+<span class="fc" id="L42">    this.playerLobby = playerLobby;</span>
+<span class="fc" id="L43">  }</span>
+
+  /**
+   * Method to render AJAX response via gson for {@code POST /resignGame}
+   *
+   * @param request the HTTP request
+   * @param response the HTTP response
+   * @return the AJAX response for the player's resignation
+   */
+  @Override
+  public Object handle(Request request, Response response) {
+<span class="fc" id="L54">    Session httpSession = request.session();</span>
+
+<span class="fc" id="L56">    String playerUsername = httpSession.attribute(GetHomeRoute.PLAYERSERVICES_KEY);</span>
+<span class="fc" id="L57">    Player player = playerLobby.getSpecificPlayer(playerUsername);</span>
+<span class="fc" id="L58">    GameLobby gameLobby = httpSession.attribute(GetGameRoute.GAMELOBBY);</span>
+
+<span class="fc bfc" id="L60" title="All 2 branches covered.">    if (gameLobby == null) {</span>
+<span class="fc" id="L61">      Message message = new Message(Message.Type.info, OTHER_PLAYER_RESIGN);</span>
+<span class="fc" id="L62">      httpSession.attribute(RESIGNED_PLAYER, resignedPlayer);</span>
+<span class="fc" id="L63">      httpSession.attribute(&quot;message&quot;, message);</span>
+<span class="fc" id="L64">      return gson.toJson(message);</span>
+    }
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">    if(gameLobby.checkPendingMove()) {</span>
+<span class="fc" id="L68">      Message message = new Message(Message.Type.error, ERROR_RESIGN);</span>
+<span class="fc" id="L69">      return gson.toJson(message);</span>
+    } else {
+<span class="fc" id="L71">      Player player2 = gameLobby.getOpponent(player);</span>
+<span class="fc" id="L72">      player.gameEnd();</span>
+<span class="fc" id="L73">      player2.gameEnd();</span>
+<span class="fc" id="L74">      this.resignedPlayer = player;</span>
+<span class="fc" id="L75">      httpSession.removeAttribute(GetGameRoute.GAMELOBBY);</span>
+<span class="fc" id="L76">      Message message = new Message(Message.Type.info, SUCCESS_RESIGN);</span>
+<span class="fc" id="L77">      httpSession.attribute(RESIGNED_PLAYER, resignedPlayer);</span>
+<span class="fc" id="L78">      httpSession.attribute(&quot;message&quot;, message);</span>
+<span class="fc" id="L79">      return gson.toJson(message);</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

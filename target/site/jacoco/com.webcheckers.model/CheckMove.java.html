@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckMove.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">CheckMove.java</span></div><h1>CheckMove.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Stack;
+
+/**
+ * Model class to handle checking moves for validation
+ */
+public class CheckMove {
+
+  //The board holding the logic for checking if a piece is valid or not (the model board)
+  private ModelBoard board;
+  private Piece piece;
+
+  //Static (constant) variables for response
+  private static final String jumpPossible = &quot;Attempted to move when jump is possible.&quot;;
+  public static final String multiJumpPossible = &quot;Attempting to jump a single piece when a multi-jump is possible.&quot;;
+
+  /**
+   * Constructor for the CheckMove Class
+   *
+   * @param board the board for the model (2-D Array of Spaces)
+   */
+<span class="fc" id="L25">  public CheckMove(ModelBoard board) {</span>
+<span class="fc" id="L26">    this.board = board;</span>
+<span class="fc" id="L27">  }</span>
+
+  /**
+   * Checks to see if a player still has moves possible to make
+   *
+   * @param player the player checking to see if there are moves possible
+   * @return true/false if a player does/doesn't have any moves left to make
+   */
+  public boolean moveAvailable(Player player) {
+<span class="fc bfc" id="L36" title="All 2 branches covered.">    if (player.isRed()) {</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">      for (Piece piece : board.getRedPieces()) {</span>
+<span class="fc" id="L38">        int row = piece.getXCoordinate();</span>
+<span class="fc" id="L39">        int col = piece.getCellIdx();</span>
+<span class="fc" id="L40">        Position current = new Position(row, col);</span>
+        //Checking to see if the piece can move to the left or right forwards
+<span class="fc" id="L42">        Map&lt;Boolean, String&gt; moveUpperLeft = validateMove(current, new Position(row - 1, col - 1), player);</span>
+<span class="fc" id="L43">        Map&lt;Boolean, String&gt; moveUpperRight = validateMove(current, new Position(row - 1, col + 1), player);</span>
+<span class="fc bfc" id="L44" title="All 4 branches covered.">        if (moveUpperLeft.containsKey(true) || moveUpperRight.containsKey(true)) {</span>
+<span class="fc" id="L45">          return true;</span>
+        }
+        //If they can't move to the left or right, checking for a potential jump
+<span class="pc bpc" id="L48" title="1 of 4 branches missed.">        if (moveUpperLeft.containsValue(jumpPossible) || moveUpperRight.containsValue(jumpPossible)) {</span>
+<span class="fc" id="L49">          return true;</span>
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">        } else if (moveUpperLeft.containsValue(multiJumpPossible) || moveUpperRight.containsValue(multiJumpPossible)) {</span>
+<span class="nc" id="L51">          return true;</span>
+        }
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (piece.isKing()) {</span>
+          //If the piece is a king, checking to see if it can move left or right backwards
+<span class="fc" id="L55">          Map&lt;Boolean, String&gt; moveLowerLeft = validateMove(current, new Position(row + 1, col - 1), player);</span>
+<span class="fc" id="L56">          Map&lt;Boolean, String&gt; moveLowerRight = validateMove(current, new Position(row + 1, col + 1), player);</span>
+<span class="pc bpc" id="L57" title="3 of 4 branches missed.">          if (moveLowerLeft.containsKey(true) || moveLowerRight.containsKey(true)) {</span>
+<span class="fc" id="L58">            return true;</span>
+          }
+        }
+<span class="fc" id="L61">      }</span>
+    } else {
+<span class="fc bfc" id="L63" title="All 2 branches covered.">      for (Piece piece : board.getWhitePieces()) {</span>
+<span class="fc" id="L64">        int row = piece.getXCoordinate();</span>
+<span class="fc" id="L65">        int col = piece.getCellIdx();</span>
+<span class="fc" id="L66">        Position current = new Position(7 - row, 7 - col);</span>
+        //Checking to see if the piece can move to the left or right forwards
+<span class="fc" id="L68">        Map&lt;Boolean, String&gt; moveUpperLeft = validateMove(current, new Position(7 -</span>
+                (row + 1), 7 - (col - 1)), player);
+<span class="fc" id="L70">        Map&lt;Boolean, String&gt; moveUpperRight = validateMove(current, new Position(7 -</span>
+                (row + 1), 7 - (col + 1)), player);
+<span class="fc bfc" id="L72" title="All 4 branches covered.">        if (moveUpperLeft.containsKey(true) || moveUpperRight.containsKey(true)) {</span>
+<span class="fc" id="L73">          return true;</span>
+        }
+        //If they can't move to the left or right, checking for a potential jump
+<span class="pc bpc" id="L76" title="1 of 4 branches missed.">        if (moveUpperLeft.containsValue(jumpPossible) || moveUpperRight.containsValue(jumpPossible)) {</span>
+<span class="fc" id="L77">          return true;</span>
+<span class="pc bpc" id="L78" title="2 of 4 branches missed.">        } else if (moveUpperLeft.containsValue(multiJumpPossible) || moveUpperRight.containsValue(multiJumpPossible)) {</span>
+<span class="nc" id="L79">          return true;</span>
+        }
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (piece.isKing()) {</span>
+          //If the piece is a king, checking to see if it can move left or right backwards
+<span class="fc" id="L83">          Map&lt;Boolean, String&gt; moveLowerLeft = validateMove(current, new Position(7 -</span>
+                  (row - 1), 7 - (col - 1)), player);
+<span class="fc" id="L85">          Map&lt;Boolean, String&gt; moveLowerRight = validateMove(current, new Position(7 -</span>
+                  (row - 1), 7 - (col + 1)), player);
+<span class="pc bpc" id="L87" title="3 of 4 branches missed.">          if (moveLowerLeft.containsKey(true) || moveLowerRight.containsKey(true)) {</span>
+<span class="fc" id="L88">            return true;</span>
+          }
+        }
+<span class="fc" id="L91">      }</span>
+    }
+<span class="fc" id="L93">    return false;</span>
+  }
+
+  /**
+   * Checks if the piece is moving diagonally
+   *
+   * @param start the starting position of the checker
+   * @param end   the ending position of the checker
+   * @return true/false based on whether the move is diagonal
+   */
+  private boolean isMovingDiagonal(Position start, Position end) {
+<span class="fc" id="L104">    int xDiff = Math.abs(start.getRow() - end.getRow());</span>
+<span class="fc" id="L105">    int yDiff = Math.abs(start.getCell() - end.getCell());</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">    return xDiff == yDiff;</span>
+  }
+
+  /**
+   * Checks to see if the distance for the column or row is too large
+   *
+   * @param start the starting position of the checker
+   * @param end   the ending position of the checker
+   * @return true/false based on if the distance is too large or not
+   */
+  private boolean isMovingOne(Position start, Position end) {
+<span class="fc" id="L117">    int xDiff = Math.abs(start.getRow() - end.getRow());</span>
+<span class="fc" id="L118">    int yDiff = Math.abs(start.getCell() - end.getCell());</span>
+<span class="fc bfc" id="L119" title="All 4 branches covered.">    return xDiff == 1 &amp;&amp; yDiff == 1;</span>
+  }
+
+  /**
+   * Checks to see if the distance for the column or row is two
+   *
+   * @param start the starting position of the checker
+   * @param end   the ending position of the checker
+   * @return true/false based on if the distance is two or not
+   */
+  private boolean isMovingTwo(Space start, Space end) {
+<span class="fc" id="L130">    int xDiff = Math.abs(start.getxCoordinate() - end.getxCoordinate());</span>
+<span class="fc" id="L131">    int yDiff = Math.abs(start.getCellIdx() - end.getCellIdx());</span>
+<span class="pc bpc" id="L132" title="1 of 4 branches missed.">    return xDiff == 2 &amp;&amp; yDiff == 2;</span>
+  }
+
+  /**
+   * Check to see if checker is moving forward
+   *
+   * @param start the starting position of the checker
+   * @param end   the ending position of the checker
+   * @return true/false based on whether checker is moving forward
+   */
+  private boolean isMovingForward(Position start, Position end) {
+<span class="fc bfc" id="L143" title="All 2 branches covered.">    return end.getRow() &lt; start.getRow();</span>
+  }
+
+  /**
+   * Checks to see if a piece that is a king can jump
+   *
+   * @param piece the piece attempting to make a jump
+   * @param player the player attempting to make a jump
+   * @return a map of moves that a king piece can make
+   */
+  private Map&lt;Space, Space&gt; kingCanJump(Piece piece, Player player) {
+<span class="fc" id="L154">    Map&lt;Space, Space&gt; kingJumps = new HashMap&lt;&gt;();</span>
+
+<span class="pc bpc" id="L156" title="1 of 4 branches missed.">    if (player.isRed() &amp;&amp; piece.isKing()) {</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">      if (piece.getSpace().getxCoordinate() + 2 &lt;= 7</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">              &amp;&amp; piece.getSpace().getCellIdx() - 2 &gt;= 0) {</span>
+<span class="fc" id="L159">        Space bottomLeft = board.getSpace(piece.getSpace().getxCoordinate() + 2,</span>
+<span class="fc" id="L160">                piece.getSpace().getCellIdx() - 2);</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (pieceCanJump(piece.getSpace(), bottomLeft, player, piece)) {</span>
+<span class="fc" id="L162">          kingJumps.put(bottomLeft, piece.getSpace());</span>
+        }
+      }
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">      if (piece.getSpace().getxCoordinate() + 2 &lt;= 7</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">              &amp;&amp; piece.getSpace().getCellIdx() + 2 &lt;= 7) {</span>
+<span class="fc" id="L167">        Space bottomRight = board.getSpace(piece.getSpace().getxCoordinate() + 2,</span>
+<span class="fc" id="L168">                piece.getSpace().getCellIdx() + 2);</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (pieceCanJump(piece.getSpace(), bottomRight, player, piece)) {</span>
+<span class="fc" id="L170">          kingJumps.put(bottomRight, piece.getSpace());</span>
+        }
+<span class="fc" id="L172">      }</span>
+<span class="pc bpc" id="L173" title="2 of 4 branches missed.">    } else if (player.isWhite() &amp;&amp; piece.isKing()){</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">      if (piece.getSpace().getxCoordinate() - 2 &gt;= 0</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">              &amp;&amp; piece.getSpace().getCellIdx() + 2 &lt;= 7) {</span>
+<span class="fc" id="L176">        Space bottomLeft = board.getSpace(piece.getSpace().getxCoordinate() - 2,</span>
+<span class="fc" id="L177">                piece.getSpace().getCellIdx() + 2);</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">        if (pieceCanJump(piece.getSpace(), bottomLeft, player, piece)) {</span>
+<span class="fc" id="L179">          kingJumps.put(bottomLeft, piece.getSpace());</span>
+        }
+      }
+<span class="fc bfc" id="L182" title="All 2 branches covered.">      if (piece.getSpace().getxCoordinate() - 2 &gt;= 0</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">              &amp;&amp; piece.getSpace().getCellIdx() - 2 &gt;= 0) {</span>
+<span class="fc" id="L184">        Space bottomRight = board.getSpace(piece.getSpace().getxCoordinate() - 2,</span>
+<span class="fc" id="L185">                piece.getSpace().getCellIdx() - 2);</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">        if (pieceCanJump(piece.getSpace(), bottomRight, player, piece)) {</span>
+<span class="fc" id="L187">          kingJumps.put(bottomRight, piece.getSpace());</span>
+        }
+      }
+    }
+<span class="fc" id="L191">    return kingJumps;</span>
+  }
+
+  /**
+   * Check to see if any piece during the players turn can jump.
+   *
+   * @return a map of all of the spaces (last position) that can jump for the given board
+   */
+  private Map&lt;Space, Space&gt; canJump(Player player) {
+<span class="fc" id="L200">    Map&lt;Space, Space&gt; jumps = new HashMap&lt;&gt;();</span>
+    //Checking to see if a player is red or not
+<span class="fc bfc" id="L202" title="All 2 branches covered.">    if (player.isRed()) {</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">      for (Piece redPiece : board.getRedPieces()) {</span>
+        //checking to see if a piece is within the bounds of the board (that it is not off the left or top sides)
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (redPiece.getXCoordinate() - 2 &gt;= 0</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">                &amp;&amp; redPiece.getCellIdx() - 2 &gt;= 0) {</span>
+<span class="fc" id="L207">          Space upperLeft = board.getSpace(redPiece.getXCoordinate() - 2,</span>
+<span class="fc" id="L208">                  redPiece.getCellIdx() - 2);</span>
+          //checking to see if that specific piece can jump another piece
+<span class="fc bfc" id="L210" title="All 2 branches covered.">          if (pieceCanJump(redPiece.getSpace(), upperLeft, player, redPiece)) {</span>
+<span class="fc" id="L211">            jumps.put(redPiece.getSpace(), upperLeft);</span>
+          }
+        }
+        //checking to see if a piece is within the bounds of the board (that it is not off the right or top sides)
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        if (redPiece.getXCoordinate() - 2 &gt;= 0</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">                &amp;&amp; redPiece.getCellIdx() + 2 &lt;= 7) {</span>
+<span class="fc" id="L217">          Space upperRight = board.getSpace(redPiece.getXCoordinate() - 2,</span>
+<span class="fc" id="L218">                  redPiece.getCellIdx() + 2);</span>
+          //checking to see if that specific piece can jump another piece
+<span class="fc bfc" id="L220" title="All 2 branches covered.">          if (pieceCanJump(redPiece.getSpace(), upperRight, player, redPiece)) {</span>
+<span class="fc" id="L221">            jumps.put(redPiece.getSpace(), upperRight);</span>
+          }
+        }
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        if (redPiece.isKing()) {</span>
+<span class="fc" id="L225">          Map&lt;Space, Space&gt; kingJumps = kingCanJump(redPiece, player);</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">          if (kingJumps.size() != 0) {</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">            for (Space end : kingJumps.keySet()) {</span>
+<span class="fc" id="L228">              jumps.put(redPiece.getSpace(), end);</span>
+<span class="fc" id="L229">            }</span>
+          }
+        }
+<span class="fc" id="L232">      }</span>
+    } else {
+<span class="fc bfc" id="L234" title="All 2 branches covered.">      for (Piece whitePiece : board.getWhitePieces()) {</span>
+        //checking to see if a piece is within the bounds of the board (that it is not off the right or bottom sides)
+<span class="fc bfc" id="L236" title="All 2 branches covered.">        if (whitePiece.getXCoordinate() + 2 &lt;= 7</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">                &amp;&amp; whitePiece.getCellIdx() + 2 &lt;= 7) {</span>
+<span class="fc" id="L238">          Space upperLeft = board.getSpace(whitePiece.getXCoordinate() + 2,</span>
+<span class="fc" id="L239">                  whitePiece.getCellIdx() + 2);</span>
+          //checking to see if that specific piece can jump another piece
+
+<span class="fc bfc" id="L242" title="All 2 branches covered.">          if (pieceCanJump(whitePiece.getSpace(), upperLeft, player, whitePiece)) {</span>
+<span class="fc" id="L243">            jumps.put(whitePiece.getSpace(), upperLeft);</span>
+          }
+        }
+        //checking to see if a piece is within the bounds of the board (that it is not off the left or bottom sides)
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        if (whitePiece.getXCoordinate() + 2 &lt;= 7</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">                &amp;&amp; whitePiece.getCellIdx() - 2 &gt;= 0) {</span>
+<span class="fc" id="L249">          Space upperRight = board.getSpace(whitePiece.getXCoordinate() + 2,</span>
+<span class="fc" id="L250">                  whitePiece.getCellIdx() - 2);</span>
+          //checking to see if that specific piece can jump another piece
+<span class="fc bfc" id="L252" title="All 2 branches covered.">          if (pieceCanJump(whitePiece.getSpace(), upperRight, player, whitePiece)) {</span>
+<span class="fc" id="L253">            jumps.put(whitePiece.getSpace(), upperRight);</span>
+          }
+        }
+<span class="fc bfc" id="L256" title="All 2 branches covered.">        if (whitePiece.isKing()) {</span>
+<span class="fc" id="L257">          Map&lt;Space, Space&gt; kingJumps = kingCanJump(whitePiece, player);</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">          if (kingJumps.size() != 0) {</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">            for (Space end : kingJumps.keySet()) {</span>
+<span class="fc" id="L260">              jumps.put(whitePiece.getSpace(), end);</span>
+<span class="fc" id="L261">            }</span>
+          }
+        }
+<span class="fc" id="L264">      }</span>
+    }
+<span class="fc" id="L266">    return jumps;</span>
+  }
+
+  /**
+   * Finds all of the potential jumps on the board to see if any mulit jumps can happen
+   *
+   * @param player the player attempting to make a move
+   * @return a map containing the last move for all of the starting and ending spaces of all of the potential jumps
+   */
+  public Map&lt;Space, Space&gt; findJumps(Player player) {
+<span class="fc" id="L276">    Map&lt;Space, Space&gt; jumps = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L277">    Stack&lt;Move&gt; movesMade = new Stack&lt;&gt;();</span>
+<span class="fc" id="L278">    boolean canContinueJumping = true;</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">    while (canContinueJumping) {</span>
+<span class="fc" id="L280">      Map&lt;Space, Space&gt; temp = canJump(player);</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">      if (temp.size() == 0) {</span>
+<span class="fc" id="L282">        canContinueJumping = false;</span>
+      } else {
+<span class="fc bfc" id="L284" title="All 2 branches covered.">        for (Space startingSpace : temp.keySet()) {</span>
+<span class="fc" id="L285">          Space endingSpace = temp.get(startingSpace);</span>
+<span class="fc" id="L286">          Move move = new Move(new Position(startingSpace.getxCoordinate(), startingSpace.getCellIdx()),</span>
+<span class="fc" id="L287">                  new Position(endingSpace.getxCoordinate(), endingSpace.getCellIdx()));</span>
+<span class="fc" id="L288">          movesMade.push(move);</span>
+<span class="fc" id="L289">          board.addPieceToSpace(startingSpace.getPiece(), endingSpace);</span>
+<span class="fc bfc" id="L290" title="All 2 branches covered.">          if (jumps.size() == 0) {</span>
+<span class="fc" id="L291">            jumps.put(startingSpace, endingSpace);</span>
+          } else {
+<span class="fc bfc" id="L293" title="All 2 branches covered.">            if (jumps.containsValue(startingSpace)) {</span>
+<span class="fc" id="L294">              Map&lt;Space, Space&gt; tempHold = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">              for (Space keySpace : jumps.keySet()) {</span>
+<span class="pc bpc" id="L296" title="1 of 2 branches missed.">                if (!jumps.get(keySpace).equals(startingSpace)) {</span>
+<span class="nc" id="L297">                  tempHold.put(keySpace, jumps.get(keySpace));</span>
+                }
+<span class="fc" id="L299">              }</span>
+<span class="fc" id="L300">              jumps = tempHold;</span>
+            }
+<span class="fc" id="L302">            jumps.put(startingSpace, endingSpace);</span>
+          }
+<span class="fc" id="L304">        }</span>
+      }
+<span class="fc" id="L306">    }</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">    while (movesMade.size() != 0) {</span>
+<span class="fc" id="L308">      Move revertMove = movesMade.pop();</span>
+<span class="fc" id="L309">      Space startingSpace = board.getSpace(revertMove.getStartRow(), revertMove.getStartCell());</span>
+<span class="fc" id="L310">      Space endingSpace = board.getSpace(revertMove.getEndRow(), revertMove.getEndCell());</span>
+<span class="fc" id="L311">      board.removePieceFromSpace(startingSpace, endingSpace);</span>
+<span class="fc" id="L312">    }</span>
+<span class="fc" id="L313">    return jumps;</span>
+  }
+
+  /**
+   * Checks to see a single piece can jump.
+   *
+   * @param start Starting space that contains the piece
+   * @param end   The end space that the piece could possibly jump to
+   * @return true/false based on if the piece can jump or not.
+   */
+  private boolean pieceCanJump(Space start, Space end, Player player, Piece piece) {
+<span class="fc" id="L324">    Space middle = board.getSpace((start.getxCoordinate() + end.getxCoordinate()) / 2,</span>
+<span class="fc" id="L325">            (start.getCellIdx() + end.getCellIdx()) / 2);</span>
+
+<span class="fc bfc" id="L327" title="All 2 branches covered.">    if (player.isWhite()) {</span>
+<span class="fc bfc" id="L328" title="All 2 branches covered.">      if (start.getxCoordinate() - end.getxCoordinate() &gt; 0) {</span>
+<span class="pc bpc" id="L329" title="1 of 2 branches missed.">        if (!piece.isKing()) {</span>
+<span class="nc" id="L330">          return false;</span>
+        }
+      }
+    }
+
+<span class="fc bfc" id="L335" title="All 2 branches covered.">    if (player.isRed()) {</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">      if (start.getxCoordinate() - end.getxCoordinate() &lt; 0) {</span>
+<span class="pc bpc" id="L337" title="1 of 2 branches missed.">        if (!piece.isKing()) {</span>
+<span class="nc" id="L338">          return false;</span>
+        }
+      }
+    }
+
+<span class="fc bfc" id="L343" title="All 2 branches covered.">    if (isMovingTwo(start, end)) {</span>
+<span class="fc bfc" id="L344" title="All 2 branches covered.">      if (!end.isOccupied()) {</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">        if (middle.isOccupied()) {</span>
+<span class="fc bfc" id="L346" title="All 4 branches covered.">          if (player.isRed() &amp;&amp; middle.pieceIsWhite()) {</span>
+<span class="fc" id="L347">            return true;</span>
+          }
+<span class="fc bfc" id="L349" title="All 4 branches covered.">          if (player.isWhite() &amp;&amp; middle.pieceIsRed()) {</span>
+<span class="fc" id="L350">            return true;</span>
+          }
+        }
+      }
+    }
+<span class="fc" id="L355">    return false;</span>
+  }
+
+  /**
+   * Sees if a space is valid for a piece to move onto
+   *
+   * @param start  - space currently at
+   * @param target - target space to move to
+   * @return - validity of move to target space
+   */
+  public Map&lt;Boolean, String&gt; validateMove(Position start, Position target, Player player) {
+<span class="fc" id="L366">    Map&lt;Boolean, String&gt; response = new HashMap&lt;&gt;();</span>
+    Space current;
+    Space goal;
+<span class="pc bpc" id="L369" title="2 of 4 branches missed.">    if (target.getRow() &lt; 0 || target.getRow() &gt; 7) {</span>
+<span class="nc" id="L370">      response.put(false, &quot;Move out of bounds&quot;);</span>
+<span class="nc" id="L371">      return response;</span>
+    }
+<span class="fc bfc" id="L373" title="All 4 branches covered.">    if (target.getCell() &lt; 0 || target.getCell() &gt; 7) {</span>
+<span class="fc" id="L374">      response.put(false, &quot;Move out of bounds&quot;);</span>
+<span class="fc" id="L375">      return response;</span>
+    }
+
+<span class="fc bfc" id="L378" title="All 2 branches covered.">    if (player.isRed()) {</span>
+      //Sets the current and goal spaces for the potential move
+<span class="fc" id="L380">      current = board.getSpace(start.getRow(), start.getCell());</span>
+<span class="fc" id="L381">      goal = board.getSpace(target.getRow(), target.getCell());</span>
+    } else {
+      //Sets the current and goal spaces for the potential move (flipping since it is the white player)
+<span class="fc" id="L384">      current = board.getSpace(7 - start.getRow(), 7 - start.getCell());</span>
+<span class="fc" id="L385">      goal = board.getSpace(7 - target.getRow(), 7 - target.getCell());</span>
+    }
+
+<span class="fc bfc" id="L388" title="All 4 branches covered.">    if (this.piece == null || this.piece != current.getPiece()) {</span>
+<span class="fc bfc" id="L389" title="All 2 branches covered.">      if (current.getPiece() != null) {</span>
+<span class="fc" id="L390">        this.piece = current.getPiece();</span>
+      }
+    }
+
+<span class="fc" id="L394">    Map&lt;Space, Space&gt; validJumps = findJumps(player);</span>
+    //Checking to see if a player can preform a jump
+<span class="fc bfc" id="L396" title="All 2 branches covered.">    if (validJumps.size() != 0) {</span>
+      //Checking to see if the current piece is preforming a jump
+<span class="fc bfc" id="L398" title="All 2 branches covered.">      if (pieceCanJump(current, goal, player, this.piece)) {</span>
+<span class="fc" id="L399">        board.isJumping(true);</span>
+<span class="fc bfc" id="L400" title="All 2 branches covered.">        if (validJumps.containsKey(current)) {</span>
+<span class="fc" id="L401">          board.setSubmit(true);</span>
+<span class="fc" id="L402">          response.put(true, &quot;This jump is valid.&quot;);</span>
+        } else {
+<span class="fc" id="L404">          response.put(true, multiJumpPossible);</span>
+<span class="fc" id="L405">          board.setSubmit(false);</span>
+        }
+      } else {
+<span class="fc" id="L408">        response.put(false, jumpPossible);</span>
+      }
+    } else {
+      //Checking to see if the goal space is a white space.
+<span class="fc bfc" id="L412" title="All 2 branches covered.">      if (goal.isWhite()) {</span>
+<span class="fc" id="L413">        response.put(false, &quot;Attempted to move a piece to a white space.&quot;);</span>
+<span class="fc bfc" id="L414" title="All 2 branches covered.">      } else if (goal.isOccupied()) {</span>
+<span class="fc" id="L415">        response.put(false, &quot;Attempted to move a piece to an already occupied space&quot;);</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">      } else if (!isMovingOne(start, target)) {</span>
+<span class="fc" id="L417">        response.put(false, &quot;Attempted to move piece too far.&quot;);</span>
+<span class="pc bpc" id="L418" title="1 of 2 branches missed.">      } else if (!isMovingDiagonal(start, target)) {</span>
+<span class="nc" id="L419">        response.put(false, &quot;Pieces can only move diagonally.&quot;);</span>
+<span class="fc bfc" id="L420" title="All 4 branches covered.">      } else if (!isMovingForward(start, target) &amp;&amp; current.isPieceKing()) {</span>
+<span class="fc" id="L421">        response.put(true, &quot;This is a valid move for a King.&quot;);</span>
+<span class="fc" id="L422">        board.setSubmit(true);</span>
+<span class="fc bfc" id="L423" title="All 2 branches covered.">      } else if (!isMovingForward(start, target)) {</span>
+<span class="fc" id="L424">        response.put(false, &quot;Single pieces can only move forward.&quot;);</span>
+      } else {
+<span class="fc" id="L426">        board.setSubmit(true);</span>
+<span class="fc" id="L427">        response.put(true, &quot;This move is valid.&quot;);</span>
+      }
+    }
+<span class="fc" id="L430">    return response;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

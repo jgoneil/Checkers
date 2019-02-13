@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Piece.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">Piece.java</span></div><h1>Piece.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+import com.webcheckers.appl.GameLobby;
+
+/**
+ * Defines a piece for use on the board
+ */
+public class Piece {
+
+  //The space the piece is occupying
+  private Space loc;
+  //The color of the piece
+  private Color color;
+  //The type that the piece is
+  private Type type;
+
+  /**
+   * Enum for the color of the piece (red/white)
+   */
+<span class="fc" id="L20">  public enum Color {</span>
+<span class="fc" id="L21">    RED, WHITE</span>
+  }
+
+  /**
+   * Enum for the type of the piece (King/Single)
+   */
+<span class="fc" id="L27">  public enum Type {</span>
+<span class="fc" id="L28">    SINGLE, KING</span>
+  }
+
+  /**
+   * Constructor for the piece class
+   *
+   * @param tempColor the color passed in for the piece
+   * @param s the space the piece starts out on
+   */
+<span class="fc" id="L37">  public Piece(String tempColor, Space s) {</span>
+<span class="fc" id="L38">    this.loc = s;</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">    if (tempColor.equals(GameLobby.RED)) {</span>
+<span class="fc" id="L40">      this.color = Color.RED;</span>
+    } else {
+<span class="fc" id="L42">      this.color = Color.WHITE;</span>
+    }
+<span class="fc" id="L44">    this.type = Type.SINGLE;</span>
+<span class="fc" id="L45">  }</span>
+
+  /**
+   * Setter for the space the piece occupies when the player moves the piece
+   *
+   * @param space the space the player moves the piece to
+   */
+  public void move(Space space) {
+<span class="fc" id="L53">    this.loc = space;</span>
+<span class="fc" id="L54">  }</span>
+
+  /**
+   * Getter for the space the piece is currently on
+   */
+  public Space getSpace() {
+<span class="fc" id="L60">    return this.loc;</span>
+  }
+
+  /**
+   * Gets the xCoordinate of the space the piece is on
+   *
+   * @return the xCoordinae of the space the piece is on
+   */
+  public int getXCoordinate() {
+<span class="fc" id="L69">    return this.loc.getxCoordinate();</span>
+  }
+
+  /**
+   * Gets the cellIdx of the space the piece is on
+   *
+   * @return the cellIdx of the space the piece is on
+   */
+  public int getCellIdx() {
+<span class="fc" id="L78">    return this.loc.getCellIdx();</span>
+  }
+
+  /**
+   * Getter for the type of piece
+   *
+   * @return the enum for the type of the piece
+   */
+  public Type getType() {
+<span class="fc" id="L87">    return this.type;</span>
+  }
+
+  /**
+   * Getter for the color of the piece
+   *
+   * @return the enum for the color of the piece
+   */
+  public Color getColor() {
+<span class="fc" id="L96">    return this.color;</span>
+  }
+
+  /**
+   * Checks to see if the piece is red
+   *
+   * @return true/false to see if a piece is red or not
+   */ 
+  public boolean isRed() {
+<span class="fc bfc" id="L105" title="All 2 branches covered.">    return this.color == Color.RED;</span>
+  }
+
+  /**
+   * Checks to see if the piece is white
+   *
+   * @return true/false to see if a piece is white or not
+   */
+  public boolean isWhite() {
+<span class="fc bfc" id="L114" title="All 2 branches covered.">    return this.color == Color.WHITE;</span>
+  }
+
+  /**
+   * Kings a piece
+   */
+<span class="fc" id="L120">  public void King(){this.type = Type.KING;}</span>
+
+  /**
+   * Checks to see if a piece is of type KING
+   *
+   * @return true/false if the type of the piece is a KING or not
+   */
+  public boolean isKing() {
+<span class="fc bfc" id="L128" title="All 2 branches covered.">    return this.type == Type.KING;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

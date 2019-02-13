@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Space.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">Space.java</span></div><h1>Space.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+/**
+ * Class that establishes spaces on the game board
+ */
+public class Space {
+
+  //The column that the space is located at
+  private int cellIdx;
+  //The row that the space is located at
+  private int xCoordinate;
+  //The color of the space
+  private Color color;
+  //Boolean condition based on if the space is occupied or not
+  private boolean occupied;
+  //The piece occupying the space or null if no piece is currently occupying the space
+  private Piece piece;
+
+  /**
+   * Enum for the color of the space (white/black)
+   */
+<span class="fc" id="L22">  public enum Color {</span>
+<span class="fc" id="L23">    BLACK, WHITE</span>
+  }
+
+  /**
+   * Constructor for the space on the game board
+   *
+   * @param xCoordinate the row of the space on the board (the y-coordinate of the space)
+   * @param cellIdx the column of the space on the board (x-coordinate of the space)
+   * @param color the color the space is
+   */
+<span class="fc" id="L33">  public Space(int xCoordinate, int cellIdx, Color color) {</span>
+<span class="fc" id="L34">    this.cellIdx = cellIdx;</span>
+<span class="fc" id="L35">    this.xCoordinate = xCoordinate;</span>
+<span class="fc" id="L36">    this.color = color;</span>
+<span class="fc" id="L37">    this.occupied = false;</span>
+<span class="fc" id="L38">  }</span>
+
+  /**
+   * Getter for the color of the given space
+   *
+   * @return - the color of the space
+   */
+  public Color getColor() {
+<span class="fc" id="L46">    return this.color;</span>
+  }
+
+  /**
+   * Sets occupied value to true for space with a piece
+   *
+   * @param piece the piece now occupying the space
+   */
+  public void occupy(Piece piece) {
+<span class="fc" id="L55">    this.occupied = true;</span>
+<span class="fc" id="L56">    this.piece = piece;</span>
+<span class="fc" id="L57">  }</span>
+
+  /**
+   * Sets occupied value to false when a piece has moved off of it
+   */
+  public void unoccupy() {
+<span class="fc" id="L63">    this.occupied = false;</span>
+<span class="fc" id="L64">    this.piece = null;</span>
+<span class="fc" id="L65">  }</span>
+
+
+  /**
+  * Checks to see if the piece is white
+  *
+  * @return true/false if a piece on the space is white;
+  */ 
+  public boolean pieceIsRed() {
+<span class="fc bfc" id="L74" title="All 2 branches covered.">    if (this.piece != null) {</span>
+<span class="fc" id="L75">      return piece.isRed();</span>
+    } 
+<span class="fc" id="L77">    return false;</span>
+  }
+
+  /**
+   * Checks to see if the piece is white
+   *
+   * @return true/false if a piece on the space is white;
+   */ 
+  public boolean pieceIsWhite() {
+<span class="fc bfc" id="L86" title="All 2 branches covered.">    if (this.piece != null) { </span>
+<span class="fc" id="L87">      return piece.isWhite();</span>
+    }
+<span class="fc" id="L89">    return false;</span>
+  }
+
+  /**
+   * Sees if this space is occupied
+   *
+   * @return boolean for if the space is occupied
+   */
+  public boolean isOccupied() {
+<span class="fc" id="L98">    return this.occupied;</span>
+  }
+
+  /**
+   * Getter for the piece on the space
+   *
+   * @return the piece on the space (null if no piece exists)
+   */
+  public Piece getPiece() {
+<span class="fc" id="L107">    return this.piece;</span>
+  }
+
+  /**
+   * Getter for the location of the space on the game board
+   *
+   * @return the location of the space
+   */
+  public int getCellIdx() {
+<span class="fc" id="L116">    return this.cellIdx;</span>
+  }
+
+  /**
+   * Getter for the x-coordinate for the space on the game board
+   *
+   * @return the xCoordinate of the space on the board
+   */
+  public int getxCoordinate() {
+<span class="fc" id="L125">    return this.xCoordinate;</span>
+  }
+
+  /**
+   * Checks to see if a space is a valid location to move a piece to
+   *
+   * @return a boolean expression based on if a piece can or can not be moved to the given space
+   */
+  public boolean isValid() {
+<span class="fc bfc" id="L134" title="All 4 branches covered.">    return this.piece == null &amp;&amp; this.color == Color.BLACK;</span>
+  }
+
+  /**
+   * Checks to see if the piece on the space is of type KING or not
+   *
+   * @return true/false if the piece on this space is of type KING
+   */ 
+  public boolean isPieceKing(){
+<span class="fc bfc" id="L143" title="All 2 branches covered.">    if (this.piece != null) {</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">      return this.piece.getType() == Piece.Type.KING;</span>
+<span class="fc" id="L145">    } return false;</span>
+  }
+
+  /**
+   * Checks to see if a space is white or not
+   *
+   * @return true/false if the space is white
+   */
+  public boolean isWhite() {
+<span class="fc bfc" id="L154" title="All 2 branches covered.">    return color == Color.WHITE;</span>
+  }
+
+  /**
+   * Checks to see if a space is equal to another object or not
+   *
+   * @param space the space being checked to see if it is equal or not
+   * @return a boolean condition based on if the spaces are equal to one another or not
+   */
+  @Override
+  public boolean equals(Object space) {
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">    if (space instanceof Space) {</span>
+<span class="fc" id="L166">      Space checkSpace = (Space) space;</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">      if (checkSpace.getCellIdx() == this.cellIdx </span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">          &amp;&amp; checkSpace.getxCoordinate() == this.xCoordinate</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">          &amp;&amp; checkSpace.getColor().equals(this.color)) {</span>
+<span class="fc" id="L170">        return true;</span>
+      }
+    }
+<span class="fc" id="L173">    return false;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

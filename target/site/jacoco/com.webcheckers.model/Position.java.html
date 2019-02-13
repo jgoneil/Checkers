@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Position.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">Position.java</span></div><h1>Position.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+/**
+ * Model class for the position a space is at
+ */
+public class Position {
+
+  //The y-coordinate of the position
+  private int row;
+  //The x-coordinate of the position
+  private int cell;
+
+  /**
+   * Constructor for the location of a position
+   *
+   * @param row the y-coordinate of the position
+   * @param cell the x-coordinate of the position
+   */
+<span class="fc" id="L19">  public Position(int row, int cell) {</span>
+<span class="fc" id="L20">    this.row = row;</span>
+<span class="fc" id="L21">    this.cell = cell;</span>
+<span class="fc" id="L22">  }</span>
+
+  /**
+   * Getter for the row the space is located at
+   *
+   * @return the integer (between 0-7) for the y-coordinate of the space
+   */
+  public int getRow() {
+<span class="fc" id="L30">    return this.row;</span>
+  }
+
+  /**
+   * Getter for the column the space is located at
+   *
+   * @return the integer (between 0-7) for the x-coordinate of the space
+   */
+  public int getCell() {
+<span class="fc" id="L39">    return this.cell;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

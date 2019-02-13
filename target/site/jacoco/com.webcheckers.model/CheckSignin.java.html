@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckSignin.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">CheckSignin.java</span></div><h1>CheckSignin.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+import java.util.List;
+
+/**
+ * Class that ensures input for usernames matches requirements
+ */
+<span class="fc" id="L8">public class CheckSignin {</span>
+
+  /**
+   * Main validation for user input. Ensures that the username doesn't already exist and that the
+   * values entered are only alpha numeric characters or spaces
+   *
+   * @param input the string input from the signin page
+   * @param users the list of users already signed into the game
+   * @return boolean true/false based on if the player entered information is valid or not
+   */
+  public boolean validateUser(String input, List&lt;Player&gt; users) {
+<span class="fc" id="L19">    String username = input.toLowerCase().trim();</span>
+    //Checking to make sure the username is not already in the system
+<span class="fc bfc" id="L21" title="All 2 branches covered.">    for (Player user : users) {</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">      if (username.equals(user.getName().toLowerCase())) {</span>
+<span class="fc" id="L23">        return false;</span>
+      }
+<span class="fc" id="L25">    }</span>
+    //Checking to make sure the username is not empty
+<span class="fc bfc" id="L27" title="All 2 branches covered.">    if (username.equals(&quot;&quot;)) {</span>
+<span class="fc" id="L28">      return false;</span>
+    } else {
+<span class="fc bfc" id="L30" title="All 2 branches covered.">      for (int i = 0; i &lt; username.length(); i++) {</span>
+<span class="fc" id="L31">        int c = username.charAt(i);</span>
+        //Checking to make sure each entered letter is a character, number, or space
+<span class="pc bpc" id="L33" title="3 of 14 branches missed.">        if (!((65 &lt;= c &amp;&amp; c &lt;= 90) || (97 &lt;= c &amp;&amp; c &lt;= 122) || c == 32 ||</span>
+            (48 &lt;= c &amp;&amp; c &lt;= 57))) {
+<span class="fc" id="L35">          return false;</span>
+        }
+      }
+
+<span class="fc" id="L39">      return true;</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

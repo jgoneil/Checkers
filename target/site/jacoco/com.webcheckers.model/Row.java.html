@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Row.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">Row.java</span></div><h1>Row.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+import com.webcheckers.appl.GameLobby;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * Class for each row on the game board
+ */
+public class Row implements Iterable {
+
+  //The list of spaces that make up the row
+  private ArrayList&lt;Space&gt; row;
+  //The index location of where on the board the row is
+  private int index;
+
+  /**
+   * Constructor for the row class
+   *
+   * @param xCoordinate the xCoordinate of each space for row of the board
+   * @param length the length of the side of the board
+   * @param color the color of the player for the row being generated
+   */
+<span class="fc" id="L26">  public Row(int xCoordinate, int length, String color) {</span>
+<span class="fc" id="L27">    this.row = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L28">    this.index = xCoordinate;</span>
+<span class="fc" id="L29">    fillRow(length, color);</span>
+<span class="fc" id="L30">  }</span>
+
+  /**
+   * Constructor for the row class (testing)
+   *
+   * @param xCoordinate the xCoordinate of each space for the row of the board
+   * @param length the length of the side of the board
+   * @param pieces the list of pieces for the game
+   */
+<span class="fc" id="L39">  public Row(int xCoordinate, int length, List&lt;Piece&gt; pieces) {</span>
+<span class="fc" id="L40">    this.row = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L41">    this.index = xCoordinate;</span>
+<span class="fc" id="L42">    fillRowAndPieces(length, pieces);</span>
+<span class="fc" id="L43">  }</span>
+
+  /**
+   * Fills the arrayList of rows for the row being created
+   *
+   * @param length the length of the side of the board
+   * @param color the color of the Player the row is being created for
+   */
+  private void fillRow(int length, String color) {
+<span class="fc bfc" id="L52" title="All 2 branches covered.">    for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">      if (color.equals(GameLobby.RED)) {</span>
+        //Checking to see if a space should be white or not
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if ((this.index + i) % 2 == 0) {</span>
+<span class="fc" id="L56">          row.add(new Space(this.index, i, Space.Color.WHITE));</span>
+        } else {
+<span class="fc" id="L58">          Space space = new Space(this.index, i, Space.Color.BLACK);</span>
+<span class="fc" id="L59">          row.add(space);</span>
+          //Checking to see if a space should be occupied or not
+<span class="pc bpc" id="L61" title="1 of 4 branches missed.">          if (this.index &gt;= 5 &amp;&amp; this.index &lt;= 7) {</span>
+<span class="fc" id="L62">            space.occupy(new Piece(GameLobby.RED, space));</span>
+<span class="pc bpc" id="L63" title="1 of 4 branches missed.">          } else if (this.index &gt;= 0 &amp;&amp; this.index &lt;= 2) {</span>
+<span class="fc" id="L64">            space.occupy(new Piece(GameLobby.WHITE, space));</span>
+          }
+<span class="fc" id="L66">        }</span>
+      } else {
+        //Checking to see if a space should be white or not
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if ((this.index + i) % 2 == 0) {</span>
+<span class="fc" id="L70">          row.add(new Space(this.index, i, Space.Color.WHITE));</span>
+        } else {
+<span class="fc" id="L72">          Space space = new Space(this.index, i, Space.Color.BLACK);</span>
+<span class="fc" id="L73">          row.add(space);</span>
+          //Checks to see if a space should be occupied or not
+<span class="pc bpc" id="L75" title="1 of 4 branches missed.">          if (this.index &gt;= 5 &amp;&amp; this.index &lt;= 7) {</span>
+<span class="fc" id="L76">            space.occupy(new Piece(GameLobby.WHITE, space));</span>
+<span class="pc bpc" id="L77" title="1 of 4 branches missed.">          } else if (this.index &gt;= 0 &amp;&amp; this.index &lt;= 2) {</span>
+<span class="fc" id="L78">            space.occupy(new Piece(GameLobby.RED, space));</span>
+          }
+        }
+      }
+    }
+<span class="fc" id="L83">  }</span>
+
+  /**
+   * Fills the arrayList of spaces for the row being created
+   *
+   * @param length the length of the side of the board
+   * @param pieces the pieces being added to the space
+   */
+  private void fillRowAndPieces(int length, List&lt;Piece&gt; pieces) {
+<span class="fc bfc" id="L92" title="All 2 branches covered.">    for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">      if ((this.index + i) % 2 == 0) {</span>
+<span class="fc" id="L94">        row.add(new Space(this.index, i, Space.Color.WHITE));</span>
+      } else {
+<span class="fc" id="L96">        Space space = new Space(this.index, i, Space.Color.BLACK);</span>
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        for (Piece p: pieces) {</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">          if (p.getSpace().equals(space)) {</span>
+<span class="fc" id="L99">            space.occupy(p);</span>
+<span class="fc" id="L100">            pieces.remove(p);</span>
+<span class="fc" id="L101">            break;</span>
+          }
+<span class="fc" id="L103">        }</span>
+<span class="fc" id="L104">        row.add(space);</span>
+      }
+    }
+<span class="fc" id="L107">  }</span>
+
+  /**
+   * Retrieves the row of the game board in the form of a map
+   *
+   * @return the array list of spaces and the column of the space
+   */
+  public ArrayList&lt;Space&gt; getRow() {
+<span class="fc" id="L115">    return this.row;</span>
+  }
+
+  /**
+   * Getter for the index of the row
+   *
+   * @return the integer for the row number
+   */
+  public int getIndex() {
+<span class="fc" id="L124">    return this.index;</span>
+  }
+
+  /**
+   * Getter for a specified space in the row
+   *
+   * @param spaceIDX the index of the space
+   * @return the space for the given index (or null if non-existent)
+   */
+  public Space getSpace(int spaceIDX) {
+<span class="fc" id="L134">    return this.row.get(spaceIDX);</span>
+  }
+
+  /**
+   * The iterator for the rows for the frontend to loop over
+   *
+   * @return an iterator for the rows
+   */
+  public Iterator iterator() {
+<span class="fc" id="L143">    return this.row.iterator();</span>
+  }
+
+  /**
+   * Updates the row to remove a piece from a space in the row
+   *
+   * @param spaceLoc the space that the piece is being removed from
+   */
+  public Piece removePieceFromSpace(int spaceLoc) {
+<span class="fc" id="L152">    Space space = row.get(spaceLoc);</span>
+<span class="fc" id="L153">    Piece piece = space.getPiece();</span>
+<span class="fc" id="L154">    space.unoccupy();</span>
+<span class="fc" id="L155">    return piece;</span>
+  }
+
+  /**
+   * Updates the row to add a piece to a row
+   *
+   * @param spaceLoc the space that the piece is moving to
+   */
+  public void addPieceToSpace(int spaceLoc, Piece piece) {
+<span class="fc" id="L164">    Space space = row.get(spaceLoc);</span>
+<span class="fc" id="L165">    space.occupy(piece);</span>
+<span class="fc" id="L166">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

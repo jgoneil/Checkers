@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerBoard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Web Checkers a'la Spark/Java8</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">PlayerBoard.java</span></div><h1>PlayerBoard.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * Class that creates and handles the board for gameplay
+ */
+public class PlayerBoard implements Iterable {
+
+  //Players for the current game view
+  private Player redPlayer;
+  private Player whitePlayer;
+  //The list of rows for the board view
+  private ArrayList&lt;Row&gt; board;
+
+  /**
+   * Main constructor for class that establishes the two players and size of the board
+   *
+   * @param redPlayer the player associated to the red checkers for the checkers game
+   * @param whitePlayer the player associated to the white checkers for the checkers game
+   * @param length the size of the width and length of the board (assuming the board has to be a
+   * square)
+   * @param color the color of the player
+   */
+<span class="fc" id="L27">  public PlayerBoard(Player redPlayer, Player whitePlayer, int length, String color) {</span>
+<span class="fc" id="L28">    this.redPlayer = redPlayer;</span>
+<span class="fc" id="L29">    this.whitePlayer = whitePlayer;</span>
+<span class="fc" id="L30">    this.board = new ArrayList&lt;&gt;();</span>
+    //Generating the rows for the board
+<span class="fc bfc" id="L32" title="All 2 branches covered.">    for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc" id="L33">      Row row = new Row(i, length, color);</span>
+<span class="fc" id="L34">      board.add(row);</span>
+    }
+<span class="fc" id="L36">  }</span>
+
+  /**
+   * Main constructor for class that establishes the two players, size of board, and the pieces on the board
+   *
+   * @param redPlayer the player associated to the red checkers for the checkers game
+   * @param whitePlayer the player associated to the white checkers for the checkers game
+   * @param length the side of the board (assuming square)
+   * @param color the color of the player
+   * @param pieces the pieces being added to the board
+   */
+<span class="fc" id="L47">  public PlayerBoard(Player redPlayer, Player whitePlayer, int length, String color, List&lt;Piece&gt; pieces) {</span>
+<span class="fc" id="L48">    this.redPlayer = redPlayer;</span>
+<span class="fc" id="L49">    this.whitePlayer = whitePlayer;</span>
+<span class="fc" id="L50">    this.board = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">    for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc" id="L52">      Row row = new Row(i, length, pieces);</span>
+<span class="fc" id="L53">      board.add(row);</span>
+    }
+<span class="fc" id="L55">  }</span>
+
+  /**
+   * Getter for the white player of the game
+   *
+   * @return the player associated to the white checkers for the checkers game
+   */
+  public Player getWhitePlayer() {
+<span class="fc" id="L63">    return this.whitePlayer;</span>
+  }
+
+  /**
+   * Getter for the red player of the game
+   *
+   * @return the player associated to the red checkers for the checkers game
+   */
+  public Player getRedPlayer() {
+<span class="fc" id="L72">    return this.redPlayer;</span>
+  }
+
+  /**
+   * Getter for the board (A set of a set of spaces)
+   *
+   * @return an array list containing rows of spaces for each board position
+   */
+  public ArrayList&lt;Row&gt; getBoard() {
+<span class="fc" id="L81">    return this.board;</span>
+  }
+
+  /**
+   * Getter for a specific row in the board
+   *
+   * @param row the row of the board being retrieved
+   * @return the row associated to the row of the board (or null if non-existent)
+   */
+  public Row getRow(int row) {
+<span class="fc" id="L91">    return this.board.get(row);</span>
+  }
+
+  /**
+   * Setter for a move made on the board
+   *
+   * @param move the move on the board
+   */
+  public void makeMove(Move move, boolean isKinging) {
+<span class="fc" id="L100">    Row startingRow = board.get(move.getStart().getRow());</span>
+<span class="fc" id="L101">    Piece piece = startingRow.removePieceFromSpace(move.getStart().getCell());</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">    if (isKinging){</span>
+<span class="nc" id="L103">      piece.King();</span>
+    }
+<span class="fc" id="L105">    Row endingRow = board.get(move.getEnd().getRow());</span>
+<span class="fc" id="L106">    endingRow.addPieceToSpace(move.getEnd().getCell(), piece);</span>
+<span class="fc" id="L107">  }</span>
+
+  /**
+   * Iterator declaration used for getting all of the spaces on the board
+   *
+   * @return the iterator for the board
+   */
+  @Override
+  public Iterator iterator() {
+<span class="fc" id="L116">    return this.board.iterator();</span>
+  }
+
+  /**
+   * Removes a piece from the playerBoard
+   *
+   * @param row the row the piece is in
+   * @param column the column the piece is in
+   */
+  public void eatPiece(int row, int column) {
+<span class="fc" id="L126">    board.get(row).removePieceFromSpace(column);</span>
+<span class="fc" id="L127">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
